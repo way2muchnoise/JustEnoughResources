@@ -1,0 +1,118 @@
+jer.config.itemsPerColumn.title=Items Per Column
+jer.config.itemsPerColumn.description=Changes the amount of items per column in the JEI dungeon and mob views
+jer.config.itemsPerRow.title=Items Per Row
+jer.config.itemsPerRow.description=Changes the amount of items per row in the JEI dungeon view
+jer.config.cycleTime.title=Cycle Time
+jer.config.cycleTime.description=Show duration before cycle in JEI views
+jer.config.extraRange.title=Extra range
+jer.config.extraRange.description=Changes the extra yLevels displayed on the graph in the JEI ore View
+jer.config.dimNames.title=Use Dimension Names
+jer.config.dimNames.description=Set use of Dimension names instead of numbers
+jer.config.echantsBlacklist.title=Enchants Blacklist
+jer.config.echantsBlacklist.description=Blacklist enchants from the JEI Enchants View
+
+#Usage: jer.page pageNumber jer.of lastPage
+jer.page=Page
+jer.of=of
+#Usage X jer.stacks
+#X will either be "[max]" or "[min] - [max]"
+jer.stacks=%s Stacks
+
+jer.lightLevel=Light Level
+jer.any=Any
+jer.dim.no=No Valid Spawn Dimensions
+jer.not=Not
+
+#Dungeon View
+jer.dungeon.title=Dungeon Chests
+jer.dungeon.mineshaftCorridor=Mineshaft
+jer.dungeon.pyramidDesertyChest=Desert Temple
+jer.dungeon.pyramidJungleChest=Mineshaft
+jer.dungeon.pyramidJungleDispenser=Jungle Temple
+jer.dungeon.strongholdCorridor=Stronghold Corridor
+jer.dungeon.strongholdLibrary=Stronghold Library
+jer.dungeon.strongholdCrossing=Stronghold Crossing
+jer.dungeon.villageBlacksmith=Blacksmith
+jer.dungeon.bonusChest=Bonus
+jer.dungeon.dungeonChest=Dungeon
+
+#Enchantments View
+jer.enchantments.title=Enchantments
+
+#Plant View
+jer.plant.title=Plant Drops
+
+#Ore View
+jer.ore.title=Ore Gen
+jer.ore.bestY=bestY
+jer.ore.silkTouch=Silk Touch Needed
+jer.ore.biomes=Spawn Biomes
+jer.ore.dimensions=Valid Dimensions
+
+#Mob View
+jer.mob.title=Mob Drops
+jer.mob.biome=Spawn Biomes: Hover mouse here
+jer.mob.exp=Experience Dropped
+
+#Advanced Plant View
+jer.advPlant.title=Advanced Plant Drops
+
+#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
+jer.magmaCream.text=Small and Large Magma Cubes
+jer.slimeBall.text=Tiny Slimes only
+jer.rareDrop.text=Rare Drop
+
+jer.slimeScale.text=Scales with Slime Size
+jer.kingSlime.text=King Slimes only
+jer.beheading.text=Beheading increases chance
+jer.randomAspect.text=Random Aspect
+jer.equipmentDrop.text=Dropped Equipment
+
+jer.burning.text=When on fire
+jer.notBurning.text=When not on fire
+jer.wet.text=When wet
+jer.notWet.text=When not wet
+jer.hasPotion.text=When affected by %s
+jer.hasNoPotion.text=When not affected by %s
+jer.beyond.text=Further than %sm from spawn
+jer.nearer.text=Closer than %sm from spawn
+jer.raining.text=When raining
+jer.dry.text=When not raining
+jer.thundering.text=When storming
+jer.notThundering.text=When not storming
+jer.moonPhase.text=During %s Moon
+jer.notMoonPhase.text=Out of %s Moon
+jer.pastTime.text=Day time past %s
+jer.beforeTime.text=Day time before %s
+jer.pastWorldTime.text=World time past %s
+jer.beforeWorldTime.text=World time before %s
+jer.pastWorldDifficulty.text=Past World Difficulty %s
+jer.beforeWorldDifficulty.text=Before World Difficulty %s
+jer.gameDifficulty.text=Difficulty %s
+jer.notGameDifficulty.text=Difficulty not %s
+jer.inDimension.text=In Dimension %s
+jer.notInDimension.text=Not in Dimension %s
+jer.inBiome.text=In Biome %s
+jer.notInBiome.text=Not in Biome %s
+jer.onBlock.text=On %s
+jer.notOnBlock.text=Not on %s
+jer.below.text=Below Y Level %s
+jer.above.text=Above Y Level %s
+jer.playerOnline.text=When Player %s online
+jer.playerOffline.text=When Player %s offline
+jer.playerKill.text=Killed by a Player
+jer.notPlayerKill.text=Not killed by a Player
+jer.aboveLooting.text=Looting above %s
+jer.belowLooting.text=Looting below %s
+jer.killedBy.text=When killed by %s
+jer.notKilledBy.text=When not killed by %s
+
+#Moon Phases
+jer.full.moon=Full
+jer.waning_gibbous.moon=Waning Gibbous
+jer.third_quarter.moon=Third Quarter
+jer.waning_crescent.moon=Waning Crescent
+jer.new.moon=New
+jer.waxing_crescent.moon=Waxing Crescent
+jer.first_quarter.moon=First Quarter
+jer.waxing_gibbous.moon=Waxing Gibbous

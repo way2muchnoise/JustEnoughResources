@@ -1,0 +1,118 @@
+jer.config.itemsPerColumn.title=Кол-во предметов в столбце
+jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и мобов
+jer.config.itemsPerRow.title=Кол-во предметов в ряду
+jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
+jer.config.cycleTime.title=Время цикла
+jer.config.cycleTime.description=Показывать продолжительность цикла в JEI-просмотрах
+jer.config.extraRange.title=Доп. дальность
+jer.config.extraRange.description=Отображает дополнительные y-уровни на графике в JEI-просмотре руд
+jer.config.dimNames.title=Использовать имена измерений
+jer.config.dimNames.description=Меняет числовые измерения на именные
+jer.config.echantsBlacklist.title=Чёрный список для зачарований
+jer.config.echantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
+
+#Usage: jer.page pageNumber jer.of lastPage
+jer.page=Страница
+jer.of=из
+#X will either be "[max]" or "[min] - [max]"
+#Usage X jer.stacks
+jer.stacks=Стаков: %s
+
+jer.lightLevel=Уровень освещения
+jer.any=Любой
+jer.dim.no=Нет доступных измерений для появления
+jer.not=Нет
+
+#Dungeon View
+jer.dungeon.title=Сундуки подземелий
+jer.dungeon.mineshaftCorridor=Заброшенная шахта
+jer.dungeon.pyramidDesertyChest=Храм в пустыне
+jer.dungeon.pyramidJungleChest=Заброшенная шахта
+jer.dungeon.pyramidJungleDispenser=Храм в джунглях
+jer.dungeon.strongholdCorridor=Коридор крепости
+jer.dungeon.strongholdLibrary=Библиотека крепости
+jer.dungeon.strongholdCrossing=Пересечение крепости
+jer.dungeon.villageBlacksmith=Деревенская кузница
+jer.dungeon.bonusChest=Бонусный сундук
+jer.dungeon.dungeonChest=Подземелье
+
+#Enchantments View
+jer.enchantments.title=Зачарования
+
+#Plant View
+jer.plant.title=Плоды растений
+
+#Ore View
+jer.ore.title=Генерация руд
+jer.ore.bestY=Лучшее значение по Y
+jer.ore.silkTouch=Необходимо шёлковое касание
+jer.ore.biomes=Появляется в биомах
+jer.ore.dimensions=Допустимые измерения
+
+#Mob View
+jer.mob.title=Добыча мобов
+jer.mob.biome=Появляется в биомах: наведите курсор сюда
+jer.mob.exp=Даёт опыта
+
+#Advanced Plant View
+jer.advPlant.title=Продвинутые плоды растений
+
+#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
+jer.magmaCream.text=Из маленьких и больших лавовых кубов
+jer.slimeBall.text=Только из маленьких слизней
+jer.rareDrop.text=Редкий предмет
+
+jer.slimeScale.text=Зависит от размера слизня
+jer.kingSlime.text=Только из королевских слизней
+jer.beheading.text=Усекновение увеличивает шанс
+jer.randomAspect.text=Случайный аспект
+jer.equipmentDrop.text=Брошенное снаряжение
+
+jer.burning.text=Когда горит
+jer.notBurning.text=Когда не горит
+jer.wet.text=Когда мокрая
+jer.notWet.text=Когда не мокрая
+jer.hasPotion.text=Когда под воздействием %s
+jer.hasNoPotion.text=Когда не под воздействием %s
+jer.beyond.text=Дальше чем на %sм от точки появления
+jer.nearer.text=Ближе чем на %sм от точки появления
+jer.raining.text=Когда идёт дождь
+jer.dry.text=Когда не идёт дождь
+jer.thundering.text=Во время шторма
+jer.notThundering.text=Не во время шторма
+jer.moonPhase.text=Во время %s
+jer.notMoonPhase.text=Не во время %s
+jer.pastTime.text=Дневное время после %s
+jer.beforeTime.text=Дневное время до %s
+jer.pastWorldTime.text=Мировое время после %s
+jer.beforeWorldTime.text=Мировое время до %s
+jer.pastWorldDifficulty.text=После сложности мира %s
+jer.beforeWorldDifficulty.text=До сложности мира %s
+jer.gameDifficulty.text=Когда уровень сложности %s
+jer.notGameDifficulty.text=Когда уровень сложности не %s
+jer.inDimension.text=В измерении %s
+jer.notInDimension.text=Не в измерении %s
+jer.inBiome.text=В биоме %s
+jer.notInBiome.text=Не в биоме %s
+jer.onBlock.text=На %s
+jer.notOnBlock.text=Не на %s
+jer.below.text=Ниже %s уровня по Y
+jer.above.text=Выше %s уровня по Y
+jer.playerOnline.text=Когда игрок %s в сети
+jer.playerOffline.text=Когда игрок %s не в сети
+jer.playerKill.text=Если убит игроком
+jer.notPlayerKill.text=Если убит не игроком
+jer.aboveLooting.text=Мародёрство выше %s
+jer.belowLooting.text=Мародёрство ниже %s
+jer.killedBy.text=Когда убит %s
+jer.notKilledBy.text=Когда убит не %s
+
+#Moon Phases
+jer.full.moon=полнолуния
+jer.waning_gibbous.moon=убывающей луны
+jer.third_quarter.moon=последней четверти
+jer.waning_crescent.moon=старой луны
+jer.new.moon=новолуния
+jer.waxing_crescent.moon=молодой луны
+jer.first_quarter.moon=первой четверти
+jer.waxing_gibbous.moon=прибывающей луны

@@ -1,0 +1,87 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'idea'
+
+repositories {
+    maven {
+        name = "forge"
+        url = "http://files.minecraftforge.net/maven"
+    }
+    maven {
+        name = "jei"
+        url =  "http://dvs1.progwml6.com/files/maven"
+    }
+}
+
+dependencies {
+    compile "mezz.jei:jei_${version_minecraft}:${version_jei}"
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+group = "jeresources"
+archivesBaseName = "JustEnoughResources"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+minecraft {
+    version = "${version_minecraft}-${version_forge}"
+    mappings = "${version_mappings}"
+    runDir = "run"
+
+    useDepAts = true
+
+    replace "@MAJOR@", version_major
+    replace "@MINOR@", version_minor
+    replace "@REVIS@", version_revis
+
+    replaceIn "reference/Reference.java"
+    replaceIn "package-info.java"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+        expand 'version':"${version_major}.${version_minor}.${version_revis}", 'mcversion':version_minecraft
+    }
+
+    from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
+}
+
+version = "${version_minecraft}-${version_major}.${version_minor}.${version_revis}"
+
+jar {
+    from "build/sources/main"
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+}
+
+task sourcesJar(type: Jar, dependsOn: 'sourceMainJava') {
+    from "build/sources/java"
+    from "build/resources/main/java"
+    classifier "sources"
+    destinationDir = file (rootProject.getRootDir().getPath() + '/output')
+}
+
+artifacts {
+    archives sourcesJar, deobfJar
+}
