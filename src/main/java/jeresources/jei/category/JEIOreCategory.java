@@ -1,11 +1,11 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.api.utils.ColorHelper;
 import jeresources.api.utils.conditionals.Conditional;
 import jeresources.config.Settings;
 import jeresources.entries.OreMatchEntry;
+import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.registry.OreRegistry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
@@ -34,47 +34,6 @@ public class JEIOreCategory implements IRecipeCategory
     public static void reloadSettings()
     {
         CYCLE_TIME = (int) (20 * Settings.CYCLE_TIME);
-    }
-
-    @Override
-    public String getGuiTexture()
-    {
-        return Resources.Gui.Jei.ORE.toString();
-    }
-
-    @Override
-    public String getRecipeName()
-    {
-        return TranslationHelper.translateToLocal("ner.ore.title");
-    }
-
-    @Override
-    public int recipiesPerPage()
-    {
-        return 2;
-    }
-
-    @Override
-    public void loadTransferRects()
-    {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(60, -12, 45, 10), JEIConfig.ORE, new Object()));
-    }
-
-    @Override
-    public void loadCraftingRecipes(String outputId, Object... results)
-    {
-        if (outputId.equals(JEIConfig.ORE))
-        {
-            for (OreMatchEntry entry : OreRegistry.getOres())
-                arecipes.add(new CachedOre(entry));
-        } else super.loadCraftingRecipes(outputId, results);
-    }
-
-    @Override
-    public void loadCraftingRecipes(ItemStack result)
-    {
-        for (OreMatchEntry entry : OreRegistry.getRegistryMatches(result))
-            if (entry != null) arecipes.add(new CachedOre(entry));
     }
 
     @Override
@@ -157,21 +116,21 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public String getUid()
     {
-        return null;
+        return JEIConfig.ORE;
     }
 
     @Nonnull
     @Override
     public String getTitle()
     {
-        return null;
+        return TranslationHelper.translateToLocal("ner.ore.title");
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground()
     {
-        return null;
+        return Resources.Gui.JeiBackground.ORE;
     }
 
     @Override

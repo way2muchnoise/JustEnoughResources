@@ -1,15 +1,17 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.api.utils.PlantDrop;
 import jeresources.entries.PlantEntry;
+import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.registry.PlantRegistry;
 import jeresources.utils.TranslationHelper;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
 
-import java.awt.*;
+import javax.annotation.Nonnull;
 
 public class JEIPlantCategory implements IRecipeCategory
 {
@@ -17,63 +19,44 @@ public class JEIPlantCategory implements IRecipeCategory
     private static final int GRASS_Y = 5;
     private static final int OUTPUT_X = 2;
     private static final int OUTPUT_SCALE = 20;
-    private static final int OUTPUT_Y = 51;
-    private static final int INPUT_ARROW_Y = 20;
 
+    @Nonnull
     @Override
-    public String getGuiTexture()
+    public String getUid()
     {
-        return Resources.Gui.Jei.PLANT.toString();
+        return JEIConfig.PLANT;
     }
 
+    @Nonnull
     @Override
-    public String getRecipeName()
+    public String getTitle()
     {
         return TranslationHelper.translateToLocal("ner.plant.title");
     }
 
+    @Nonnull
     @Override
-    public int recipiesPerPage()
+    public IDrawable getBackground()
     {
-        return 1;
+        return Resources.Gui.JeiBackground.PLANT;
     }
 
     @Override
-    public void drawBackground(int recipe)
+    public void drawExtras(Minecraft minecraft)
     {
-        GL11.glColor4f(1, 1, 1, 1);
-        GuiDraw.changeTexture(getGuiTexture());
-        GuiDraw.drawTexturedModalRect(0, 0, 5, 11, 166, 130);
+
     }
 
     @Override
-    public void loadTransferRects()
+    public void drawAnimations(Minecraft minecraft)
     {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(GRASS_X, INPUT_ARROW_Y, 16, 30), JEIConfig.PLANT, new Object()));
+
     }
 
     @Override
-    public void loadCraftingRecipes(String outputId, Object... results)
-    {
-        if (outputId.equals(JEIConfig.PLANT))
-            for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
-            arecipes.add(new CachedPlant(entry));
-        else
-            super.loadCraftingRecipes(outputId, results);
-    }
-
-    @Override
-    public void loadUsageRecipes(String inputId, Object... ingredients)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
 
-	if (ingredients.length == 0) return;
-
-        if (ingredients[0] instanceof ItemStack)
-        {
-            ItemStack ingredient = (ItemStack) ingredients[0];
-            if (PlantRegistry.getInstance().contains(ingredient))
-                arecipes.add(new CachedPlant(PlantRegistry.getInstance().getEntry(ingredient)));
-        } else super.loadUsageRecipes(inputId, ingredients);
     }
 
     public class CachedPlant extends TemplateRecipeHandler.CachedRecipe

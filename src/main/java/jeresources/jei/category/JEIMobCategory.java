@@ -1,9 +1,10 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.api.utils.DropItem;
 import jeresources.config.Settings;
 import jeresources.entries.MobEntry;
 import jeresources.gui.GuiContainerHook;
+import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.registry.MobRegistry;
 import jeresources.utils.Font;

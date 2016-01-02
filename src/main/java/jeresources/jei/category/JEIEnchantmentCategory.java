@@ -1,4 +1,4 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.config.Settings;
 import jeresources.entries.EnchantmentEntry;

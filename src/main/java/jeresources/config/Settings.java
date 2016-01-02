@@ -1,7 +1,7 @@
 package jeresources.config;
 
+import jeresources.jei.category.*;
 import net.minecraftforge.fml.relauncher.Side;
-import jeresources.jei.*;
 import jeresources.registry.EnchantmentRegistry;
 
 public final class Settings

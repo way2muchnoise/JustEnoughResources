@@ -1,5 +1,6 @@
 package jeresources.jei;
 
+import jeresources.jei.category.*;
 import jeresources.reference.Reference;
 import mezz.jei.api.*;
 
@@ -9,6 +10,7 @@ public class JEIConfig implements IModPlugin
     public static final String DUNGEON = Reference.ID + ".dungeon";
     public static final String ORE = Reference.ID + ".ore";
     public static final String PLANT = Reference.ID + ".plant";
+    public static final String SEED = Reference.ID + ".seed";
 
     @Override
     public boolean isModLoaded()

@@ -1,8 +1,9 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.api.utils.PlantDrop;
 import jeresources.config.Settings;
 import jeresources.entries.PlantEntry;
+import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.registry.PlantRegistry;
 import jeresources.utils.Font;
@@ -14,7 +15,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.util.List;
 
 public class JEIAdvSeedCategory implements IRecipeCategory
@@ -28,41 +28,6 @@ public class JEIAdvSeedCategory implements IRecipeCategory
         CYCLE_TIME = (int) (20 * Settings.CYCLE_TIME);
     }
 
-    @Override
-    public String getGuiTexture()
-    {
-        return Resources.Gui.Jei.ADV_PLANT.toString();
-    }
-
-    @Override
-    public void loadTransferRects()
-    {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(60, 15, 28, 18), JEIConfig.PLANT, new Object()));
-    }
-
-    @Override
-    public void loadUsageRecipes(String inputId, Object... ingredients)
-    {
-
-	if (ingredients.length == 0) return;
-
-        if (ingredients[0] instanceof ItemStack)
-        {
-            ItemStack ingredient = (ItemStack) ingredients[0];
-            if (PlantRegistry.getInstance().contains(ingredient))
-                arecipes.add(new CachedPlant(PlantRegistry.getInstance().getEntry(ingredient)));
-        } else super.loadUsageRecipes(inputId, ingredients);
-    }
-
-    @Override
-    public void loadCraftingRecipes(String outputId, Object... results)
-    {
-        if (outputId.equals(JEIConfig.PLANT))
-        {
-            for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
-                arecipes.add(new CachedPlant(entry));
-        } else super.loadCraftingRecipes(outputId, results);
-    }
 
     @Override
     public void loadCraftingRecipes(ItemStack result)
@@ -95,7 +60,7 @@ public class JEIAdvSeedCategory implements IRecipeCategory
     @Override
     public String getUid()
     {
-        return null;
+        return JEIConfig.SEED;
     }
 
     @Nonnull
@@ -109,7 +74,7 @@ public class JEIAdvSeedCategory implements IRecipeCategory
     @Override
     public IDrawable getBackground()
     {
-        return null;
+        return Resources.Gui.JeiBackground.ADV_PLANT;
     }
 
     @Override

@@ -1,17 +1,22 @@
-package jeresources.jei;
+package jeresources.jei.category;
 
 import jeresources.config.Settings;
 import jeresources.entries.DungeonEntry;
+import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.registry.DungeonRegistry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import javax.annotation.Nonnull;
 
 public class JEIDungeonCategory implements IRecipeCategory
 {
@@ -35,48 +40,6 @@ public class JEIDungeonCategory implements IRecipeCategory
     private static int lastRecipe = -1;
     private static boolean done;
 
-    @Override
-    public String getGuiTexture()
-    {
-        return Resources.Gui.Jei.DUNGEON.toString();
-    }
-
-    @Override
-    public String getRecipeName()
-    {
-        return TranslationHelper.translateToLocal("ner.dungeon.title");
-    }
-
-    @Override
-    public int recipiesPerPage()
-    {
-        return 1;
-    }
-
-    @Override
-    public void loadTransferRects()
-    {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(5, 5, 40, 40), JEIConfig.DUNGEON, new Object()));
-    }
-
-    @Override
-    public void loadCraftingRecipes(String outputId, Object... results)
-    {
-        if (outputId.equals(JEIConfig.DUNGEON))
-        {
-            for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons())
-                arecipes.add(new CachedDungeonChest(entry));
-            lastRecipe = -1;
-        } else super.loadCraftingRecipes(outputId, results);
-    }
-
-    @Override
-    public void loadCraftingRecipes(ItemStack result)
-    {
-        for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons(result))
-            arecipes.add(new CachedDungeonChest(entry, result));
-        lastRecipe = -1;
-    }
 
     @Override
     public void drawBackground(int recipe)
@@ -156,6 +119,45 @@ public class JEIDungeonCategory implements IRecipeCategory
         }
 
         cachedChest.cycleOutputs(cycleticks, recipe);
+    }
+
+    @Nonnull
+    @Override
+    public String getUid()
+    {
+        return JEIConfig.DUNGEON;
+    }
+
+    @Nonnull
+    @Override
+    public String getTitle()
+    {
+        return TranslationHelper.translateToLocal("ner.dungeon.title");
+    }
+
+    @Nonnull
+    @Override
+    public IDrawable getBackground()
+    {
+        return Resources.Gui.JeiBackground.DUNGEON;
+    }
+
+    @Override
+    public void drawExtras(Minecraft minecraft)
+    {
+
+    }
+
+    @Override
+    public void drawAnimations(Minecraft minecraft)
+    {
+
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    {
+
     }
 
     public class CachedDungeonChest extends TemplateRecipeHandler.CachedRecipe
