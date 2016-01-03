@@ -1,6 +1,5 @@
-package jeresources.jei.category;
+package jeresources.jei.mob;
 
-import jeresources.api.utils.DropItem;
 import jeresources.config.Settings;
 import jeresources.entries.MobEntry;
 import jeresources.gui.GuiContainerHook;
@@ -11,14 +10,17 @@ import jeresources.utils.Font;
 import jeresources.utils.MobHelper;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,56 +41,10 @@ public class JEIMobCategory implements IRecipeCategory
     private static int lastRecipe = -1;
 
     @Override
-    public String getGuiTexture()
-    {
-        return Resources.Gui.Jei.MOB.toString();
-    }
-
-    @Override
-    public String getRecipeName()
-    {
-        return TranslationHelper.translateToLocal("ner.mob.title");
-    }
-
-    @Override
-    public int recipiesPerPage()
-    {
-        return 1;
-    }
-
-    @Override
-    public void loadTransferRects()
-    {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(62, 72, 28, 18), JEIConfig.MOB, new Object()));
-    }
-
-    @Override
-    public void loadUsageRecipes(ItemStack ingredient)
-    {
-        if (ingredient.getItem() instanceof ItemSword)
-        {
-            for (MobEntry entry : MobRegistry.getInstance().getMobs())
-                arecipes.add(new CachedMob(entry));
-            lastRecipe = -1;
-        }
-    }
-
-    @Override
-    public void loadCraftingRecipes(String outputId, Object... results)
-    {
-        if (outputId.equals(JEIConfig.MOB))
-        {
-            for (MobEntry entry : MobRegistry.getInstance().getMobs())
-                arecipes.add(new CachedMob(entry));
-            lastRecipe = -1;
-        } else super.loadCraftingRecipes(outputId, results);
-    }
-
-    @Override
     public void loadCraftingRecipes(ItemStack result)
     {
         for (MobEntry entry : MobRegistry.getInstance().getMobsThatDropItem(result))
-            arecipes.add(new CachedMob(entry));
+            arecipes.add(new MobWrapper(entry));
         lastRecipe = -1;
     }
 
@@ -99,7 +55,7 @@ public class JEIMobCategory implements IRecipeCategory
         GuiDraw.changeTexture(this.getGuiTexture());
         GuiDraw.drawTexturedModalRect(0, 0, 5, 11, 166, 130);
 
-        EntityLivingBase entityLivingBase = ((CachedMob) arecipes.get(recipe)).getMob();
+        EntityLivingBase entityLivingBase = ((MobWrapper) arecipes.get(recipe)).getMob();
         boolean normal = entityLivingBase.width <= entityLivingBase.height;
         float scale = getScale(entityLivingBase);
         float offsetX = normal ? (scale > 34.0F ? (75 - scale/2) : (75 - scale)) : 72 ;
@@ -131,7 +87,7 @@ public class JEIMobCategory implements IRecipeCategory
     @Override
     public void drawExtras(int recipe)
     {
-        CachedMob cachedMob = (CachedMob) arecipes.get(recipe);
+        MobWrapper cachedMob = (MobWrapper) arecipes.get(recipe);
 
         Font.normal.print(cachedMob.mob.getMobName(), 2, 2);
         Font.normal.print(TranslationHelper.translateToLocal("ner.mob.biome"), 2, 12);
@@ -158,7 +114,7 @@ public class JEIMobCategory implements IRecipeCategory
         currenttip = super.handleTooltip(gui, currenttip, recipe);
         if (isOnBiome(GuiDraw.getMousePosition(), gui, recipe))
         {
-            CachedMob cachedMob = (CachedMob) arecipes.get(recipe);
+            MobWrapper cachedMob = (MobWrapper) arecipes.get(recipe);
             Collections.addAll(currenttip, cachedMob.mob.getBiomes());
         }
         return currenttip;
@@ -169,7 +125,7 @@ public class JEIMobCategory implements IRecipeCategory
     {
         if (stack != null)
         {
-            toolTip.addAll(((CachedMob) arecipes.get(recipe)).getToolTip(stack));
+            toolTip.addAll(((MobWrapper) arecipes.get(recipe)).getToolTip(stack));
         }
         return toolTip;
     }
@@ -182,70 +138,43 @@ public class JEIMobCategory implements IRecipeCategory
         return 2 <= relMouse.x && relMouse.x < 165 && 12 <= relMouse.y && relMouse.y < 12 + 10;
     }
 
-    public class CachedMob extends TemplateRecipeHandler.CachedRecipe
+    @Nonnull
+    @Override
+    public String getUid()
     {
-        public MobEntry mob;
-        public int set, lastSet;
-        private long cycleAt;
-
-        public CachedMob(MobEntry mob)
-        {
-            this.mob = mob;
-            this.set = 0;
-            this.lastSet = (mob.getDrops().length / (Settings.ITEMS_PER_COLUMN + 1));
-            cycleAt = -1;
-        }
-
-        public EntityLivingBase getMob()
-        {
-            return this.mob.getEntity();
-        }
-
-        @Override
-        public PositionedStack getResult()
-        {
-            if (mob.getDrops().length == 0) return null;
-            return new PositionedStack(mob.getDrops()[set * Settings.ITEMS_PER_COLUMN].item, X_FIRST_ITEM, Y_FIRST_ITEM);
-        }
-
-        @Override
-        public List<PositionedStack> getOtherStacks()
-        {
-            List<PositionedStack> list = new ArrayList<PositionedStack>();
-            int y = Y_FIRST_ITEM;
-            for (int i = set * Settings.ITEMS_PER_COLUMN; i < set * Settings.ITEMS_PER_COLUMN + Settings.ITEMS_PER_COLUMN; i++)
-            {
-                if (i >= mob.getDrops().length) break;
-                list.add(new PositionedStack(mob.getDrops()[i].item, X_FIRST_ITEM, y));
-                y += SPACING_Y;
-            }
-            if (list.size() > 0) list.remove(0);
-            return list;
-        }
-
-        public void cycleOutputs(long tick, int recipe)
-        {
-            if (cycleAt == -1 || recipe != lastRecipe)
-            {
-                lastRecipe = recipe;
-                cycleAt = tick + CYCLE_TIME;
-                return;
-            }
-
-            if (tick >= cycleAt)
-            {
-                if (++set > lastSet) set = 0;
-                cycleAt += CYCLE_TIME;
-            }
-        }
-
-        public List<String> getToolTip(ItemStack stack)
-        {
-            for (DropItem item : mob.getDrops())
-            {
-                if (item.item.isItemEqual(stack)) return item.conditionals;
-            }
-            return new ArrayList<String>();
-        }
+        return JEIConfig.MOB;
     }
+
+    @Nonnull
+    @Override
+    public String getTitle()
+    {
+        return TranslationHelper.translateToLocal("ner.mob.title");
+    }
+
+    @Nonnull
+    @Override
+    public IDrawable getBackground()
+    {
+        return Resources.Gui.JeiBackground.MOB;
+    }
+
+    @Override
+    public void drawExtras(Minecraft minecraft)
+    {
+
+    }
+
+    @Override
+    public void drawAnimations(Minecraft minecraft)
+    {
+
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    {
+
+    }
+
 }

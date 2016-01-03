@@ -2,7 +2,6 @@ package jeresources;
 
 import jeresources.config.ConfigHandler;
 import jeresources.config.Settings;
-import jeresources.network.MessageHandler;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.MetaData;
 import jeresources.reference.Reference;
@@ -44,11 +43,8 @@ public class JEResources
         LogHelper.info("Updating ModMetaData...");
         metadata = MetaData.init(metadata);
 
-        ReflectionHelper.isObf = ReflectionHelper.doesFieldExist(WeightedRandom.Item.class, "field_76292_a");
+        ReflectionHelper.isObf = !ReflectionHelper.doesFieldExist(WeightedRandom.Item.class, "itemWeight");
         LogHelper.debug("Minecraft is " + (ReflectionHelper.isObf ? "obf" : "deObf"));
-
-        LogHelper.info("Registering Network Messages...");
-        MessageHandler.init();
         
         LogHelper.info("Registering Events...");
         PROXY.registerEvents();

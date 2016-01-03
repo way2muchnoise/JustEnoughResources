@@ -29,7 +29,7 @@ public class WeightedRandomChestContentHelper
 
     private static float getAverageChance(WeightedRandomChestContent chestContent)
     {
-        return (float) (chestContent.theMaximumChanceToGenerateItem + chestContent.theMinimumChanceToGenerateItem) / 2 * chestContent.itemWeight;
+        return (float) (chestContent.maxStackSize + chestContent.minStackSize) / 2 * chestContent.itemWeight;
     }
 
     private static WeightedRandomChestContent[] merge(WeightedRandomChestContent[] left, WeightedRandomChestContent[] right)

@@ -1,9 +1,12 @@
 package jeresources.jei;
 
-import jeresources.jei.category.*;
+import jeresources.jei.plant.JEIPlantCategory;
+import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
+import jeresources.registry.PlantRegistry;
 import mezz.jei.api.*;
 
+@JEIPlugin
 public class JEIConfig implements IModPlugin
 {
     public static final String MOB = Reference.ID + ".mob";
@@ -15,7 +18,7 @@ public class JEIConfig implements IModPlugin
     @Override
     public boolean isModLoaded()
     {
-        return false;
+        return true;
     }
 
     @Override
@@ -33,13 +36,9 @@ public class JEIConfig implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
-        JEIEnchantmentCategory JEIEnchantmentCategory = new JEIEnchantmentCategory();
-        JEIMobCategory JEIMobCategory = new JEIMobCategory();
-        JEIOreCategory JEIOreCategory = new JEIOreCategory();
-        JEIDungeonCategory JEIDungeonCategory = new JEIDungeonCategory();
-        JEIPlantCategory JEIPlantCategory = new JEIPlantCategory();
-        JEIAdvSeedCategory JEIAdvSeedCategory = new JEIAdvSeedCategory();
-        registry.addRecipeCategories(JEIEnchantmentCategory, JEIMobCategory, JEIOreCategory, JEIDungeonCategory, JEIPlantCategory, JEIAdvSeedCategory);
+        registry.addRecipeHandlers(new PlantHandler());
+        registry.addRecipeCategories(new JEIPlantCategory());
+        registry.addRecipes(PlantRegistry.getInstance().getAllPlants());
     }
 
     @Override

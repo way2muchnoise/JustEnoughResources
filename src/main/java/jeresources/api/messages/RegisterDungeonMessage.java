@@ -29,7 +29,7 @@ public class RegisterDungeonMessage extends RegistryMessage
         for (WeightedRandomChestContent chestItem : chestDrops)
             totalWeight += chestItem.itemWeight;
         for (WeightedRandomChestContent chestItem : WeightedRandomChestContentHelper.sort(chestDrops.toArray(new WeightedRandomChestContent[chestDrops.size()])))
-            this.chestDrops.put(chestItem.theItemId, (float) (chestItem.theMaximumChanceToGenerateItem + chestItem.theMinimumChanceToGenerateItem) / 2 * (float) chestItem.itemWeight / totalWeight);
+            this.chestDrops.put(chestItem.theItemId, (float) (chestItem.maxStackSize + chestItem.minStackSize) / 2 * (float) chestItem.itemWeight / totalWeight);
     }
 
     public RegisterDungeonMessage(String name, int maxStacks, Map<ItemStack,Float> chestDrops)

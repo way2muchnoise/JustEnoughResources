@@ -1,4 +1,4 @@
-package jeresources.jei.category;
+package jeresources.jei.enchantment;
 
 import jeresources.config.Settings;
 import jeresources.entries.EnchantmentEntry;
@@ -9,9 +9,6 @@ import jeresources.utils.TranslationHelper;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class JEIEnchantmentCategory implements IRecipeCategory
 {
@@ -55,13 +52,13 @@ public class JEIEnchantmentCategory implements IRecipeCategory
     public void loadUsageRecipes(ItemStack ingredient)
     {
         if (EnchantmentRegistry.getInstance().getEnchantments(ingredient).size() > 0)
-            arecipes.add(new CachedEnchantment(ingredient));
+            arecipes.add(new EnchantmentWrapper(ingredient));
     }
 
     @Override
     public void drawExtras(int recipe)
     {
-        CachedEnchantment cachedEnchantment = (CachedEnchantment) arecipes.get(recipe);
+        EnchantmentWrapper cachedEnchantment = (EnchantmentWrapper) arecipes.get(recipe);
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : cachedEnchantment.getEnchantments())
         {
@@ -77,46 +74,4 @@ public class JEIEnchantmentCategory implements IRecipeCategory
         cachedEnchantment.cycleOutput(cycleticks);
     }
 
-    public class CachedEnchantment extends TemplateRecipeHandler.CachedRecipe
-    {
-
-        private ItemStack itemStack;
-        private List<EnchantmentEntry> enchantments;
-        public int set, lastSet;
-        private long cycleAt;
-
-        public CachedEnchantment(ItemStack itemStack)
-        {
-            this.itemStack = itemStack;
-            this.enchantments = new LinkedList<EnchantmentEntry>(EnchantmentRegistry.getInstance().getEnchantments(itemStack));
-            this.set = 0;
-            this.lastSet = this.enchantments.size() / (ENTRYS_PER_PAGE + 1);
-            this.cycleAt = -1;
-        }
-
-        @Override
-        public PositionedStack getResult()
-        {
-            return new PositionedStack(this.itemStack, ITEM_X, ITEM_Y);
-        }
-
-        public List<EnchantmentEntry> getEnchantments()
-        {
-            int last = set * ENTRYS_PER_PAGE + ENTRYS_PER_PAGE;
-            if (last >= this.enchantments.size()) last = this.enchantments.size() - 1;
-            return this.enchantments.subList(set * ENTRYS_PER_PAGE, last);
-        }
-
-        public void cycleOutput(long tick)
-        {
-            if (cycleAt == -1)
-                cycleAt = tick + CYCLE_TIME;
-
-            if (tick >= cycleAt)
-            {
-                if (++set > lastSet) set = 0;
-                cycleAt += CYCLE_TIME;
-            }
-        }
-    }
 }

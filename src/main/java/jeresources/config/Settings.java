@@ -1,6 +1,5 @@
 package jeresources.config;
 
-import jeresources.jei.category.*;
 import net.minecraftforge.fml.relauncher.Side;
 import jeresources.registry.EnchantmentRegistry;
 
@@ -22,11 +21,11 @@ public final class Settings
     {
         if (side == Side.CLIENT)
         {
-            JEIDungeonCategory.reloadSettings();
+            /*JEIDungeonCategory.reloadSettings();
             JEIMobCategory.reloadSettings();
             JEIOreCategory.reloadSettings();
             JEIEnchantmentCategory.reloadSettings();
-            JEIAdvSeedCategory.reloadSettings();
+            JEIAdvSeedCategory.reloadSettings();*/
         }
         if (gameLoaded) EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
     }

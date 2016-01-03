@@ -52,6 +52,14 @@ public class PlantEntry
         return new ArrayList<PlantDrop>(this.drops.values());
     }
 
+    public List<ItemStack> getDropItemStacks()
+    {
+        List<ItemStack> list = new ArrayList<>();
+        for (PlantDrop drop : getDrops())
+            list.add(drop.getDrop());
+        return list;
+    }
+
     public PlantDrop getDrop(ItemStack itemStack)
     {
         return this.drops.get(MapKeys.getKey(itemStack));

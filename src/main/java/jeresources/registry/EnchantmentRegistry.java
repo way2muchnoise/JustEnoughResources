@@ -4,6 +4,7 @@ import jeresources.entries.EnchantmentEntry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -23,7 +24,7 @@ public class EnchantmentRegistry
 
     public EnchantmentRegistry()
     {
-        for (Enchantment enchantment : Enchantment.enchantmentsList)
+        for (Enchantment enchantment : getEnchants())
             if (enchantment != null) enchantments.add(new EnchantmentEntry(enchantment));
     }
 
@@ -52,7 +53,7 @@ public class EnchantmentRegistry
 
     private void excludeFormRegistry(String sEnchantment)
     {
-        for (Enchantment enchantment : Enchantment.enchantmentsList)
+        for (Enchantment enchantment : getEnchants())
             if (enchantment != null && enchantment.getName().toLowerCase().contains(sEnchantment.toLowerCase())) excludeFormRegistry(enchantment);
     }
 
@@ -65,5 +66,10 @@ public class EnchantmentRegistry
     public void clear()
     {
         instance = new EnchantmentRegistry();
+    }
+
+    private static Enchantment[] getEnchants()
+    {
+        return ReflectionHelper.getPrivateValue(Enchantment.class, null, "field_180311_a" ,"enchantmentsList");
     }
 }

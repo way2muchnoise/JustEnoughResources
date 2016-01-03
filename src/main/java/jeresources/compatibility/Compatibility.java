@@ -19,7 +19,7 @@ public class Compatibility
             mod.initialise();
         }
 
-        if (ModList.denseores.isLoaded())
+        /*if (ModList.denseores.isLoaded())
         {
             for (String oreDictEntry : OreDictionary.getOreNames())
             {
@@ -30,7 +30,7 @@ public class Compatibility
                     OreRegistry.addDrops(new ModifyOreMessage(ore, denseOre));
                 }
             }
-        }
+        }*/
 
         MessageRegistry.processMessages();
         Settings.initedCompat = true;

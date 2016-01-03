@@ -1,9 +1,8 @@
-package jeresources.jei.category;
+package jeresources.jei.ore;
 
 import jeresources.api.utils.ColorHelper;
 import jeresources.api.utils.conditionals.Conditional;
 import jeresources.config.Settings;
-import jeresources.entries.OreMatchEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.utils.Font;
@@ -39,36 +38,7 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public void drawExtras(int recipe)
     {
-        RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING, ColorHelper.GRAY);
-        RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING, Y_OFFSPRING - Y_AXIS_SIZE, ColorHelper.GRAY);
-        CachedOre cachedOre = (CachedOre) arecipes.get(recipe);
-        float[] array = cachedOre.oreMatchEntry.getChances();
-        double max = 0;
-        for (double d : array)
-            if (d > max) max = d;
-        double xPrev = X_OFFSPRING;
-        double yPrev = Y_OFFSPRING;
-        double space = X_AXIS_SIZE / ((array.length - 1) * 1D);
-        for (int i = 0; i < array.length; i++)
-        {
-            double value = array[i];
-            double y = Y_OFFSPRING - ((value / max) * Y_AXIS_SIZE);
-            if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
-            {
-                double x = xPrev + space;
-                RenderHelper.drawLine(xPrev, yPrev, x, y, cachedOre.getLineColor());
-                xPrev = x;
-            }
-            yPrev = y;
-        }
 
-        Font.small.print("0%", X_OFFSPRING - 10, Y_OFFSPRING - 7);
-        Font.small.print(String.format("%.2f", max * 100) + "%", X_OFFSPRING - 20, Y_OFFSPRING - Y_AXIS_SIZE);
-        int minY = cachedOre.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE;
-        Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
-        int maxY = cachedOre.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
-        Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
-        Font.small.print(TranslationHelper.translateToLocal("ner.ore.bestY") + ": " + cachedOre.oreMatchEntry.getBestY(), X_ITEM - 2, Y_ITEM + 20);
     }
 
     @Override
@@ -85,7 +55,7 @@ public class JEIOreCategory implements IRecipeCategory
             if (relMouse.x > X_OFFSPRING && relMouse.x < X_OFFSPRING + X_AXIS_SIZE &&
                 relMouse.y > Y_OFFSPRING - Y_AXIS_SIZE && relMouse.y < Y_OFFSPRING)
             {
-                CachedOre cachedOre = (CachedOre) arecipes.get(recipe);
+                OreWrapper cachedOre = (OreWrapper) arecipes.get(recipe);
                 float[] chances = cachedOre.oreMatchEntry.getChances();
                 double space = X_AXIS_SIZE / (chances.length * 1D);
                 // Calculate the hovered over y value
@@ -101,7 +71,7 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe)
     {
-        CachedOre cachedOre = (CachedOre) arecipes.get(recipe);
+        OreWrapper cachedOre = (OreWrapper) arecipes.get(recipe);
         if (stack != null && cachedOre.contains(stack))
         {
             if (cachedOre.oreMatchEntry.isSilkTouchNeeded(stack))
@@ -136,7 +106,36 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public void drawExtras(Minecraft minecraft)
     {
+        RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING, ColorHelper.GRAY);
+        RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING, Y_OFFSPRING - Y_AXIS_SIZE, ColorHelper.GRAY);
+        OreWrapper cachedOre = (OreWrapper) arecipes.get(recipe);
+        float[] array = cachedOre.oreMatchEntry.getChances();
+        double max = 0;
+        for (double d : array)
+            if (d > max) max = d;
+        double xPrev = X_OFFSPRING;
+        double yPrev = Y_OFFSPRING;
+        double space = X_AXIS_SIZE / ((array.length - 1) * 1D);
+        for (int i = 0; i < array.length; i++)
+        {
+            double value = array[i];
+            double y = Y_OFFSPRING - ((value / max) * Y_AXIS_SIZE);
+            if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
+            {
+                double x = xPrev + space;
+                RenderHelper.drawLine(xPrev, yPrev, x, y, cachedOre.getLineColor());
+                xPrev = x;
+            }
+            yPrev = y;
+        }
 
+        Font.small.print("0%", X_OFFSPRING - 10, Y_OFFSPRING - 7);
+        Font.small.print(String.format("%.2f", max * 100) + "%", X_OFFSPRING - 20, Y_OFFSPRING - Y_AXIS_SIZE);
+        int minY = cachedOre.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE;
+        Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
+        int maxY = cachedOre.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
+        Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
+        Font.small.print(TranslationHelper.translateToLocal("ner.ore.bestY") + ": " + cachedOre.oreMatchEntry.getBestY(), X_ITEM - 2, Y_ITEM + 20);
     }
 
     @Override
@@ -151,39 +150,4 @@ public class JEIOreCategory implements IRecipeCategory
 
     }
 
-    public class CachedOre extends TemplateRecipeHandler.CachedRecipe
-    {
-        private OreMatchEntry oreMatchEntry;
-        private List<ItemStack> oresAndDrops;
-
-        public CachedOre(OreMatchEntry oreMatchEntry)
-        {
-            this.oreMatchEntry = oreMatchEntry;
-            this.oresAndDrops = oreMatchEntry.getOresAndDrops();
-        }
-
-        @Override
-        public PositionedStack getResult()
-        {
-            int index = (cycleticks / CYCLE_TIME) % this.oresAndDrops.size();
-            return new PositionedStack(this.oresAndDrops.get(index), X_ITEM, Y_ITEM);
-        }
-
-        public int getLineColor()
-        {
-            return this.oreMatchEntry.getColour();
-        }
-
-        public List<String> getRestrictions()
-        {
-            return this.oreMatchEntry.getRestrictions();
-        }
-
-        public boolean contains(ItemStack itemStack)
-        {
-            for (ItemStack listStack : this.oresAndDrops)
-                if (listStack.isItemEqual(itemStack)) return true;
-            return false;
-        }
-    }
 }

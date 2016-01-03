@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    compile "mezz.jei:jei_${version_minecraft}:${version_jei}"
+    deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
@@ -66,6 +66,9 @@ version = "${version_minecraft}-${version_major}.${version_minor}.${version_revi
 
 jar {
     from "build/sources/main"
+    manifest {
+        attributes 'FMLAT': 'jeresources_at.cfg'
+    }
     destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
 

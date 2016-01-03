@@ -1,9 +1,13 @@
 package jeresources.utils;
 
+import jeresources.compatibility.CompatBase;
+import jeresources.compatibility.minecraft.MinecraftCompat;
+import net.minecraftforge.fml.common.Loader;
+
 public enum ModList
 {
     minecraft(MinecraftCompat.class),
-    cofhcore(Names.COFHCORE, CoFHCompat.class),
+    /*cofhcore(Names.COFHCORE, CoFHCompat.class),
     metallurgy(Names.METALLURGY, MetallurgyCompat.class),
     netherores(Names.NETHERORES, NetherOresCompat.class),
     bigreactors(Names.BIGREACTORS, BigReactorsCompat.class),
@@ -18,7 +22,7 @@ public enum ModList
     ic2(Names.IC2, IC2Compat.class),
     mobproperties(Names.MOBPROPERTIES, MobPropertiesCompat.class),
     reliquary(Names.RELIQUARY, ReliquaryCompat.class),
-    bluepower(Names.BLUEPOWER, BluePowerCompat.class);
+    bluepower(Names.BLUEPOWER, BluePowerCompat.class)*/;
 
     private String name;
     private Class compat;

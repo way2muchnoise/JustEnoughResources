@@ -1,7 +1,5 @@
-package jeresources.jei.category;
+package jeresources.jei.plant;
 
-import jeresources.api.utils.PlantDrop;
-import jeresources.entries.PlantEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.utils.TranslationHelper;
@@ -19,6 +17,7 @@ public class JEIPlantCategory implements IRecipeCategory
     private static final int GRASS_Y = 5;
     private static final int OUTPUT_X = 2;
     private static final int OUTPUT_SCALE = 20;
+    private static final int OUTPUT_Y = 51;
 
     @Nonnull
     @Override
@@ -56,41 +55,26 @@ public class JEIPlantCategory implements IRecipeCategory
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
-
-    }
-
-    public class CachedPlant extends TemplateRecipeHandler.CachedRecipe
-    {
-        private PlantEntry plantEntry;
-
-        public CachedPlant(PlantEntry entry)
+        recipeLayout.getItemStacks().init(0, true, GRASS_X, GRASS_Y);
+        int xOffset = 0;
+        int yOffset = 0;
+        for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
         {
-            plantEntry = entry;
-        }
-
-        @Override
-        public PositionedStack getResult()
-        {
-            return new PositionedStack(plantEntry.getPlant(), GRASS_X, GRASS_Y);
-        }
-
-        @Override
-        public List<PositionedStack> getOtherStacks()
-        {
-            List<PositionedStack> list = new ArrayList<PositionedStack>();
-            int xOffset = 0;
-            int yOffset = 0;
-            for (PlantDrop plantDrop : plantEntry.getDrops())
+            recipeLayout.getItemStacks().init(i+1, false, OUTPUT_X + xOffset, OUTPUT_Y + yOffset);
+            xOffset += OUTPUT_SCALE;
+            if (xOffset > 147)
             {
-                list.add(new PositionedStack(plantDrop.getDrop(), OUTPUT_X + xOffset, OUTPUT_Y + yOffset));
-                xOffset += OUTPUT_SCALE;
-                if (xOffset > 147)
-                {
-                    xOffset = 0;
-                    yOffset += OUTPUT_SCALE;
-                }
+                xOffset = 0;
+                yOffset += OUTPUT_SCALE;
             }
-            return list;
+        }
+
+        if (recipeWrapper instanceof PlantWrapper)
+        {
+            PlantWrapper plantWrapper = (PlantWrapper)recipeWrapper;
+            recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
+            recipeLayout.getItemStacks().setFromRecipe(1, plantWrapper.getOutputs());
         }
     }
+
 }
