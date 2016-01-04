@@ -1,8 +1,11 @@
 package jeresources.jei;
 
+import jeresources.jei.ore.JEIOreCategory;
+import jeresources.jei.ore.OreHandler;
 import jeresources.jei.plant.JEIPlantCategory;
 import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
+import jeresources.registry.OreRegistry;
 import jeresources.registry.PlantRegistry;
 import mezz.jei.api.*;
 
@@ -36,14 +39,25 @@ public class JEIConfig implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
-        registry.addRecipeHandlers(new PlantHandler());
-        registry.addRecipeCategories(new JEIPlantCategory());
-        registry.addRecipes(PlantRegistry.getInstance().getAllPlants());
+        registry.addRecipeHandlers(new PlantHandler(), new OreHandler());
+        registry.addRecipeCategories(new JEIPlantCategory(), new JEIOreCategory());
     }
 
     @Override
     public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry)
     {
+        JEIConfig.recipeRegistry = recipeRegistry;
+    }
 
+    private static IRecipeRegistry recipeRegistry;
+
+    public static boolean isLoaded()
+    {
+        return recipeRegistry != null;
+    }
+
+    public static IRecipeRegistry getRecipeRegistry()
+    {
+        return recipeRegistry;
     }
 }

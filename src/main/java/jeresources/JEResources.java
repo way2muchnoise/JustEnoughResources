@@ -10,7 +10,7 @@ import jeresources.registry.MessageRegistry;
 import jeresources.utils.LogHelper;
 import jeresources.utils.ReflectionHelper;
 import net.minecraft.util.WeightedRandom;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -22,8 +22,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "after:JEI;")
 public class JEResources
 {
-
-    @Mod.Instance(value = Reference.ID)
+    @Mod.Instance(Reference.ID)
     public static JEResources INSTANCE;
 
     @Mod.Metadata(Reference.ID)
@@ -38,7 +37,7 @@ public class JEResources
         LogHelper.info("Loading configs..");
         Settings.side = event.getSide();
         ConfigHandler.init(event.getSuggestedConfigurationFile());
-        FMLCommonHandler.instance().bus().register(new ConfigHandler());
+        MinecraftForge.EVENT_BUS.register(new ConfigHandler());
 
         LogHelper.info("Updating ModMetaData...");
         metadata = MetaData.init(metadata);

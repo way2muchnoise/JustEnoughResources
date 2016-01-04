@@ -86,5 +86,6 @@ public enum ModList
         public static final String MOBPROPERTIES = "MobProperties";
         public static final String RELIQUARY = "xreliquary";
         public static final String BLUEPOWER = "bluepower";
+        public static final String JEI = "JEI";
     }
 }

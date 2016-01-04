@@ -1,14 +1,12 @@
 package jeresources.proxy;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import jeresources.utils.NetworkEventHelper;
 import net.minecraft.world.World;
 
-
 public class ClientProxy extends CommonProxy
 {
-
     @Override
     public World getClientWorld()
     {
@@ -19,6 +17,6 @@ public class ClientProxy extends CommonProxy
     public void registerEvents()
     {
         super.registerEvents();
-        FMLCommonHandler.instance().bus().register(new NetworkEventHelper());
+        MinecraftForge.EVENT_BUS.register(new NetworkEventHelper());
     }
 }

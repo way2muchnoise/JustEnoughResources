@@ -21,12 +21,12 @@ import java.util.List;
 
 public class JEIOreCategory implements IRecipeCategory
 {
-    private static final int X_OFFSPRING = 59;
-    private static final int Y_OFFSPRING = 52;
-    private static final int X_AXIS_SIZE = 90;
-    private static final int Y_AXIS_SIZE = 40;
-    private static final int X_ITEM = 8;
-    private static final int Y_ITEM = 6;
+    public static final int X_OFFSPRING = 59;
+    public static final int Y_OFFSPRING = 52;
+    public static final int X_AXIS_SIZE = 90;
+    public static final int Y_AXIS_SIZE = 40;
+    public static final int X_ITEM = 7;
+    public static final int Y_ITEM = 5;
 
     private static int CYCLE_TIME = (int) (20 * Settings.CYCLE_TIME);
 
@@ -35,13 +35,7 @@ public class JEIOreCategory implements IRecipeCategory
         CYCLE_TIME = (int) (20 * Settings.CYCLE_TIME);
     }
 
-    @Override
-    public void drawExtras(int recipe)
-    {
-
-    }
-
-    @Override
+    /*
     public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe)
     {
         currenttip = super.handleTooltip(gui, currenttip, recipe);
@@ -68,7 +62,6 @@ public class JEIOreCategory implements IRecipeCategory
         return currenttip;
     }
 
-    @Override
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipe)
     {
         OreWrapper cachedOre = (OreWrapper) arecipes.get(recipe);
@@ -81,6 +74,7 @@ public class JEIOreCategory implements IRecipeCategory
         }
         return currenttip;
     }
+    */
 
     @Nonnull
     @Override
@@ -93,7 +87,7 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public String getTitle()
     {
-        return TranslationHelper.translateToLocal("ner.ore.title");
+        return TranslationHelper.translateToLocal("jer.ore.title");
     }
 
     @Nonnull
@@ -108,34 +102,6 @@ public class JEIOreCategory implements IRecipeCategory
     {
         RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING, ColorHelper.GRAY);
         RenderHelper.drawArrow(X_OFFSPRING, Y_OFFSPRING, X_OFFSPRING, Y_OFFSPRING - Y_AXIS_SIZE, ColorHelper.GRAY);
-        OreWrapper cachedOre = (OreWrapper) arecipes.get(recipe);
-        float[] array = cachedOre.oreMatchEntry.getChances();
-        double max = 0;
-        for (double d : array)
-            if (d > max) max = d;
-        double xPrev = X_OFFSPRING;
-        double yPrev = Y_OFFSPRING;
-        double space = X_AXIS_SIZE / ((array.length - 1) * 1D);
-        for (int i = 0; i < array.length; i++)
-        {
-            double value = array[i];
-            double y = Y_OFFSPRING - ((value / max) * Y_AXIS_SIZE);
-            if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
-            {
-                double x = xPrev + space;
-                RenderHelper.drawLine(xPrev, yPrev, x, y, cachedOre.getLineColor());
-                xPrev = x;
-            }
-            yPrev = y;
-        }
-
-        Font.small.print("0%", X_OFFSPRING - 10, Y_OFFSPRING - 7);
-        Font.small.print(String.format("%.2f", max * 100) + "%", X_OFFSPRING - 20, Y_OFFSPRING - Y_AXIS_SIZE);
-        int minY = cachedOre.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE;
-        Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
-        int maxY = cachedOre.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
-        Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
-        Font.small.print(TranslationHelper.translateToLocal("ner.ore.bestY") + ": " + cachedOre.oreMatchEntry.getBestY(), X_ITEM - 2, Y_ITEM + 20);
     }
 
     @Override
@@ -147,7 +113,13 @@ public class JEIOreCategory implements IRecipeCategory
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
+        recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
 
+        if (recipeWrapper instanceof OreWrapper)
+        {
+            OreWrapper oreWrapper = (OreWrapper)recipeWrapper;
+            recipeLayout.getItemStacks().set(0, oreWrapper.getOresAndDrops());
+        }
     }
 
 }

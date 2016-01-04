@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 
 public class JEIPlantCategory implements IRecipeCategory
 {
-    private static final int GRASS_X = 75;
-    private static final int GRASS_Y = 5;
+    private static final int GRASS_X = 74;
+    private static final int GRASS_Y = 4;
     private static final int OUTPUT_X = 2;
     private static final int OUTPUT_SCALE = 20;
     private static final int OUTPUT_Y = 51;
@@ -30,7 +30,7 @@ public class JEIPlantCategory implements IRecipeCategory
     @Override
     public String getTitle()
     {
-        return TranslationHelper.translateToLocal("ner.plant.title");
+        return TranslationHelper.translateToLocal("jer.plant.title");
     }
 
     @Nonnull
