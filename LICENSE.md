@@ -1,4 +1,4 @@
-This computer software code ("the code") is ©2014 hilburn ("the author") all rights reserved, and is licensed for use and redistribution under the “Don’t Be a Jerk” non-commercial care-free license.
+This computer software code ("the code") is ©2016 way2muchnoise ("the author") all rights reserved, and is licensed for use and redistribution under the “Don’t Be a Jerk” non-commercial care-free license.
 
 ###Scope
 This means that you’re free to pretty much do what you like with the the code or compiled binaries, including but not limited to:
