@@ -1,9 +1,9 @@
 package jeresources.utils;
 
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import jeresources.api.utils.restrictions.BlockRestriction;
 import jeresources.api.utils.restrictions.DimensionRegistry;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldEventHelper
 {

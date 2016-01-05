@@ -12,7 +12,6 @@ public final class Textures
             public static final String ORE = GUI_DIR + "JEIOreGUI.png";
             public static final String DUNGEON = GUI_DIR + "JEIDungeonGUI.png";
             public static final String PLANT = GUI_DIR + "JEIPlantGUI.png";
-            public static final String ADV_PLANT = GUI_DIR + "JEIAdvPlantGUI.png";
             public static final String ENCHANTMENT = GUI_DIR + "JEIEnchantmentGUI.png";
         }
 

@@ -1,5 +1,6 @@
 package jeresources.jei.ore;
 
+import jeresources.api.utils.conditionals.Conditional;
 import jeresources.config.Settings;
 import jeresources.entries.OreMatchEntry;
 import jeresources.utils.Font;
@@ -11,10 +12,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OreWrapper implements IRecipeWrapper
 {
+    protected static final int X_OFFSPRING = 59;
+    protected static final int Y_OFFSPRING = 52;
+    protected static final int X_AXIS_SIZE = 90;
+    protected static final int Y_AXIS_SIZE = 40;
+    protected static final int X_ITEM = 7;
+    protected static final int Y_ITEM = 5;
+
     private OreMatchEntry oreMatchEntry;
     private List<ItemStack> oresAndDrops;
 
@@ -77,13 +87,13 @@ public class OreWrapper implements IRecipeWrapper
         double max = 0;
         for (double d : array)
             if (d > max) max = d;
-        double xPrev = JEIOreCategory.X_OFFSPRING;
-        double yPrev = JEIOreCategory.Y_OFFSPRING;
-        double space = JEIOreCategory.X_AXIS_SIZE / ((array.length - 1) * 1D);
+        double xPrev = X_OFFSPRING;
+        double yPrev = Y_OFFSPRING;
+        double space = X_AXIS_SIZE / ((array.length - 1) * 1D);
         for (int i = 0; i < array.length; i++)
         {
             double value = array[i];
-            double y = JEIOreCategory.Y_OFFSPRING - ((value / max) * JEIOreCategory.Y_AXIS_SIZE);
+            double y = Y_OFFSPRING - ((value / max) * Y_AXIS_SIZE);
             if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
             {
                 double x = xPrev + space;
@@ -93,18 +103,65 @@ public class OreWrapper implements IRecipeWrapper
             yPrev = y;
         }
 
-        Font.small.print("0%", JEIOreCategory.X_OFFSPRING - 10, JEIOreCategory.Y_OFFSPRING - 7);
-        Font.small.print(String.format("%.2f", max * 100) + "%", JEIOreCategory.X_OFFSPRING - 20, JEIOreCategory.Y_OFFSPRING - JEIOreCategory.Y_AXIS_SIZE);
+        Font.small.print("0%", X_OFFSPRING - 10, Y_OFFSPRING - 7);
+        Font.small.print(String.format("%.2f", max * 100) + "%", X_OFFSPRING - 20, Y_OFFSPRING - Y_AXIS_SIZE);
         int minY = this.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE;
-        Font.small.print(minY < 0 ? 0 : minY, JEIOreCategory.X_OFFSPRING - 3, JEIOreCategory.Y_OFFSPRING + 2);
+        Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
         int maxY = this.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
-        Font.small.print(maxY > 255 ? 255 : maxY, JEIOreCategory.X_OFFSPRING + JEIOreCategory.X_AXIS_SIZE, JEIOreCategory.Y_OFFSPRING + 2);
-        Font.small.print(TranslationHelper.translateToLocal("jer.ore.bestY") + ": " + this.oreMatchEntry.getBestY(), JEIOreCategory.X_ITEM - 2, JEIOreCategory.Y_ITEM + 20);
+        Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
+        Font.small.print(TranslationHelper.translateToLocal("jer.ore.bestY") + ": " + this.oreMatchEntry.getBestY(), X_ITEM - 2, Y_ITEM + 20);
     }
 
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
 
+    }
+
+    @Nullable
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY)
+    {
+        List<String> tooltip = null;
+
+        if (onGraph(mouseX, mouseY))
+            tooltip = getLineTooltip(mouseX, new LinkedList<String>());
+        else if (false)
+            tooltip = getItemStackTooltip(null, new LinkedList<String>());
+
+        return tooltip;
+    }
+
+    private List<String> getItemStackTooltip(ItemStack itemStack, List<String> tooltip)
+    {
+        if (itemStack != null)
+        {
+            if (this.oreMatchEntry.isSilkTouchNeeded(itemStack))
+                tooltip.add(Conditional.silkTouch.toString());
+            tooltip.addAll(this.getRestrictions());
+        }
+        return tooltip;
+    }
+
+    private List<String> getLineTooltip(int mouseX, List<String> tooltip)
+    {
+        float[] chances = this.oreMatchEntry.getChances();
+        double space = X_AXIS_SIZE / (chances.length * 1D);
+        // Calculate the hovered over y value
+        int index = (int) ((mouseX - X_OFFSPRING) / space);
+        int yValue = Math.max(0, index + this.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE + 1);
+        if (index >= 0 && index < chances.length)
+            tooltip.add("Y: " + yValue + String.format(" (%.2f%%)", chances[index] * 100));
+
+        return tooltip;
+    }
+
+    private boolean onGraph(int mouseX, int mouseY)
+    {
+        return
+                mouseX >= X_OFFSPRING - 1
+                && mouseX < X_OFFSPRING + X_AXIS_SIZE
+                && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
+                && mouseY < Y_OFFSPRING;
     }
 }

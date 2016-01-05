@@ -2,14 +2,12 @@ jer.config.itemsPerColumn.title=Items Per Column
 jer.config.itemsPerColumn.description=Changes the amount of items per column in the JEI dungeon and mob views
 jer.config.itemsPerRow.title=Items Per Row
 jer.config.itemsPerRow.description=Changes the amount of items per row in the JEI dungeon view
-jer.config.cycleTime.title=Cycle Time
-jer.config.cycleTime.description=Show duration before cycle in JEI views
 jer.config.extraRange.title=Extra range
 jer.config.extraRange.description=Changes the extra yLevels displayed on the graph in the JEI ore View
 jer.config.dimNames.title=Use Dimension Names
 jer.config.dimNames.description=Set use of Dimension names instead of numbers
-jer.config.echantsBlacklist.title=Enchants Blacklist
-jer.config.echantsBlacklist.description=Blacklist enchants from the JEI Enchants View
+jer.config.enchantsBlacklist.title=Enchants Blacklist
+jer.config.enchantsBlacklist.description=Blacklist enchants from the JEI Enchants View
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Page
@@ -53,9 +51,6 @@ jer.ore.dimensions=Valid Dimensions
 jer.mob.title=Mob Drops
 jer.mob.biome=Spawn Biomes: Hover mouse here
 jer.mob.exp=Experience Dropped
-
-#Advanced Plant View
-jer.advPlant.title=Advanced Plant Drops
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
 jer.magmaCream.text=Small and Large Magma Cubes

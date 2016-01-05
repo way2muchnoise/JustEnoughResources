@@ -1,9 +1,9 @@
 package jeresources.utils;
 
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import jeresources.JEResources;
 import jeresources.config.Settings;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 public class NetworkEventHelper
 {

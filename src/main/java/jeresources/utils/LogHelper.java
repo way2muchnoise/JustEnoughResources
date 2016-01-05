@@ -1,7 +1,7 @@
 package jeresources.utils;
 
-import net.minecraftforge.fml.common.FMLLog;
 import jeresources.reference.Reference;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 /**

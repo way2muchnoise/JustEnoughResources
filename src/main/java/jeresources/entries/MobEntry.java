@@ -61,6 +61,14 @@ public class MobEntry
         return drops.toArray(new DropItem[drops.size()]);
     }
 
+    public List<ItemStack> getDropsItemStacks()
+    {
+        List<ItemStack> drops = new ArrayList<>();
+        for (DropItem drop : this.drops)
+            drops.add(drop.item);
+        return drops;
+    }
+
     public String[] getBiomes()
     {
         return biomes.toArray(new String[biomes.size()]);

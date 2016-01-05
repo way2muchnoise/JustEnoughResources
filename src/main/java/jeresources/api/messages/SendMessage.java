@@ -1,9 +1,9 @@
 package jeresources.api.messages;
 
+import jeresources.api.messages.utils.MessageKeys;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.relauncher.Side;
-import jeresources.api.messages.utils.MessageKeys;
 
 import java.util.LinkedList;
 import java.util.List;

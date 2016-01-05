@@ -11,7 +11,7 @@ public class TranslationHelper
 
     public static String getLocalPageInfo(int page, int lastPage)
     {
-        return translateToLocal("ner.page") + " " + (page + 1) + " " + translateToLocal("ner.of") + " " + (lastPage + 1);
+        return translateToLocal("jer.page") + " " + (page + 1) + " " + translateToLocal("jer.of") + " " + (lastPage + 1);
     }
 
     public static boolean canTranslate(String key)

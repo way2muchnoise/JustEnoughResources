@@ -66,8 +66,8 @@ public class LightLevel
     @Override
     public String toString()
     {
-        String base = StatCollector.translateToLocal("ner.lightLevel");
-        if (lightLevel < 0) return base + ": " + StatCollector.translateToLocal("ner.any");;
+        String base = StatCollector.translateToLocal("jer.lightLevel");
+        if (lightLevel < 0) return base + ": " + StatCollector.translateToLocal("jer.any");
         return base + ": " + relative.toString() + " " + lightLevel;
     }
 

@@ -1,12 +1,8 @@
 package jeresources.compatibility;
 
-import jeresources.api.messages.ModifyOreMessage;
 import jeresources.config.Settings;
 import jeresources.registry.MessageRegistry;
-import jeresources.registry.OreRegistry;
 import jeresources.utils.ModList;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class Compatibility
 {

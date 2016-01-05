@@ -12,4 +12,9 @@ public class CollectionHelper
     {
         return Arrays.asList(itemStacks);
     }
+
+    public static List<String> create(String... strings)
+    {
+        return Arrays.asList(strings);
+    }
 }

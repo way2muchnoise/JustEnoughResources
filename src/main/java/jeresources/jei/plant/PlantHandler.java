@@ -33,6 +33,6 @@ public class PlantHandler implements IRecipeHandler<PlantEntry>
     @Override
     public boolean isRecipeValid(@Nonnull PlantEntry recipe)
     {
-        return recipe != null;
+        return true;
     }
 }

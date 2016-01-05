@@ -1,12 +1,16 @@
 package jeresources.jei;
 
-import jeresources.jei.ore.JEIOreCategory;
+import jeresources.jei.dungeon.DungeonCategory;
+import jeresources.jei.dungeon.DungeonHandler;
+import jeresources.jei.enchantment.EnchantmentCategory;
+import jeresources.jei.enchantment.EnchantmentHandler;
+import jeresources.jei.mob.MobCategory;
+import jeresources.jei.mob.MobHandler;
+import jeresources.jei.ore.OreCategory;
 import jeresources.jei.ore.OreHandler;
-import jeresources.jei.plant.JEIPlantCategory;
+import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
-import jeresources.registry.OreRegistry;
-import jeresources.registry.PlantRegistry;
 import mezz.jei.api.*;
 
 @JEIPlugin
@@ -16,13 +20,7 @@ public class JEIConfig implements IModPlugin
     public static final String DUNGEON = Reference.ID + ".dungeon";
     public static final String ORE = Reference.ID + ".ore";
     public static final String PLANT = Reference.ID + ".plant";
-    public static final String SEED = Reference.ID + ".seed";
-
-    @Override
-    public boolean isModLoaded()
-    {
-        return true;
-    }
+    public static final String ENCHANTMENT = Reference.ID + ".enchantment";
 
     @Override
     public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers)
@@ -33,14 +31,14 @@ public class JEIConfig implements IModPlugin
     @Override
     public void onItemRegistryAvailable(IItemRegistry itemRegistry)
     {
-
+        JEIConfig.itemRegistry = itemRegistry;
     }
 
     @Override
     public void register(IModRegistry registry)
     {
-        registry.addRecipeHandlers(new PlantHandler(), new OreHandler());
-        registry.addRecipeCategories(new JEIPlantCategory(), new JEIOreCategory());
+        registry.addRecipeHandlers(new PlantHandler(), new OreHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
+        registry.addRecipeCategories(new PlantCategory(), new OreCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
     }
 
     @Override
@@ -50,14 +48,15 @@ public class JEIConfig implements IModPlugin
     }
 
     private static IRecipeRegistry recipeRegistry;
-
-    public static boolean isLoaded()
-    {
-        return recipeRegistry != null;
-    }
+    private static IItemRegistry itemRegistry;
 
     public static IRecipeRegistry getRecipeRegistry()
     {
         return recipeRegistry;
+    }
+
+    public static IItemRegistry getItemRegistry()
+    {
+        return itemRegistry;
     }
 }

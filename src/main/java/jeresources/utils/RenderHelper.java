@@ -13,7 +13,10 @@ import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 public class RenderHelper
 {
@@ -150,5 +153,26 @@ public class RenderHelper
     private static RenderManager getRenderManager()
     {
         return Minecraft.getMinecraft().getRenderManager();
+    }
+
+    public static Dimension displaySize() {
+        Minecraft mc = Minecraft.getMinecraft();
+        ScaledResolution res = new ScaledResolution(mc);
+        return new Dimension(res.getScaledWidth(), res.getScaledHeight());
+    }
+
+    public static Dimension displayRes() {
+        Minecraft mc = Minecraft.getMinecraft();
+        return new Dimension(mc.displayWidth, mc.displayHeight);
+    }
+
+    public static Point getMousePosition(int eventX, int eventY) {
+        Dimension size = displaySize();
+        Dimension res = displayRes();
+        return new Point(eventX * size.width / res.width, size.height - eventY * size.height / res.height - 1);
+    }
+
+    public static Point getMousePosition() {
+        return getMousePosition(Mouse.getX(), Mouse.getY());
     }
 }

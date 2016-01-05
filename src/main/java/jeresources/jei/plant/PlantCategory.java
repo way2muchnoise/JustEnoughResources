@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 
-public class JEIPlantCategory implements IRecipeCategory
+public class PlantCategory implements IRecipeCategory
 {
     private static final int GRASS_X = 74;
     private static final int GRASS_Y = 4;
@@ -37,7 +37,7 @@ public class JEIPlantCategory implements IRecipeCategory
     @Override
     public IDrawable getBackground()
     {
-        return Resources.Gui.JeiBackground.PLANT;
+        return Resources.Gui.Jei.PLANT;
     }
 
     @Override
@@ -73,7 +73,8 @@ public class JEIPlantCategory implements IRecipeCategory
         {
             PlantWrapper plantWrapper = (PlantWrapper)recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
-            recipeLayout.getItemStacks().setFromRecipe(1, plantWrapper.getOutputs());
+            for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
+                recipeLayout.getItemStacks().setFromRecipe(i+1, plantWrapper.getOutputs());
         }
     }
 

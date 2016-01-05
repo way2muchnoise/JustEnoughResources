@@ -1,9 +1,9 @@
 package jeresources.proxy;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import jeresources.utils.NetworkEventHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class ClientProxy extends CommonProxy
 {

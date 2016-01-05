@@ -2,14 +2,12 @@ jer.config.itemsPerColumn.title=Кол-во предметов в столбце
 jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и мобов
 jer.config.itemsPerRow.title=Кол-во предметов в ряду
 jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
-jer.config.cycleTime.title=Время цикла
-jer.config.cycleTime.description=Показывать продолжительность цикла в JEI-просмотрах
 jer.config.extraRange.title=Доп. дальность
 jer.config.extraRange.description=Отображает дополнительные y-уровни на графике в JEI-просмотре руд
 jer.config.dimNames.title=Использовать имена измерений
 jer.config.dimNames.description=Меняет числовые измерения на именные
-jer.config.echantsBlacklist.title=Чёрный список для зачарований
-jer.config.echantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
+jer.config.enchantsBlacklist.title=Чёрный список для зачарований
+jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Страница
@@ -53,9 +51,6 @@ jer.ore.dimensions=Допустимые измерения
 jer.mob.title=Добыча мобов
 jer.mob.biome=Появляется в биомах: наведите курсор сюда
 jer.mob.exp=Даёт опыта
-
-#Advanced Plant View
-jer.advPlant.title=Продвинутые плоды растений
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
 jer.magmaCream.text=Из маленьких и больших лавовых кубов

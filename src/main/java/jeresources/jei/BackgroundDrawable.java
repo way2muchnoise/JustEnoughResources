@@ -21,11 +21,6 @@ public class BackgroundDrawable implements IDrawable
         this.height = height;
     }
 
-    public BackgroundDrawable(String resource)
-    {
-        this(resource, 166, 65);
-    }
-
     @Override
     public int getWidth()
     {

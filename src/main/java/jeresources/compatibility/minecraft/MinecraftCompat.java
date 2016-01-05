@@ -173,15 +173,15 @@ public class MinecraftCompat extends CompatBase
         registerMob(new MobEntry(new EntitySquid(world), LightLevel.any, new String[]{"In water"}, ink));
     }
 
+    @SuppressWarnings("unchecked")
     private void registerDungeonLoot()
     {
         HashMap<String, ChestGenHooks> dungeons = (HashMap<String, ChestGenHooks>) ReflectionHelper.getObject(ChestGenHooks.class, "chestInfo", null);
         ChestGenHooks bonusChest = ChestGenHooks.getInfo(ChestGenHooks.BONUS_CHEST);
-        for (ChestGenHooks chestGenHook : dungeons.values())
-        {
-            if (chestGenHook != bonusChest)
-                DungeonRegistry.getInstance().registerChestHook(chestGenHook);
-        }
+        if (dungeons != null)
+            for (ChestGenHooks chestGenHook : dungeons.values())
+                if (chestGenHook != bonusChest)
+                    DungeonRegistry.getInstance().registerChestHook(chestGenHook);
     }
 
     private void registerOres()
@@ -197,7 +197,7 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaPlants()
     {
-        // Potato
+        // Potato TODO: seems like you can't make ItemStacks of potato plant blocks anymore
         ItemStack potatoPlant = new ItemStack(Blocks.potatoes);
         PlantDrop potato = new PlantDrop(new ItemStack(Items.potato), 1, 4);
         PlantDrop poisonous = new PlantDrop(new ItemStack(Items.poisonous_potato), 0.02F);
@@ -207,10 +207,9 @@ public class MinecraftCompat extends CompatBase
         ItemStack carrotPlant = new ItemStack(Blocks.carrots);
         PlantDrop carrot = new PlantDrop(new ItemStack(Items.carrot), 1, 4);
         registerPlant(new PlantEntry(carrotPlant, carrot));
-        /* TODO: find correct stuff for these plants
         //Wheat
         ItemStack wheatPlant = new ItemStack(Blocks.wheat);
-        PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1.0F);
+        PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.wheat_seeds), 0, 3);
         registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
 
@@ -221,8 +220,7 @@ public class MinecraftCompat extends CompatBase
 
         //Pumpkin
         ItemStack pumpkinStem = new ItemStack(Blocks.pumpkin_stem);
-        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1.0F);
+        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1);
         registerPlant(new PlantEntry(pumpkinStem, pumpkin));
-        */
     }
 }

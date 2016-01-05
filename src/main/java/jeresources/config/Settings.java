@@ -1,13 +1,13 @@
 package jeresources.config;
 
-import net.minecraftforge.fml.relauncher.Side;
+import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.registry.EnchantmentRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public final class Settings
 {
     public static int ITEMS_PER_ROW;
     public static int ITEMS_PER_COLUMN;
-    public static float CYCLE_TIME;
 
     public static int EXTRA_RANGE;
     public static Side side;
@@ -20,13 +20,8 @@ public final class Settings
     public static void reload()
     {
         if (side == Side.CLIENT)
-        {
-            /*JEIDungeonCategory.reloadSettings();
-            JEIMobCategory.reloadSettings();
-            JEIOreCategory.reloadSettings();
-            JEIEnchantmentCategory.reloadSettings();
-            JEIAdvSeedCategory.reloadSettings();*/
-        }
-        if (gameLoaded) EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
+            DungeonCategory.reloadSettings();
+        if (gameLoaded)
+            EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
     }
 }

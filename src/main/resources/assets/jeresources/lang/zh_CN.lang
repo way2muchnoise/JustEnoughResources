@@ -2,8 +2,6 @@ jer.config.itemsPerColumn.title=每列显示物品数
 jer.config.itemsPerColumn.description=调整JEI面板中每列显示地牢资源与生物掉落物的数量
 jer.config.itemsPerRow.title=每行显示物品数
 jer.config.itemsPerRow.description=调整JEI面板中每行显示地牢资源的数量
-jer.config.cycleTime.title=循环间隔
-jer.config.cycleTime.description=调整JEI面板中单种物品持续显示的时间
 jer.config.extraRange.title=层数范围
 jer.config.extraRange.description=调整矿物生成中显示的层数最大值
 
