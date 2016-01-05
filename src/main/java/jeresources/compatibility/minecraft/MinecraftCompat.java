@@ -17,6 +17,7 @@ import jeresources.entries.MobEntry;
 import jeresources.entries.PlantEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MessageRegistry;
+import jeresources.utils.MobHelper;
 import jeresources.utils.ReflectionHelper;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -144,11 +145,11 @@ public class MinecraftCompat extends CompatBase
 
         //Slimes
         DropItem slimeball = new DropItem(Items.slime_ball, 0, 2, Conditional.slimeBall);
-        registerMob(new MobEntry(MonsterHelper.setSlimeSize(new EntitySlime(world), 1), LightLevel.hostile, slimeball));
+        registerMob(new MobEntry(MobHelper.setSlimeSize(new EntitySlime(world), 1), LightLevel.hostile, slimeball));
 
         //Magma Cube
         DropItem magma = new DropItem(Items.magma_cream, 0, 1, Conditional.magmaCream);
-        registerMob(new MobEntry(MonsterHelper.setSlimeSize(new EntityMagmaCube(world), 1), LightLevel.hostile, new String[]{"Nether"}, magma));
+        registerMob(new MobEntry(MobHelper.setSlimeSize(new EntityMagmaCube(world), 1), LightLevel.hostile, new String[]{"Nether"}, magma));
 
         //Blaze
         DropItem blazeRod = new DropItem(Items.blaze_rod, 0, 1, Conditional.playerKill);
