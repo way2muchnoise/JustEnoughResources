@@ -27,12 +27,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.IPlantable;
 
 import java.util.HashMap;
 
 public class MinecraftCompat extends CompatBase
 {
-
     @Override
     protected void init()
     {
@@ -198,29 +198,30 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaPlants()
     {
-        // Potato TODO: seems like you can't make ItemStacks of potato plant blocks anymore
-        ItemStack potatoPlant = new ItemStack(Blocks.potatoes);
+        // Potato
+        IPlantable potatoPlant = (IPlantable)Items.potato;
         PlantDrop potato = new PlantDrop(new ItemStack(Items.potato), 1, 4);
         PlantDrop poisonous = new PlantDrop(new ItemStack(Items.poisonous_potato), 0.02F);
         registerPlant(new PlantEntry(potatoPlant, potato, poisonous));
 
         //Carrot
-        ItemStack carrotPlant = new ItemStack(Blocks.carrots);
+        IPlantable carrotPlant = (IPlantable)Items.carrot;
         PlantDrop carrot = new PlantDrop(new ItemStack(Items.carrot), 1, 4);
         registerPlant(new PlantEntry(carrotPlant, carrot));
+
         //Wheat
-        ItemStack wheatPlant = new ItemStack(Blocks.wheat);
+        IPlantable wheatPlant = (IPlantable)Items.wheat_seeds;
         PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.wheat_seeds), 0, 3);
         registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
 
         //Melon
-        ItemStack melonStem = new ItemStack(Blocks.melon_stem);
+        IPlantable melonStem = (IPlantable)Items.melon_seeds;
         PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.melon), 3, 7);
         registerPlant(new PlantEntry(melonStem, melonSlice));
 
         //Pumpkin
-        ItemStack pumpkinStem = new ItemStack(Blocks.pumpkin_stem);
+        IPlantable pumpkinStem = (IPlantable)Items.pumpkin_seeds;
         PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1);
         registerPlant(new PlantEntry(pumpkinStem, pumpkin));
     }

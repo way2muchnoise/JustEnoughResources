@@ -3,8 +3,11 @@ package jeresources.entries;
 import jeresources.api.utils.PlantDrop;
 import jeresources.utils.MapKeys;
 import jeresources.utils.SeedHelper;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -13,7 +16,8 @@ import java.util.Map;
 
 public class PlantEntry
 {
-    private ItemStack plant;
+    private IPlantable plant;
+    private ItemStack plantStack;
     private Map<String, PlantDrop> drops = new LinkedHashMap<String, PlantDrop>();
     private int totalWeight = 0;
 
@@ -25,14 +29,25 @@ public class PlantEntry
         return grass;
     }
 
-    public PlantEntry(ItemStack plant, PlantDrop... drops)
+    public PlantEntry(ItemStack itemStack, IPlantable plant, PlantDrop... drops)
     {
+        this.plantStack = itemStack;
         this.plant = plant;
         for (PlantDrop entry : drops)
         {
             this.totalWeight += entry.getWeight();
             this.drops.put(MapKeys.getKey(entry.getDrop()), entry);
         }
+    }
+
+    public PlantEntry(ItemStack itemStack, PlantDrop... drops)
+    {
+        this(itemStack, null, drops);
+    }
+
+    public PlantEntry(IPlantable plant, PlantDrop... drops)
+    {
+        this(new ItemStack((Item)plant), plant, drops);
     }
 
     public void add(PlantDrop entry)
@@ -42,9 +57,14 @@ public class PlantEntry
         this.drops.put(key, new PlantDrop(entry.getDrop(), (this.totalWeight + entry.getWeight())));
     }
 
-    public ItemStack getPlant()
+    public IPlantable getPlant()
     {
         return this.plant;
+    }
+
+    public ItemStack getPlantItemStack()
+    {
+        return this.plantStack;
     }
 
     public List<PlantDrop> getDrops()

@@ -1,6 +1,7 @@
 package jeresources.utils;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MapKeys
@@ -35,5 +36,10 @@ public class MapKeys
     public static String key(ItemStack itemStack)
     {
         return itemStack.getItem().hashCode() + ":" + itemStack.getItemDamage();
+    }
+
+    public static String getKey(IPlantable plant)
+    {
+        return plant.getPlant(null, null).getBlock().getUnlocalizedName();
     }
 }

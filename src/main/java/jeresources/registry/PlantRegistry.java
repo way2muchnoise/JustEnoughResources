@@ -30,7 +30,7 @@ public class PlantRegistry
 
     public boolean registerPlant(PlantEntry entry)
     {
-        String key = MapKeys.getKey(entry.getPlant());
+        String key = MapKeys.getKey(entry.getPlantItemStack());
         if (contains(key)) return false;
         registry.put(key, entry);
         for (PlantDrop drop : entry.getDrops())

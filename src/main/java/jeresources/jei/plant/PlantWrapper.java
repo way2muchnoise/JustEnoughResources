@@ -3,7 +3,9 @@ package jeresources.jei.plant;
 import jeresources.api.utils.PlantDrop;
 import jeresources.entries.PlantEntry;
 import jeresources.utils.CollectionHelper;
+import jeresources.utils.RenderHelper;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +26,12 @@ public class PlantWrapper implements IRecipeWrapper
     @Override
     public List getInputs()
     {
-        return CollectionHelper.create(plantEntry.getPlant());
+        return CollectionHelper.create(plantEntry.getPlantItemStack());
+    }
+
+    public List<ItemStack> getDrops()
+    {
+        return plantEntry.getDropItemStacks();
     }
 
     @Override
@@ -48,7 +55,7 @@ public class PlantWrapper implements IRecipeWrapper
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
-
+        RenderHelper.renderBlock(this.plantEntry.getPlant() != null ? this.plantEntry.getPlant().getPlant(null, null) : Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState());
     }
 
     @Override
@@ -86,7 +93,7 @@ public class PlantWrapper implements IRecipeWrapper
         return new int[] {drop.getMinDrop(), drop.getMaxDrop()};
     }
 
-    private String getChangeString(ItemStack itemStack)
+    private String getChanceString(ItemStack itemStack)
     {
         float chance = getChance(itemStack);
         String toPrint;

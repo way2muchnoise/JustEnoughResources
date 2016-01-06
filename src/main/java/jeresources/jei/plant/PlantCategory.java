@@ -74,7 +74,7 @@ public class PlantCategory implements IRecipeCategory
             PlantWrapper plantWrapper = (PlantWrapper)recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
             for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
-                recipeLayout.getItemStacks().setFromRecipe(i+1, plantWrapper.getOutputs());
+                recipeLayout.getItemStacks().set(i+1, plantWrapper.getDrops().get(i));
         }
     }
 

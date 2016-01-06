@@ -2,17 +2,20 @@ package jeresources.utils;
 
 import jeresources.api.utils.ColorHelper;
 import jeresources.reference.Resources;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -134,8 +137,8 @@ public class RenderHelper
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
         GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-        float lidAngleF = lidAngle / 180;
 
+        float lidAngleF = lidAngle / 180;
         lidAngleF = 1.0F - lidAngleF;
         lidAngleF = 1.0F - lidAngleF * lidAngleF * lidAngleF;
         modelchest.chestLid.rotateAngleX = -(lidAngleF * (float) Math.PI / 2.0F);
@@ -148,6 +151,13 @@ public class RenderHelper
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    public static void renderBlock(IBlockState block)
+    {
+        //TODO: write this method
+        Minecraft mc = Minecraft.getMinecraft();
+        //mc.getBlockRendererDispatcher().renderBlock(block, new BlockPos(0, 0, 0), mc.theWorld, Tessellator.getInstance().getWorldRenderer());
     }
 
     private static RenderManager getRenderManager()
