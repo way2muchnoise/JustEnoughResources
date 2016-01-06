@@ -6,7 +6,10 @@ import jeresources.utils.CollectionHelper;
 import jeresources.utils.RenderHelper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,7 +58,8 @@ public class PlantWrapper implements IRecipeWrapper
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
-        RenderHelper.renderBlock(this.plantEntry.getPlant() != null ? this.plantEntry.getPlant().getPlant(null, null) : Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState());
+        RenderHelper.renderBlock(getFarmland(), 20, 45, -10, 20F, 0.4F);
+        RenderHelper.renderBlock(getBlockState(), 20, 27, 10, 20F, 0.4F);
     }
 
     @Override
@@ -105,5 +109,18 @@ public class PlantWrapper implements IRecipeWrapper
         else
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
         return toPrint;
+    }
+
+    private IBlockState getBlockState()
+    {
+        if(this.plantEntry.getPlant() != null)
+            return this.plantEntry.getPlant().getPlant(null, null).withProperty(BlockCrops.AGE, ((int)System.currentTimeMillis()/900)%8);
+        else
+           return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
+    }
+
+    private IBlockState getFarmland()
+    {
+        return Blocks.farmland.getDefaultState();
     }
 }

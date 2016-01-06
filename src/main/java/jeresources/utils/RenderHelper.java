@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.EntityDragon;
@@ -153,11 +154,22 @@ public class RenderHelper
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderBlock(IBlockState block)
+    public static void renderBlock(IBlockState block, float x, float y, float z, float rotate, float scale)
     {
-        //TODO: write this method
         Minecraft mc = Minecraft.getMinecraft();
-        //mc.getBlockRendererDispatcher().renderBlock(block, new BlockPos(0, 0, 0), mc.theWorld, Tessellator.getInstance().getWorldRenderer());
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 50.0F + z);
+        GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
+        scale *= 50;
+        GlStateManager.scale(scale, -scale, -scale);
+        GlStateManager.translate(0.5F, 0.5F, 0.5F);
+        GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+        mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        mc.getBlockRendererDispatcher().renderBlockBrightness(block, 1.0F);
+        GlStateManager.popMatrix();
+        GlStateManager.disableRescaleNormal();
     }
 
     private static RenderManager getRenderManager()
