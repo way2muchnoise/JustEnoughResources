@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 
 public class DungeonCategory implements IRecipeCategory
 {
-    protected static final int Y_FIRST_ITEM = 47;
+    protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
     protected static int SPACING_Y;
     protected static int SPACING_X;
@@ -22,8 +22,8 @@ public class DungeonCategory implements IRecipeCategory
 
     public static void reloadSettings()
     {
-        ITEMS_PER_PAGE = Settings.ITEMS_PER_COLUMN * Settings.ITEMS_PER_ROW;
-        SPACING_X = 166 / Settings.ITEMS_PER_ROW;
+        ITEMS_PER_PAGE = Settings.ITEMS_PER_COLUMN * Settings.ITEMS_PER_ROW * 2;
+        SPACING_X = 166 / (Settings.ITEMS_PER_ROW * 2);
         SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
     }
 
@@ -68,18 +68,20 @@ public class DungeonCategory implements IRecipeCategory
         for (int i = 0 ; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++)
         {
             recipeLayout.getItemStacks().init(i, false, x, y);
-            y += SPACING_Y;
-            if (y >= Y_FIRST_ITEM + SPACING_Y * Settings.ITEMS_PER_COLUMN)
+            x += SPACING_X;
+
+            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2)
             {
-                y = Y_FIRST_ITEM;
-                x += SPACING_X;
+                x = X_FIRST_ITEM;
+                y += SPACING_Y;
             }
         }
 
         if (recipeWrapper instanceof DungeonWrapper)
         {
             DungeonWrapper dungeonWrapper = (DungeonWrapper)recipeWrapper;
-            for (int i = 0; i < Math.min(ITEMS_PER_PAGE, dungeonWrapper.getItems().size()); i++)
+            recipeLayout.getItemStacks().addTooltipCallback(dungeonWrapper);
+            for (int i = 0; i < Math.min(dungeonWrapper.getItems().size(), Settings.ITEMS_PER_COLUMN * Settings.ITEMS_PER_ROW * 2); i++)
                 recipeLayout.getItemStacks().set(i, dungeonWrapper.getItems().get(i));
             dungeonWrapper.resetLid();
         }

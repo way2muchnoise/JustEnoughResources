@@ -14,9 +14,10 @@ import javax.annotation.Nonnull;
 
 public class MobCategory implements IRecipeCategory
 {
-    protected static final int X_FIRST_ITEM = 90;
+    protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
-    protected static int SPACING_Y = 90 / Settings.ITEMS_PER_COLUMN;
+    protected static int SPACING_X = 72 / Settings.ITEMS_PER_ROW;
+    protected static int SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
 
     @Nonnull
     @Override
@@ -54,17 +55,24 @@ public class MobCategory implements IRecipeCategory
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
-        int yOffset = 0;
-        for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
+        int xOffset = 0;
+        int slot = 0;
+        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)
         {
-            recipeLayout.getItemStacks().init(i, false, X_FIRST_ITEM, Y_FIRST_ITEM + yOffset);
-            yOffset += MobCategory.SPACING_Y;
+            int yOffset = 0;
+            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++)
+            {
+                recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
+                yOffset += SPACING_Y;
+            }
+            xOffset += SPACING_X;
         }
 
         if (recipeWrapper instanceof MobWrapper)
         {
             MobWrapper mobWrapper = (MobWrapper)recipeWrapper;
-            for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
+            recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
+            for (int i = 0; i < Math.min(recipeWrapper.getOutputs().size(), Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
                 recipeLayout.getItemStacks().set(i, mobWrapper.getDrops().get(i));
         }
     }

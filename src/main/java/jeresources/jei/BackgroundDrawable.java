@@ -13,6 +13,7 @@ public class BackgroundDrawable implements IDrawable
 {
     private final int width, height;
     private final ResourceLocation resource;
+    private static final int PADDING = 5;
 
     public BackgroundDrawable(String resource, int width, int height)
     {
@@ -24,13 +25,13 @@ public class BackgroundDrawable implements IDrawable
     @Override
     public int getWidth()
     {
-        return this.width;
+        return this.width + PADDING * 2;
     }
 
     @Override
     public int getHeight()
     {
-        return this.height;
+        return this.height + PADDING * 2;
     }
 
     @Override
@@ -44,11 +45,6 @@ public class BackgroundDrawable implements IDrawable
     {
         GlStateManager.resetColor();
         minecraft.getTextureManager().bindTexture(this.resource);
-        GuiUtils.drawTexturedModalRect(xOffset, yOffset, 5, 11, this.width, this.height, 0);
-    }
-
-    public ResourceLocation getResource()
-    {
-        return this.resource;
+        GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
     }
 }

@@ -22,8 +22,8 @@ public class OreWrapper implements IRecipeWrapper
     protected static final int Y_OFFSPRING = 52;
     protected static final int X_AXIS_SIZE = 90;
     protected static final int Y_AXIS_SIZE = 40;
-    protected static final int X_ITEM = 7;
-    protected static final int Y_ITEM = 5;
+    protected static final int X_ITEM = 17;
+    protected static final int Y_ITEM = 21;
 
     private OreMatchEntry oreMatchEntry;
     private List<ItemStack> oresAndDrops;

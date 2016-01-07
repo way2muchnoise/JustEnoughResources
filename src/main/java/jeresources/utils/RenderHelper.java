@@ -151,7 +151,6 @@ public class RenderHelper
         modelchest.renderAll();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public static void renderBlock(IBlockState block, float x, float y, float z, float rotate, float scale)

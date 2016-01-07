@@ -211,7 +211,7 @@ public class MinecraftCompat extends CompatBase
 
         //Wheat
         IPlantable wheatPlant = (IPlantable)Items.wheat_seeds;
-        PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1);
+        PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1, 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.wheat_seeds), 0, 3);
         registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
 
@@ -222,7 +222,7 @@ public class MinecraftCompat extends CompatBase
 
         //Pumpkin
         IPlantable pumpkinStem = (IPlantable)Items.pumpkin_seeds;
-        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1);
+        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1, 1);
         registerPlant(new PlantEntry(pumpkinStem, pumpkin));
     }
 }

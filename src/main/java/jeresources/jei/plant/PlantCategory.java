@@ -13,11 +13,11 @@ import javax.annotation.Nonnull;
 
 public class PlantCategory implements IRecipeCategory
 {
-    private static final int GRASS_X = 74;
-    private static final int GRASS_Y = 4;
-    private static final int OUTPUT_X = 2;
+    private static final int GRASS_X = 79;
+    private static final int GRASS_Y = 10;
+    private static final int OUTPUT_X = 6;
     private static final int OUTPUT_SCALE = 20;
-    private static final int OUTPUT_Y = 51;
+    private static final int OUTPUT_Y = 60;
 
     @Nonnull
     @Override
@@ -73,6 +73,7 @@ public class PlantCategory implements IRecipeCategory
         {
             PlantWrapper plantWrapper = (PlantWrapper)recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
+            recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
             for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
                 recipeLayout.getItemStacks().set(i+1, plantWrapper.getDrops().get(i));
         }
