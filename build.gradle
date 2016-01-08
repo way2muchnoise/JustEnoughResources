@@ -60,12 +60,14 @@ processResources {
     }
 
     from(sourceSets.main.resources.srcDirs) { exclude '**/*.info' }
+
+    // Move access transformers to META-INF
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
 version = "${version_minecraft}-${version_major}.${version_minor}.${version_revis}"
 
 jar {
-    from "build/sources/main"
     manifest {
         attributes 'FMLAT': 'jeresources_at.cfg'
     }
@@ -79,8 +81,8 @@ task deobfJar(type: Jar) {
 }
 
 task sourcesJar(type: Jar, dependsOn: 'sourceMainJava') {
-    from "build/sources/java"
-    from "build/resources/main/java"
+    from "build/sources/main"
+    from "build/resources/main"
     classifier "sources"
     destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
