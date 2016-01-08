@@ -7,6 +7,7 @@ import jeresources.utils.Font;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -18,15 +19,17 @@ import java.util.List;
 public class EnchantmentWrapper implements IRecipeWrapper
 {
     private static final int ENTRYS_PER_PAGE = 11;
-    private static final int ENCHANT_X = 30;
-    private static final int FIRST_ENCHANT_Y = 5;
+    private static final int ENCHANT_X = 35;
+    private static final int FIRST_ENCHANT_Y = 7;
     private static final int SPACING_Y = 10;
     private static final int PAGE_X = 55;
     private static final int PAGE_Y = 120;
+    private static final int CYCLE_TIME = 2;
 
     private ItemStack itemStack;
     private List<EnchantmentEntry> enchantments;
-    public int set, lastSet;
+    private int set, lastSet;
+    private int nextCycle;
 
     public EnchantmentWrapper(ItemStack itemStack)
     {
@@ -34,13 +37,25 @@ public class EnchantmentWrapper implements IRecipeWrapper
         this.enchantments = new LinkedList<>(EnchantmentRegistry.getInstance().getEnchantments(itemStack));
         this.set = 0;
         this.lastSet = this.enchantments.size() / (ENTRYS_PER_PAGE + 1);
+        this.nextCycle = ((int)System.currentTimeMillis()/1000) + CYCLE_TIME;
     }
 
     public List<EnchantmentEntry> getEnchantments()
     {
+        doCycle();
         int last = set * ENTRYS_PER_PAGE + ENTRYS_PER_PAGE;
-        if (last >= this.enchantments.size()) last = this.enchantments.size() - 1;
+        if (last >= this.enchantments.size()) last = this.enchantments.size();
         return this.enchantments.subList(set * ENTRYS_PER_PAGE, last);
+    }
+
+    private void doCycle()
+    {
+        if(((int)System.currentTimeMillis()/1000) > nextCycle)
+        {
+            if (!GuiScreen.isShiftKeyDown()) // Don't cycle when holding shift
+                this.set = this.set == lastSet ? 0 : this.set + 1;
+            this.nextCycle = ((int)System.currentTimeMillis()/1000) + CYCLE_TIME;
+        }
     }
 
     @Override

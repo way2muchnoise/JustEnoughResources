@@ -13,8 +13,8 @@ import javax.annotation.Nonnull;
 
 public class EnchantmentCategory implements IRecipeCategory
 {
-    private static final int ITEM_X = 7;
-    private static final int ITEM_Y = 5;
+    private static final int ITEM_X = 12;
+    private static final int ITEM_Y = 11;
 
     @Nonnull
     @Override
