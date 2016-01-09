@@ -11,6 +11,8 @@ import jeresources.api.utils.PlantDrop;
 import jeresources.api.utils.Priority;
 import jeresources.api.utils.conditionals.Conditional;
 import jeresources.api.utils.restrictions.BiomeRestriction;
+import jeresources.api.utils.restrictions.BlockRestriction;
+import jeresources.api.utils.restrictions.DimensionRestriction;
 import jeresources.api.utils.restrictions.Restriction;
 import jeresources.compatibility.CompatBase;
 import jeresources.entries.MobEntry;
@@ -52,6 +54,7 @@ public class MinecraftCompat extends CompatBase
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.lapis_ore), Priority.FIRST, new ItemStack(Items.dye, 4, 4)));
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.emerald_ore), Priority.FIRST, new ItemStack(Items.emerald)));
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.redstone_ore), Priority.FIRST, new ItemStack(Items.redstone, 4)));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.quartz_ore), Priority.FIRST, new ItemStack(Items.quartz, 4)));
     }
 
     private void registerVanillaMobs()
@@ -172,6 +175,28 @@ public class MinecraftCompat extends CompatBase
         //Squid
         DropItem ink = new DropItem(Items.dye, 0, 1, 3);
         registerMob(new MobEntry(new EntitySquid(world), LightLevel.any, new String[]{"In water"}, ink));
+
+        //Rabbit
+        DropItem rabbitHide = new DropItem(Items.rabbit_hide, 0, 1);
+        DropItem rawRabbit = new DropItem(Items.rabbit, 0, 1, Conditional.notBurning);
+        DropItem cookedRabbit = new DropItem(Items.cooked_rabbit, 0, 1, Conditional.burning);
+        DropItem rabbitFoot = new DropItem(new ItemStack(Items.rabbit_foot), 0.025F);
+        registerMob(new MobEntry(new EntityRabbit(world), LightLevel.any, rabbitHide, rawRabbit, rabbitFoot, cookedRabbit));
+
+        //Guardian
+        DropItem prismarineCrystal = new DropItem(Items.prismarine_crystals, 0, 1);
+        DropItem prismarineShard = new DropItem(Items.prismarine_shard, 0, 2);
+        DropItem rawFish = new DropItem(Items.fish, 0, 1);
+        DropItem sponge = new DropItem(new ItemStack(Blocks.sponge, 1), 1, 1, Conditional.playerKill);
+        DropItem rareFish = new DropItem(new ItemStack(Items.fish), 0.025F);
+        DropItem rareSalmon = new DropItem(new ItemStack(Items.fish, 1), 0.025F);
+        DropItem rarePuffer = new DropItem(new ItemStack(Items.fish, 3), 0.025F);
+        DropItem rareClown = new DropItem(new ItemStack(Items.fish, 2), 0.025F);
+        EntityGuardian elderGuardian = new EntityGuardian(world);
+        elderGuardian.setElder();
+        registerMob(new MobEntry(new EntityGuardian(world), LightLevel.any, new String[]{"Ocean monument"}, prismarineCrystal, prismarineShard, rawFish, sponge, rareFish, rareSalmon, rarePuffer, rareClown));
+        registerMob(new MobEntry(elderGuardian, LightLevel.any, new String[]{"Ocean monument"}, prismarineCrystal, prismarineShard, rawFish, sponge, rareFish, rareSalmon, rarePuffer, rareClown));
+
     }
 
     @SuppressWarnings("unchecked")
@@ -194,6 +219,7 @@ public class MinecraftCompat extends CompatBase
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.emerald_ore), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS)));
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.gold_ore), new DistributionSquare(2, 8, 0, 32)));
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 0, 128)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 0, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER)));
     }
 
     private void registerVanillaPlants()
