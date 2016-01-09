@@ -187,11 +187,11 @@ public class MinecraftCompat extends CompatBase
         DropItem prismarineCrystal = new DropItem(Items.prismarine_crystals, 0, 1);
         DropItem prismarineShard = new DropItem(Items.prismarine_shard, 0, 2);
         DropItem rawFish = new DropItem(Items.fish, 0, 1);
-        DropItem sponge = new DropItem(new ItemStack(Blocks.sponge, 1), 1, 1, Conditional.playerKill);
+        DropItem sponge = new DropItem(new ItemStack(Blocks.sponge, 1, 1), 1, 1, Conditional.playerKill);
         DropItem rareFish = new DropItem(new ItemStack(Items.fish), 0.025F);
-        DropItem rareSalmon = new DropItem(new ItemStack(Items.fish, 1), 0.025F);
-        DropItem rarePuffer = new DropItem(new ItemStack(Items.fish, 3), 0.025F);
-        DropItem rareClown = new DropItem(new ItemStack(Items.fish, 2), 0.025F);
+        DropItem rareSalmon = new DropItem(new ItemStack(Items.fish, 1, 1), 0.025F);
+        DropItem rarePuffer = new DropItem(new ItemStack(Items.fish, 1, 3), 0.025F);
+        DropItem rareClown = new DropItem(new ItemStack(Items.fish, 1, 2), 0.025F);
         EntityGuardian elderGuardian = new EntityGuardian(world);
         elderGuardian.setElder();
         registerMob(new MobEntry(new EntityGuardian(world), LightLevel.any, new String[]{"Ocean monument"}, prismarineCrystal, prismarineShard, rawFish, sponge, rareFish, rareSalmon, rarePuffer, rareClown));

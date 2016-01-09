@@ -2,17 +2,18 @@ package jeresources.utils;
 
 import jeresources.compatibility.CompatBase;
 import jeresources.compatibility.minecraft.MinecraftCompat;
+import jeresources.compatibility.thaumcraft.ThaumcraftCompat;
 import net.minecraftforge.fml.common.Loader;
 
 public enum ModList
 {
     minecraft(MinecraftCompat.class),
+    thaumcraft(Names.THAUMCRAFT, ThaumcraftCompat.class),
     /*cofhcore(Names.COFHCORE, CoFHCompat.class),
     metallurgy(Names.METALLURGY, MetallurgyCompat.class),
     netherores(Names.NETHERORES, NetherOresCompat.class),
     bigreactors(Names.BIGREACTORS, BigReactorsCompat.class),
     ae2(Names.APPLIEDENERGISTICS, AE2Compat.class),
-    thaumcraft(Names.THAUMCRAFT, ThaumcraftCompat.class),
     electricraft(Names.ELECTRICRAFT, ElectriCraftCompat.class),
     reactorcraft(Names.REACTORCRAFT, ReactorCraftCompat.class),
     forestry(Names.FORESTRY, ForestryCompat.class),

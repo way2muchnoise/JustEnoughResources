@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.util.BlockPos;
@@ -94,6 +95,10 @@ public class RenderHelper
                 GlStateManager.rotate(yaw < 90 ? (yaw < -90 ? 90 : -yaw) : -90, 0.0F, 1.0F, 0.0F);
             }
             else pitch = -pitch;
+        }
+        if (entityLivingBase instanceof EntityGuardian && ((EntityGuardian) entityLivingBase).isElder())
+        {
+            GlStateManager.scale(0.6F, 0.6F, 0.6F);
         }
         if (entityLivingBase instanceof EntitySquid)
         {

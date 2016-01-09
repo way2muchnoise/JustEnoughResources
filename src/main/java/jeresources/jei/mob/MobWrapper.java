@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -58,6 +59,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         EntityLivingBase entityLivingBase = this.mob.getEntity();
         float scale = getScale(entityLivingBase);
         float offsetX = entityLivingBase.height / scale;
+        if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintacle) offsetX = 50;
         RenderHelper.renderEntity(37, 110 - (int)offsetX, scale, 150 - RenderHelper.getMousePosition().x, 150 - RenderHelper.getMousePosition().y, entityLivingBase);
 
         Font.normal.print(this.mob.getMobName(), 7, 2);
