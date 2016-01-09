@@ -212,14 +212,14 @@ public class MinecraftCompat extends CompatBase
 
     private void registerOres()
     {
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.lapis_ore), new DistributionTriangular(15, 15, 0.001F)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.lapis_ore), new DistributionTriangular(15, 15, 0.001F), true));
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.iron_ore), new DistributionSquare(20, 8, 0, 64)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.redstone_ore), new DistributionSquare(8, 7, 0, 16)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.diamond_ore), new DistributionSquare(1, 7, 0, 16)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.redstone_ore), new DistributionSquare(8, 7, 0, 16), true));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.diamond_ore), new DistributionSquare(1, 7, 0, 16), true));
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.emerald_ore), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS)));
         registerOre(new RegisterOreMessage(new ItemStack(Blocks.gold_ore), new DistributionSquare(2, 8, 0, 32)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 0, 128)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 0, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 0, 128), true));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 0, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true));
     }
 
     private void registerVanillaPlants()

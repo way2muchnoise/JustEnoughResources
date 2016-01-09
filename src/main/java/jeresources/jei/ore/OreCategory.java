@@ -57,6 +57,7 @@ public class OreCategory implements IRecipeCategory
         if (recipeWrapper instanceof OreWrapper)
         {
             OreWrapper oreWrapper = (OreWrapper)recipeWrapper;
+            recipeLayout.getItemStacks().addTooltipCallback(oreWrapper);
             recipeLayout.getItemStacks().setFromRecipe(0, oreWrapper.getOresAndDrops());
         }
     }

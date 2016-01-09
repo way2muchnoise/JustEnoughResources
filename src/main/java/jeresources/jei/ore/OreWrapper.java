@@ -6,6 +6,7 @@ import jeresources.entries.OreMatchEntry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -16,7 +17,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OreWrapper implements IRecipeWrapper
+public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
 {
     protected static final int X_OFFSPRING = 59;
     protected static final int Y_OFFSPRING = 52;
@@ -122,18 +123,21 @@ public class OreWrapper implements IRecipeWrapper
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
-        List<String> tooltip = null;
-
+        List<String> tooltip = new LinkedList<>();
         if (onGraph(mouseX, mouseY))
-            tooltip = getLineTooltip(mouseX, new LinkedList<String>());
-        else if (false)
-            tooltip = getItemStackTooltip(null, new LinkedList<String>());
-
+            tooltip = getLineTooltip(mouseX, tooltip);
         return tooltip;
     }
 
-    private List<String> getItemStackTooltip(ItemStack itemStack, List<String> tooltip)
+    @Override
+    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip)
     {
+        tooltip.addAll(getItemStackTooltip(ingredient));
+    }
+
+    private List<String> getItemStackTooltip(ItemStack itemStack)
+    {
+        List<String> tooltip = new LinkedList<>();
         if (itemStack != null)
         {
             if (this.oreMatchEntry.isSilkTouchNeeded(itemStack))
@@ -164,4 +168,6 @@ public class OreWrapper implements IRecipeWrapper
                 && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
                 && mouseY < Y_OFFSPRING;
     }
+
+
 }

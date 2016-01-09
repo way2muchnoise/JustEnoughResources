@@ -61,9 +61,9 @@ public class DungeonEntry
         return chestDrops.keySet().toArray(new ItemStack[chestDrops.size()]);
     }
 
-    public Float[] getChances()
+    public Float getChange(ItemStack itemStack)
     {
-        return chestDrops.values().toArray(new Float[chestDrops.size()]);
+        return chestDrops.get(itemStack);
     }
 
     public int getMaxStacks()

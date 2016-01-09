@@ -73,10 +73,10 @@ public class Restriction
     public List<String> getStringList(boolean getNames)
     {
         List<String> result = new ArrayList<String>();
-        result.add(StatCollector.translateToLocal("ner.ore.dimensions") + ":");
+        result.add(StatCollector.translateToLocal("jer.ore.dimensions") + ":");
         result.addAll(dimensionRestriction.getValidDimensions(blockRestriction, getNames));
         List<String> biomes = new ArrayList<String>();
-        biomes.add(StatCollector.translateToLocal("ner.ore.biomes") + ":");
+        biomes.add(StatCollector.translateToLocal("jer.ore.biomes") + ":");
         biomes.addAll(biomeRestriction.toStringList());
         if (biomes.size() > 1) result.addAll(biomes);
         return result;
