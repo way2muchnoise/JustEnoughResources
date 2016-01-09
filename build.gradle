@@ -22,10 +22,18 @@ repositories {
         name = "jei"
         url =  "http://dvs1.progwml6.com/files/maven"
     }
+    ivy {
+        name = "thaumcraft"
+        url = "https://dl.dropboxusercontent.com/u/47135879/"
+        layout "pattern", {
+            artifact "[module]-${version_minecraft}-[revision]-deobf.[ext]"
+        }
+    }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
+    deobfCompile name: 'thaumcraft', version: "${version_thaumcraft}", ext: 'jar'
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
