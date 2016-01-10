@@ -13,16 +13,16 @@ public class SeedHelper
     public static List<PlantDrop> getSeeds()
     {
         List<PlantDrop> result = new ArrayList<PlantDrop>();
-        Class<?> seedEntry;
+        Class seedEntry;
         seedEntry = ReflectionHelper.findClass("net.minecraftforge.common.ForgeHooks$SeedEntry");
         if (seedEntry == null) return result;
-        List seedList = (List) ReflectionHelper.getObject(ForgeHooks.class, "seedList", null);
+        List seedList = ReflectionHelper.getPrivateValue(ForgeHooks.class, null, "seedList");
         for (Object o : seedList)
         {
             if (o == null || o.getClass() != seedEntry) continue;
-            ItemStack seed = (ItemStack) ReflectionHelper.getObject(seedEntry, "seed", o);
+            ItemStack seed = (ItemStack) ReflectionHelper.getPrivateValue(seedEntry, o, "seed");
             if (seed == null || seed.getItem() == null) continue;
-            int weight = ReflectionHelper.getInt(WeightedRandom.Item.class, DeObfMappings.itemWeight.getFieldName(), o);
+            int weight = ReflectionHelper.getPrivateValue(WeightedRandom.Item.class, (WeightedRandom.Item)o, "field_76292_a", "itemWeight");
             result.add(new PlantDrop(seed, weight));
         }
         return result;

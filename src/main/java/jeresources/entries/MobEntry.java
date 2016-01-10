@@ -41,8 +41,7 @@ public class MobEntry
         if (!ReflectionHelper.isInstanceOf(message.getMobClass(), EntityLivingBase.class)) return;
         entity = (EntityLivingBase) ReflectionHelper.initialize(message.getMobClass(), World.class, null);
         this.lightLevel = message.getLightLevel();
-        for (DropItem drop : message.getDrops())
-            drops.add(drop);
+        Collections.addAll(drops, message.getDrops());
         Collections.sort(drops);
     }
 

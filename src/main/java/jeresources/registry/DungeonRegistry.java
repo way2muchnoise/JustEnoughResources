@@ -36,6 +36,7 @@ public class DungeonRegistry
         addCategoryMapping("villageBlacksmith", "jer.dungeon.villageBlacksmith");
         addCategoryMapping("bonusChest", "jer.dungeon.bonusChest");
         addCategoryMapping("dungeonChest", "jer.dungeon.dungeonChest");
+        addCategoryMapping("netherFortress", "jer.dungeon.netherFortress");
     }
 
     public static boolean addCategoryMapping(String category, String name)
@@ -60,7 +61,7 @@ public class DungeonRegistry
 
     public boolean registerChestHook(ChestGenHooks chestGenHooks)
     {
-        String name = ReflectionHelper.getString(ChestGenHooks.class, "category", chestGenHooks);
+        String name = ReflectionHelper.getPrivateValue(ChestGenHooks.class, chestGenHooks, "category");
         if (categoryToLocalKeyMap.containsKey(name))
             return registerChestHook(categoryToLocalKeyMap.get(name), chestGenHooks);
         return registerChestHook(name, chestGenHooks);

@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public class DungeonEntry
     public DungeonEntry(String name, ChestGenHooks chestGenHooks)
     {
         int totalWeight = 0;
-        List<WeightedRandomChestContent> content = (ArrayList<WeightedRandomChestContent>) ReflectionHelper.getObject(ChestGenHooks.class, "contents" , chestGenHooks);
+        List<WeightedRandomChestContent> content = ReflectionHelper.getPrivateValue(ChestGenHooks.class, chestGenHooks, "contents");
         for (WeightedRandomChestContent chestItem : content)
             totalWeight += chestItem.itemWeight;
         for (WeightedRandomChestContent chestItem : WeightedRandomChestContentHelper.sort(content.toArray(new WeightedRandomChestContent[content.size()])))

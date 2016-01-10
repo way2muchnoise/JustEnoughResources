@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "after:JEI;")
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "after:JEI;", clientSideOnly = true)
 public class JEResources
 {
     @Mod.Instance(Reference.ID)
@@ -41,9 +41,6 @@ public class JEResources
 
         LogHelper.info("Updating ModMetaData...");
         metadata = MetaData.init(metadata);
-
-        ReflectionHelper.isObf = !ReflectionHelper.doesFieldExist(WeightedRandom.Item.class, "itemWeight");
-        LogHelper.debug("Minecraft is " + (ReflectionHelper.isObf ? "obf" : "deObf"));
         
         LogHelper.info("Registering Events...");
         PROXY.registerEvents();

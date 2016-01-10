@@ -202,7 +202,7 @@ public class MinecraftCompat extends CompatBase
     @SuppressWarnings("unchecked")
     private void registerDungeonLoot()
     {
-        HashMap<String, ChestGenHooks> dungeons = (HashMap<String, ChestGenHooks>) ReflectionHelper.getObject(ChestGenHooks.class, "chestInfo", null);
+        HashMap<String, ChestGenHooks> dungeons = ReflectionHelper.getPrivateValue(ChestGenHooks.class, null, "chestInfo");
         ChestGenHooks bonusChest = ChestGenHooks.getInfo(ChestGenHooks.BONUS_CHEST);
         if (dungeons != null)
             for (ChestGenHooks chestGenHook : dungeons.values())
