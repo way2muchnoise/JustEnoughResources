@@ -60,7 +60,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         float scale = getScale(entityLivingBase);
         float offsetX = entityLivingBase.height / scale;
         if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintacle) offsetX = 50;
-        RenderHelper.renderEntity(37, 110 - (int)offsetX, scale, 150 - RenderHelper.getMousePosition().x, 150 - RenderHelper.getMousePosition().y, entityLivingBase);
+        RenderHelper.renderEntity(37, 110 - (int)offsetX, scale, RenderHelper.scaleX(0.43F) - RenderHelper.getMousePosition().x, RenderHelper.scaleY(0.53F) - RenderHelper.getMousePosition().y, entityLivingBase);
 
         Font.normal.print(this.mob.getMobName(), 7, 2);
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.biome"), 7, 12);

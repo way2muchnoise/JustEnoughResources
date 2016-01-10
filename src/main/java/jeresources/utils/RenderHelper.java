@@ -8,7 +8,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,11 +16,11 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Dimension;
 
 public class RenderHelper
 {
@@ -200,5 +199,15 @@ public class RenderHelper
 
     public static Point getMousePosition() {
         return getMousePosition(Mouse.getX(), Mouse.getY());
+    }
+
+    public static float scaleX(float x)
+    {
+        return x  * displaySize().width;
+    }
+
+    public static float scaleY(float y)
+    {
+        return y * displaySize().height;
     }
 }
