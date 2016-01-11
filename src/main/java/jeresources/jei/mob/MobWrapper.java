@@ -71,12 +71,14 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
+        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7, 58, 58, 78);
         RenderHelper.renderEntity(
                 37, 110 - offsetY, scale,
                 RenderHelper.getLeft(minecraft, recipeWidth) + 38 - RenderHelper.getMousePosition().x,
                 RenderHelper.getTop(minecraft, recipeHeight) + 80 - offsetY - RenderHelper.getMousePosition().y,
                 entityLivingBase
         );
+        RenderHelper.stopScissor();
 
         Font.normal.print(this.mob.getMobName(), 7, 2);
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.biome"), 7, 12);

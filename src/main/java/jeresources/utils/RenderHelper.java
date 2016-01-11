@@ -179,6 +179,28 @@ public class RenderHelper
         GlStateManager.disableRescaleNormal();
     }
 
+    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, int w, int h)
+    {
+        int scale = new ScaledResolution(mc).getScaleFactor();
+        x *= scale;
+        y *= scale;
+        w *= scale;
+        h *= scale;
+        float guiScaledWidth = (guiWidth * scale);
+        float guiScaledHeight = (guiHeight * scale);
+        float guiLeft = ((mc.displayWidth / 2) - guiScaledWidth / 2);
+        float guiTop = ((mc.displayHeight / 2) + guiScaledHeight / 2);
+        int scissorX = Math.round((guiLeft + x));
+        int scissorY = Math.round(((guiTop - h) - y));
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(scissorX, scissorY, w, h);
+    }
+
+    public static void stopScissor()
+    {
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+
     private static RenderManager getRenderManager()
     {
         return Minecraft.getMinecraft().getRenderManager();
