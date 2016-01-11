@@ -5,15 +5,15 @@ jer.config.itemsPerRow.description=Изменяет кол-во предмето
 jer.config.extraRange.title=Доп. дальность
 jer.config.extraRange.description=Отображает дополнительные y-уровни на графике в JEI-просмотре руд
 jer.config.dimNames.title=Использовать имена измерений
-jer.config.dimNames.description=Меняет числовые измерения на именные
+jer.config.dimNames.description=Меняет числовые обозначения измерений на именные
 jer.config.enchantsBlacklist.title=Чёрный список для зачарований
 jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Страница
 jer.of=из
-#X will either be "[max]" or "[min] - [max]"
 #Usage X jer.stacks
+#X will either be "[max]" or "[min] - [max]"
 jer.stacks=Стаков: %s
 
 jer.lightLevel=Уровень освещения
@@ -33,6 +33,7 @@ jer.dungeon.strongholdCrossing=Пересечение крепости
 jer.dungeon.villageBlacksmith=Деревенская кузница
 jer.dungeon.bonusChest=Бонусный сундук
 jer.dungeon.dungeonChest=Подземелье
+jer.dungeon.netherFortress=Крепость Нижнего мира
 
 #Enchantments View
 jer.enchantments.title=Зачарования
