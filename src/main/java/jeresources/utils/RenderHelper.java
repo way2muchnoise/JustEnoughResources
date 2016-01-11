@@ -161,6 +161,10 @@ public class RenderHelper
         Minecraft mc = Minecraft.getMinecraft();
         GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
+        GlStateManager.rotate(-30.0F, 0.0F, 1.0F, 0.0F);
+        net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
+        GlStateManager.popMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F + z);
         GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
         scale *= 50;
@@ -171,6 +175,7 @@ public class RenderHelper
         mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         mc.getBlockRendererDispatcher().renderBlockBrightness(block, 1.0F);
         GlStateManager.popMatrix();
+        net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
     }
 
