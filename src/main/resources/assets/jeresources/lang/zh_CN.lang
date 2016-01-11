@@ -4,12 +4,22 @@ jer.config.itemsPerRow.title=每行显示物品数
 jer.config.itemsPerRow.description=调整JEI面板中每行显示地牢资源的数量
 jer.config.extraRange.title=层数范围
 jer.config.extraRange.description=调整矿物生成中显示的层数最大值
+jer.config.dimNames.title=使用维度名称
+jer.config.dimNames.description=使用维度的名称而非内部编号
+jer.config.enchantsBlacklist.title=附魔黑名单
+jer.config.enchantsBlacklist.description=将特定附魔列入JEI附魔界面黑名单
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=页数
 jer.of=/
 #Usage X jer.stacks
-jer.stacks=组
+#X will either be "[max]" or "[min] - [max]"
+jer.stacks=%s组
+
+jer.lightLevel=光照等级
+jer.any=任意
+jer.dim.no=无有效生成维度
+jer.not=否
 
 #Dungeon View
 jer.dungeon.title=地牢资源
@@ -23,25 +33,25 @@ jer.dungeon.strongholdCrossing=要塞交叉走廊
 jer.dungeon.villageBlacksmith=铁匠铺
 jer.dungeon.bonusChest=奖励箱子
 jer.dungeon.dungeonChest=小型地牢
+jer.dungeon.netherFortress=下界要塞
 
 #Enchantments View
 jer.enchantments.title=可用附魔属性
 
-#Grass View
-jer.grass.title=草种掉落信息
+#Plant View
+jer.plant.title=植物掉落信息
 
 #Ore View
 jer.ore.title=矿物生成
 jer.ore.bestY=常见层数
 jer.ore.silkTouch=需要精准采集
+jer.ore.biomes=生物群系
+jer.ore.dimensions=有效生物群系
 
 #Mob View
 jer.mob.title=生物资源
 jer.mob.biome=生成群系: 将鼠标悬停在此处查看
 jer.mob.exp=掉落经验
-
-#Seed View
-jer.seed.title=种子掉落信息
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
 jer.magmaCream.text=仅小型或大型岩浆怪掉落
