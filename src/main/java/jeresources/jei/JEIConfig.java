@@ -1,5 +1,7 @@
 package jeresources.jei;
 
+import jeresources.JEResources;
+import jeresources.config.Settings;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -11,6 +13,7 @@ import jeresources.jei.ore.OreHandler;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
+import jeresources.registry.EnchantmentRegistry;
 import mezz.jei.api.*;
 
 @JEIPlugin
@@ -45,6 +48,8 @@ public class JEIConfig implements IModPlugin
     public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry)
     {
         JEIConfig.recipeRegistry = recipeRegistry;
+        JEResources.PROXY.initCompatibility();
+        EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
     }
 
     private static IRecipeRegistry recipeRegistry;

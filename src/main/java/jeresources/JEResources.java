@@ -5,11 +5,8 @@ import jeresources.config.Settings;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.MetaData;
 import jeresources.reference.Reference;
-import jeresources.registry.EnchantmentRegistry;
 import jeresources.registry.MessageRegistry;
 import jeresources.utils.LogHelper;
-import jeresources.utils.ReflectionHelper;
-import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
@@ -17,7 +14,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "after:JEI;", clientSideOnly = true)
 public class JEResources
@@ -61,12 +57,5 @@ public class JEResources
     public void loadComplete(FMLLoadCompleteEvent event)
     {
         Settings.gameLoaded = true;
-    }
-
-    @Mod.EventHandler
-    public void serverStart(FMLServerStartingEvent event)
-    {
-        PROXY.initCompatibility();
-        EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
     }
 }
