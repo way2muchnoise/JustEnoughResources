@@ -7,8 +7,18 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import thaumcraft.common.entities.monster.cult.EntityCultist;
+import thaumcraft.common.entities.monster.tainted.EntityTaintVillager;
 import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 
 import javax.annotation.Nonnull;
@@ -17,11 +27,15 @@ import java.util.List;
 
 public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
 {
-    public MobEntry mob;
+    private MobEntry mob;
+    private float scale;
+    private int offsetY;
 
     public MobWrapper(MobEntry mob)
     {
         this.mob = mob;
+        this.scale = getScale(mob.getEntity());
+        this.offsetY = getOffsetY(mob.getEntity());
     }
 
     @Override
@@ -57,10 +71,12 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
-        float scale = getScale(entityLivingBase);
-        float offsetX = entityLivingBase.height / scale;
-        if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintacle) offsetX = 50;
-        RenderHelper.renderEntity(37, 110 - (int)offsetX, scale, RenderHelper.scaleX(0.43F) - RenderHelper.getMousePosition().x, RenderHelper.scaleY(0.53F) - RenderHelper.getMousePosition().y, entityLivingBase);
+        RenderHelper.renderEntity(
+                37, 110 - offsetY, scale,
+                RenderHelper.getLeft(minecraft, recipeWidth) + 38 - RenderHelper.getMousePosition().x,
+                RenderHelper.getTop(minecraft, recipeHeight) + 80 - offsetY - RenderHelper.getMousePosition().y,
+                entityLivingBase
+        );
 
         Font.normal.print(this.mob.getMobName(), 7, 2);
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.biome"), 7, 12);
@@ -119,10 +135,11 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         float height = entityLivingBase.height;
         if (width <= height)
         {
-            if (height < 0.8) return 70.0F;
+            if (height < 0.8) return 50.0F;
             else if (height < 1) return 35.0F;
+            else if (height < 1.8) return 33.0F;
             else if (height < 2) return 32.0F;
-            else if (height < 3) return 26.0F;
+            else if (height < 3) return 24.0F;
             else if (height < 4) return 20.0F;
             else return 10.0F;
         } else
@@ -132,5 +149,21 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
             else if (width < 3) return 13.0F;
             else return 9.0F;
         }
+    }
+
+    private int getOffsetY(EntityLivingBase entityLivingBase)
+    {
+        int offsetY = 0;
+        if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintacle) offsetY = 50;
+        else if (entityLivingBase instanceof EntitySquid) offsetY = 20;
+        else if (entityLivingBase instanceof EntityWitch) offsetY = -10;
+        else if (entityLivingBase instanceof EntityGhast) offsetY = 15;
+        else if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintVillager) offsetY = -10;
+        else if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityCultist) offsetY = -10;
+        else if (entityLivingBase instanceof EntityWither) offsetY = -15;
+        else if (entityLivingBase instanceof EntityDragon) offsetY = 15;
+        else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
+        else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
+        return offsetY;
     }
 }

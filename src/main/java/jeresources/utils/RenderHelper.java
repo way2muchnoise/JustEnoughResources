@@ -90,7 +90,7 @@ public class RenderHelper
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             if (entityLivingBase instanceof EntityDragon)
             {
-                pitch = 20-pitch;
+                pitch = -pitch-80;
                 GlStateManager.rotate(yaw < 90 ? (yaw < -90 ? 90 : -yaw) : -90, 0.0F, 1.0F, 0.0F);
             }
             else pitch = -pitch;
@@ -102,7 +102,6 @@ public class RenderHelper
         if (entityLivingBase instanceof EntitySquid)
         {
             GlStateManager.rotate(50.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(-20.0F, 0.0F, 1.0F, 0.0F);
         }
         GlStateManager.rotate(-((float) Math.atan((double) (pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
         entityLivingBase.renderYawOffset = (float) Math.atan((double) (yaw / 40.0F)) * 20.0F;
@@ -201,13 +200,13 @@ public class RenderHelper
         return getMousePosition(Mouse.getX(), Mouse.getY());
     }
 
-    public static float scaleX(float x)
+    public static float getTop(Minecraft mc, int height)
     {
-        return x  * displaySize().width;
+        return (mc.currentScreen.height - height) / 2;
     }
 
-    public static float scaleY(float y)
+    public static float getLeft(Minecraft mc, int width)
     {
-        return y * displaySize().height;
+        return (mc.currentScreen.width - width) / 2;
     }
 }
