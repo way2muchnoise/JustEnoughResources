@@ -156,16 +156,19 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     private int getOffsetY(EntityLivingBase entityLivingBase)
     {
         int offsetY = 0;
-        if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintacle) offsetY = 50;
-        else if (entityLivingBase instanceof EntitySquid) offsetY = 20;
+        if (entityLivingBase instanceof EntitySquid) offsetY = 20;
         else if (entityLivingBase instanceof EntityWitch) offsetY = -10;
         else if (entityLivingBase instanceof EntityGhast) offsetY = 15;
-        else if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityTaintVillager) offsetY = -10;
-        else if (ModList.thaumcraft.isLoaded() && entityLivingBase instanceof EntityCultist) offsetY = -10;
         else if (entityLivingBase instanceof EntityWither) offsetY = -15;
         else if (entityLivingBase instanceof EntityDragon) offsetY = 15;
         else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
         else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
+        else if (ModList.thaumcraft.isLoaded())
+        {
+            if (entityLivingBase instanceof EntityTaintacle) offsetY = 50;
+            else if (entityLivingBase instanceof EntityTaintVillager) offsetY = -10;
+            else if (entityLivingBase instanceof EntityCultist) offsetY = -10;
+        }
         return offsetY;
     }
 }
