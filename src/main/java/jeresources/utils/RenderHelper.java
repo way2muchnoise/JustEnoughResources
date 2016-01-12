@@ -190,7 +190,7 @@ public class RenderHelper
         float guiScaledHeight = (guiHeight * scale);
         long guiLeft = Math.round((mc.displayWidth - guiScaledWidth) / 2.0F);
         long guiTop = Math.round((mc.displayHeight + guiScaledHeight) / 2.0F);
-        int scissorX = (int)Math.floor(guiLeft + x);
+        int scissorX = Math.round(guiLeft + x - 1);
         int scissorY = Math.round(guiTop - h - y);
         int scissorW = Math.round(w);
         int scissorH = Math.round(h);
