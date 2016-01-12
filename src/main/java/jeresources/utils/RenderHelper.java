@@ -122,9 +122,9 @@ public class RenderHelper
         GlStateManager.popMatrix();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
-        OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
-        OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     public static void renderChest(float x, float y, float rotate, float scale, float lidAngle)
