@@ -179,7 +179,7 @@ public class RenderHelper
         GlStateManager.disableRescaleNormal();
     }
 
-    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, int w, int h)
+    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, float w, float h)
     {
         int scale = new ScaledResolution(mc).getScaleFactor();
         x *= scale;
@@ -188,12 +188,14 @@ public class RenderHelper
         h *= scale;
         float guiScaledWidth = (guiWidth * scale);
         float guiScaledHeight = (guiHeight * scale);
-        float guiLeft = ((mc.displayWidth / 2) - guiScaledWidth / 2);
-        float guiTop = ((mc.displayHeight / 2) + guiScaledHeight / 2);
-        int scissorX = Math.round((guiLeft + x));
-        int scissorY = Math.round(((guiTop - h) - y));
+        long guiLeft = Math.round((mc.displayWidth - guiScaledWidth) / 2.0F);
+        long guiTop = Math.round((mc.displayHeight + guiScaledHeight) / 2.0F);
+        int scissorX = (int)Math.floor(guiLeft + x);
+        int scissorY = Math.round(guiTop - h - y);
+        int scissorW = Math.round(w);
+        int scissorH = Math.round(h);
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(scissorX, scissorY, w, h);
+        GL11.glScissor(scissorX, scissorY, scissorW, scissorH);
     }
 
     public static void stopScissor()
