@@ -72,29 +72,29 @@ public class MinecraftCompat extends CompatBase
         DropItem leather = new DropItem(Items.leather, 0, 2);
         DropItem beef = new DropItem(Items.beef, 1, 3);
         DropItem steak = new DropItem(Items.cooked_beef, 1, 3, Conditional.burning);
-        registerMob(new MobEntry(new EntityCow(world), LightLevel.any, leather, beef, steak));
+        registerMob(new MobEntry(new EntityCow(world), LightLevel.any, 1, 3, leather, beef, steak));
 
         //Mooshroom
-        registerMob(new MobEntry(new EntityMooshroom(world), LightLevel.any, leather, beef, steak));
+        registerMob(new MobEntry(new EntityMooshroom(world), LightLevel.any, 1, 3, leather, beef, steak));
 
         //Chicken
         DropItem feather = new DropItem(Items.feather, 0, 2);
         DropItem chicken = new DropItem(Items.chicken, 1, 1);
         DropItem cookedchicken = new DropItem(Items.cooked_chicken, 1, 1, Conditional.burning);
-        registerMob(new MobEntry(new EntityChicken(world), LightLevel.any, feather, chicken, cookedchicken));
+        registerMob(new MobEntry(new EntityChicken(world), LightLevel.any, 1, 3, feather, chicken, cookedchicken));
 
         //Pig
         DropItem pork = new DropItem(Items.porkchop, 1, 3);
         DropItem cookedpork = new DropItem(Items.cooked_porkchop, 1, 3, Conditional.burning);
-        registerMob(new MobEntry(new EntityPig(world), LightLevel.any, pork, cookedpork));
+        registerMob(new MobEntry(new EntityPig(world), LightLevel.any, 1, 3, pork, cookedpork));
 
         //Sheep
         DropItem wool = new DropItem(new ItemStack(Blocks.wool), 1, 1);
-        registerMob(new MobEntry(new EntitySheep(world), LightLevel.any, wool));
+        registerMob(new MobEntry(new EntitySheep(world), LightLevel.any, 1, 3, wool));
 
         //Wither
         DropItem star = new DropItem(Items.nether_star, 1, 1);
-        registerMob(new MobEntry(new EntityWither(world), LightLevel.any, star));
+        registerMob(new MobEntry(new EntityWither(world), LightLevel.any, 50, star));
 
         //End Dragon
         DropItem egg = new DropItem(new ItemStack(Blocks.dragon_egg), 1, 1);
@@ -181,7 +181,7 @@ public class MinecraftCompat extends CompatBase
         DropItem rawRabbit = new DropItem(Items.rabbit, 0, 1, Conditional.notBurning);
         DropItem cookedRabbit = new DropItem(Items.cooked_rabbit, 0, 1, Conditional.burning);
         DropItem rabbitFoot = new DropItem(new ItemStack(Items.rabbit_foot), 0.025F);
-        registerMob(new MobEntry(new EntityRabbit(world), LightLevel.any, rabbitHide, rawRabbit, rabbitFoot, cookedRabbit));
+        registerMob(new MobEntry(new EntityRabbit(world), LightLevel.any, 1, 3, rabbitHide, rawRabbit, rabbitFoot, cookedRabbit));
 
         //Guardian
         DropItem prismarineCrystal = new DropItem(Items.prismarine_crystals, 0, 1);

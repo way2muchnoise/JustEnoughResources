@@ -15,14 +15,23 @@ import java.util.List;
 public class ConfigHandler
 {
     public static Configuration config;
+    private static File configDir;
 
-    public static void init(File configFile)
+    public static void init(File configDir)
     {
         if (config == null)
         {
-            config = new Configuration(configFile);
+            configDir = new File(configDir, Reference.ID);
+            configDir.mkdir();
+            ConfigHandler.configDir = configDir;
+            config = new Configuration(new File(configDir, Reference.ID + ".cfg"));
             loadConfig();
         }
+    }
+
+    public static File getConfigDir()
+    {
+        return configDir;
     }
 
     @SubscribeEvent

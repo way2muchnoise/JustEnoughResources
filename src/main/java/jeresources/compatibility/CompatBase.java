@@ -19,13 +19,13 @@ public class CompatBase
     {
         if (mod.isLoaded())
         {
-            LogHelper.info("Loading compatibility for " + mod.toString());
+            LogHelper.info("Loading compatibility for " + mod.getName());
             CompatBase compat = (CompatBase)ReflectionHelper.initialize(mod.compatClass());
             compat.init();
             return true;
         } else
         {
-            LogHelper.info(mod.toString() + " not loaded - skipping");
+            LogHelper.info(mod.getName() + " not loaded - skipping");
         }
         return false;
     }

@@ -3,6 +3,7 @@ package jeresources.entries;
 import jeresources.api.messages.RegisterMobMessage;
 import jeresources.api.utils.DropItem;
 import jeresources.api.utils.LightLevel;
+import jeresources.utils.MobHelper;
 import jeresources.utils.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -19,21 +20,48 @@ public class MobEntry
     private List<DropItem> drops = new ArrayList<DropItem>();
     private LightLevel lightLevel;
     private List<String> biomes = new ArrayList<String>();
+    private int minExp, maxExp;
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, DropItem... drops)
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, DropItem... drops)
     {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes.addAll(Arrays.asList(biomes));
         this.drops.addAll(Arrays.asList(drops));
+        this.maxExp = maxExp;
+        this.minExp = minExp;
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, DropItem... drops)
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, DropItem... drops)
+    {
+        this(entity, lightLevel, 0, 0, biomes, drops);
+        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
+    }
+
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, DropItem... drops)
+    {
+        this(entity, lightLevel, exp, exp, biomes, drops);
+    }
+
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops)
+    {
+        this(entity, lightLevel, exp, exp, drops);
+    }
+
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops)
     {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes.add("Any");
         this.drops.addAll(Arrays.asList(drops));
+        this.maxExp = maxExp;
+        this.minExp = minExp;
+    }
+
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, DropItem... drops)
+    {
+        this(entity, lightLevel, 0, 0, drops);
+        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
     public MobEntry(RegisterMobMessage message)
@@ -93,5 +121,10 @@ public class MobEntry
         for (; i < drops.size(); i++)
             if (drops.get(i).item.isItemEqual(item)) break;
         if (i < drops.size()) drops.remove(i);
+    }
+
+    public String getExp()
+    {
+        return this.minExp + (this.maxExp == this.minExp ? "" :  " - " + this.maxExp);
     }
 }

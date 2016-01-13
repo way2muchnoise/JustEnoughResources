@@ -83,7 +83,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         Font.normal.print(this.mob.getMobName(), 7, 2);
         Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateToLocal("jer.mob.biome") : TranslationHelper.translateToLocal("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
         Font.normal.print(this.mob.getLightLevel(), 7, 22);
-        Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + MobHelper.getExpDrop(this.mob), 7, 32);
+        Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
     @Override

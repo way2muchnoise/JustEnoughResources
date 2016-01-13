@@ -58,8 +58,7 @@ public enum ModList
         return compat;
     }
 
-    @Override
-    public String toString()
+    public String getName()
     {
         return name;
     }

@@ -32,7 +32,7 @@ public class JEResources
     {
         LogHelper.info("Loading configs..");
         Settings.side = event.getSide();
-        ConfigHandler.init(event.getSuggestedConfigurationFile());
+        ConfigHandler.init(event.getModConfigurationDirectory());
         MinecraftForge.EVENT_BUS.register(new ConfigHandler());
 
         LogHelper.info("Updating ModMetaData...");
