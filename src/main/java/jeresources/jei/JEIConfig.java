@@ -48,9 +48,7 @@ public class JEIConfig implements IModPlugin
     public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry)
     {
         JEIConfig.recipeRegistry = recipeRegistry;
-        if (!Settings.initedCompat)
-            JEResources.PROXY.initCompatibility();
-        EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
+        JEResources.PROXY.initCompatibility();
     }
 
     private static IRecipeRegistry recipeRegistry;

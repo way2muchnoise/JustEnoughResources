@@ -1,15 +1,13 @@
 package jeresources.proxy;
 
 import jeresources.compatibility.Compatibility;
+import jeresources.config.Settings;
 import jeresources.entries.DungeonEntry;
 import jeresources.entries.MobEntry;
 import jeresources.entries.OreMatchEntry;
 import jeresources.entries.PlantEntry;
 import jeresources.jei.JEIConfig;
-import jeresources.registry.DungeonRegistry;
-import jeresources.registry.MobRegistry;
-import jeresources.registry.OreRegistry;
-import jeresources.registry.PlantRegistry;
+import jeresources.registry.*;
 import jeresources.utils.ModList;
 import jeresources.utils.WorldEventHelper;
 import mezz.jei.api.IRecipeRegistry;
@@ -27,7 +25,9 @@ public class CommonProxy
 
     public void initCompatibility()
     {
-        Compatibility.init();
+        if (!Settings.initedCompat)
+            Compatibility.init();
+        EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
         if (Loader.isModLoaded(ModList.Names.JEI))
         {
             IRecipeRegistry recipeRegistry = JEIConfig.getRecipeRegistry();
