@@ -30,5 +30,16 @@
   {
     "ore": "minecraft:iron_ore",
     "distrib": "5,0.06;50,0.06;60,0"
+  },
+  {
+    // This entry will only be loaded when mod with modID : randomMod is loaded
+    "mod": "randomMod",
+    // optional field
+    "silktouch": true,
+    "ore": "randomMod:random_ore",
+    // optional field item, item, ...
+    "drops": "randomMod:item1:amount,randomMod:item2:meta:amount",
+    // distrib is level,chance(1 begin 100%);level,chance...
+    "distrib": "5,0.06;50,0.06;60,0"
   }
 ]
