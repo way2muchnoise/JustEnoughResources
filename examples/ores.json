@@ -9,6 +9,26 @@
     "ore": "minecraft:redstone_ore",
     "drops": "minecraft:redstone:4",
     "silktouch": true,
-    "distrib": "5,0.008;14,0.01;17,0"
+    "distrib": "5,0.008;14,0.008;17,0"
+  },
+  {
+    "ore": "minecraft:lapis_ore",
+    "drops": "minecraft:dye:4:4",
+    "silktouch": true,
+    "distrib": "14,0.001;30,0"
+  },
+  {
+    "ore": "minecraft:diamond_ore",
+    "drops": "minecraft:diamond",
+    "silktouch": true,
+    "distrib": "5,0.001;14,0.001;17,0"
+  },
+  {
+    "ore": "minecraft:gold_ore",
+    "distrib": "5,0.0012;28,0.0012;30,0"
+  },
+  {
+    "ore": "minecraft:iron_ore",
+    "distrib": "5,0.06;50,0.06;60,0"
   }
 ]

@@ -278,6 +278,7 @@ public class DistributionHelpers
             }
             float[] ramp = getRampDistribution(min.level, max.level, min.chance, max.chance);
             addDistribution(array, ramp, points[i-1].level);
+            array[points[i-1].level] = points[i-1].chance;
             array[points[i].level] = points[i].chance;
         }
         return array;

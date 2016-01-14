@@ -44,12 +44,15 @@ public class OreAdapter
                 }
                 DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
                 List<ItemStack> dropsList = new ArrayList<>();
-                for (String drop : drops.split(","))
+                if (!drops.isEmpty())
                 {
-                    String[] dropSplit = drop.split(":");
-                    int meta = dropSplit.length < 4 ? 0 : Integer.parseInt(dropSplit[3]);
-                    int size = dropSplit.length < 3 ? 1 : dropSplit.length < 4 ? Integer.parseInt(dropSplit[2]) : Integer.parseInt(dropSplit[3]);
-                    dropsList.add(new ItemStack(GameRegistry.findItem(dropSplit[0], dropSplit[1]), size, meta));
+                    for (String drop : drops.split(","))
+                    {
+                        String[] dropSplit = drop.split(":");
+                        int meta = dropSplit.length < 4 ? 0 : Integer.parseInt(dropSplit[3]);
+                        int size = dropSplit.length < 3 ? 1 : dropSplit.length < 4 ? Integer.parseInt(dropSplit[2]) : Integer.parseInt(dropSplit[3]);
+                        dropsList.add(new ItemStack(GameRegistry.findItem(dropSplit[0], dropSplit[1]), size, meta));
+                    }
                 }
 
                 OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch, dropsList.toArray(new ItemStack[dropsList.size()])));
