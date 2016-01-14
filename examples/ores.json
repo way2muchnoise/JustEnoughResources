@@ -1,0 +1,14 @@
+[
+  {
+    "ore": "minecraft:coal_ore",
+    "drops": "minecraft:coal:4",
+    "silktouch": true,
+    "distrib": "5,0.01;55,0.01;70,0"
+  },
+  {
+    "ore": "minecraft:redstone_ore",
+    "drops": "minecraft:redstone:4",
+    "silktouch": true,
+    "distrib": "5,0.008;14,0.01;17,0"
+  }
+]
