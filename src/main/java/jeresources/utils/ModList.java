@@ -63,9 +63,9 @@ public enum ModList
         return name;
     }
 
-    public boolean initialise()
+    public boolean initialise(boolean initOres)
     {
-        return compat != null && CompatBase.load(this);
+        return compat != null && CompatBase.load(this, initOres);
     }
 
     public class Names

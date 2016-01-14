@@ -11,12 +11,14 @@ public class Compatibility
 
     public static void init()
     {
+        boolean initOres = true;
         if (Settings.useDIYdata)
         {
             OreAdapter.readEntrys();
-        } else
-            for (ModList mod : ModList.values())
-                mod.initialise();
+            initOres = false;
+        }
+        for (ModList mod : ModList.values())
+            mod.initialise(initOres);
 
         /*if (ModList.denseores.isLoaded())
         {

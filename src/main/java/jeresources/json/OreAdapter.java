@@ -16,6 +16,11 @@ import java.util.List;
 
 public class OreAdapter
 {
+    public static boolean hasOreEntry()
+    {
+        return new File(ConfigHandler.getConfigDir(), "ores.json").exists();
+    }
+
     public static boolean readEntrys()
     {
         JsonParser parser = new JsonParser();

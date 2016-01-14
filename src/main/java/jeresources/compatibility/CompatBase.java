@@ -12,16 +12,16 @@ import jeresources.utils.ReflectionHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-public class CompatBase
+public abstract class CompatBase
 {
     protected static World world = DimensionManager.getWorld(0);
-    public static boolean load(ModList mod)
+    public static boolean load(ModList mod, boolean initOres)
     {
         if (mod.isLoaded())
         {
             LogHelper.info("Loading compatibility for " + mod.getName());
             CompatBase compat = (CompatBase)ReflectionHelper.initialize(mod.compatClass());
-            compat.init();
+            compat.init(initOres);
             return true;
         } else
         {
@@ -30,9 +30,7 @@ public class CompatBase
         return false;
     }
 
-    protected void init()
-    {
-    }
+    protected abstract void init(boolean initOres);
 
     public void registerMob(MobEntry entry)
     {

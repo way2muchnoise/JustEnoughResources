@@ -28,9 +28,10 @@ public class ThaumcraftCompat extends CompatBase
 {
 
     @Override
-    protected void init()
+    protected void init(boolean initOres)
     {
-        registerThaumcraftOres();
+        if (initOres)
+            registerThaumcraftOres();
         registerThaumcraftMobs();
     }
 

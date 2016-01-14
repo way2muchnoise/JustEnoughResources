@@ -36,12 +36,15 @@ import java.util.HashMap;
 public class MinecraftCompat extends CompatBase
 {
     @Override
-    protected void init()
+    protected void init(boolean initOres)
     {
         registerVanillaMobs();
         registerDungeonLoot();
-        registerOres();
-        registerVanillaOreDrops();
+        if (initOres)
+        {
+            registerOres();
+            registerVanillaOreDrops();
+        }
         registerVanillaPlants();
     }
 
