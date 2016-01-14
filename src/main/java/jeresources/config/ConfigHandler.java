@@ -84,10 +84,8 @@ public class ConfigHandler
         Settings.excludedEnchants = prop.getStringList();
 
         if (config.hasChanged())
-        {
             config.save();
-            Settings.reload();
-        }
+        Settings.reload();
     }
 
     @SuppressWarnings("unchecked")
