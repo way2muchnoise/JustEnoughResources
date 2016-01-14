@@ -67,7 +67,7 @@ public class OreMatchEntry
         for (OreEntry entry:oreSet)
         {
             DistributionBase distribution = entry.getDistribution();
-            int i = 0;
+            int i = -1;
             for (float chance : distribution.getDistribution())
             {
                 if (++i == chances.length) break;

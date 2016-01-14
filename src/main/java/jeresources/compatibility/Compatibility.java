@@ -1,6 +1,7 @@
 package jeresources.compatibility;
 
 import jeresources.config.Settings;
+import jeresources.json.OreAdapter;
 import jeresources.registry.MessageRegistry;
 import jeresources.utils.ModList;
 
@@ -10,10 +11,12 @@ public class Compatibility
 
     public static void init()
     {
-        for (ModList mod : ModList.values())
+        if (Settings.useDIYdata)
         {
-            mod.initialise();
-        }
+            OreAdapter.readEntrys();
+        } else
+            for (ModList mod : ModList.values())
+                mod.initialise();
 
         /*if (ModList.denseores.isLoaded())
         {

@@ -52,6 +52,8 @@ public class ConfigHandler
 
         Settings.useDimNames = config.getBoolean(TranslationHelper.translateToLocal("jer.config.dimNames.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("jer.config.dimNames.description"));
 
+        Settings.useDIYdata = config.getBoolean(TranslationHelper.translateToLocal("jer.config.diyData.title"), Configuration.CATEGORY_GENERAL, false, TranslationHelper.translateToLocal("jer.config.diyData.description"));
+
         Settings.excludedEnchants = config.getStringList(TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.title"), Configuration.CATEGORY_GENERAL, new String[] { "flimflam" }, TranslationHelper.translateToLocal("jer.config.echantsBlacklist.description"));
 
         if (config.hasChanged())

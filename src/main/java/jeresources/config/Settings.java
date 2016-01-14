@@ -12,7 +12,8 @@ public final class Settings
     public static int EXTRA_RANGE;
     public static Side side;
     public static boolean useDimNames;
-    
+    public static boolean useDIYdata;
+
     public static String[] excludedEnchants;
     public static boolean gameLoaded = false;
     public static boolean initedCompat = false;

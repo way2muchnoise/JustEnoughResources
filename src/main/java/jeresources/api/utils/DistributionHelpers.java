@@ -1,5 +1,10 @@
 package jeresources.api.utils;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 public class DistributionHelpers
 {
     public static final float PI = 3.14159265359F;
@@ -76,21 +81,28 @@ public class DistributionHelpers
     /**
      * @param minY      first occurrence
      * @param maxY      last occurrence
+     * @param minChance change at the bottom of the ramp
      * @param maxChance chance at the top of the ramp
      * @return an array of floats with length |maxY - minY| in ramp distribution
      */
-    public static float[] getRampDistribution(int minY, int maxY, float maxChance)
+    public static float[] getRampDistribution(int minY, int maxY, float minChance, float maxChance)
     {
         if (minY == maxY) return new float[0];
-        if (minY > maxY) return reverse(getRampDistribution(maxY, minY, maxChance));
+        if (minY > maxY) return reverse(getRampDistribution(maxY, minY, minChance, maxChance));
 
         int range = maxY - minY;
+        float chanceDiff = maxChance - minChance;
         float[] result = new float[range + 1];
         for (int i = 0; i < range; i++)
         {
-            result[i] = (maxChance * (float) i) / range;
+            result[i] = minChance + (chanceDiff * (float) i) / range;
         }
         return result;
+    }
+
+    public static float[] getRampDistribution(int minY, int maxY, float maxChance)
+    {
+        return getRampDistribution(minY, maxY, 0, maxChance);
     }
 
     public static float[] getOverworldSurfaceDistribution(int oreDiameter)
@@ -242,5 +254,50 @@ public class DistributionHelpers
     public static float calculateChance(int veinCount, int veinSize, int minY, int maxY)
     {
         return ((float) veinCount * veinSize) / ((maxY - minY + 1) * 256);
+    }
+
+    public static float[] getDistributionFromPoints(OrePoint... points)
+    {
+        Set<OrePoint> set = new TreeSet<>();
+        Collections.addAll(set, points);
+        points = set.toArray(new OrePoint[set.size()]);
+        float[] array = new float[256];
+        addDistribution(array, getRampDistribution(0, points[0].level, points[0].chance));
+        for (int i = 1; i < points.length;  i++)
+        {
+            OrePoint min, max;
+            if (points[i-1].chance <= points[i].chance)
+            {
+                min = points[i-1];
+                max = points[i];
+            }
+            else
+            {
+                max = points[i-1];
+                min = points[i];
+            }
+            float[] ramp = getRampDistribution(min.level, max.level, min.chance, max.chance);
+            addDistribution(array, ramp, points[i-1].level);
+            array[points[i].level] = points[i].chance;
+        }
+        return array;
+    }
+
+    public static class OrePoint implements Comparable<OrePoint>
+    {
+        private final int level;
+        private final float chance;
+
+        public OrePoint(int level, float chance)
+        {
+            this.level = level;
+            this.chance = chance;
+        }
+
+        @Override
+        public int compareTo(OrePoint o)
+        {
+            return this.level - o.level;
+        }
     }
 }
