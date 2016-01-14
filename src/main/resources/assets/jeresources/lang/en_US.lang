@@ -9,7 +9,7 @@ jer.config.dimNames.description=Set use of Dimension names instead of numbers
 jer.config.enchantsBlacklist.title=Enchants Blacklist
 jer.config.enchantsBlacklist.description=Blacklist enchants from the JEI Enchants View
 jer.config.diyData.title=Use DIY data in the views
-jer.config.diyData.description=The build in compat code will not load and jsons will be loaded
+jer.config.diyData.description=The build in compat code will not load and jsons will be loaded (requires MC restart)
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Page

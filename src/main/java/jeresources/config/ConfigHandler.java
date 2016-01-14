@@ -4,6 +4,7 @@ import jeresources.reference.Reference;
 import jeresources.utils.TranslationHelper;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -45,20 +46,48 @@ public class ConfigHandler
 
     private static void loadConfig()
     {
-        Settings.ITEMS_PER_COLUMN = config.getInt(TranslationHelper.translateToLocal("jer.config.itemsPerColumn.title"), Configuration.CATEGORY_GENERAL, 4, 1, 4, TranslationHelper.translateToLocal("jer.config.itemsPerColumn.description"));
-        Settings.ITEMS_PER_ROW = config.getInt(TranslationHelper.translateToLocal("jer.config.itemsPerRow.title"), Configuration.CATEGORY_GENERAL, 4, 1, 4, TranslationHelper.translateToLocal("jer.config.itemsPerRow.description"));
+        Property prop;
 
-        Settings.EXTRA_RANGE = config.getInt(TranslationHelper.translateToLocal("jer.config.extraRange.title"), Configuration.CATEGORY_GENERAL, 3, 0, 25, TranslationHelper.translateToLocal("jer.config.extraRange.description"));
+        prop = config.get(Configuration.CATEGORY_GENERAL, "itemsPerColumn", 4);
+        prop.comment = TranslationHelper.translateToLocal("jer.config.itemsPerColumn.description");
+        prop.setMinValue(1).setMaxValue(4);
+        prop.setLanguageKey("jer.config.itemsPerColumn.title");
+        Settings.ITEMS_PER_COLUMN = prop.getInt();
 
-        Settings.useDimNames = config.getBoolean(TranslationHelper.translateToLocal("jer.config.dimNames.title"), Configuration.CATEGORY_GENERAL, true, TranslationHelper.translateToLocal("jer.config.dimNames.description"));
+        prop = config.get(Configuration.CATEGORY_GENERAL, "itemsPerRow", 4);
+        prop.comment = TranslationHelper.translateToLocal("jer.config.itemsPerRow.description");
+        prop.setMinValue(1).setMaxValue(4);
+        prop.setLanguageKey("jer.config.itemsPerRow.title");
+        Settings.ITEMS_PER_ROW = prop.getInt();
 
-        Settings.useDIYdata = config.getBoolean(TranslationHelper.translateToLocal("jer.config.diyData.title"), Configuration.CATEGORY_GENERAL, false, TranslationHelper.translateToLocal("jer.config.diyData.description"));
+        prop = config.get(Configuration.CATEGORY_GENERAL, "extraRange", 3);
+        prop.comment = TranslationHelper.translateToLocal("jer.config.extraRange.description");
+        prop.setMinValue(0).setMaxValue(25);
+        prop.setLanguageKey("jer.config.extraRange.title");
+        Settings.EXTRA_RANGE = prop.getInt();
 
-        Settings.excludedEnchants = config.getStringList(TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.title"), Configuration.CATEGORY_GENERAL, new String[] { "flimflam" }, TranslationHelper.translateToLocal("jer.config.echantsBlacklist.description"));
+        prop = config.get(Configuration.CATEGORY_GENERAL, "dimNames", true);
+        prop.comment = TranslationHelper.translateToLocal("jer.config.dimNames.description");
+        prop.setLanguageKey("jer.config.dimNames.title");
+        Settings.useDimNames = prop.getBoolean();
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "diyData", true);
+        prop.comment = TranslationHelper.translateToLocal("jer.config.diyData.description");
+        prop.setLanguageKey("jer.config.diyData.title");
+        prop.requiresMcRestart();
+        Settings.useDIYdata = prop.getBoolean();
+
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[] { "flimflam" });
+        prop.comment = TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description");
+        prop.setLanguageKey("jer.config.enchantsBlacklist.title");
+        Settings.excludedEnchants = prop.getStringList();
 
         if (config.hasChanged())
+        {
             config.save();
-        Settings.reload();
+            Settings.reload();
+        }
     }
 
     @SuppressWarnings("unchecked")
