@@ -98,7 +98,7 @@ public class ThaumcraftCompat extends CompatBase
     @Optional.Method(modid = ModList.Names.THAUMCRAFT)
     private void genAmber()
     {
-        int minY = 0;
+        int minY = 1;
         int maxY = 64;
         float maxYRange = 25;
         float numVeins = 20F;
@@ -112,7 +112,7 @@ public class ThaumcraftCompat extends CompatBase
     @Optional.Method(modid = ModList.Names.THAUMCRAFT)
     private void genCinnabar()
     {
-        int minY = 0;
+        int minY = 1;
         int maxY = 64 / 5;
         float numVeins = 18F;
         float chance = numVeins / (maxY * 256);
