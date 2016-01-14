@@ -7,7 +7,10 @@ import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.DistributionHelpers;
 import jeresources.config.ConfigHandler;
 import jeresources.registry.OreRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.*;
@@ -32,6 +35,12 @@ public class OreAdapter
             for (int i = 0; i < array.size(); i++)
             {
                 JsonObject obj = array.get(i).getAsJsonObject();
+
+                JsonElement element = obj.get("mod"); // use of "mod": "modID"
+                if (element != null)
+                    if (!Loader.isModLoaded(element.getAsString())) // when modID is not loaded skip item
+                        continue;
+
                 String ore = obj.get("ore").getAsString();
                 String distrib = obj.get("distrib").getAsString();
                 JsonElement dropsElement = obj.get("drops");
@@ -39,7 +48,9 @@ public class OreAdapter
                 JsonElement silk = obj.get("silktouch");
                 boolean silktouch = silk != null && silk.getAsBoolean();
 
-                ItemStack oreStack = new ItemStack(GameRegistry.findBlock(ore.split(":")[0], ore.split(":")[1]));
+                Block oreBlock =GameRegistry.findBlock(ore.split(":")[0], ore.split(":")[1]);
+                if (oreBlock == null) continue;
+                ItemStack oreStack = new ItemStack(oreBlock);
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";"))
                 {
@@ -56,7 +67,9 @@ public class OreAdapter
                         String[] dropSplit = drop.split(":");
                         int meta = dropSplit.length < 4 ? 0 : Integer.parseInt(dropSplit[3]);
                         int size = dropSplit.length < 3 ? 1 : dropSplit.length < 4 ? Integer.parseInt(dropSplit[2]) : Integer.parseInt(dropSplit[3]);
-                        dropsList.add(new ItemStack(GameRegistry.findItem(dropSplit[0], dropSplit[1]), size, meta));
+                        Item item = GameRegistry.findItem(dropSplit[0], dropSplit[1]);
+                        if (item == null) continue;
+                        dropsList.add(new ItemStack(item, size, meta));
                     }
                 }
 
