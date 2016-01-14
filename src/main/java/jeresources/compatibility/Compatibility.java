@@ -14,8 +14,11 @@ public class Compatibility
         boolean initOres = true;
         if (Settings.useDIYdata)
         {
-            OreAdapter.readEntrys();
-            initOres = false;
+            if (OreAdapter.hasOreEntry())
+            {
+                OreAdapter.readEntrys();
+                initOres = false;
+            }
         }
         for (ModList mod : ModList.values())
             mod.initialise(initOres);
