@@ -25,7 +25,6 @@ public class ProfilingAdapter
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < entry.getValue().length; i++)
                     sb.append(i).append(",").append(entry.getValue()[i]).append(";");
-                sb.setLength(sb.length()-1);
                 writer.name("distrib").value(sb.toString());
                 writer.endObject();
             }
