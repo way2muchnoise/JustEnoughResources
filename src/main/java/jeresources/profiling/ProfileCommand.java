@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -30,6 +31,7 @@ public class ProfileCommand extends CommandBase
     {
         if (args.length == 1)
         {
+            if (!Minecraft.getMinecraft().isSingleplayer()) throw new WrongUsageException("can't use command in multiplayer");
             int chunks;
             try
             {
