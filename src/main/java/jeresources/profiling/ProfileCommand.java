@@ -4,7 +4,6 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatComponentText;
 
 public class ProfileCommand extends CommandBase
 {
@@ -21,6 +20,12 @@ public class ProfileCommand extends CommandBase
     }
 
     @Override
+    public int getRequiredPermissionLevel()
+    {
+        return 4;
+    }
+
+    @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
         if (args.length == 1)
@@ -34,7 +39,7 @@ public class ProfileCommand extends CommandBase
                 throw new WrongUsageException("[chunks] has to be a positive integer");
             }
             if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
-            sender.addChatMessage(new ChatComponentText(Profiler.profileChunks(sender.getEntityWorld(), sender.getPosition(), chunks)));
+            new Thread(new Profiler(sender, chunks)).start();
         } else
         {
             throw new WrongUsageException(getCommandUsage(sender));

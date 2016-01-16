@@ -10,20 +10,23 @@ import java.util.concurrent.ConcurrentMap;
 
 public class ChunkProfiler implements Runnable
 {
-    private Chunk chunk;
+    private final ProfilingTimer timer;
+    private final Chunk chunk;
     private ConcurrentMap<Block, Integer[]> map;
-    public static int CHUNK_SIZE = 16;
-    public static int CHUNK_HEIGHT = 256;
+    public static final int CHUNK_SIZE = 16;
+    public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(Chunk chunk, ConcurrentMap<Block, Integer[]> map)
+    public ChunkProfiler(Chunk chunk, ConcurrentMap<Block, Integer[]> map, ProfilingTimer timer)
     {
         this.chunk = chunk;
         this.map = map;
+        this.timer = timer;
     }
 
     @Override
     public void run()
     {
+        timer.startChunk();
         Map<Block, Integer[]> temp = new HashMap<>();
         for (int y = 0; y < CHUNK_HEIGHT; y++)
             for (int i = 0; i < CHUNK_SIZE; i++)
@@ -51,5 +54,6 @@ public class ChunkProfiler implements Runnable
                 array[i] += entry.getValue()[i];
             this.map.put(entry.getKey(), array);
         }
+        timer.endChunk();
     }
 }

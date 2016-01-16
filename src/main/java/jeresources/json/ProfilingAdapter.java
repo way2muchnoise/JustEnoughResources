@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class ProfilingAdapter
 {
-    public static void write(Map<Block, Float[]> data)
+    public static void write(final Map<Block, Float[]> data)
     {
         try
         {
@@ -29,6 +29,7 @@ public class ProfilingAdapter
                 writer.endObject();
             }
             writer.endArray();
+            writer.flush();
         } catch (IOException e)
         {
             e.printStackTrace();
