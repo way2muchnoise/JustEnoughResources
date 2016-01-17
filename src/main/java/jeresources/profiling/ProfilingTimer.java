@@ -7,17 +7,18 @@ import net.minecraft.util.ChatComponentText;
 public class ProfilingTimer
 {
     private final long start;
-    private final long blocks;
     private final ICommandSender sender;
-    private int chunkCounter, threadCounter;
+    private int chunkCounter, threadCounter, totalChunks;
+    private boolean completed;
 
-    public ProfilingTimer(ICommandSender sender, long blocks)
+    public ProfilingTimer(ICommandSender sender, int width)
     {
         this.start = System.currentTimeMillis();
         this.sender = sender;
-        this.blocks = blocks;
         this.chunkCounter = 0;
         this.threadCounter = 0;
+        this.completed = false;
+        this.totalChunks = width * width;
     }
 
     public void startChunk()
@@ -30,12 +31,20 @@ public class ProfilingTimer
         threadCounter--;
         if (++chunkCounter % 100 == 0)
             sendSpeed(true);
+        if (totalChunks == chunkCounter)
+            completed = true;
     }
 
-    public void completed()
+    public void complete()
     {
+        completed = true;
         sendSpeed(false);
-        send("Completed profiling of " + (blocks * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " + (System.currentTimeMillis() - start) + " ms saved to blocks.json");
+        send("Completed profiling of " + (getBlocksPerLayer() * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " + (System.currentTimeMillis() - start) + " ms saved to blocks.json");
+    }
+
+    public synchronized boolean isCompleted()
+    {
+        return completed;
     }
 
     private void send(String s)
@@ -51,5 +60,10 @@ public class ProfilingTimer
             send(message);
         else
             LogHelper.info(message);
+    }
+
+    public long getBlocksPerLayer()
+    {
+        return chunkCounter * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
     }
 }

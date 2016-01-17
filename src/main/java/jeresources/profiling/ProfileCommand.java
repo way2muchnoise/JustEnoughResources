@@ -17,7 +17,7 @@ public class ProfileCommand extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "profile [chunks]";
+        return "profile [chunks|stop]";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ProfileCommand extends CommandBase
                 throw new WrongUsageException("[chunks] has to be a positive integer");
             }
             if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
-            new Thread(new Profiler(sender, chunks)).start();
+            if(!Profiler.init(sender, chunks)) throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
         } else
         {
             throw new WrongUsageException(getCommandUsage(sender));
