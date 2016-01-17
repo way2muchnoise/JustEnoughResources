@@ -20,6 +20,7 @@ public class ChunkGetter implements Runnable
     @Override
     public void run()
     {
-        Profiler.newChunkProfiler(world.getChunkFromBlockCoords(origin.add(x * ChunkProfiler.CHUNK_SIZE, 0, z * ChunkProfiler.CHUNK_SIZE)));
+        Profiler.newChunkProfiler(this.world.getChunkFromBlockCoords(
+                this.origin.add(this.x * ChunkProfiler.CHUNK_SIZE, 0, this.z * ChunkProfiler.CHUNK_SIZE)));
     }
 }

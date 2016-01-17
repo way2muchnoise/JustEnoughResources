@@ -28,32 +28,30 @@ public class Profiler implements Runnable
     {
         this.sender = sender;
         this.executor = Executors.newFixedThreadPool(5);
-        map = new ConcurrentHashMap<>();
-        width = (int)Math.round(Math.sqrt(chunks));
-        this.timer = new ProfilingTimer(sender, width);
+        this.map = new ConcurrentHashMap<>();
+        this.width = (int)Math.round(Math.sqrt(chunks));
+        this.timer = new ProfilingTimer(sender, this.width);
     }
 
     @Override
     public void run()
     {
-        WorldServer world = (WorldServer) sender.getEntityWorld();
-        int offset = width / 2;
+        WorldServer world = (WorldServer) this.sender.getEntityWorld();
+        int offset = this.width / 2;
         if (Loader.isModLoaded(ModList.Names.THAUMCRAFT))
             Thaumcraft.proxy.getAuraThread().stop();
-        for (int i = 0; i < width; i++)
-            for (int j = 0; j < width; j++)
-                world.addScheduledTask(new ChunkGetter(world, sender.getPosition(), i - offset, j - offset));
-        while (!timer.isCompleted()) {}
+        for (int i = 0; i < this.width; i++)
+            for (int j = 0; j < this.width; j++)
+                world.addScheduledTask(new ChunkGetter(world, this.sender.getPosition(), i - offset, j - offset));
+        while (!this.timer.isCompleted()) {}
         this.executor.shutdown();
         while (!this.executor.isTerminated()) {}
-        if (Loader.isModLoaded(ModList.Names.THAUMCRAFT))
-            Thaumcraft.proxy.getAuraThread().run();
         Map<Block, Float[]> distribs = new HashMap<>();
         for (Map.Entry<Block, Integer[]> entry : this.map.entrySet())
         {
             Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
             for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
-                array[i] = entry.getValue()[i] * 1.0F / timer.getBlocksPerLayer();
+                array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer();
             distribs.put(entry.getKey(), array);
         }
         ProfilingAdapter.write(distribs);
@@ -62,7 +60,7 @@ public class Profiler implements Runnable
 
     private void addChunkProfiler(Chunk chunk)
     {
-        executor.execute(new ChunkProfiler(chunk, map, timer));
+        this.executor.execute(new ChunkProfiler(chunk, this.map, this.timer));
     }
 
     public static void newChunkProfiler(Chunk chunk)

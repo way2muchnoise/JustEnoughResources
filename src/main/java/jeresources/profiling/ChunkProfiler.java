@@ -26,7 +26,7 @@ public class ChunkProfiler implements Runnable
     @Override
     public void run()
     {
-        timer.startChunk();
+        this.timer.startChunk();
         Map<Block, Integer[]> temp = new HashMap<>();
         for (int y = 0; y < CHUNK_HEIGHT; y++)
             for (int i = 0; i < CHUNK_SIZE; i++)
@@ -54,6 +54,6 @@ public class ChunkProfiler implements Runnable
                 array[i] += entry.getValue()[i];
             this.map.put(entry.getKey(), array);
         }
-        timer.endChunk();
+        this.timer.endChunk();
     }
 }
