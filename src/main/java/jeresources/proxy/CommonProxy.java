@@ -12,17 +12,11 @@ import jeresources.utils.ModList;
 import jeresources.utils.WorldEventHelper;
 import mezz.jei.api.IRecipeRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 
 public class CommonProxy
 {
-    public World getClientWorld()
-    {
-        return null;
-    }
-
     public void initCompatibility()
     {
         if (!Settings.initedCompat)
