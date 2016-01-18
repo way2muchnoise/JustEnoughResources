@@ -1,53 +1,87 @@
 package jeresources.profiling;
 
-import jeresources.json.ProfilingAdapter;
-import jeresources.utils.ModList;
-import net.minecraft.block.Block;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.Loader;
-import thaumcraft.common.Thaumcraft;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import net.minecraft.command.ICommandSender;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+
+import net.minecraftforge.fml.common.Loader;
+
+import jeresources.compatibility.thaumcraft.ThaumcraftCompat;
+import jeresources.json.ProfilingAdapter;
+import jeresources.utils.ModList;
 
 public class Profiler implements Runnable
 {
     private final ExecutorService executor;
-    private final ConcurrentMap<Block, Integer[]> map;
+    private final ConcurrentMap<String, Integer[]> map;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
-    private final int width;
+    private final int chunkCount;
 
-    private Profiler(ICommandSender sender, int chunks)
+    private Profiler(ICommandSender sender, int chunkCount)
     {
         this.sender = sender;
-        this.executor = Executors.newFixedThreadPool(5);
+        final int processors = Runtime.getRuntime().availableProcessors();
+        this.executor = Executors.newFixedThreadPool(processors - 1);
         this.map = new ConcurrentHashMap<>();
-        this.width = (int)Math.round(Math.sqrt(chunks));
-        this.timer = new ProfilingTimer(sender, this.width);
+        this.chunkCount = chunkCount;
+        this.timer = new ProfilingTimer(sender, chunkCount);
     }
 
     @Override
     public void run()
     {
-        WorldServer world = (WorldServer) this.sender.getEntityWorld();
-        int offset = this.width / 2;
         if (Loader.isModLoaded(ModList.Names.THAUMCRAFT))
-            Thaumcraft.proxy.getAuraThread().stop();
-        for (int i = 0; i < this.width; i++)
-            for (int j = 0; j < this.width; j++)
-                world.addScheduledTask(new ChunkGetter(world, this.sender.getPosition(), i - offset, j - offset));
-        while (!this.timer.isCompleted()) {}
-        this.executor.shutdown();
-        while (!this.executor.isTerminated()) {}
-        Map<Block, Float[]> distribs = new HashMap<>();
-        for (Map.Entry<Block, Integer[]> entry : this.map.entrySet())
+            ThaumcraftCompat.stopAuraThread();
+
+        WorldServer world = (WorldServer) this.sender.getEntityWorld();
+        DummyWorld dummyWorld = new DummyWorld(world);
+        dummyWorld.init();
+        final int chunkGetterCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
+        for (int i = 0; i < chunkGetterCount; i++) {
+            dummyWorld.addScheduledTask(new ChunkGetter(dummyWorld, this));
+        }
+
+        dummyWorld.addScheduledTask(new Runnable() {
+            @Override
+            public void run() {
+                executor.shutdown();
+            }
+        });
+
+        while (true) {
+            try {
+                if (executor.awaitTermination(10, TimeUnit.SECONDS)) {
+                    break;
+                }
+            } catch (InterruptedException ex) {
+                // continue waiting
+            }
+        }
+
+        writeData();
+
+        this.timer.complete();
+    }
+
+    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks)
+    {
+        this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.map, this.timer));
+    }
+
+    private void writeData()
+    {
+        Map<String, Float[]> distribs = new HashMap<>();
+        for (Map.Entry<String, Integer[]> entry : this.map.entrySet())
         {
             Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
             for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
@@ -55,18 +89,6 @@ public class Profiler implements Runnable
             distribs.put(entry.getKey(), array);
         }
         ProfilingAdapter.write(distribs);
-        this.timer.complete();
-    }
-
-    private void addChunkProfiler(Chunk chunk)
-    {
-        this.executor.execute(new ChunkProfiler(chunk, this.map, this.timer));
-    }
-
-    public static void newChunkProfiler(Chunk chunk)
-    {
-        if (currentProfiler != null)
-            currentProfiler.addChunkProfiler(chunk);
     }
 
     private static Profiler currentProfiler;
@@ -76,6 +98,13 @@ public class Profiler implements Runnable
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
         currentProfiler = new Profiler(sender, chunks);
         new Thread(currentProfiler).start();
+        return true;
+    }
+
+    public static boolean stop() {
+        if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
+        currentProfiler.executor.shutdownNow();
+        currentProfiler.writeData();
         return true;
     }
 }

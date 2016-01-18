@@ -32,6 +32,13 @@ public class ProfileCommand extends CommandBase
         if (args.length == 1)
         {
             if (!Minecraft.getMinecraft().isSingleplayer()) throw new WrongUsageException("can't use command in multiplayer");
+
+            if ("stop".equals(args[0])) {
+                if (!Profiler.stop()) {
+                    throw new WrongUsageException("Not profiling, run \"/profile [chunks]\" to start");
+                }
+            }
+
             int chunks;
             try
             {

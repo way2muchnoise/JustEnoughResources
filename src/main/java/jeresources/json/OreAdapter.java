@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -48,9 +49,12 @@ public class OreAdapter
                 JsonElement silk = obj.get("silktouch");
                 boolean silktouch = silk != null && silk.getAsBoolean();
 
-                Block oreBlock =GameRegistry.findBlock(ore.split(":")[0], ore.split(":")[1]);
+                String[] oreParts = ore.split(":");
+
+                Block oreBlock =GameRegistry.findBlock(oreParts[0], oreParts[1]);
                 if (oreBlock == null) continue;
-                ItemStack oreStack = new ItemStack(oreBlock);
+                int oreMeta = oreParts.length == 3 ? Integer.parseInt(oreParts[2]) : 0;
+                ItemStack oreStack = new ItemStack(oreBlock, 1, oreMeta);
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";"))
                 {

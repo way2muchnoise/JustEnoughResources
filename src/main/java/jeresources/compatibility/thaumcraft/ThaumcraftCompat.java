@@ -15,6 +15,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityBrainyZombie;
 import thaumcraft.common.entities.monster.EntityMindSpider;
@@ -118,5 +120,9 @@ public class ThaumcraftCompat extends CompatBase
         float chance = numVeins / (maxY * 256);
         ItemStack ore = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_cinnabar"));
         registerOre(new RegisterOreMessage(ore, new DistributionSquare(minY, maxY, chance)));
+    }
+
+    public static void stopAuraThread() {
+        Thaumcraft.proxy.getAuraThread().stop();
     }
 }
