@@ -6,23 +6,24 @@ import net.minecraft.util.ChatComponentText;
 
 public class ProfilingTimer
 {
-    private final long start;
+    private long start;
     private final ICommandSender sender;
     private int chunkCounter, threadCounter, totalChunks;
     private boolean completed;
 
-    public ProfilingTimer(ICommandSender sender, int width)
+    public ProfilingTimer(ICommandSender sender, int chunkCount)
     {
-        this.start = System.currentTimeMillis();
         this.sender = sender;
         this.chunkCounter = 0;
         this.threadCounter = 0;
         this.completed = false;
-        this.totalChunks = width * width;
+        this.totalChunks = chunkCount;
     }
 
     public void startChunk()
     {
+        if (this.start == 0)
+            this.start = System.currentTimeMillis();
         this.threadCounter++;
     }
 

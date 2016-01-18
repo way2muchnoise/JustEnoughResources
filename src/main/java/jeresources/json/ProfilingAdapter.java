@@ -11,17 +11,17 @@ import java.util.Map;
 
 public class ProfilingAdapter
 {
-    public static void write(final Map<Block, Float[]> data)
+    public static void write(final Map<String, Float[]> data)
     {
         try
         {
             JsonWriter writer = new JsonWriter(new FileWriter(new File(ConfigHandler.getConfigDir(), "blocks.json")));
             writer.setIndent("\t");
             writer.beginArray();
-            for (Map.Entry<Block, Float[]> entry : data.entrySet())
+            for (Map.Entry<String, Float[]> entry : data.entrySet())
             {
                 writer.beginObject();
-                writer.name("block").value(entry.getKey().getRegistryName());
+                writer.name("block").value(entry.getKey());
                 StringBuilder sb = new StringBuilder();
                 sb.append(0).append(",").append(entry.getValue()[0]).append(";");
                 for (int i = 1; i < entry.getValue().length; i++)
