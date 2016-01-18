@@ -47,9 +47,8 @@ public class Profiler implements Runnable
         DummyWorld dummyWorld = new DummyWorld(world);
         dummyWorld.init();
         final int chunkGetterCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-        for (int i = 0; i < chunkGetterCount; i++) {
+        for (int i = 0; i < chunkGetterCount; i++)
             dummyWorld.addScheduledTask(new ChunkGetter(dummyWorld, this));
-        }
 
         dummyWorld.addScheduledTask(new Runnable() {
             @Override
