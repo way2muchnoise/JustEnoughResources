@@ -92,9 +92,9 @@ public class DungeonRegistry
         int max = entry.getMaxStacks();
         int min = entry.getMinStacks();
         if (min == max) return String.format(TranslationHelper.translateToLocal("jer.stacks"), max);
-        return  String.format(TranslationHelper.translateToLocal("jer.stacks"), min + " - " + max);
+        return String.format(TranslationHelper.translateToLocal("jer.stacks"), min + " - " + max);
     }
-    
+
     public void clear()
     {
         instance = new DungeonRegistry();

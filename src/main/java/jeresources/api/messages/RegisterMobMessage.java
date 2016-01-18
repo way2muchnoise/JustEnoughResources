@@ -26,12 +26,12 @@ public class RegisterMobMessage extends RegistryMessage
 
     public RegisterMobMessage(Class clazz, LightLevel level, DropItem[] drops)
     {
-        this(Priority.FIRST,clazz,level,drops);
+        this(Priority.FIRST, clazz, level, drops);
     }
 
     public RegisterMobMessage(Priority priority, Class clazz, LightLevel level, DropItem[] drops)
     {
-        super(priority,true);
+        super(priority, true);
         this.mobClass = clazz;
         this.lightLevel = level;
         this.drops = drops;

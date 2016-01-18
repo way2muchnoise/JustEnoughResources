@@ -35,9 +35,10 @@ public class RemoveMobMessage extends RegistryMessage
     {
         this(Priority.FIRST, clazz, strict, witherSkeleton);
     }
+
     public RemoveMobMessage(Priority priority, Class clazz, boolean strict, boolean witherSkeleton)
     {
-        super(priority,false);
+        super(priority, false);
         this.filterClass = clazz;
         this.strict = strict;
         this.witherSkeleton = witherSkeleton;

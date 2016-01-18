@@ -15,7 +15,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityBrainyZombie;
@@ -122,7 +121,8 @@ public class ThaumcraftCompat extends CompatBase
         registerOre(new RegisterOreMessage(ore, new DistributionSquare(minY, maxY, chance)));
     }
 
-    public static void stopAuraThread() {
+    public static void stopAuraThread()
+    {
         Thaumcraft.proxy.getAuraThread().stop();
     }
 }

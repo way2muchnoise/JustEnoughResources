@@ -50,7 +50,7 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaOreDrops()
     {
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new ItemStack(Items.clay_ball,4)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new ItemStack(Items.clay_ball, 4)));
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.clay), Priority.FIRST, new ItemStack(Items.clay_ball, 4)));
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.coal_ore), Priority.FIRST, new ItemStack(Items.coal)));
         MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.diamond_ore), Priority.FIRST, new ItemStack(Items.diamond)));
@@ -228,29 +228,29 @@ public class MinecraftCompat extends CompatBase
     private void registerVanillaPlants()
     {
         // Potato
-        IPlantable potatoPlant = (IPlantable)Items.potato;
+        IPlantable potatoPlant = (IPlantable) Items.potato;
         PlantDrop potato = new PlantDrop(new ItemStack(Items.potato), 1, 4);
         PlantDrop poisonous = new PlantDrop(new ItemStack(Items.poisonous_potato), 0.02F);
         registerPlant(new PlantEntry(potatoPlant, potato, poisonous));
 
         //Carrot
-        IPlantable carrotPlant = (IPlantable)Items.carrot;
+        IPlantable carrotPlant = (IPlantable) Items.carrot;
         PlantDrop carrot = new PlantDrop(new ItemStack(Items.carrot), 1, 4);
         registerPlant(new PlantEntry(carrotPlant, carrot));
 
         //Wheat
-        IPlantable wheatPlant = (IPlantable)Items.wheat_seeds;
+        IPlantable wheatPlant = (IPlantable) Items.wheat_seeds;
         PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1, 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.wheat_seeds), 0, 3);
         registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
 
         //Melon
-        IPlantable melonStem = (IPlantable)Items.melon_seeds;
+        IPlantable melonStem = (IPlantable) Items.melon_seeds;
         PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.melon), 3, 7);
         registerPlant(new PlantEntry(melonStem, melonSlice));
 
         //Pumpkin
-        IPlantable pumpkinStem = (IPlantable)Items.pumpkin_seeds;
+        IPlantable pumpkinStem = (IPlantable) Items.pumpkin_seeds;
         PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1, 1);
         registerPlant(new PlantEntry(pumpkinStem, pumpkin));
     }

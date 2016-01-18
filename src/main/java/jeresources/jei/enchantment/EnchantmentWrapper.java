@@ -37,7 +37,7 @@ public class EnchantmentWrapper implements IRecipeWrapper
         this.enchantments = new LinkedList<>(EnchantmentRegistry.getInstance().getEnchantments(itemStack));
         this.set = 0;
         this.lastSet = this.enchantments.size() / (ENTRYS_PER_PAGE + 1);
-        this.nextCycle = ((int)System.currentTimeMillis()/1000) + CYCLE_TIME;
+        this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;
     }
 
     public List<EnchantmentEntry> getEnchantments()
@@ -50,11 +50,11 @@ public class EnchantmentWrapper implements IRecipeWrapper
 
     private void doCycle()
     {
-        if(((int)System.currentTimeMillis()/1000) > nextCycle)
+        if (((int) System.currentTimeMillis() / 1000) > nextCycle)
         {
             if (!GuiScreen.isShiftKeyDown()) // Don't cycle when holding shift
                 this.set = this.set == lastSet ? 0 : this.set + 1;
-            this.nextCycle = ((int)System.currentTimeMillis()/1000) + CYCLE_TIME;
+            this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;
         }
     }
 

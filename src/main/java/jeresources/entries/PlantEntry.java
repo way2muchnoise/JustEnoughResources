@@ -3,7 +3,6 @@ package jeresources.entries;
 import jeresources.api.utils.PlantDrop;
 import jeresources.utils.MapKeys;
 import jeresources.utils.SeedHelper;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -47,7 +46,7 @@ public class PlantEntry
 
     public PlantEntry(IPlantable plant, PlantDrop... drops)
     {
-        this(new ItemStack((Item)plant), plant, drops);
+        this(new ItemStack((Item) plant), plant, drops);
     }
 
     public void add(PlantDrop entry)

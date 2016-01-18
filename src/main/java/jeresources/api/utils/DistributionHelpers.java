@@ -1,7 +1,6 @@
 package jeresources.api.utils;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,13 +16,13 @@ public class DistributionHelpers
      */
     public static float[] getTriangularDistribution(int midY, int range, float maxChance)
     {
-        return getTriangularDistribution(midY-range,range,range,maxChance);
+        return getTriangularDistribution(midY - range, range, range, maxChance);
     }
 
     public static float[] getTriangularDistribution(int minY, int rand1, int rand2, float maxChance)
     {
         float[] triangle = new float[rand1 + rand2 + 1];
-        float modChance = maxChance / Math.min(rand1,rand2);
+        float modChance = maxChance / Math.min(rand1, rand2);
         for (int i = 0; i < rand1; i++)
             for (int j = 0; j < rand2; j++)
                 triangle[i + j] += modChance;
@@ -183,7 +182,7 @@ public class DistributionHelpers
         for (int i = 0; i < 4 && i < distribution.length; i++) adjacent += distribution[i];
         for (int i = 0; i < distribution.length - 4; i++)
         {
-            adjacent -= distribution[i] - distribution[i+4];
+            adjacent -= distribution[i] - distribution[i + 4];
             if (adjacent > maxAdjacent)
             {
                 mid = i + 2;
@@ -191,7 +190,7 @@ public class DistributionHelpers
                 consecutive = 0;
             } else if (adjacent > maxAdjacent - 0.00002f)
             {
-                consecutive ++;
+                consecutive++;
             } else
             {
                 mid += consecutive / 2;
@@ -263,22 +262,21 @@ public class DistributionHelpers
         points = set.toArray(new OrePoint[set.size()]);
         float[] array = new float[256];
         addDistribution(array, getRampDistribution(0, points[0].level, points[0].chance));
-        for (int i = 1; i < points.length;  i++)
+        for (int i = 1; i < points.length; i++)
         {
             OrePoint min, max;
-            if (points[i-1].chance <= points[i].chance)
+            if (points[i - 1].chance <= points[i].chance)
             {
-                min = points[i-1];
+                min = points[i - 1];
                 max = points[i];
-            }
-            else
+            } else
             {
-                max = points[i-1];
+                max = points[i - 1];
                 min = points[i];
             }
             float[] ramp = getRampDistribution(min.level, max.level, min.chance, max.chance);
-            addDistribution(array, ramp, points[i-1].level);
-            array[points[i-1].level] = points[i-1].chance;
+            addDistribution(array, ramp, points[i - 1].level);
+            array[points[i - 1].level] = points[i - 1].chance;
             array[points[i].level] = points[i].chance;
         }
         return array;

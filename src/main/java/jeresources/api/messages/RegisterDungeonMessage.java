@@ -20,11 +20,12 @@ public class RegisterDungeonMessage extends RegistryMessage
 
     public RegisterDungeonMessage(String name, int maxStacks, List<WeightedRandomChestContent> chestDrops)
     {
-        this(name,0,maxStacks,chestDrops);
+        this(name, 0, maxStacks, chestDrops);
     }
+
     public RegisterDungeonMessage(String name, int minStacks, int maxStacks, List<WeightedRandomChestContent> chestDrops)
     {
-        this(name,minStacks,maxStacks,Priority.FIRST);
+        this(name, minStacks, maxStacks, Priority.FIRST);
         int totalWeight = 0;
         for (WeightedRandomChestContent chestItem : chestDrops)
             totalWeight += chestItem.itemWeight;
@@ -32,20 +33,20 @@ public class RegisterDungeonMessage extends RegistryMessage
             this.chestDrops.put(chestItem.theItemId, (float) (chestItem.maxStackSize + chestItem.minStackSize) / 2 * (float) chestItem.itemWeight / totalWeight);
     }
 
-    public RegisterDungeonMessage(String name, int maxStacks, Map<ItemStack,Float> chestDrops)
+    public RegisterDungeonMessage(String name, int maxStacks, Map<ItemStack, Float> chestDrops)
     {
-        this(name,0,maxStacks,chestDrops);
+        this(name, 0, maxStacks, chestDrops);
     }
 
-    public RegisterDungeonMessage(String name, int minStacks,int maxStacks, Map<ItemStack,Float> chestDrops)
+    public RegisterDungeonMessage(String name, int minStacks, int maxStacks, Map<ItemStack, Float> chestDrops)
     {
-        this(name,minStacks,maxStacks,Priority.FIRST);
+        this(name, minStacks, maxStacks, Priority.FIRST);
         this.chestDrops = chestDrops;
     }
 
     private RegisterDungeonMessage(String name, int minStacks, int maxStacks, Priority priority)
     {
-        super(priority,true);
+        super(priority, true);
         this.name = name;
         this.minStacks = minStacks;
         this.maxStacks = maxStacks;
@@ -54,7 +55,7 @@ public class RegisterDungeonMessage extends RegistryMessage
     public RegisterDungeonMessage(NBTTagCompound tagCompound)
     {
         super(tagCompound);
-        this.chestDrops = MessageHelper.nbtTagListToMap(tagCompound.getTagList(MessageKeys.itemList,10));
+        this.chestDrops = MessageHelper.nbtTagListToMap(tagCompound.getTagList(MessageKeys.itemList, 10));
         this.name = tagCompound.getString(MessageKeys.name);
         this.minStacks = tagCompound.getInteger(MessageKeys.min);
         this.maxStacks = tagCompound.getInteger(MessageKeys.max);
@@ -65,16 +66,16 @@ public class RegisterDungeonMessage extends RegistryMessage
     {
         super.writeToNBT(tagCompound);
         tagCompound.setTag(MessageKeys.itemList, MessageHelper.mapToNBTTagList(chestDrops));
-        tagCompound.setString(MessageKeys.name,name);
-        tagCompound.setInteger(MessageKeys.min,minStacks);
-        tagCompound.setInteger(MessageKeys.max,maxStacks);
+        tagCompound.setString(MessageKeys.name, name);
+        tagCompound.setInteger(MessageKeys.min, minStacks);
+        tagCompound.setInteger(MessageKeys.max, maxStacks);
         return tagCompound;
     }
 
     @Override
     public boolean isValid()
     {
-        return !name.equals("") && maxStacks>0 && chestDrops!=null && !chestDrops.isEmpty();
+        return !name.equals("") && maxStacks > 0 && chestDrops != null && !chestDrops.isEmpty();
     }
 
     public Map<ItemStack, Float> getChestDrops()

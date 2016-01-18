@@ -14,8 +14,8 @@ public class Restriction
     public static final Restriction END_LIKE = new Restriction(BlockRestriction.END);
 
     public static final Restriction OVERWORLD = new Restriction(DimensionRestriction.OVERWORLD);
-    public static final Restriction NETHER = new Restriction(BlockRestriction.NETHER,DimensionRestriction.NETHER);
-    public static final Restriction END = new Restriction(BlockRestriction.END,DimensionRestriction.END);
+    public static final Restriction NETHER = new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER);
+    public static final Restriction END = new Restriction(BlockRestriction.END, DimensionRestriction.END);
 
     private BlockRestriction blockRestriction;
     private BiomeRestriction biomeRestriction;
@@ -28,32 +28,32 @@ public class Restriction
 
     public Restriction(BlockRestriction blockRestriction)
     {
-        this(blockRestriction,BiomeRestriction.NONE, DimensionRestriction.NONE);
+        this(blockRestriction, BiomeRestriction.NONE, DimensionRestriction.NONE);
     }
 
     public Restriction(BiomeRestriction biomeRestriction)
     {
-        this(BlockRestriction.STONE,biomeRestriction,DimensionRestriction.NONE);
+        this(BlockRestriction.STONE, biomeRestriction, DimensionRestriction.NONE);
     }
 
     public Restriction(DimensionRestriction dimensionRestriction)
     {
-        this(BlockRestriction.STONE,BiomeRestriction.NONE,dimensionRestriction);
+        this(BlockRestriction.STONE, BiomeRestriction.NONE, dimensionRestriction);
     }
 
     public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction)
     {
-        this(blockRestriction,biomeRestriction,DimensionRestriction.NONE);
+        this(blockRestriction, biomeRestriction, DimensionRestriction.NONE);
     }
 
     public Restriction(BlockRestriction blockRestriction, DimensionRestriction dimensionRestriction)
     {
-        this(blockRestriction,BiomeRestriction.NONE,dimensionRestriction);
+        this(blockRestriction, BiomeRestriction.NONE, dimensionRestriction);
     }
 
     public Restriction(BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction)
     {
-        this(BlockRestriction.STONE,biomeRestriction,dimensionRestriction);
+        this(BlockRestriction.STONE, biomeRestriction, dimensionRestriction);
     }
 
     public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction)
@@ -89,9 +89,9 @@ public class Restriction
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag(MessageKeys.blockRestriction,blockRestriction.writeToNBT());
-        tagCompound.setTag(MessageKeys.dimensionRestriction,dimensionRestriction.writeToNBT());
-        tagCompound.setTag(MessageKeys.biomeRestriction,biomeRestriction.writeToNBT());
+        tagCompound.setTag(MessageKeys.blockRestriction, blockRestriction.writeToNBT());
+        tagCompound.setTag(MessageKeys.dimensionRestriction, dimensionRestriction.writeToNBT());
+        tagCompound.setTag(MessageKeys.biomeRestriction, biomeRestriction.writeToNBT());
         return tagCompound;
     }
 
@@ -117,6 +117,6 @@ public class Restriction
     @Override
     public String toString()
     {
-        return blockRestriction.toString()+", "+dimensionRestriction.toString()+", "+biomeRestriction.toString();
+        return blockRestriction.toString() + ", " + dimensionRestriction.toString() + ", " + biomeRestriction.toString();
     }
 }

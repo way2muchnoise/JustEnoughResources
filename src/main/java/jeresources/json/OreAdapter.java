@@ -1,6 +1,9 @@
 package jeresources.json;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.messages.RegisterOreMessage;
@@ -12,9 +15,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +55,7 @@ public class OreAdapter
 
                 String[] oreParts = ore.split(":");
 
-                Block oreBlock =GameRegistry.findBlock(oreParts[0], oreParts[1]);
+                Block oreBlock = GameRegistry.findBlock(oreParts[0], oreParts[1]);
                 if (oreBlock == null) continue;
                 int oreMeta = oreParts.length == 3 ? Integer.parseInt(oreParts[2]) : 0;
                 ItemStack oreStack = new ItemStack(oreBlock, 1, oreMeta);

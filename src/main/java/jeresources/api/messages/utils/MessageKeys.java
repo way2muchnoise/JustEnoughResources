@@ -25,9 +25,9 @@ public class MessageKeys
     public static final String colour = "colour";
 
     public static final String itemList = "itemList";
-    public static final String chance  = "chance";
-    public static final String min  = "min";
-    public static final String max  = "max";
+    public static final String chance = "chance";
+    public static final String min = "min";
+    public static final String max = "max";
 
     public static final String priority = "priority";
     public static final String addPriority = "addPriority";
@@ -49,7 +49,6 @@ public class MessageKeys
     public static final String blockRestriction = "block";
     public static final String dimensionRestriction = "dimension";
     public static final String biomeRestriction = "biome";
-
 
 
 }

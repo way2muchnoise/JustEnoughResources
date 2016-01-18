@@ -56,7 +56,7 @@ public class EnchantmentCategory implements IRecipeCategory
 
         if (recipeWrapper instanceof EnchantmentWrapper)
         {
-            EnchantmentWrapper enchantmentWrapper = (EnchantmentWrapper)recipeWrapper;
+            EnchantmentWrapper enchantmentWrapper = (EnchantmentWrapper) recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, enchantmentWrapper.getInputs());
         }
     }

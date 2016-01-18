@@ -164,9 +164,9 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     {
         return
                 mouseX >= X_OFFSPRING - 1
-                && mouseX < X_OFFSPRING + X_AXIS_SIZE
-                && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
-                && mouseY < Y_OFFSPRING;
+                        && mouseX < X_OFFSPRING + X_AXIS_SIZE
+                        && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
+                        && mouseY < Y_OFFSPRING;
     }
 
 

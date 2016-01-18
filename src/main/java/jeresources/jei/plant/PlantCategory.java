@@ -60,7 +60,7 @@ public class PlantCategory implements IRecipeCategory
         int yOffset = 0;
         for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
         {
-            recipeLayout.getItemStacks().init(i+1, false, OUTPUT_X + xOffset, OUTPUT_Y + yOffset);
+            recipeLayout.getItemStacks().init(i + 1, false, OUTPUT_X + xOffset, OUTPUT_Y + yOffset);
             xOffset += OUTPUT_SCALE;
             if (xOffset > 147)
             {
@@ -71,11 +71,11 @@ public class PlantCategory implements IRecipeCategory
 
         if (recipeWrapper instanceof PlantWrapper)
         {
-            PlantWrapper plantWrapper = (PlantWrapper)recipeWrapper;
+            PlantWrapper plantWrapper = (PlantWrapper) recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
             recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
             for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
-                recipeLayout.getItemStacks().set(i+1, plantWrapper.getDrops().get(i));
+                recipeLayout.getItemStacks().set(i + 1, plantWrapper.getDrops().get(i));
         }
     }
 

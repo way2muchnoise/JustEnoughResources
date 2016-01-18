@@ -6,7 +6,7 @@ import java.util.*;
 
 public class DimensionRegistry
 {
-    private static Map<BlockRestriction,Set<Integer>> registry = new HashMap<BlockRestriction, Set<Integer>>();
+    private static Map<BlockRestriction, Set<Integer>> registry = new HashMap<BlockRestriction, Set<Integer>>();
     private static Map<Integer, DimInfo> altDimensions = new TreeMap<Integer, DimInfo>();
 
     private static class DimInfo
@@ -72,12 +72,12 @@ public class DimensionRegistry
             saved = new TreeSet<Integer>();
         saved.add(dim);
         altDimensions.put(dim, new DimInfo(dim, mystAge));
-        registry.put(block,saved);
+        registry.put(block, saved);
     }
 
     public static void registerDimension(BlockRestriction block, Integer... dims)
     {
-        registerDimension(block,Arrays.asList(dims));
+        registerDimension(block, Arrays.asList(dims));
     }
 
     public static void registerDimension(BlockRestriction block, List<Integer> dims)
@@ -88,7 +88,7 @@ public class DimensionRegistry
         saved.addAll(dims);
         for (Integer dim : dims)
             altDimensions.put(dim, new DimInfo(dim));
-        registry.put(block,saved);
+        registry.put(block, saved);
     }
 
     public static Set<Integer> getDimensions(BlockRestriction block)

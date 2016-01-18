@@ -28,19 +28,19 @@ public abstract class RegistryMessage extends Message
 
     public Priority getAddPriority()
     {
-        return add? priority: null;
+        return add ? priority : null;
     }
 
     public Priority getRemovePriority()
     {
-        return add? null: priority;
+        return add ? null : priority;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setBoolean(MessageKeys.addToRegistry,add);
-        tagCompound.setInteger(MessageKeys.priority,priority.ordinal());
+        tagCompound.setBoolean(MessageKeys.addToRegistry, add);
+        tagCompound.setInteger(MessageKeys.priority, priority.ordinal());
         return null;
     }
 

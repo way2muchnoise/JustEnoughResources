@@ -24,7 +24,7 @@ public class DimensionRestriction
 
     public DimensionRestriction(int dim)
     {
-        this(dim,dim);
+        this(dim, dim);
     }
 
     public DimensionRestriction(Type type, int dim)
@@ -40,8 +40,8 @@ public class DimensionRestriction
     public DimensionRestriction(Type type, int minDim, int maxDim)
     {
         this.type = type;
-        this.min = Math.min(minDim,maxDim);
-        this.max = Math.max(maxDim,minDim);
+        this.min = Math.min(minDim, maxDim);
+        this.max = Math.max(maxDim, minDim);
     }
 
     public DimensionRestriction(NBTTagCompound tagCompound)
@@ -49,14 +49,14 @@ public class DimensionRestriction
         this.type = Type.values()[tagCompound.getByte(MessageKeys.type)];
         int minDim = tagCompound.getInteger(MessageKeys.min);
         int maxDim = tagCompound.getInteger(MessageKeys.max);
-        this.min = Math.min(minDim,maxDim);
-        this.max = Math.max(maxDim,minDim);
+        this.min = Math.min(minDim, maxDim);
+        this.max = Math.max(maxDim, minDim);
     }
 
     public List<String> getValidDimensions(BlockRestriction blockRestriction, boolean getNames)
     {
         Set<Integer> dimensions = DimensionRegistry.getDimensions(blockRestriction);
-        if (dimensions!= null) return getDimensionString(dimensions, getNames);
+        if (dimensions != null) return getDimensionString(dimensions, getNames);
         return getAltDimensionString(DimensionRegistry.getAltDimensions(), getNames);
     }
 
@@ -64,9 +64,9 @@ public class DimensionRestriction
     {
         if (type == Type.NONE) return dimensions;
         Set<Integer> result = new TreeSet<Integer>();
-        for (int dimension:dimensions)
+        for (int dimension : dimensions)
         {
-            if (dimension>=min == (type == Type.WHITELIST) == dimension<=max) result.add(dimension);
+            if (dimension >= min == (type == Type.WHITELIST) == dimension <= max) result.add(dimension);
         }
         return result;
     }
@@ -87,8 +87,7 @@ public class DimensionRestriction
                 String dimName = DimensionRegistry.getDimensionName(i);
                 if (dimName != null) result.add("  " + dimName);
             }
-        }
-        else
+        } else
         {
             String sResult = "";
             Iterator<Integer> itr = set.iterator();
@@ -121,7 +120,7 @@ public class DimensionRestriction
             if (dim < dimMin) dimMin = dim;
             if (dim > dimMax) dimMax = dim;
         }
-        for (int i = Math.min(min,dimMin)-1;i<=Math.max(max,dimMax)+1;i++)
+        for (int i = Math.min(min, dimMin) - 1; i <= Math.max(max, dimMax) + 1; i++)
             if (!dimensions.contains(i)) validDimensions.add(i);
         List<String> result = getStringList(getValidDimensions(type != Type.NONE ? validDimensions : dimensions), getNames);
         if (result.isEmpty()) result.add(StatCollector.translateToLocal("ner.dim.no"));
@@ -146,8 +145,8 @@ public class DimensionRestriction
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setInteger(MessageKeys.max,max);
-        tagCompound.setInteger(MessageKeys.min,min);
+        tagCompound.setInteger(MessageKeys.max, max);
+        tagCompound.setInteger(MessageKeys.min, min);
         tagCompound.setByte(MessageKeys.type, (byte) type.ordinal());
         return tagCompound;
     }
@@ -158,18 +157,18 @@ public class DimensionRestriction
         if (obj instanceof DimensionRestriction)
         {
             DimensionRestriction other = (DimensionRestriction) obj;
-            return other.min==min && other.max==max && other.type == type;
+            return other.min == min && other.max == max && other.type == type;
         }
         return false;
     }
 
     public boolean isMergeable(DimensionRestriction other)
     {
-        if (other.type==Type.NONE) return true;
-        int dimMin = Math.min(min,other.min)-1;
-        int dimMax = Math.max(max,other.max)+1;
+        if (other.type == Type.NONE) return true;
+        int dimMin = Math.min(min, other.min) - 1;
+        int dimMax = Math.max(max, other.max) + 1;
         Set<Integer> testDimensions = new TreeSet<Integer>();
-        for (int dim = dimMin; dim<=dimMax; dim++)
+        for (int dim = dimMin; dim <= dimMax; dim++)
             testDimensions.add(dim);
         Set<Integer> thisValidDimensions = getValidDimensions(testDimensions);
         Set<Integer> otherValidDimensions = other.getValidDimensions(testDimensions);
@@ -179,6 +178,6 @@ public class DimensionRestriction
     @Override
     public String toString()
     {
-        return "Dimension: "+ type + (type!=Type.NONE? " "+min+"-"+max:"");
+        return "Dimension: " + type + (type != Type.NONE ? " " + min + "-" + max : "");
     }
 }

@@ -94,7 +94,7 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     private float getLidAngle()
     {
 
-        float angle = (((int) System.currentTimeMillis()/100) - lidStart) % 80;
+        float angle = (((int) System.currentTimeMillis() / 100) - lidStart) % 80;
         if (angle > 50 || done)
         {
             done = true;
@@ -106,7 +106,7 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
 
     public void resetLid()
     {
-        lidStart = (int) System.currentTimeMillis()/100;
+        lidStart = (int) System.currentTimeMillis() / 100;
     }
 
     public String getChanceString(ItemStack itemStack)

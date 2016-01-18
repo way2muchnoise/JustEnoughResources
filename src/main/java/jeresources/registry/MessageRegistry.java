@@ -15,7 +15,7 @@ public class MessageRegistry
     private static Set<Message> registerMessages = new LinkedHashSet<Message>();
     private static Set<ModifyMessage> modifyMessages = new LinkedHashSet<ModifyMessage>();
     private static Set<RegistryMessage> registryMessages = new LinkedHashSet<RegistryMessage>();
-    
+
     public static void clear()
     {
         registerMessages = new LinkedHashSet<Message>();
@@ -79,7 +79,8 @@ public class MessageRegistry
             }
             for (RegistryMessage message : removeMessages)
             {
-                if (message instanceof RemoveMobMessage) MobRegistry.getInstance().removeMob((RemoveMobMessage) message);
+                if (message instanceof RemoveMobMessage)
+                    MobRegistry.getInstance().removeMob((RemoveMobMessage) message);
             }
         }
 

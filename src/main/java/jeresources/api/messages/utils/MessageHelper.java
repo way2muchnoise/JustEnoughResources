@@ -130,12 +130,12 @@ public class MessageHelper
     public static NBTTagList mapToNBTTagList(Map<ItemStack, Float> map)
     {
         NBTTagList result = new NBTTagList();
-        for (Map.Entry<ItemStack,Float> entry : map.entrySet())
+        for (Map.Entry<ItemStack, Float> entry : map.entrySet())
             result.appendTag(entryToNBTTagCompound(entry));
         return result;
     }
 
-    private static NBTTagCompound entryToNBTTagCompound(Map.Entry<ItemStack,Float> entry)
+    private static NBTTagCompound entryToNBTTagCompound(Map.Entry<ItemStack, Float> entry)
     {
         NBTTagCompound result = new NBTTagCompound();
         entry.getKey().writeToNBT(result);
@@ -143,15 +143,15 @@ public class MessageHelper
         return result;
     }
 
-    public static Map<ItemStack,Float> nbtTagListToMap(NBTTagList list)
+    public static Map<ItemStack, Float> nbtTagListToMap(NBTTagList list)
     {
-        Map<ItemStack,Float> result = new LinkedHashMap<ItemStack, Float>();
-        for (int i = 0;i<list.tagCount();i++)
+        Map<ItemStack, Float> result = new LinkedHashMap<ItemStack, Float>();
+        for (int i = 0; i < list.tagCount(); i++)
         {
             NBTTagCompound entry = list.getCompoundTagAt(i);
             ItemStack stack = ItemStack.loadItemStackFromNBT(entry);
             float chance = entry.getFloat(MessageKeys.chance);
-            if (stack!=null && !(chance<0)) result.put(stack,chance);
+            if (stack != null && !(chance < 0)) result.put(stack, chance);
         }
         return result;
     }

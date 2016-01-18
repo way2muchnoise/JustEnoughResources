@@ -1,10 +1,9 @@
 package jeresources.profiling;
 
+import net.minecraft.world.chunk.Chunk;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 
 public class ChunkGetter implements Runnable
 {
@@ -31,10 +30,13 @@ public class ChunkGetter implements Runnable
         int chunkZ = dummyWorld.rand.nextInt(2 * MAX_CHUNK_POS) - MAX_CHUNK_POS;
 
         List<Chunk> centerChunks = new ArrayList<>();
-        for (int i = 0; i < GENERATE_SIZE; i++) {
-            for (int j = 0; j < GENERATE_SIZE; j++) {
+        for (int i = 0; i < GENERATE_SIZE; i++)
+        {
+            for (int j = 0; j < GENERATE_SIZE; j++)
+            {
                 Chunk chunk = this.dummyWorld.getChunkFromChunkCoords(chunkX + i, chunkZ + j);
-                if (i > 0 && i < (GENERATE_SIZE - 1) && j > 0 && j < (GENERATE_SIZE - 1)) {
+                if (i > 0 && i < (GENERATE_SIZE - 1) && j > 0 && j < (GENERATE_SIZE - 1))
+                {
                     centerChunks.add(chunk);
                 }
             }

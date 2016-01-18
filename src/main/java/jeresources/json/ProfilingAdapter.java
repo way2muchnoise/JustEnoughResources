@@ -2,7 +2,6 @@ package jeresources.json;
 
 import com.google.gson.stream.JsonWriter;
 import jeresources.config.ConfigHandler;
-import net.minecraft.block.Block;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,7 +29,7 @@ public class ProfilingAdapter
                     if (entry.getValue()[i - 1].compareTo(entry.getValue()[i]) != 0)
                     {
                         if (lastPrint != i - 1)
-                            sb.append(i - 1).append(",").append(entry.getValue()[i-1]).append(";");
+                            sb.append(i - 1).append(",").append(entry.getValue()[i - 1]).append(";");
                         sb.append(i).append(",").append(entry.getValue()[i]).append(";");
                         lastPrint = i;
                     }

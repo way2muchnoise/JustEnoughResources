@@ -16,66 +16,66 @@ public class ModifyPlantMessage extends ModifyMessage
 
     private ModifyPlantMessage(ItemStack plant, Priority priority, boolean add)
     {
-        super(priority,add);
+        super(priority, add);
         this.plant = plant;
     }
 
     private ModifyPlantMessage(ItemStack plant, Priority addPriority, Priority removePriority)
     {
-        super(addPriority,removePriority);
+        super(addPriority, removePriority);
         this.plant = plant;
     }
 
     public ModifyPlantMessage(PlantDrop... addDrops)
     {
-        this(new ItemStack(Blocks.tallgrass),addDrops);
+        this(new ItemStack(Blocks.tallgrass), addDrops);
     }
 
     public ModifyPlantMessage(ItemStack plant, PlantDrop... addDrops)
     {
-        this(plant,Priority.SECOND,addDrops);
+        this(plant, Priority.SECOND, addDrops);
     }
 
     public ModifyPlantMessage(ItemStack plant, Priority priority, PlantDrop... addDrops)
     {
-        this(plant,priority,true,new ItemStack[0],addDrops);
+        this(plant, priority, true, new ItemStack[0], addDrops);
     }
 
     public ModifyPlantMessage(ItemStack... removeDrops)
     {
-        this(new ItemStack(Blocks.tallgrass),removeDrops);
+        this(new ItemStack(Blocks.tallgrass), removeDrops);
     }
 
     public ModifyPlantMessage(ItemStack plant, ItemStack... removeDrops)
     {
-        this(plant,Priority.SECOND,removeDrops);
+        this(plant, Priority.SECOND, removeDrops);
     }
 
     public ModifyPlantMessage(ItemStack plant, Priority priority, ItemStack... removeDrops)
     {
-        this(plant,priority,false,removeDrops,new PlantDrop[0]);
+        this(plant, priority, false, removeDrops, new PlantDrop[0]);
     }
 
     public ModifyPlantMessage(ItemStack plant, Priority priority, boolean add, ItemStack[] removeDrops, PlantDrop[] addDrops)
     {
-        this(plant,priority,add);
+        this(plant, priority, add);
         this.addDrops = addDrops;
         this.removeDrops = removeDrops;
     }
 
     public ModifyPlantMessage(ItemStack plant, ItemStack[] removeDrops, PlantDrop[] addDrops)
     {
-        this(plant,removeDrops,addDrops,Priority.SECOND);
+        this(plant, removeDrops, addDrops, Priority.SECOND);
     }
 
     public ModifyPlantMessage(ItemStack plant, ItemStack[] removeDrops, PlantDrop[] addDrops, Priority priority)
     {
-        this(plant,removeDrops,addDrops,priority,priority);
+        this(plant, removeDrops, addDrops, priority, priority);
     }
 
     public ModifyPlantMessage(ItemStack plant, ItemStack[] removeDrops, PlantDrop[] addDrops, Priority addPriority, Priority removePriority)
     {
-        this(plant,addPriority,removePriority);
+        this(plant, addPriority, removePriority);
         this.addDrops = addDrops;
         this.removeDrops = removeDrops;
     }
@@ -93,26 +93,26 @@ public class ModifyPlantMessage extends ModifyMessage
     {
         super.writeToNBT(tagCompound);
         tagCompound.setTag(MessageKeys.stack, plant.writeToNBT(new NBTTagCompound()));
-        tagCompound.setTag(MessageKeys.addDrops,MessageHelper.getPlantDropList(addDrops));
-        tagCompound.setTag(MessageKeys.removeDrops,MessageHelper.getItemStackList(removeDrops));
+        tagCompound.setTag(MessageKeys.addDrops, MessageHelper.getPlantDropList(addDrops));
+        tagCompound.setTag(MessageKeys.removeDrops, MessageHelper.getItemStackList(removeDrops));
         return tagCompound;
     }
 
     @Override
     public boolean hasAdd()
     {
-        return addDrops.length>0;
+        return addDrops.length > 0;
     }
 
     @Override
     public boolean hasRemove()
     {
-        return removeDrops.length>0;
+        return removeDrops.length > 0;
     }
 
     @Override
     public boolean isValid()
     {
-        return plant!=null && (hasAdd() || hasRemove());
+        return plant != null && (hasAdd() || hasRemove());
     }
 }

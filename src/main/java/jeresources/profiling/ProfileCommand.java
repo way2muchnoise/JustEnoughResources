@@ -31,24 +31,23 @@ public class ProfileCommand extends CommandBase
     {
         if (args.length == 1)
         {
-            if (!Minecraft.getMinecraft().isSingleplayer()) throw new WrongUsageException("can't use command in multiplayer");
+            if (!Minecraft.getMinecraft().isSingleplayer())
+                throw new WrongUsageException("can't use command in multiplayer");
 
-            if ("stop".equals(args[0])) {
-                if (!Profiler.stop()) {
-                    throw new WrongUsageException("Not profiling, run \"/profile [chunks]\" to start");
-                }
-            }
+            if ("stop".equals(args[0]) && !Profiler.stop())
+                throw new WrongUsageException("Not profiling, run \"/profile [chunks]\" to start");
 
             int chunks;
             try
             {
                 chunks = Integer.parseInt(args[0]);
-            } catch(NumberFormatException e)
+            } catch (NumberFormatException e)
             {
                 throw new WrongUsageException("[chunks] has to be a positive integer");
             }
             if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
-            if(!Profiler.init(sender, chunks)) throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
+            if (!Profiler.init(sender, chunks))
+                throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
         } else
         {
             throw new WrongUsageException(getCommandUsage(sender));

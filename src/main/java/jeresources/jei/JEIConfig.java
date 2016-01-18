@@ -1,7 +1,6 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
-import jeresources.config.Settings;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -13,7 +12,6 @@ import jeresources.jei.ore.OreHandler;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
-import jeresources.registry.EnchantmentRegistry;
 import mezz.jei.api.*;
 
 @JEIPlugin

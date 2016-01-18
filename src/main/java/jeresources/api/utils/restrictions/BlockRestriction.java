@@ -17,7 +17,7 @@ public class BlockRestriction
 
     public BlockRestriction(Block block)
     {
-        this(block,0);
+        this(block, 0);
     }
 
     public BlockRestriction(Block block, int metadata)
@@ -36,7 +36,7 @@ public class BlockRestriction
     @Override
     public int hashCode()
     {
-         return block.hashCode() ^ metadata;
+        return block.hashCode() ^ metadata;
     }
 
     public NBTTagCompound writeToNBT()
@@ -46,7 +46,7 @@ public class BlockRestriction
 
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setTag(MessageKeys.stack, new ItemStack(block,1,metadata).writeToNBT(new NBTTagCompound()));
+        tagCompound.setTag(MessageKeys.stack, new ItemStack(block, 1, metadata).writeToNBT(new NBTTagCompound()));
         return tagCompound;
     }
 
@@ -64,6 +64,6 @@ public class BlockRestriction
     @Override
     public String toString()
     {
-        return "Block: "+block.getUnlocalizedName() + ":" + metadata;
+        return "Block: " + block.getUnlocalizedName() + ":" + metadata;
     }
 }

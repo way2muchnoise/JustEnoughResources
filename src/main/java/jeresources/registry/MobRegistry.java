@@ -100,7 +100,7 @@ public class MobRegistry
         }
         return result;
     }
-    
+
     public void clear()
     {
         instance = new MobRegistry();

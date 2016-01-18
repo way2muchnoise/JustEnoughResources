@@ -28,7 +28,7 @@ public class OreMatchEntry
 
     public OreMatchEntry(RegisterOreMessage message)
     {
-        restriction=message.getRestriction();
+        restriction = message.getRestriction();
         addMessage(message);
     }
 
@@ -64,7 +64,7 @@ public class OreMatchEntry
         chances = new float[256];
         minY = 256;
         maxY = 0;
-        for (OreEntry entry:oreSet)
+        for (OreEntry entry : oreSet)
         {
             DistributionBase distribution = entry.getDistribution();
             int i = -1;
@@ -138,7 +138,7 @@ public class OreMatchEntry
 
     public void removeDrop(ItemStack removeDrop)
     {
-        for (Iterator<ItemStack> itr = drops.iterator(); itr.hasNext();)
+        for (Iterator<ItemStack> itr = drops.iterator(); itr.hasNext(); )
         {
             ItemStack drop = itr.next();
             if (drop.isItemEqual(removeDrop))
@@ -162,10 +162,10 @@ public class OreMatchEntry
     public List<ItemStack> getOresAndDrops()
     {
         List<ItemStack> list = new LinkedList<ItemStack>();
-        for (OreEntry entry: oreSet)
+        for (OreEntry entry : oreSet)
         {
             ItemStack ore = entry.getOre();
-            if (!list.contains(ore))list.add(ore);
+            if (!list.contains(ore)) list.add(ore);
         }
 
         list.addAll(drops);
@@ -176,10 +176,11 @@ public class OreMatchEntry
     {
         return this.restriction.getStringList(Settings.useDimNames);
     }
+
     @Override
     public String toString()
     {
-        return "Match: "+oreSet.get(0).getOre().getDisplayName() + " - " + restriction.toString();
+        return "Match: " + oreSet.get(0).getOre().getDisplayName() + " - " + restriction.toString();
     }
 
     private class OreEntry

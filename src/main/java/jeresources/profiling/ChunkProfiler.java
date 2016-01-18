@@ -42,7 +42,8 @@ public class ChunkProfiler implements Runnable
             profileChunk(chunk);
     }
 
-    private void profileChunk(Chunk chunk) {
+    private void profileChunk(Chunk chunk)
+    {
         this.timer.startChunk();
         Map<String, Integer[]> temp = new HashMap<>();
 
@@ -59,10 +60,12 @@ public class ChunkProfiler implements Runnable
                     Block block = chunk.getBlock(x, y, z);
                     ItemStack pickBlock = block.getPickBlock(movingObjectPosition, world, blockPos, player);
                     String key;
-                    if (pickBlock == null) {
+                    if (pickBlock == null)
+                    {
                         int meta = chunk.getBlockMetadata(blockPos);
                         key = block.getRegistryName() + ':' + meta;
-                    } else {
+                    } else
+                    {
                         Item item = pickBlock.getItem();
                         key = item.getRegistryName() + ':' + pickBlock.getMetadata();
                     }

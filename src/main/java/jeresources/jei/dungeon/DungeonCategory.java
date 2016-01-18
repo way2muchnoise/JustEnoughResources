@@ -65,7 +65,7 @@ public class DungeonCategory implements IRecipeCategory
     {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        for (int i = 0 ; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++)
+        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++)
         {
             recipeLayout.getItemStacks().init(i, false, x, y);
             x += SPACING_X;
@@ -79,7 +79,7 @@ public class DungeonCategory implements IRecipeCategory
 
         if (recipeWrapper instanceof DungeonWrapper)
         {
-            DungeonWrapper dungeonWrapper = (DungeonWrapper)recipeWrapper;
+            DungeonWrapper dungeonWrapper = (DungeonWrapper) recipeWrapper;
             recipeLayout.getItemStacks().addTooltipCallback(dungeonWrapper);
             int slots = Math.min(dungeonWrapper.amountOfItems(), ITEMS_PER_PAGE);
             for (int i = 0; i < slots; i++)

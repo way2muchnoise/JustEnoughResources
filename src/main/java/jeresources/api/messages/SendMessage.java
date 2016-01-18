@@ -11,11 +11,12 @@ import java.util.List;
 public class SendMessage
 {
     private static List<Message.Storage> storage = new LinkedList<Message.Storage>();
-    
+
     public static void sendMessage(RegisterDungeonMessage message)
     {
         sendMessage(message, MessageKeys.registerDungeon);
     }
+
     public static void sendMessage(RegisterOreMessage message)
     {
         sendMessage(message, MessageKeys.registerOre);
@@ -64,13 +65,13 @@ public class SendMessage
             if (FMLCommonHandler.instance().getSide() == Side.SERVER) storage.add(new Message.Storage(key, message));
         }
     }
-    
+
     public static void readFromStorage(List<Message.Storage> storage)
     {
         for (Message.Storage stored : storage)
             sendMessage(stored.getMessage(), stored.getKey());
     }
-    
+
     public static List<Message.Storage> getStorage()
     {
         return storage;

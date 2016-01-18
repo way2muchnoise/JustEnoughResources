@@ -23,7 +23,7 @@ public class BiomeRestriction
 
     public static final BiomeRestriction HOT = new BiomeRestriction(BiomeDictionary.Type.HOT);
     public static final BiomeRestriction COLD = new BiomeRestriction(BiomeDictionary.Type.COLD);
-    public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT,BiomeDictionary.Type.COLD);
+    public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT, BiomeDictionary.Type.COLD);
 
     public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge);
 
@@ -53,7 +53,7 @@ public class BiomeRestriction
     public BiomeRestriction(Type type, BiomeGenBase biome, BiomeGenBase... moreBiomes)
     {
         this.type = type;
-        switch(type)
+        switch (type)
         {
             case NONE:
                 break;
@@ -70,13 +70,13 @@ public class BiomeRestriction
 
     public BiomeRestriction(BiomeDictionary.Type type, BiomeDictionary.Type... biomeTypes)
     {
-        this(Type.WHITELIST,type,biomeTypes);
+        this(Type.WHITELIST, type, biomeTypes);
     }
 
     public BiomeRestriction(Type type, BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes)
     {
         this.type = type;
-        switch(type)
+        switch (type)
         {
             case NONE:
                 break;
@@ -93,7 +93,7 @@ public class BiomeRestriction
     {
         ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
-        for (int i = 1; i< biomeTypes.length; i++)
+        for (int i = 1; i < biomeTypes.length; i++)
         {
             ArrayList<BiomeGenBase> newBiomes = new ArrayList<BiomeGenBase>();
             for (BiomeGenBase biome : BiomeDictionary.getBiomesForType(biomeTypes[i]))
@@ -108,7 +108,7 @@ public class BiomeRestriction
     public BiomeRestriction(NBTTagCompound tagCompound)
     {
         int[] ids = tagCompound.getIntArray(MessageKeys.biomeArray);
-        for (int id:ids)
+        for (int id : ids)
             biomes.add(BiomeGenBase.getBiome(id));
         type = Type.values()[tagCompound.getByte(MessageKeys.type)];
     }
@@ -129,12 +129,12 @@ public class BiomeRestriction
     public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
         int[] ids = new int[biomes.size()];
-        for (int i=0;i<ids.length;i++)
+        for (int i = 0; i < ids.length; i++)
         {
             ids[i] = biomes.get(i).biomeID;
         }
-        tagCompound.setIntArray(MessageKeys.biomeArray,ids);
-        tagCompound.setByte(MessageKeys.type,(byte)type.ordinal());
+        tagCompound.setIntArray(MessageKeys.biomeArray, ids);
+        tagCompound.setByte(MessageKeys.type, (byte) type.ordinal());
         return tagCompound;
     }
 
@@ -151,12 +151,12 @@ public class BiomeRestriction
 
     public boolean isMergeable(BiomeRestriction other)
     {
-        return other.type==Type.NONE || (this.type != Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
+        return other.type == Type.NONE || (this.type != Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
     }
 
     @Override
     public String toString()
     {
-        return "Biomes: "+type+(type!=Type.NONE?" - "+ biomes.size():"");
+        return "Biomes: " + type + (type != Type.NONE ? " - " + biomes.size() : "");
     }
 }

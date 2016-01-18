@@ -78,7 +78,7 @@ public class ConfigHandler
         Settings.useDIYdata = prop.getBoolean();
 
 
-        prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[] { "flimflam" });
+        prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam"});
         prop.comment = TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description");
         prop.setLanguageKey("jer.config.enchantsBlacklist.title");
         Settings.excludedEnchants = prop.getStringList();

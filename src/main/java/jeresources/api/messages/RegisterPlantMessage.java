@@ -15,7 +15,7 @@ public class RegisterPlantMessage extends RegistryMessage
     {
         super(tagCompound);
         this.plant = ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag(MessageKeys.stack));
-        this.addDrops = MessageHelper.getPlantDrops(tagCompound,MessageKeys.addDrops);
+        this.addDrops = MessageHelper.getPlantDrops(tagCompound, MessageKeys.addDrops);
     }
 
     @Override
@@ -23,13 +23,13 @@ public class RegisterPlantMessage extends RegistryMessage
     {
         super.writeToNBT(tagCompound);
         tagCompound.setTag(MessageKeys.stack, plant.writeToNBT(new NBTTagCompound()));
-        tagCompound.setTag(MessageKeys.addDrops,MessageHelper.getPlantDropList(addDrops));
+        tagCompound.setTag(MessageKeys.addDrops, MessageHelper.getPlantDropList(addDrops));
         return tagCompound;
     }
 
     @Override
     public boolean isValid()
     {
-        return plant!=null && addDrops.length>0;
+        return plant != null && addDrops.length > 0;
     }
 }

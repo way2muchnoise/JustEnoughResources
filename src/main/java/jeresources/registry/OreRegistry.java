@@ -13,7 +13,7 @@ public class OreRegistry
 {
     private static Map<Integer, OreMatchEntry> matchEntryMap = new LinkedHashMap<Integer, OreMatchEntry>();
     private static Map<String, Set<Integer>> dropMap = new LinkedHashMap<String, Set<Integer>>();
-    
+
     public static void clear()
     {
         matchEntryMap = new LinkedHashMap<Integer, OreMatchEntry>();
@@ -23,13 +23,13 @@ public class OreRegistry
     public static void registerOre(RegisterOreMessage message)
     {
         String key = MapKeys.getKey(message.getOre());
-        if (key==null) return;
+        if (key == null) return;
 
         if (dropMap.containsKey(key))
         {
             Set<Integer> hashCodes = dropMap.get(key);
             boolean matched = false;
-            for (int hashCode:hashCodes)
+            for (int hashCode : hashCodes)
             {
                 if (matchEntryMap.get(hashCode).add(message))
                 {
@@ -39,31 +39,30 @@ public class OreRegistry
             }
             if (!matched)
             {
-                int newHash = addNewOre(key,message);
-                for (int hashCode:hashCodes)
+                int newHash = addNewOre(key, message);
+                for (int hashCode : hashCodes)
                 {
-                    if (hashCode!=newHash)
+                    if (hashCode != newHash)
                         matchEntryMap.get(newHash).add(matchEntryMap.get(hashCode));
                 }
             }
-        }
-        else
+        } else
         {
             addNewOre(key, message);
         }
         ItemStack[] drops = message.getDrops();
         if (drops == null || drops.length == 0) return;
-        MessageRegistry.addMessage(new ModifyOreMessage(message.getOre(), Priority.FIRST,drops));
+        MessageRegistry.addMessage(new ModifyOreMessage(message.getOre(), Priority.FIRST, drops));
     }
 
     private static int addNewOre(String key, RegisterOreMessage message)
     {
         OreMatchEntry newMatch = new OreMatchEntry(message);
         int hashCode = newMatch.hashCode();
-        Set<Integer> hashSet = dropMap.containsKey(key)? dropMap.get(key) : new LinkedHashSet<Integer>();
+        Set<Integer> hashSet = dropMap.containsKey(key) ? dropMap.get(key) : new LinkedHashSet<Integer>();
         hashSet.add(hashCode);
-        dropMap.put(key,hashSet);
-        matchEntryMap.put(hashCode,newMatch);
+        dropMap.put(key, hashSet);
+        matchEntryMap.put(hashCode, newMatch);
         return hashCode;
     }
 
@@ -103,14 +102,14 @@ public class OreRegistry
     {
         if (oreMod.getRemoveDrops() == null) return true;
         String oreKey = MapKeys.getKey(oreMod.getOre());
-        if (oreKey == null || !dropMap.containsKey(oreKey)|| dropMap.get(oreKey).isEmpty()) return false;
+        if (oreKey == null || !dropMap.containsKey(oreKey) || dropMap.get(oreKey).isEmpty()) return false;
         for (ItemStack drop : oreMod.getRemoveDrops())
         {
             String dropKey = MapKeys.getKey(drop);
             if (dropKey == null || !dropMap.containsKey(dropKey)) continue;
             Set<Integer> hashSet = dropMap.get(oreKey);
             dropMap.get(dropKey).removeAll(hashSet);
-            for (int hashCode:hashSet)
+            for (int hashCode : hashSet)
                 matchEntryMap.get(hashCode).removeDrop(drop);
         }
         return true;
@@ -125,7 +124,7 @@ public class OreRegistry
         {
             String dropKey = MapKeys.getKey(drop);
             if (dropKey == null) continue;
-            Set<Integer> hashSet = dropMap.containsKey(dropKey)? dropMap.get(dropKey) : new LinkedHashSet<Integer>();
+            Set<Integer> hashSet = dropMap.containsKey(dropKey) ? dropMap.get(dropKey) : new LinkedHashSet<Integer>();
             for (int hashCode : dropMap.get(oreKey))
                 matchEntryMap.get(hashCode).addDrop(drop);
             hashSet.addAll(dropMap.get(oreKey));
@@ -138,7 +137,7 @@ public class OreRegistry
     {
         if (dropMap.containsKey(oreKey))
         {
-            dropMap.put(key,dropMap.get(oreKey));
+            dropMap.put(key, dropMap.get(oreKey));
         }
     }
 }

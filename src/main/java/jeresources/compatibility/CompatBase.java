@@ -15,12 +15,13 @@ import net.minecraftforge.common.DimensionManager;
 public abstract class CompatBase
 {
     protected static World world = DimensionManager.getWorld(0);
+
     public static boolean load(ModList mod, boolean initOres)
     {
         if (mod.isLoaded())
         {
             LogHelper.info("Loading compatibility for " + mod.getName());
-            CompatBase compat = (CompatBase)ReflectionHelper.initialize(mod.compatClass());
+            CompatBase compat = (CompatBase) ReflectionHelper.initialize(mod.compatClass());
             compat.init(initOres);
             return true;
         } else

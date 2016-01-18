@@ -1,7 +1,6 @@
 package jeresources.utils;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 
 public class ReflectionHelper extends net.minecraftforge.fml.relauncher.ReflectionHelper
 {

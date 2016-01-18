@@ -1,23 +1,17 @@
 package jeresources.profiling;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import net.minecraft.command.ICommandSender;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
-
-import net.minecraftforge.fml.common.Loader;
-
 import jeresources.compatibility.thaumcraft.ThaumcraftCompat;
 import jeresources.json.ProfilingAdapter;
 import jeresources.utils.ModList;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.Loader;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 
 public class Profiler implements Runnable
 {
@@ -50,19 +44,25 @@ public class Profiler implements Runnable
         for (int i = 0; i < chunkGetterCount; i++)
             dummyWorld.addScheduledTask(new ChunkGetter(dummyWorld, this));
 
-        dummyWorld.addScheduledTask(new Runnable() {
+        dummyWorld.addScheduledTask(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 executor.shutdown();
             }
         });
 
-        while (true) {
-            try {
-                if (executor.awaitTermination(10, TimeUnit.SECONDS)) {
+        while (true)
+        {
+            try
+            {
+                if (executor.awaitTermination(10, TimeUnit.SECONDS))
+                {
                     break;
                 }
-            } catch (InterruptedException ex) {
+            } catch (InterruptedException ex)
+            {
                 // continue waiting
             }
         }
@@ -100,7 +100,8 @@ public class Profiler implements Runnable
         return true;
     }
 
-    public static boolean stop() {
+    public static boolean stop()
+    {
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
         currentProfiler.executor.shutdownNow();
         currentProfiler.writeData();

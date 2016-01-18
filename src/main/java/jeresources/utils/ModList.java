@@ -82,7 +82,7 @@ public enum ModList
         public static final String TICON = "TConstruct";
         public static final String DENSEORES = "denseores";
         public static final String MYSTCRAFT = "Mystcraft";
-        public static final String IC2= "IC2";
+        public static final String IC2 = "IC2";
         public static final String MOBPROPERTIES = "MobProperties";
         public static final String RELIQUARY = "xreliquary";
         public static final String BLUEPOWER = "bluepower";

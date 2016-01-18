@@ -41,10 +41,10 @@ public class LogHelper
     {
         log(Level.INFO, obj);
     }
-    
+
     public static void warn(Object obj)
     {
         log(Level.WARN, obj);
-        
+
     }
 }

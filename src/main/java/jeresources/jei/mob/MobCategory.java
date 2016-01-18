@@ -70,7 +70,7 @@ public class MobCategory implements IRecipeCategory
 
         if (recipeWrapper instanceof MobWrapper)
         {
-            MobWrapper mobWrapper = (MobWrapper)recipeWrapper;
+            MobWrapper mobWrapper = (MobWrapper) recipeWrapper;
             recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
             for (int i = 0; i < Math.min(recipeWrapper.getOutputs().size(), Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
                 recipeLayout.getItemStacks().set(i, mobWrapper.getDrops().get(i));

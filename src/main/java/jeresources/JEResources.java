@@ -2,11 +2,11 @@ package jeresources;
 
 import jeresources.config.ConfigHandler;
 import jeresources.config.Settings;
+import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.MetaData;
 import jeresources.reference.Reference;
 import jeresources.registry.MessageRegistry;
-import jeresources.profiling.ProfileCommand;
 import jeresources.utils.LogHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -39,7 +39,7 @@ public class JEResources
 
         LogHelper.info("Updating ModMetaData...");
         metadata = MetaData.init(metadata);
-        
+
         LogHelper.info("Registering Events...");
         PROXY.registerEvents();
     }

@@ -30,13 +30,13 @@ public class LoaderHelper
                 {
                     String version = mod.getVersion();
                     String[] split = version.split(deliminator);
-                    for (int i = 0; i<split.length && i<versionInt.length;i++)
+                    for (int i = 0; i < split.length && i < versionInt.length; i++)
                     {
                         String sub = split[i];
-                        try {
-                            if (Integer.valueOf(sub)<versionInt[i]) return false;
-                        }
-                        catch (Exception e)
+                        try
+                        {
+                            if (Integer.valueOf(sub) < versionInt[i]) return false;
+                        } catch (Exception e)
                         {
                             return false;
                         }

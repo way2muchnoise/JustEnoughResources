@@ -33,14 +33,14 @@ public class RegisterOreMessage extends RegistryMessage
         this(ore, distribution, colour, Restriction.OVERWORLD_LIKE, false, drops);
     }
 
-    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, int colour,Restriction restriction, boolean needSilkTouch, ItemStack... drops)
+    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, int colour, Restriction restriction, boolean needSilkTouch, ItemStack... drops)
     {
-        this(ore,distribution,colour,restriction, needSilkTouch,Priority.FIRST,drops);
+        this(ore, distribution, colour, restriction, needSilkTouch, Priority.FIRST, drops);
     }
 
     public RegisterOreMessage(ItemStack ore, DistributionBase distribution, int colour, boolean needSilkTouch, Priority priority, ItemStack... drops)
     {
-        this(ore,distribution,colour,Restriction.OVERWORLD_LIKE,needSilkTouch,priority,drops);
+        this(ore, distribution, colour, Restriction.OVERWORLD_LIKE, needSilkTouch, priority, drops);
     }
 
     public RegisterOreMessage(ItemStack ore, DistributionBase distribution, Restriction restriction, ItemStack... drops)
@@ -48,24 +48,24 @@ public class RegisterOreMessage extends RegistryMessage
         this(ore, distribution, ColorHelper.BLACK, restriction, false, drops);
     }
 
-    public RegisterOreMessage(ItemStack ore, DistributionBase distribution,Restriction restriction, boolean needSilkTouch, ItemStack... drops)
+    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, Restriction restriction, boolean needSilkTouch, ItemStack... drops)
     {
         this(ore, distribution, ColorHelper.BLACK, restriction, needSilkTouch, drops);
     }
 
-    public RegisterOreMessage(ItemStack ore, DistributionBase distribution,Restriction restriction, int colour, ItemStack... drops)
+    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, Restriction restriction, int colour, ItemStack... drops)
     {
         this(ore, distribution, colour, restriction, false, drops);
     }
 
-    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, Restriction restriction,int colour, boolean needSilkTouch, Priority priority, ItemStack... drops)
+    public RegisterOreMessage(ItemStack ore, DistributionBase distribution, Restriction restriction, int colour, boolean needSilkTouch, Priority priority, ItemStack... drops)
     {
-        this(ore,distribution,colour,restriction,needSilkTouch,priority,drops);
+        this(ore, distribution, colour, restriction, needSilkTouch, priority, drops);
     }
 
     public RegisterOreMessage(ItemStack ore, DistributionBase distribution, int colour, Restriction restriction, boolean needSilkTouch, Priority priority, ItemStack... drops)
     {
-        super(priority,true);
+        super(priority, true);
         this.ore = ore;
         this.drops = drops;
         this.needSilkTouch = needSilkTouch;
@@ -73,7 +73,6 @@ public class RegisterOreMessage extends RegistryMessage
         this.colour = colour;
         this.restriction = restriction;
     }
-
 
 
     public RegisterOreMessage(NBTTagCompound tagCompound)
@@ -126,7 +125,7 @@ public class RegisterOreMessage extends RegistryMessage
         distribution.writeToNBT(tagCompound);
         tagCompound.setBoolean(MessageKeys.silkTouch, needSilkTouch);
         tagCompound.setInteger(MessageKeys.colour, colour);
-        tagCompound.setTag(MessageKeys.restriction,restriction.writeToNBT());
+        tagCompound.setTag(MessageKeys.restriction, restriction.writeToNBT());
         return tagCompound;
     }
 

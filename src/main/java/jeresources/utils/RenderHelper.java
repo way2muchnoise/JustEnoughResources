@@ -19,8 +19,7 @@ import net.minecraft.entity.passive.EntitySquid;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Point;
-import java.awt.Dimension;
+import java.awt.*;
 
 public class RenderHelper
 {
@@ -37,7 +36,7 @@ public class RenderHelper
         double angle = Math.atan2(yEnd - yBegin, xEnd - xBegin) * 180.0 / Math.PI;
         GlStateManager.pushMatrix();
         GlStateManager.translate(xEnd, yEnd, 0.0);
-        GlStateManager.rotate((float)angle, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate((float) angle, 0.0F, 0.0F, 1.0F);
         GlStateManager.scale(scale, scale, 1.0);
         GL11.glBegin(GL11.GL_TRIANGLES);
         GL11.glVertex2d(3.0, 0.0);
@@ -90,10 +89,9 @@ public class RenderHelper
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
             if (entityLivingBase instanceof EntityDragon)
             {
-                pitch = -pitch-80;
+                pitch = -pitch - 80;
                 GlStateManager.rotate(yaw < 90 ? (yaw < -90 ? 90 : -yaw) : -90, 0.0F, 1.0F, 0.0F);
-            }
-            else pitch = -pitch;
+            } else pitch = -pitch;
         }
         if (entityLivingBase instanceof EntityGuardian && ((EntityGuardian) entityLivingBase).isElder())
         {
@@ -208,24 +206,28 @@ public class RenderHelper
         return Minecraft.getMinecraft().getRenderManager();
     }
 
-    public static Dimension displaySize() {
+    public static Dimension displaySize()
+    {
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution res = new ScaledResolution(mc);
         return new Dimension(res.getScaledWidth(), res.getScaledHeight());
     }
 
-    public static Dimension displayRes() {
+    public static Dimension displayRes()
+    {
         Minecraft mc = Minecraft.getMinecraft();
         return new Dimension(mc.displayWidth, mc.displayHeight);
     }
 
-    public static Point getMousePosition(int eventX, int eventY) {
+    public static Point getMousePosition(int eventX, int eventY)
+    {
         Dimension size = displaySize();
         Dimension res = displayRes();
         return new Point(eventX * size.width / res.width, size.height - eventY * size.height / res.height - 1);
     }
 
-    public static Point getMousePosition() {
+    public static Point getMousePosition()
+    {
         return getMousePosition(Mouse.getX(), Mouse.getY());
     }
 

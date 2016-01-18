@@ -47,14 +47,15 @@ public class EnchantmentRegistry
 
     private void excludeFormRegistry(Enchantment enchantment)
     {
-        for (Iterator<EnchantmentEntry> itr = enchantments.iterator(); itr.hasNext();)
+        for (Iterator<EnchantmentEntry> itr = enchantments.iterator(); itr.hasNext(); )
             if (itr.next().getEnchantment().effectId == enchantment.effectId) itr.remove();
     }
 
     private void excludeFormRegistry(String sEnchantment)
     {
         for (Enchantment enchantment : getEnchants())
-            if (enchantment != null && enchantment.getName().toLowerCase().contains(sEnchantment.toLowerCase())) excludeFormRegistry(enchantment);
+            if (enchantment != null && enchantment.getName().toLowerCase().contains(sEnchantment.toLowerCase()))
+                excludeFormRegistry(enchantment);
     }
 
     public void removeAll(String[] excludedEnchants)
@@ -62,7 +63,7 @@ public class EnchantmentRegistry
         for (String enchant : excludedEnchants)
             excludeFormRegistry(enchant);
     }
-    
+
     public void clear()
     {
         instance = new EnchantmentRegistry();
@@ -70,6 +71,6 @@ public class EnchantmentRegistry
 
     private static Enchantment[] getEnchants()
     {
-        return ReflectionHelper.getPrivateValue(Enchantment.class, null, "field_180311_a" ,"enchantmentsList");
+        return ReflectionHelper.getPrivateValue(Enchantment.class, null, "field_180311_a", "enchantmentsList");
     }
 }

@@ -101,7 +101,7 @@ public class PlantRegistry
             map.put(drop.getDrop(), drop.getWeight() / totalWeight);
         return map;
     }
-    
+
     public void clear()
     {
         instance = new PlantRegistry();

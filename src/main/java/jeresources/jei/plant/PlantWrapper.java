@@ -91,7 +91,7 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
             case chance:
                 return drop.getChance();
             case weight:
-                return  (float)drop.getWeight() / this.plantEntry.getTotalWeight();
+                return (float) drop.getWeight() / this.plantEntry.getTotalWeight();
             case minMax:
                 return Float.NaN;
             default:
@@ -102,7 +102,7 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public int[] getMinMax(ItemStack itemStack)
     {
         PlantDrop drop = this.plantEntry.getDrop(itemStack);
-        return new int[] {drop.getMinDrop(), drop.getMaxDrop()};
+        return new int[]{drop.getMinDrop(), drop.getMaxDrop()};
     }
 
     private String getChanceString(ItemStack itemStack)
@@ -113,18 +113,17 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         {
             int[] minMax = this.getMinMax(itemStack);
             toPrint = minMax[0] + (minMax[0] == minMax[1] ? "" : " - " + minMax[1]);
-        }
-        else
+        } else
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
         return toPrint;
     }
 
     private IBlockState getBlockState()
     {
-        if(this.plantEntry.getPlant() != null)
-            return this.plantEntry.getPlant().getPlant(null, null).withProperty(BlockCrops.AGE, ((int)System.currentTimeMillis()/900)%8);
+        if (this.plantEntry.getPlant() != null)
+            return this.plantEntry.getPlant().getPlant(null, null).withProperty(BlockCrops.AGE, ((int) System.currentTimeMillis() / 900) % 8);
         else
-           return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
+            return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
     }
 
     private IBlockState getFarmland()

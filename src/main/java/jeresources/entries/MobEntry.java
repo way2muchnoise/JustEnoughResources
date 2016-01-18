@@ -125,6 +125,6 @@ public class MobEntry
 
     public String getExp()
     {
-        return this.minExp + (this.maxExp == this.minExp ? "" :  " - " + this.maxExp);
+        return this.minExp + (this.maxExp == this.minExp ? "" : " - " + this.maxExp);
     }
 }

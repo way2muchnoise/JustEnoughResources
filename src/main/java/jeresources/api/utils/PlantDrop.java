@@ -20,7 +20,8 @@ public class PlantDrop
      * DON'T USE!
      * This constructor is meant for registering grass
      * Which get auto collected by NER
-     * @param drop the The drop an {@link net.minecraft.item.ItemStack}
+     *
+     * @param drop       the The drop an {@link net.minecraft.item.ItemStack}
      * @param itemWeight The Weight of the drop
      */
     public PlantDrop(ItemStack drop, int itemWeight)
@@ -32,7 +33,8 @@ public class PlantDrop
 
     /**
      * Use this for registering seeds that have a chance less then one to drop
-     * @param drop The drop an {@link net.minecraft.item.ItemStack}
+     *
+     * @param drop   The drop an {@link net.minecraft.item.ItemStack}
      * @param chance the chance as float
      */
     public PlantDrop(ItemStack drop, float chance)
@@ -44,7 +46,8 @@ public class PlantDrop
 
     /**
      * Use this for registering seeds that have a chance of dropping more then one time
-     * @param drop The drop an {@link net.minecraft.item.ItemStack}
+     *
+     * @param drop    The drop an {@link net.minecraft.item.ItemStack}
      * @param minDrop minimum of seeds dropped
      * @param maxDrop maximum of seeds dropped
      */
