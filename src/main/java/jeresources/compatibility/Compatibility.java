@@ -36,7 +36,7 @@ public class Compatibility
             }
         }*/
 
-        MessageRegistry.processMessages();
+        MessageRegistry.processMessages(initOres);
         Settings.initedCompat = true;
     }
 }

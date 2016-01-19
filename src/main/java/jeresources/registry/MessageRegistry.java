@@ -61,7 +61,7 @@ public class MessageRegistry
         addMessage(message);
     }
 
-    public static void processMessages()
+    public static void processMessages(boolean initOres)
     {
         for (Priority priority : Priority.values())
         {
@@ -70,7 +70,7 @@ public class MessageRegistry
             getRegistryMessages(priority, addMessages, removeMessages);
             for (RegistryMessage message : addMessages)
             {
-                if (message instanceof RegisterOreMessage)
+                if (initOres && message instanceof RegisterOreMessage)
                     OreRegistry.registerOre((RegisterOreMessage) message);
                 else if (message instanceof RegisterMobMessage)
                     MobRegistry.getInstance().registerMob(new MobEntry((RegisterMobMessage) message));
@@ -93,14 +93,14 @@ public class MessageRegistry
             {
                 if (addMessage instanceof ModifyMobMessage)
                     MobRegistry.getInstance().addMobDrops((ModifyMobMessage) addMessage);
-                else if (addMessage instanceof ModifyOreMessage)
+                else if (initOres && addMessage instanceof ModifyOreMessage)
                     OreRegistry.addDrops((ModifyOreMessage) addMessage);
             }
             for (ModifyMessage removeMessage : removeMessages)
             {
                 if (removeMessage instanceof ModifyMobMessage)
                     MobRegistry.getInstance().removeMobDrops((ModifyMobMessage) removeMessage);
-                else if (removeMessage instanceof ModifyOreMessage)
+                else if (initOres && removeMessage instanceof ModifyOreMessage)
                     OreRegistry.removeDrops((ModifyOreMessage) removeMessage);
             }
         }
