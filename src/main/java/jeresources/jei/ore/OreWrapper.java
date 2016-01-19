@@ -114,6 +114,12 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+        drawInfo(minecraft, recipeWidth, recipeHeight);
+    }
+
+    @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
 
@@ -127,6 +133,12 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         if (onGraph(mouseX, mouseY))
             tooltip = getLineTooltip(mouseX, tooltip);
         return tooltip;
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    {
+        return false;
     }
 
     @Override

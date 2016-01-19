@@ -83,6 +83,7 @@ public class EnchantmentWrapper implements IRecipeWrapper
     }
 
     @Override
+    @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         int y = FIRST_ENCHANT_Y;
@@ -99,6 +100,12 @@ public class EnchantmentWrapper implements IRecipeWrapper
     }
 
     @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+
+    }
+
+    @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
 
@@ -109,5 +116,11 @@ public class EnchantmentWrapper implements IRecipeWrapper
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
         return null;
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    {
+        return false;
     }
 }

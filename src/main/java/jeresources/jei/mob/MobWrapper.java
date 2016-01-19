@@ -67,6 +67,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
+    @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
@@ -86,6 +87,12 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+
+    }
+
+    @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
 
@@ -98,6 +105,12 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         if (this.mob.getBiomes().length > 1 && isOnBiome(mouseX, mouseY))
             return CollectionHelper.create(this.mob.getBiomes());
         return null;
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    {
+        return false;
     }
 
     @Override

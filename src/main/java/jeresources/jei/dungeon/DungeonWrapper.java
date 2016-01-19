@@ -63,10 +63,17 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     }
 
     @Override
+    @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         Font.normal.print(TranslationHelper.translateToLocal(this.chest.getName()), 60, 7);
         Font.small.print(DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+
     }
 
     @Override
@@ -80,6 +87,12 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
         return null;
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    {
+        return false;
     }
 
     @Override

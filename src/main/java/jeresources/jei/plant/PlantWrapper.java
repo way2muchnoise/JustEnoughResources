@@ -57,10 +57,17 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
+    @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         RenderHelper.renderBlock(getFarmland(), 26, 50, -10, 20F, 0.4F);
         RenderHelper.renderBlock(getBlockState(), 26, 32, 10, 20F, 0.4F);
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
+
     }
 
     @Override
@@ -74,6 +81,12 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public List<String> getTooltipStrings(int mouseX, int mouseY)
     {
         return null;
+    }
+
+    @Override
+    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
+    {
+        return false;
     }
 
     @Override
