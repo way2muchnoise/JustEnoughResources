@@ -82,6 +82,7 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
+    @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         float[] array = this.oreMatchEntry.getChances();
@@ -116,7 +117,7 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
-        drawInfo(minecraft, recipeWidth, recipeHeight);
+
     }
 
     @Override
