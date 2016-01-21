@@ -168,9 +168,23 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         int index = (int) ((mouseX - X_OFFSPRING) / space);
         int yValue = Math.max(0, index + this.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE + 1);
         if (index >= 0 && index < chances.length)
-            tooltip.add("Y: " + yValue + String.format(" (%.2f%%)", chances[index] * 100));
+        {
+            float chance = chances[index] * 100;
+            String format = getFormat(chance);
+            tooltip.add("Y: " + yValue + String.format(format, chance));
+        }
 
         return tooltip;
+    }
+
+    private static String getFormat(float chance) {
+        if (chance > 0.05f) {
+            return " (%.2f%%)";
+        } else if (chance > 0.0005f) {
+            return " (%.4f%%)";
+        } else {
+            return " (%.6f%%)";
+        }
     }
 
     private boolean onGraph(int mouseX, int mouseY)

@@ -1,22 +1,25 @@
 package jeresources.profiling;
 
-import jeresources.compatibility.thaumcraft.ThaumcraftCompat;
 import jeresources.json.ProfilingAdapter;
-import jeresources.utils.ModList;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.Loader;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
+import static jeresources.utils.MapKeys.getKey;
+
 public class Profiler implements Runnable
 {
     private final ExecutorService executor;
-    private final ConcurrentMap<String, Integer[]> map;
+    private final ConcurrentMap<String, Integer[]> distributionMap;
+    private final ConcurrentMap<String, Boolean> silkTouchMap;
+    private final ConcurrentMap<String, Map<String, Float>> dropsMap;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
     private final int chunkCount;
@@ -26,32 +29,25 @@ public class Profiler implements Runnable
         this.sender = sender;
         final int processors = Runtime.getRuntime().availableProcessors();
         this.executor = Executors.newFixedThreadPool(processors - 1);
-        this.map = new ConcurrentHashMap<>();
+        this.distributionMap = new ConcurrentHashMap<>();
+        this.silkTouchMap = new ConcurrentHashMap<>();
+        this.dropsMap = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
         this.timer = new ProfilingTimer(sender, chunkCount);
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
     }
 
     @Override
     public void run()
     {
-        if (Loader.isModLoaded(ModList.Names.THAUMCRAFT))
-            ThaumcraftCompat.stopAuraThread();
-
         WorldServer world = (WorldServer) this.sender.getEntityWorld();
-        DummyWorld dummyWorld = new DummyWorld(world);
-        dummyWorld.init();
-        final int chunkGetterCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-        for (int i = 0; i < chunkGetterCount; i++)
-            dummyWorld.addScheduledTask(new ChunkGetter(dummyWorld, this));
+        int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
 
-        dummyWorld.addScheduledTask(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                executor.shutdown();
-            }
-        });
+        ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+        world.addScheduledTask(chunkGetter);
 
         while (true)
         {
@@ -74,20 +70,30 @@ public class Profiler implements Runnable
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks)
     {
-        this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.map, this.timer));
+        try
+        {
+            this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.distributionMap, this.silkTouchMap, this.dropsMap, this.timer));
+        }
+        catch(RejectedExecutionException ignored)
+        {
+            // the player has forced profiling to stop
+        }
     }
 
     private void writeData()
     {
         Map<String, Float[]> distribs = new HashMap<>();
-        for (Map.Entry<String, Integer[]> entry : this.map.entrySet())
+        for (Map.Entry<String, Integer[]> entry : this.distributionMap.entrySet())
         {
             Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
             for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
                 array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer();
             distribs.put(entry.getKey(), array);
         }
-        ProfilingAdapter.write(distribs);
+
+        cleanDropsMap();
+
+        ProfilingAdapter.write(distribs, this.silkTouchMap, this.dropsMap);
     }
 
     private static Profiler currentProfiler;
@@ -106,5 +112,28 @@ public class Profiler implements Runnable
         currentProfiler.executor.shutdownNow();
         currentProfiler.writeData();
         return true;
+    }
+
+    private void cleanDropsMap()
+    {
+        // remove drops entries that only drop themselves
+        Iterator<Map.Entry<String, Map<String, Float>>> iterator = this.dropsMap.entrySet().iterator();
+        while (iterator.hasNext())
+        {
+            Map.Entry<String, Map<String, Float>> dropEntry = iterator.next();
+            String input = dropEntry.getKey();
+            Map<String, Float> drops = dropEntry.getValue();
+            if (drops.size() == 0) {
+                iterator.remove();
+            }
+            else if (drops.size() == 1)
+            {
+                Float chance = drops.get(input);
+                if (chance != null && Math.abs(chance - 1.0f) < 0.01f)
+                {
+                    iterator.remove();
+                }
+            }
+        }
     }
 }

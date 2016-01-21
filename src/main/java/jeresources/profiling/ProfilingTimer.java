@@ -1,6 +1,5 @@
 package jeresources.profiling;
 
-import jeresources.utils.LogHelper;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 
@@ -31,7 +30,7 @@ public class ProfilingTimer
     {
         this.threadCounter--;
         if (++this.chunkCounter % 100 == 0)
-            sendSpeed(true);
+            sendSpeed();
         if (this.totalChunks == this.chunkCounter)
             this.completed = true;
     }
@@ -39,7 +38,6 @@ public class ProfilingTimer
     public void complete()
     {
         this.completed = true;
-        sendSpeed(false);
         send("Completed profiling of " + (getBlocksPerLayer() * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " + (System.currentTimeMillis() - this.start) + " ms saved to blocks.json");
     }
 
@@ -53,14 +51,11 @@ public class ProfilingTimer
         this.sender.addChatMessage(new ChatComponentText(s));
     }
 
-    private void sendSpeed(boolean log)
+    private void sendSpeed()
     {
         float time = (System.currentTimeMillis() - this.start) * 1.0F / this.chunkCounter;
         String message = "Scanned " + this.chunkCounter + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
-        if (!log)
-            send(message);
-        else
-            LogHelper.info(message);
+        send(message);
     }
 
     public long getBlocksPerLayer()

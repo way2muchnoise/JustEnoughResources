@@ -9,6 +9,7 @@ import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.DistributionHelpers;
 import jeresources.config.ConfigHandler;
+import jeresources.registry.DropsRegistry;
 import jeresources.registry.OreRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -20,7 +21,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OreAdapter
 {
@@ -47,7 +50,11 @@ public class OreAdapter
                         continue;
 
                 String ore = obj.get("ore").getAsString();
-                String distrib = obj.get("distrib").getAsString();
+                JsonElement distribElement = obj.get("distrib");
+                if (distribElement == null)
+                    continue;
+
+                String distrib = distribElement.getAsString();
                 JsonElement dropsElement = obj.get("drops");
                 String drops = dropsElement != null ? dropsElement.getAsString() : "";
                 JsonElement silk = obj.get("silktouch");
@@ -67,21 +74,34 @@ public class OreAdapter
                         points.add(new DistributionHelpers.OrePoint(Integer.parseInt(split[0]), Float.parseFloat(split[1])));
                 }
                 DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
-                List<ItemStack> dropsList = new ArrayList<>();
+
                 if (!drops.isEmpty())
                 {
+                    Map<ItemStack, Float> dropsChances = new HashMap<>();
                     for (String drop : drops.split(","))
                     {
                         String[] dropSplit = drop.split(":");
-                        int meta = dropSplit.length < 4 ? 0 : Integer.parseInt(dropSplit[3]);
-                        int size = dropSplit.length < 3 ? 1 : dropSplit.length < 4 ? Integer.parseInt(dropSplit[2]) : Integer.parseInt(dropSplit[3]);
                         Item item = GameRegistry.findItem(dropSplit[0], dropSplit[1]);
                         if (item == null) continue;
-                        dropsList.add(new ItemStack(item, size, meta));
+
+                        int meta = 0;
+                        float averageAmount = 1;
+                        if (dropSplit.length >= 3)
+                        {
+                            meta = Integer.parseInt(dropSplit[2]);
+                            if (dropSplit.length == 4)
+                            {
+                                averageAmount = Float.parseFloat(dropSplit[3]);
+                            }
+                        }
+
+                        dropsChances.put(new ItemStack(item, 1, meta), averageAmount);
                     }
+
+                    DropsRegistry.registerDrops(oreStack, dropsChances);
                 }
 
-                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch, dropsList.toArray(new ItemStack[dropsList.size()])));
+                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch));
             }
         } catch (FileNotFoundException e)
         {

@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -11,6 +12,7 @@ import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.LongHashMap;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.NextTickListEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -18,9 +20,12 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -69,6 +74,30 @@ public class DummyWorld extends WorldServer
     public boolean setBlockState(BlockPos pos, IBlockState state)
     {
         return this.setBlockState(pos, state, 3);
+    }
+
+    @Override
+    public void scheduleBlockUpdate(BlockPos pos, Block blockIn, int delay, int priority)
+    {
+
+    }
+
+    @Override
+    public void updateBlockTick(BlockPos pos, Block blockIn, int delay, int priority)
+    {
+
+    }
+
+    @Override
+    public boolean tickUpdates(boolean p_72955_1_)
+    {
+        return false;
+    }
+
+    @Override
+    public List<NextTickListEntry> func_175712_a(StructureBoundingBox structureBB, boolean p_175712_2_)
+    {
+        return Collections.emptyList();
     }
 
     @Override
