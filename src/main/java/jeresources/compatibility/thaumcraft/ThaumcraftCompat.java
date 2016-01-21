@@ -120,9 +120,4 @@ public class ThaumcraftCompat extends CompatBase
         ItemStack ore = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_cinnabar"));
         registerOre(new RegisterOreMessage(ore, new DistributionSquare(minY, maxY, chance)));
     }
-
-    public static void stopAuraThread()
-    {
-        Thaumcraft.proxy.getAuraThread().stop();
-    }
 }

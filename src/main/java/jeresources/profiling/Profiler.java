@@ -31,27 +31,18 @@ public class Profiler implements Runnable
         this.timer = new ProfilingTimer(sender, chunkCount);
     }
 
+    public ExecutorService getExecutor() {
+        return executor;
+    }
+
     @Override
     public void run()
     {
-        if (Loader.isModLoaded(ModList.Names.THAUMCRAFT))
-            ThaumcraftCompat.stopAuraThread();
-
         WorldServer world = (WorldServer) this.sender.getEntityWorld();
-        DummyWorld dummyWorld = new DummyWorld(world);
-        dummyWorld.init();
-        final int chunkGetterCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-        for (int i = 0; i < chunkGetterCount; i++)
-            dummyWorld.addScheduledTask(new ChunkGetter(dummyWorld, this));
+        int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
 
-        dummyWorld.addScheduledTask(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                executor.shutdown();
-            }
-        });
+        ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+        world.addScheduledTask(chunkGetter);
 
         while (true)
         {
@@ -74,7 +65,14 @@ public class Profiler implements Runnable
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks)
     {
-        this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.map, this.timer));
+        try
+        {
+            this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.map, this.timer));
+        }
+        catch(RejectedExecutionException ignored)
+        {
+            // the player has forced profiling to stop
+        }
     }
 
     private void writeData()
