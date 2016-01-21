@@ -1,6 +1,7 @@
 package jeresources.profiling;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -9,6 +10,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -23,15 +25,19 @@ public class ChunkProfiler implements Runnable
     private final World world;
     private final ProfilingTimer timer;
     private final List<Chunk> chunks;
-    private ConcurrentMap<String, Integer[]> map;
+    private final ConcurrentMap<String, Integer[]> distributionMap;
+    private final ConcurrentMap<String, Boolean> silkTouchMap;
+    ConcurrentMap<String, Map<String, Float>> dropsMap;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, ConcurrentMap<String, Integer[]> map, ProfilingTimer timer)
+    public ChunkProfiler(World world, List<Chunk> chunks, ConcurrentMap<String, Integer[]> distributionMap, ConcurrentMap<String, Boolean> silkTouchMap, ConcurrentMap<String, Map<String, Float>> dropsMap, ProfilingTimer timer)
     {
         this.world = world;
         this.chunks = chunks;
-        this.map = map;
+        this.distributionMap = distributionMap;
+        this.silkTouchMap = silkTouchMap;
+        this.dropsMap = dropsMap;
         this.timer = timer;
     }
 
@@ -58,17 +64,31 @@ public class ChunkProfiler implements Runnable
                 {
                     blockPos.set(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
                     Block block = chunk.getBlock(x, y, z);
+                    int meta = chunk.getBlockMetadata(blockPos);
+
                     ItemStack pickBlock = block.getPickBlock(movingObjectPosition, world, blockPos, player);
                     String key;
                     if (pickBlock == null)
                     {
-                        int meta = chunk.getBlockMetadata(blockPos);
                         key = block.getRegistryName() + ':' + meta;
                     } else
                     {
-                        Item item = pickBlock.getItem();
-                        key = item.getRegistryName() + ':' + pickBlock.getMetadata();
+                        key = getKey(pickBlock);
                     }
+
+                    if (!dropsMap.containsKey(key))
+                    {
+                        IBlockState blockState = block.getStateFromMeta(meta);
+                        dropsMap.put(key, getDrops(block, world, blockPos, blockState));
+                    }
+
+                    if (!silkTouchMap.containsKey(key))
+                    {
+                        IBlockState blockState = block.getStateFromMeta(meta);
+                        boolean canSilkTouch = block.canSilkHarvest(world, blockPos, blockState, player);
+                        silkTouchMap.put(key, canSilkTouch);
+                    }
+
                     Integer[] array = temp.get(key);
                     if (array == null)
                     {
@@ -81,7 +101,7 @@ public class ChunkProfiler implements Runnable
 
         for (Map.Entry<String, Integer[]> entry : temp.entrySet())
         {
-            Integer[] array = this.map.get(entry.getKey());
+            Integer[] array = this.distributionMap.get(entry.getKey());
             if (array == null)
             {
                 array = new Integer[CHUNK_HEIGHT];
@@ -89,9 +109,44 @@ public class ChunkProfiler implements Runnable
             }
             for (int i = 0; i < CHUNK_HEIGHT; i++)
                 array[i] += entry.getValue()[i];
-            this.map.put(entry.getKey(), array);
+            this.distributionMap.put(entry.getKey(), array);
         }
 
         this.timer.endChunk();
+    }
+
+    public static String getKey(ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item.getRegistryName() + ':' + itemStack.getMetadata();
+    }
+
+    public static Map<String, Float> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
+        final int totalTries = 10000;
+
+        final Map<String, Integer> dropsMap = new HashMap<>();
+        for (int i = 0; i < totalTries; i++)
+        {
+            List<ItemStack> drops = block.getDrops(world, pos, state, 0);
+            for (ItemStack drop : drops) {
+                if (drop == null)
+                    continue;
+                String key = getKey(drop);
+                Integer count = dropsMap.get(key);
+                if (count != null) {
+                    count += drop.stackSize;
+                } else {
+                    count = drop.stackSize;
+                }
+                dropsMap.put(key, count);
+            }
+        }
+
+        final Map<String, Float> dropsMapAverage = new HashMap<>(dropsMap.size());
+        for (Map.Entry<String, Integer> dropEntry : dropsMap.entrySet())
+        {
+            dropsMapAverage.put(dropEntry.getKey(), dropEntry.getValue() / (float) totalTries);
+        }
+
+        return dropsMapAverage;
     }
 }

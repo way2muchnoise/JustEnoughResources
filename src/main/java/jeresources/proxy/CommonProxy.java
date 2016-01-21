@@ -7,6 +7,7 @@ import jeresources.entries.MobEntry;
 import jeresources.entries.OreMatchEntry;
 import jeresources.entries.PlantEntry;
 import jeresources.jei.JEIConfig;
+import jeresources.jei.drops.DropsWrapper;
 import jeresources.registry.*;
 import jeresources.utils.ModList;
 import jeresources.utils.WorldEventHelper;
@@ -26,6 +27,8 @@ public class CommonProxy
         {
             IRecipeRegistry recipeRegistry = JEIConfig.getRecipeRegistry();
             for (OreMatchEntry entry : OreRegistry.getOres())
+                recipeRegistry.addRecipe(entry);
+            for (DropsWrapper entry : DropsRegistry.getDrops())
                 recipeRegistry.addRecipe(entry);
             for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
                 recipeRegistry.addRecipe(entry);
