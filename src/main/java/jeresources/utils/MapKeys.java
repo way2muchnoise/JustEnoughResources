@@ -1,5 +1,6 @@
 package jeresources.utils;
 
+import jeresources.api.utils.DropItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.oredict.OreDictionary;
@@ -28,6 +29,7 @@ public class MapKeys
         if (keys.length > 0)
         {
             if (keys[0].equals("oreCertusQuartz") && keys.length > 1) return keys[1];
+            if (keys[0].equals("treeLeaves")) return key(drop);
             return keys[0];
         }
         return null;
@@ -41,5 +43,10 @@ public class MapKeys
     public static String getKey(IPlantable plant)
     {
         return plant.getPlant(null, null).getBlock().getUnlocalizedName();
+    }
+
+    public static String getKey(DropItem dropItem)
+    {
+        return getKey(dropItem.item);
     }
 }

@@ -35,14 +35,11 @@ public class ProfileCommand extends CommandBase
                 throw new WrongUsageException("can't use command in multiplayer");
 
             if ("stop".equals(args[0]))
+            {
                 if (!Profiler.stop())
-                {
                     throw new WrongUsageException("Not profiling, run \"/profile [chunks]\" to start");
-                }
-                else
-                {
-                    return;
-                }
+                else return;
+            }
 
             int chunks;
             try

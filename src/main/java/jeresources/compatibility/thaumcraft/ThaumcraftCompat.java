@@ -40,7 +40,7 @@ public class ThaumcraftCompat extends CompatBase
     private void registerThaumcraftOres()
     {
         ItemStack amber = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_amber"));
-        ItemStack amberDrop = new ItemStack(GameRegistry.findItem(ModList.Names.THAUMCRAFT, "amber"));
+        DropItem amberDrop = new DropItem(new ItemStack(GameRegistry.findItem(ModList.Names.THAUMCRAFT, "amber")));
         MessageRegistry.addMessage(new ModifyOreMessage(amber, Priority.FIRST, amberDrop));
         if (Config.genCinnibar) genCinnabar();
         if (Config.genAmber) genAmber();

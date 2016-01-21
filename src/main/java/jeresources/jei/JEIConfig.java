@@ -1,8 +1,6 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
-import jeresources.jei.drops.DropsCategory;
-import jeresources.jei.drops.DropsHandler;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -22,7 +20,6 @@ public class JEIConfig implements IModPlugin
     public static final String MOB = Reference.ID + ".mob";
     public static final String DUNGEON = Reference.ID + ".dungeon";
     public static final String ORE = Reference.ID + ".ore";
-    public static final String DROPS = Reference.ID + ".drops";
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
 
@@ -41,8 +38,8 @@ public class JEIConfig implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
-        registry.addRecipeHandlers(new PlantHandler(), new OreHandler(), new DropsHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
-        registry.addRecipeCategories(new PlantCategory(), new OreCategory(), new DropsCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
+        registry.addRecipeHandlers(new PlantHandler(), new OreHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
+        registry.addRecipeCategories(new PlantCategory(), new OreCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
     }
 
     @Override

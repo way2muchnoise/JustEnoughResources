@@ -2,6 +2,7 @@ package jeresources.api.messages;
 
 import jeresources.api.messages.utils.MessageHelper;
 import jeresources.api.messages.utils.MessageKeys;
+import jeresources.api.utils.DropItem;
 import jeresources.api.utils.Priority;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,25 +10,25 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ModifyOreMessage extends ModifyMessage
 {
     private ItemStack ore;
-    private ItemStack[] addDrops = new ItemStack[0];
-    private ItemStack[] removeDrops = new ItemStack[0];
+    private DropItem[] addDrops = new DropItem[0];
+    private DropItem[] removeDrops = new DropItem[0];
 
-    public ModifyOreMessage(ItemStack ore, ItemStack... drops)
+    public ModifyOreMessage(ItemStack ore, DropItem... drops)
     {
         this(ore, true, drops);
     }
 
-    public ModifyOreMessage(ItemStack ore, Priority priority, ItemStack... drops)
+    public ModifyOreMessage(ItemStack ore, Priority priority, DropItem... drops)
     {
         this(ore, true, priority, drops);
     }
 
-    public ModifyOreMessage(ItemStack ore, boolean add, ItemStack... drops)
+    public ModifyOreMessage(ItemStack ore, boolean add, DropItem... drops)
     {
         this(ore, add, Priority.SECOND, drops);
     }
 
-    public ModifyOreMessage(ItemStack ore, boolean add, Priority priority, ItemStack... drops)
+    public ModifyOreMessage(ItemStack ore, boolean add, Priority priority, DropItem... drops)
     {
         super(priority, add);
         this.ore = ore;
@@ -37,12 +38,12 @@ public class ModifyOreMessage extends ModifyMessage
             this.removeDrops = drops;
     }
 
-    public ModifyOreMessage(ItemStack ore, ItemStack[] removeDrops, ItemStack[] addDrops)
+    public ModifyOreMessage(ItemStack ore, DropItem[] removeDrops, DropItem[] addDrops)
     {
         this(ore, removeDrops, addDrops, Priority.SECOND, Priority.FIRST);
     }
 
-    public ModifyOreMessage(ItemStack ore, ItemStack[] removeDrops, ItemStack[] addDrops, Priority removePriority, Priority addPriority)
+    public ModifyOreMessage(ItemStack ore, DropItem[] removeDrops, DropItem[] addDrops, Priority removePriority, Priority addPriority)
     {
         super(addPriority, removePriority);
         this.ore = ore;
@@ -54,8 +55,8 @@ public class ModifyOreMessage extends ModifyMessage
     {
         super(tagCompound);
         this.ore = ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag(MessageKeys.stack));
-        this.addDrops = MessageHelper.getItemStacks(tagCompound, MessageKeys.addDrops);
-        this.removeDrops = MessageHelper.getItemStacks(tagCompound, MessageKeys.removeDrops);
+        this.addDrops = MessageHelper.getDropItems(tagCompound, MessageKeys.addDrops);
+        this.removeDrops = MessageHelper.getDropItems(tagCompound, MessageKeys.removeDrops);
     }
 
     public ItemStack getOre()
@@ -63,12 +64,12 @@ public class ModifyOreMessage extends ModifyMessage
         return ore;
     }
 
-    public ItemStack[] getRemoveDrops()
+    public DropItem[] getRemoveDrops()
     {
         return removeDrops;
     }
 
-    public ItemStack[] getAddDrops()
+    public DropItem[] getAddDrops()
     {
         return addDrops;
     }
@@ -78,8 +79,8 @@ public class ModifyOreMessage extends ModifyMessage
     {
         super.writeToNBT(tagCompound);
         tagCompound.setTag(MessageKeys.stack, ore.writeToNBT(new NBTTagCompound()));
-        tagCompound.setTag(MessageKeys.addDrops, MessageHelper.getItemStackList(addDrops));
-        tagCompound.setTag(MessageKeys.removeDrops, MessageHelper.getItemStackList(removeDrops));
+        tagCompound.setTag(MessageKeys.addDrops, MessageHelper.getDropItemList(addDrops));
+        tagCompound.setTag(MessageKeys.removeDrops, MessageHelper.getDropItemList(removeDrops));
         return tagCompound;
     }
 

@@ -1,5 +1,6 @@
 package jeresources.jei.ore;
 
+import jeresources.api.utils.DropItem;
 import jeresources.api.utils.conditionals.Conditional;
 import jeresources.config.Settings;
 import jeresources.entries.OreMatchEntry;
@@ -23,16 +24,12 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     protected static final int Y_OFFSPRING = 52;
     protected static final int X_AXIS_SIZE = 90;
     protected static final int Y_AXIS_SIZE = 40;
-    protected static final int X_ITEM = 17;
-    protected static final int Y_ITEM = 21;
 
-    private OreMatchEntry oreMatchEntry;
-    private List<ItemStack> oresAndDrops;
+    private final OreMatchEntry oreMatchEntry;
 
     public OreWrapper(OreMatchEntry oreMatchEntry)
     {
         this.oreMatchEntry = oreMatchEntry;
-        this.oresAndDrops = oreMatchEntry.getOresAndDrops();
     }
 
     public int getLineColor()
@@ -45,13 +42,6 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         return this.oreMatchEntry.getRestrictions();
     }
 
-    public boolean contains(ItemStack itemStack)
-    {
-        for (ItemStack listStack : this.oresAndDrops)
-            if (listStack.isItemEqual(itemStack)) return true;
-        return false;
-    }
-
     @Override
     public List getInputs()
     {
@@ -61,12 +51,17 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     @Override
     public List getOutputs()
     {
-        return this.oresAndDrops;
+        return this.oreMatchEntry.getOresAndDrops();
     }
 
-    public List<ItemStack> getOresAndDrops()
+    public List<ItemStack> getOres()
     {
-        return this.oresAndDrops;
+        return this.oreMatchEntry.getOres();
+    }
+
+    public List<DropItem> getDrops()
+    {
+        return this.oreMatchEntry.getDrops();
     }
 
     @Override
@@ -111,7 +106,7 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
         int maxY = this.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
         Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
-        Font.small.print(TranslationHelper.translateToLocal("jer.ore.bestY") + ": " + this.oreMatchEntry.getBestY(), X_ITEM - 2, Y_ITEM + 20);
+        Font.small.print(TranslationHelper.translateToLocal("jer.ore.drops"), OreCategory.X_DROP_ITEM, OreCategory.Y_DROP_ITEM - 8);
     }
 
     @Override
@@ -145,18 +140,19 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     @Override
     public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip)
     {
-        tooltip.addAll(getItemStackTooltip(ingredient));
+        tooltip.addAll(getItemStackTooltip(slotIndex, ingredient));
     }
 
-    private List<String> getItemStackTooltip(ItemStack itemStack)
+    private List<String> getItemStackTooltip(int slot, ItemStack itemStack)
     {
         List<String> tooltip = new LinkedList<>();
-        if (itemStack != null)
+        if (itemStack != null && slot == 0)
         {
             if (this.oreMatchEntry.isSilkTouchNeeded(itemStack))
                 tooltip.add(Conditional.silkTouch.toString());
             tooltip.addAll(this.getRestrictions());
-        }
+        } else
+            tooltip.add(TranslationHelper.translateToLocal("jer.ore.average") + " " + this.oreMatchEntry.getDropItem(itemStack).chanceString());
         return tooltip;
     }
 
@@ -170,30 +166,18 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         if (index >= 0 && index < chances.length)
         {
             float chance = chances[index] * 100;
-            String format = getFormat(chance);
-            tooltip.add("Y: " + yValue + String.format(format, chance));
+            tooltip.add("Y: " + yValue +String.format(" (%.2G%%)", chance));
         }
 
         return tooltip;
     }
 
-    private static String getFormat(float chance) {
-        if (chance > 0.05f) {
-            return " (%.2f%%)";
-        } else if (chance > 0.0005f) {
-            return " (%.4f%%)";
-        } else {
-            return " (%.6f%%)";
-        }
-    }
-
     private boolean onGraph(int mouseX, int mouseY)
     {
-        return
-                mouseX >= X_OFFSPRING - 1
-                        && mouseX < X_OFFSPRING + X_AXIS_SIZE
-                        && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
-                        && mouseY < Y_OFFSPRING;
+        return mouseX >= X_OFFSPRING - 1
+            && mouseX < X_OFFSPRING + X_AXIS_SIZE
+            && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
+            && mouseY < Y_OFFSPRING;
     }
 
 

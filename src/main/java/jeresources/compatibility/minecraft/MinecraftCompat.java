@@ -50,14 +50,14 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaOreDrops()
     {
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new ItemStack(Items.clay_ball, 4)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.clay), Priority.FIRST, new ItemStack(Items.clay_ball, 4)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.coal_ore), Priority.FIRST, new ItemStack(Items.coal)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.diamond_ore), Priority.FIRST, new ItemStack(Items.diamond)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.lapis_ore), Priority.FIRST, new ItemStack(Items.dye, 4, 4)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.emerald_ore), Priority.FIRST, new ItemStack(Items.emerald)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.redstone_ore), Priority.FIRST, new ItemStack(Items.redstone, 4)));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.quartz_ore), Priority.FIRST, new ItemStack(Items.quartz, 4)));
+        registerOre(new RegisterOreMessage(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new DropItem(new ItemStack(Items.clay_ball, 4))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.clay), Priority.FIRST, new DropItem(new ItemStack(Items.clay_ball, 4))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.coal_ore), Priority.FIRST, new DropItem(new ItemStack(Items.coal))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.diamond_ore), Priority.FIRST, new DropItem(new ItemStack(Items.diamond))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.lapis_ore), Priority.FIRST, new DropItem(new ItemStack(Items.dye, 4, 4))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.emerald_ore), Priority.FIRST, new DropItem(new ItemStack(Items.emerald))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.redstone_ore), Priority.FIRST, new DropItem(new ItemStack(Items.redstone, 4))));
+        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.quartz_ore), Priority.FIRST, new DropItem(new ItemStack(Items.quartz, 4))));
     }
 
     private void registerVanillaMobs()

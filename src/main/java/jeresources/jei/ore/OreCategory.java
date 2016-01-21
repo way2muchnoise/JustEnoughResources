@@ -1,6 +1,7 @@
 package jeresources.jei.ore;
 
 import jeresources.api.utils.ColorHelper;
+import jeresources.api.utils.DropItem;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.utils.RenderHelper;
@@ -10,11 +11,18 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
 public class OreCategory implements IRecipeCategory
 {
+    protected static final int X_ITEM = 17;
+    protected static final int Y_ITEM = 21;
+    protected static final int X_DROP_ITEM = 17;
+    protected static final int Y_DROP_ITEM = 66;
+    private static final int DROP_ITEM_COUNT = 8;
+
     @Nonnull
     @Override
     public String getUid()
@@ -52,13 +60,23 @@ public class OreCategory implements IRecipeCategory
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
-        recipeLayout.getItemStacks().init(0, false, OreWrapper.X_ITEM, OreWrapper.Y_ITEM);
+        recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
+
+        for (int i = 0; i < DROP_ITEM_COUNT; i++)
+            recipeLayout.getItemStacks().init(i + 1, false, X_DROP_ITEM + i * 18, Y_DROP_ITEM);
 
         if (recipeWrapper instanceof OreWrapper)
         {
             OreWrapper oreWrapper = (OreWrapper) recipeWrapper;
             recipeLayout.getItemStacks().addTooltipCallback(oreWrapper);
-            recipeLayout.getItemStacks().setFromRecipe(0, oreWrapper.getOresAndDrops());
+            recipeLayout.getItemStacks().setFromRecipe(0, oreWrapper.getOres());
+            for (int i = 0 ; i < Math.min(DROP_ITEM_COUNT, oreWrapper.getDrops().size()); i++)
+            {
+                DropItem drop = oreWrapper.getDrops().get(i);
+                ItemStack itemStack = drop.item.copy();
+                itemStack.stackSize = Math.max(1, (int)Math.floor(drop.chance));
+                recipeLayout.getItemStacks().set(i + 1, itemStack);
+            }
         }
     }
 

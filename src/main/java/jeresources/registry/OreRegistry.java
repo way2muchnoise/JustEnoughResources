@@ -2,6 +2,7 @@ package jeresources.registry;
 
 import jeresources.api.messages.ModifyOreMessage;
 import jeresources.api.messages.RegisterOreMessage;
+import jeresources.api.utils.DropItem;
 import jeresources.api.utils.Priority;
 import jeresources.entries.OreMatchEntry;
 import jeresources.utils.MapKeys;
@@ -50,9 +51,9 @@ public class OreRegistry
         {
             addNewOre(key, message);
         }
-        ItemStack[] drops = message.getDrops();
+        DropItem[] drops = message.getDrops();
         if (drops == null || drops.length == 0) return;
-        MessageRegistry.addMessage(new ModifyOreMessage(message.getOre(), Priority.FIRST, drops));
+        addDrops(new ModifyOreMessage(message.getOre(), Priority.FIRST, drops));
     }
 
     private static int addNewOre(String key, RegisterOreMessage message)
@@ -103,14 +104,14 @@ public class OreRegistry
         if (oreMod.getRemoveDrops() == null) return true;
         String oreKey = MapKeys.getKey(oreMod.getOre());
         if (oreKey == null || !dropMap.containsKey(oreKey) || dropMap.get(oreKey).isEmpty()) return false;
-        for (ItemStack drop : oreMod.getRemoveDrops())
+        for (DropItem drop : oreMod.getRemoveDrops())
         {
             String dropKey = MapKeys.getKey(drop);
             if (dropKey == null || !dropMap.containsKey(dropKey)) continue;
             Set<Integer> hashSet = dropMap.get(oreKey);
             dropMap.get(dropKey).removeAll(hashSet);
             for (int hashCode : hashSet)
-                matchEntryMap.get(hashCode).removeDrop(drop);
+                matchEntryMap.get(hashCode).removeDrop(drop.item);
         }
         return true;
     }
@@ -120,7 +121,7 @@ public class OreRegistry
         if (oreMod.getAddDrops() == null) return true;
         String oreKey = MapKeys.getKey(oreMod.getOre());
         if (oreKey == null || !dropMap.containsKey(oreKey)) return false;
-        for (ItemStack drop : oreMod.getAddDrops())
+        for (DropItem drop : oreMod.getAddDrops())
         {
             String dropKey = MapKeys.getKey(drop);
             if (dropKey == null) continue;

@@ -8,8 +8,8 @@ import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.DistributionHelpers;
+import jeresources.api.utils.DropItem;
 import jeresources.config.ConfigHandler;
-import jeresources.registry.DropsRegistry;
 import jeresources.registry.OreRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -21,9 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class OreAdapter
 {
@@ -75,9 +73,9 @@ public class OreAdapter
                 }
                 DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
 
+                List<DropItem> dropList = new ArrayList<>();
                 if (!drops.isEmpty())
                 {
-                    Map<ItemStack, Float> dropsChances = new HashMap<>();
                     for (String drop : drops.split(","))
                     {
                         String[] dropSplit = drop.split(":");
@@ -90,18 +88,13 @@ public class OreAdapter
                         {
                             meta = Integer.parseInt(dropSplit[2]);
                             if (dropSplit.length == 4)
-                            {
                                 averageAmount = Float.parseFloat(dropSplit[3]);
-                            }
                         }
-
-                        dropsChances.put(new ItemStack(item, 1, meta), averageAmount);
+                        dropList.add(new DropItem(new ItemStack(item, 1, meta), averageAmount));
                     }
-
-                    DropsRegistry.registerDrops(oreStack, dropsChances);
                 }
 
-                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch));
+                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch, dropList.toArray(new DropItem[dropList.size()])));
             }
         } catch (FileNotFoundException e)
         {

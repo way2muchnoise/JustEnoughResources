@@ -18,6 +18,11 @@ public class DropItem implements Comparable<DropItem>
     public List<String> conditionals = new ArrayList<String>();
     private float sortIndex;
 
+    public DropItem(ItemStack item)
+    {
+        this(item, item.stackSize);
+    }
+
     public DropItem(ItemStack item, float chance)
     {
         this(item, 0, 1, chance);
@@ -110,6 +115,11 @@ public class DropItem implements Comparable<DropItem>
         float chance = this.chance * 100;
         if (chance < 10) return String.format("%.1f", chance);
         return String.format("%2d", (int) chance);
+    }
+
+    public String chanceString()
+    {
+        return String.format("%.2G", chance);
     }
 
     public List<String> getTooltipText()

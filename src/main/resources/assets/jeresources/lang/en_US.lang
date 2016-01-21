@@ -45,14 +45,11 @@ jer.plant.title=Plant Drops
 
 #Ore View
 jer.ore.title=World Gen
-jer.ore.bestY=bestY
 jer.ore.silkTouch=Silk Touch Needed
 jer.ore.biomes=Spawn Biomes
 jer.ore.dimensions=Valid Dimensions
-
-#Drops View
-jer.drops.title=Block Drops
-jer.drops.tooltip.average=Avg. Drop: %s
+jer.ore.drops=Drops
+jer.ore.average=Avg. Drop:
 
 #Mob View
 jer.mob.title=Mob Drops

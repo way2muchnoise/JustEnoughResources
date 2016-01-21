@@ -4,6 +4,7 @@ import jeresources.api.distributions.DistributionBase;
 import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.ColorHelper;
 import jeresources.api.utils.DistributionHelpers;
+import jeresources.api.utils.DropItem;
 import jeresources.api.utils.restrictions.Restriction;
 import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
@@ -24,7 +25,7 @@ public class OreMatchEntry
     private boolean denseOre;
     private int colour;
     private Restriction restriction;
-    List<ItemStack> drops = new ArrayList<ItemStack>();
+    List<DropItem> drops = new ArrayList<>();
 
     public OreMatchEntry(RegisterOreMessage message)
     {
@@ -123,7 +124,7 @@ public class OreMatchEntry
         return colour;
     }
 
-    public void addDrop(ItemStack nonOre)
+    public void addDrop(DropItem nonOre)
     {
         drops.add(nonOre);
         boolean silkTouch = false;
@@ -133,17 +134,17 @@ public class OreMatchEntry
             silkTouch = true;
             calcChances();
         }
-        silkTouchMap.put(MapKeys.key(nonOre), silkTouch);
+        silkTouchMap.put(MapKeys.getKey(nonOre), silkTouch);
     }
 
     public void removeDrop(ItemStack removeDrop)
     {
-        for (Iterator<ItemStack> itr = drops.iterator(); itr.hasNext(); )
+        for (Iterator<DropItem> itr = drops.iterator(); itr.hasNext(); )
         {
-            ItemStack drop = itr.next();
-            if (drop.isItemEqual(removeDrop))
+            DropItem drop = itr.next();
+            if (drop.item.isItemEqual(removeDrop))
             {
-                silkTouchMap.remove(MapKeys.key(drop));
+                silkTouchMap.remove(MapKeys.getKey(drop));
                 itr.remove();
             }
         }
@@ -154,7 +155,7 @@ public class OreMatchEntry
         }
     }
 
-    public List<ItemStack> getDrops()
+    public List<DropItem> getDrops()
     {
         return drops;
     }
@@ -168,13 +169,53 @@ public class OreMatchEntry
             if (!list.contains(ore)) list.add(ore);
         }
 
-        list.addAll(drops);
+        for (DropItem dropItem : drops)
+        {
+            ItemStack drop = dropItem.item;
+            if (!list.contains(drop)) list.add(drop);
+        }
+
+        return list;
+    }
+
+    public List<ItemStack> getOres()
+    {
+        List<ItemStack> list = new LinkedList<ItemStack>();
+        for (OreEntry entry : oreSet)
+        {
+            ItemStack ore = entry.getOre();
+            if (!list.contains(ore)) list.add(ore);
+        }
         return list;
     }
 
     public List<String> getRestrictions()
     {
         return this.restriction.getStringList(Settings.useDimNames);
+    }
+
+    public boolean hasDrop(ItemStack itemStack)
+    {
+        for (DropItem drop : getDrops())
+            if (drop.item.isItemEqual(itemStack))
+                return true;
+        return false;
+    }
+
+    public boolean hasOre(ItemStack itemStack)
+    {
+        for (ItemStack ore : getOres())
+            if (ore.isItemEqual(itemStack))
+                return true;
+        return false;
+    }
+
+    public DropItem getDropItem(ItemStack itemStack)
+    {
+        for (DropItem drop : getDrops())
+            if (drop.item.isItemEqual(itemStack))
+                return drop;
+        return null;
     }
 
     @Override
