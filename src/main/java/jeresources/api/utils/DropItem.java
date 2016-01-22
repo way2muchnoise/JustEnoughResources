@@ -119,7 +119,11 @@ public class DropItem implements Comparable<DropItem>
 
     public String chanceString()
     {
-        return String.format("%.2G", chance);
+        if (chance >= 0.995f) {
+            return String.format("%.2G", chance);
+        } else {
+            return String.format("%.2G%%", chance * 100f);
+        }
     }
 
     public List<String> getTooltipText()
