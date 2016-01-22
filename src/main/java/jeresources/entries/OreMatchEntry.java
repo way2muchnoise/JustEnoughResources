@@ -3,26 +3,21 @@ package jeresources.entries;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.ColorHelper;
-import jeresources.api.utils.DistributionHelpers;
 import jeresources.api.utils.DropItem;
 import jeresources.api.utils.restrictions.Restriction;
-import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
 import jeresources.utils.MapKeys;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-
 public class OreMatchEntry
 {
     private float[] chances;
-    Map<String, Boolean> silkTouchMap = new LinkedHashMap<String, Boolean>();
-    List<OreEntry> oreSet = new ArrayList<OreEntry>();
+    Map<String, Boolean> silkTouchMap = new LinkedHashMap<>();
+    List<OreEntry> oreSet = new ArrayList<>();
     private int minY;
     private int maxY;
-    private int bestY;
-    private boolean denseOre;
     private int colour;
     private Restriction restriction;
     List<DropItem> drops = new ArrayList<>();
@@ -54,7 +49,6 @@ public class OreMatchEntry
         {
             silkTouchMap.putAll(oreMatchEntry.silkTouchMap);
             oreSet.addAll(oreMatchEntry.oreSet);
-            denseOre |= oreMatchEntry.denseOre;
             calcChances();
             if (colour == ColorHelper.BLACK) colour = oreMatchEntry.getColour();
         }
@@ -72,7 +66,7 @@ public class OreMatchEntry
             for (float chance : distribution.getDistribution())
             {
                 if (++i == chances.length) break;
-                chances[i] += chance * (denseOre && i < 81 ? Compatibility.DENSE_ORES_MULTIPLIER : 1);
+                chances[i] += chance;
                 if (chances[i] > 0)
                 {
                     if (minY > i)
@@ -81,11 +75,9 @@ public class OreMatchEntry
                         maxY = i;
                 }
             }
-            bestY = distribution.getBestHeight();
         }
         if (minY == 256) minY = 0;
         if (maxY == 0) maxY = 255;
-        if (oreSet.size() > 1) bestY = DistributionHelpers.calculateMeanLevel(chances, 40);
     }
 
     public float[] getChances()
@@ -96,11 +88,6 @@ public class OreMatchEntry
     public float[] getChances(int extraRange)
     {
         return Arrays.copyOfRange(chances, Math.max(minY - extraRange, 0), Math.min(maxY + extraRange + 2, 255));
-    }
-
-    public int getBestY()
-    {
-        return bestY;
     }
 
     public int getMinY()
@@ -127,14 +114,7 @@ public class OreMatchEntry
     public void addDrop(DropItem nonOre)
     {
         drops.add(nonOre);
-        boolean silkTouch = false;
-        if (MapKeys.getKey(nonOre).startsWith("denseore"))
-        {
-            denseOre = true;
-            silkTouch = true;
-            calcChances();
-        }
-        silkTouchMap.put(MapKeys.getKey(nonOre), silkTouch);
+        silkTouchMap.put(MapKeys.getKey(nonOre), false);
     }
 
     public void removeDrop(ItemStack removeDrop)
@@ -148,11 +128,6 @@ public class OreMatchEntry
                 itr.remove();
             }
         }
-        if (MapKeys.getKey(removeDrop).startsWith("denseore"))
-        {
-            denseOre = false;
-            calcChances();
-        }
     }
 
     public List<DropItem> getDrops()
@@ -162,7 +137,7 @@ public class OreMatchEntry
 
     public List<ItemStack> getOresAndDrops()
     {
-        List<ItemStack> list = new LinkedList<ItemStack>();
+        List<ItemStack> list = new LinkedList<>();
         for (OreEntry entry : oreSet)
         {
             ItemStack ore = entry.getOre();
@@ -180,7 +155,7 @@ public class OreMatchEntry
 
     public List<ItemStack> getOres()
     {
-        List<ItemStack> list = new LinkedList<ItemStack>();
+        List<ItemStack> list = new LinkedList<>();
         for (OreEntry entry : oreSet)
         {
             ItemStack ore = entry.getOre();
@@ -192,22 +167,6 @@ public class OreMatchEntry
     public List<String> getRestrictions()
     {
         return this.restriction.getStringList(Settings.useDimNames);
-    }
-
-    public boolean hasDrop(ItemStack itemStack)
-    {
-        for (DropItem drop : getDrops())
-            if (drop.item.isItemEqual(itemStack))
-                return true;
-        return false;
-    }
-
-    public boolean hasOre(ItemStack itemStack)
-    {
-        for (ItemStack ore : getOres())
-            if (ore.isItemEqual(itemStack))
-                return true;
-        return false;
     }
 
     public DropItem getDropItem(ItemStack itemStack)

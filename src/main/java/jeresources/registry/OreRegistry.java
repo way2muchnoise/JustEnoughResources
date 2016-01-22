@@ -15,12 +15,6 @@ public class OreRegistry
     private static Map<Integer, OreMatchEntry> matchEntryMap = new LinkedHashMap<Integer, OreMatchEntry>();
     private static Map<String, Set<Integer>> dropMap = new LinkedHashMap<String, Set<Integer>>();
 
-    public static void clear()
-    {
-        matchEntryMap = new LinkedHashMap<Integer, OreMatchEntry>();
-        dropMap = new LinkedHashMap<String, Set<Integer>>();
-    }
-
     public static void registerOre(RegisterOreMessage message)
     {
         String key = MapKeys.getKey(message.getOre());
@@ -85,20 +79,6 @@ public class OreRegistry
         return result;
     }
 
-    public static List<OreMatchEntry> getRegistryMatches(ItemStack itemStack)
-    {
-        String key = MapKeys.getKey(itemStack);
-        List<OreMatchEntry> result = new ArrayList<OreMatchEntry>();
-        if (dropMap.containsKey(key))
-        {
-            for (Integer hashCode : dropMap.get(key))
-            {
-                result.add(matchEntryMap.get(hashCode));
-            }
-        }
-        return result;
-    }
-
     public static boolean removeDrops(ModifyOreMessage oreMod)
     {
         if (oreMod.getRemoveDrops() == null) return true;
@@ -132,13 +112,5 @@ public class OreRegistry
             dropMap.put(dropKey, hashSet);
         }
         return true;
-    }
-
-    public static void addOreLink(String key, String oreKey)
-    {
-        if (dropMap.containsKey(oreKey))
-        {
-            dropMap.put(key, dropMap.get(oreKey));
-        }
     }
 }
