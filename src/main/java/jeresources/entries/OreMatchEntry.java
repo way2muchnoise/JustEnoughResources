@@ -35,7 +35,7 @@ public class OreMatchEntry
 
     private void addMessage(RegisterOreMessage message)
     {
-        silkTouchMap.put(MapKeys.key(message.getOre()), message.needSilkTouch());
+        silkTouchMap.put(MapKeys.getKey(message.getOre()), message.needSilkTouch());
         oreSet.add(new OreEntry(message.getOre(), message.getDistribution()));
         calcChances();
         if (colour == ColorHelper.BLACK) colour = message.getColour();
@@ -115,7 +115,7 @@ public class OreMatchEntry
 
     public boolean isSilkTouchNeeded(ItemStack itemStack)
     {
-        Boolean silkTouch = this.silkTouchMap.get(MapKeys.key(itemStack));
+        Boolean silkTouch = this.silkTouchMap.get(MapKeys.getKey(itemStack));
         return silkTouch == null ? false : silkTouch;
     }
 
