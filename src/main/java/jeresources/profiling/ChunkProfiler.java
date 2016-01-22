@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import jeresources.utils.MapKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,7 @@ public class ChunkProfiler implements Runnable
 
     private void profileChunk(Chunk chunk)
     {
-        this.timer.startChunk();
+        this.timer.startChunk(world.provider.getDimensionId());
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
@@ -73,7 +74,7 @@ public class ChunkProfiler implements Runnable
                         key = block.getRegistryName() + ':' + meta;
                     } else
                     {
-                        key = getKey(pickBlock);
+                        key = MapKeys.getKey(pickBlock);
                     }
 
                     if (!dropsMap.containsKey(key))
@@ -112,12 +113,7 @@ public class ChunkProfiler implements Runnable
             this.distributionMap.put(entry.getKey(), array);
         }
 
-        this.timer.endChunk();
-    }
-
-    public static String getKey(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item.getRegistryName() + ':' + itemStack.getMetadata();
+        this.timer.endChunk(world.provider.getDimensionId());
     }
 
     public static Map<String, Float> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
@@ -130,7 +126,7 @@ public class ChunkProfiler implements Runnable
             for (ItemStack drop : drops) {
                 if (drop == null)
                     continue;
-                String key = getKey(drop);
+                String key = MapKeys.getKey(drop);
                 Integer count = dropsMap.get(key);
                 if (count != null) {
                     count += drop.stackSize;

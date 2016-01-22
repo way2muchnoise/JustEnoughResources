@@ -9,6 +9,8 @@ import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.messages.RegisterOreMessage;
 import jeresources.api.utils.DistributionHelpers;
 import jeresources.api.utils.DropItem;
+import jeresources.api.utils.restrictions.DimensionRestriction;
+import jeresources.api.utils.restrictions.Restriction;
 import jeresources.config.ConfigHandler;
 import jeresources.registry.OreRegistry;
 import net.minecraft.block.Block;
@@ -58,6 +60,9 @@ public class OreAdapter
                 JsonElement silk = obj.get("silktouch");
                 boolean silktouch = silk != null && silk.getAsBoolean();
 
+                JsonElement dimElement = obj.get("dim");
+                String dim = dimElement != null ? dimElement.getAsString() : "";
+
                 String[] oreParts = ore.split(":");
 
                 Block oreBlock = GameRegistry.findBlock(oreParts[0], oreParts[1]);
@@ -94,12 +99,27 @@ public class OreAdapter
                     }
                 }
 
-                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, silktouch, dropList.toArray(new DropItem[dropList.size()])));
+                OreRegistry.registerOre(new RegisterOreMessage(oreStack, distribution, getRestriction(dim), silktouch, dropList.toArray(new DropItem[dropList.size()])));
             }
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
         return true;
+    }
+
+    private static Restriction getRestriction(String dim)
+    {
+        switch (dim.toLowerCase())
+        {
+            case "overworld":
+                return Restriction.OVERWORLD;
+            case "nether":
+                return Restriction.NETHER;
+            case "end":
+                return Restriction.END;
+            default:
+                return Restriction.OVERWORLD_LIKE;
+        }
     }
 }

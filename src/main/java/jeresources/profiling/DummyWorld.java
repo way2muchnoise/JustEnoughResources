@@ -113,6 +113,16 @@ public class DummyWorld extends WorldServer
         return 0;
     }
 
+    public String getDimName()
+    {
+        return provider.getDimensionName().split(" ").length > 1 ? provider.getDimensionName().split(" ")[1] : provider.getDimensionName();
+    }
+
+    public int getDimId()
+    {
+        return provider.getDimensionId();
+    }
+
     private static class DummyChunkProvider implements IChunkProvider
     {
         private final World dummyWorld;

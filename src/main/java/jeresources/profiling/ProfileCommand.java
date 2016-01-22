@@ -17,7 +17,7 @@ public class ProfileCommand extends CommandBase
     @Override
     public String getCommandUsage(ICommandSender sender)
     {
-        return "profile [chunks|stop]";
+        return "profile [chunks|stop] [all]";
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ProfileCommand extends CommandBase
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException
     {
-        if (args.length == 1)
+        if (args.length > 0 && args.length < 3)
         {
             if (!Minecraft.getMinecraft().isSingleplayer())
                 throw new WrongUsageException("can't use command in multiplayer");
@@ -50,7 +50,7 @@ public class ProfileCommand extends CommandBase
                 throw new WrongUsageException("[chunks] has to be a positive integer");
             }
             if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
-            if (!Profiler.init(sender, chunks))
+            if (!Profiler.init(sender, chunks, args.length == 2 && args[1].equals("all")))
                 throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
         } else
         {

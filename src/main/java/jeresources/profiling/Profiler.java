@@ -5,6 +5,7 @@ import jeresources.json.ProfilingAdapter;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,14 +15,15 @@ import java.util.concurrent.*;
 public class Profiler implements Runnable
 {
     private final ExecutorService executor;
-    private final ConcurrentMap<String, Integer[]> distributionMap;
-    private final ConcurrentMap<String, Boolean> silkTouchMap;
-    private final ConcurrentMap<String, Map<String, Float>> dropsMap;
+    private final ConcurrentMap<String, ConcurrentMap<String, Integer[]>> distributionMap;
+    private final ConcurrentMap<String, ConcurrentMap<String, Boolean>> silkTouchMap;
+    private final ConcurrentMap<String, ConcurrentMap<String, Map<String, Float>>> dropsMap;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
     private final int chunkCount;
+    private final boolean allWorlds;
 
-    private Profiler(ICommandSender sender, int chunkCount)
+    private Profiler(ICommandSender sender, int chunkCount, boolean allWorlds)
     {
         this.sender = sender;
         final int processors = Runtime.getRuntime().availableProcessors();
@@ -30,7 +32,8 @@ public class Profiler implements Runnable
         this.silkTouchMap = new ConcurrentHashMap<>();
         this.dropsMap = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
-        this.timer = new ProfilingTimer(sender, chunkCount);
+        this.timer = new ProfilingTimer(sender, chunkCount, allWorlds);
+        this.allWorlds = allWorlds;
     }
 
     public ExecutorService getExecutor() {
@@ -40,11 +43,35 @@ public class Profiler implements Runnable
     @Override
     public void run()
     {
-        WorldServer world = (WorldServer) this.sender.getEntityWorld();
-        int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
+        if (!allWorlds)
+        {
+            WorldServer world = (WorldServer) this.sender.getEntityWorld();
+            int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
 
-        ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
-        world.addScheduledTask(chunkGetter);
+            ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+            world.addScheduledTask(chunkGetter);
+        } else
+        {
+            WorldServer world = DimensionManager.getWorld(-1);
+            int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
+
+            ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+            world.addScheduledTask(chunkGetter);
+
+            world = DimensionManager.getWorld(1);
+            chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
+
+            chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+            world.addScheduledTask(chunkGetter);
+
+            world = DimensionManager.getWorld(0);
+            chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
+
+            chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
+            world.addScheduledTask(chunkGetter);
+        }
+
+
 
         while (true)
         {
@@ -67,9 +94,13 @@ public class Profiler implements Runnable
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks)
     {
+        addWorld(dummyWorld);
         try
         {
-            this.executor.execute(new ChunkProfiler(dummyWorld, chunks, this.distributionMap, this.silkTouchMap, this.dropsMap, this.timer));
+            this.executor.execute(new ChunkProfiler(dummyWorld, chunks,
+                    this.distributionMap.get(dummyWorld.getDimName()),
+                    this.silkTouchMap.get(dummyWorld.getDimName()),
+                    this.dropsMap.get(dummyWorld.getDimName()), this.timer.addDim(dummyWorld.getDimName(), dummyWorld.getDimId())));
         }
         catch(RejectedExecutionException ignored)
         {
@@ -77,26 +108,38 @@ public class Profiler implements Runnable
         }
     }
 
+    private void addWorld(DummyWorld world)
+    {
+        this.distributionMap.put(world.getDimName(), new ConcurrentHashMap<String, Integer[]>());
+        this.silkTouchMap.put(world.getDimName(), new ConcurrentHashMap<String, Boolean>());
+        this.dropsMap.put(world.getDimName(), new ConcurrentHashMap<String, Map<String, Float>>());
+    }
+
     private void writeData()
     {
-        Map<String, Float[]> distribs = new HashMap<>();
-        for (Map.Entry<String, Integer[]> entry : this.distributionMap.entrySet())
+        Map<String, Map<String, Float[]>> distribs = new HashMap<>();
+        for (Map.Entry<String, ConcurrentMap<String, Integer[]>> worldEntry : this.distributionMap.entrySet())
         {
-            Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
-            for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
-                array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer();
-            distribs.put(entry.getKey(), array);
+            Map<String, Float[]> worldDistribs = distribs.get(worldEntry.getKey());
+            if (worldDistribs == null) worldDistribs = new HashMap<>();
+            for (Map.Entry<String, Integer[]> entry : worldEntry.getValue().entrySet())
+            {
+                Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
+                for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
+                    array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(worldEntry.getKey());
+                worldDistribs.put(entry.getKey(), array);
+            }
+            distribs.put(worldEntry.getKey(), worldDistribs);
         }
-
         ProfilingAdapter.write(distribs, this.silkTouchMap, this.dropsMap);
     }
 
     private static Profiler currentProfiler;
 
-    public static boolean init(ICommandSender sender, int chunks)
+    public static boolean init(ICommandSender sender, int chunks, boolean allWorlds)
     {
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
-        currentProfiler = new Profiler(sender, chunks);
+        currentProfiler = new Profiler(sender, chunks, allWorlds);
         new Thread(currentProfiler).start();
         return true;
     }
@@ -108,4 +151,6 @@ public class Profiler implements Runnable
         currentProfiler.writeData();
         return true;
     }
+
+
 }
