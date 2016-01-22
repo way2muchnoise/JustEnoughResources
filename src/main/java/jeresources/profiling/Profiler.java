@@ -7,12 +7,9 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-
-import static jeresources.utils.MapKeys.getKey;
 
 public class Profiler implements Runnable
 {
@@ -91,8 +88,6 @@ public class Profiler implements Runnable
             distribs.put(entry.getKey(), array);
         }
 
-        cleanDropsMap();
-
         ProfilingAdapter.write(distribs, this.silkTouchMap, this.dropsMap);
     }
 
@@ -112,28 +107,5 @@ public class Profiler implements Runnable
         currentProfiler.executor.shutdownNow();
         currentProfiler.writeData();
         return true;
-    }
-
-    private void cleanDropsMap()
-    {
-        // remove drops entries that only drop themselves
-        Iterator<Map.Entry<String, Map<String, Float>>> iterator = this.dropsMap.entrySet().iterator();
-        while (iterator.hasNext())
-        {
-            Map.Entry<String, Map<String, Float>> dropEntry = iterator.next();
-            String input = dropEntry.getKey();
-            Map<String, Float> drops = dropEntry.getValue();
-            if (drops.size() == 0) {
-                iterator.remove();
-            }
-            else if (drops.size() == 1)
-            {
-                Float chance = drops.get(input);
-                if (chance != null && Math.abs(chance - 1.0f) < 0.01f)
-                {
-                    iterator.remove();
-                }
-            }
-        }
     }
 }
