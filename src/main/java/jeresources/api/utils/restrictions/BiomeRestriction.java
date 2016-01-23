@@ -159,4 +159,10 @@ public class BiomeRestriction
     {
         return "Biomes: " + type + (type != Type.NONE ? " - " + biomes.size() : "");
     }
+
+    @Override
+    public int hashCode()
+    {
+        return type.hashCode() ^ biomes.hashCode();
+    }
 }

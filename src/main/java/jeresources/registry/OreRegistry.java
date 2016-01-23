@@ -6,7 +6,6 @@ import jeresources.api.utils.DropItem;
 import jeresources.api.utils.Priority;
 import jeresources.entries.OreMatchEntry;
 import jeresources.utils.MapKeys;
-import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
@@ -17,7 +16,7 @@ public class OreRegistry
 
     public static void registerOre(RegisterOreMessage message)
     {
-        String key = MapKeys.getKey(message.getOre());
+        String key = MapKeys.getKey(message.getOre(), message.getRestriction());
         if (key == null) return;
 
         if (dropMap.containsKey(key))
@@ -99,16 +98,30 @@ public class OreRegistry
     public static boolean addDrops(ModifyOreMessage oreMod)
     {
         if (oreMod.getAddDrops() == null) return true;
-        String oreKey = MapKeys.getKey(oreMod.getOre());
-        if (oreKey == null || !dropMap.containsKey(oreKey)) return false;
+        String oreKeyPrefix = MapKeys.getKey(oreMod.getOre());
+        if (oreKeyPrefix == null) return false;
+        Set<String> oreKeys = new TreeSet<>();
+        boolean found = false;
+        for (String key : dropMap.keySet())
+        {
+            if (key.startsWith(oreKeyPrefix))
+            {
+                found = true;
+                oreKeys.add(key);
+            }
+        }
+        if (!found) return false;
         for (DropItem drop : oreMod.getAddDrops())
         {
             String dropKey = MapKeys.getKey(drop);
             if (dropKey == null) continue;
             Set<Integer> hashSet = dropMap.containsKey(dropKey) ? dropMap.get(dropKey) : new LinkedHashSet<Integer>();
-            for (int hashCode : dropMap.get(oreKey))
-                matchEntryMap.get(hashCode).addDrop(drop);
-            hashSet.addAll(dropMap.get(oreKey));
+            for (String oreKey : oreKeys)
+            {
+                for (int hashCode : dropMap.get(oreKey))
+                    matchEntryMap.get(hashCode).addDrop(drop);
+                hashSet.addAll(dropMap.get(oreKey));
+            }
             dropMap.put(dropKey, hashSet);
         }
         return true;

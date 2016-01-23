@@ -20,7 +20,7 @@ public class OreMatchEntry
     private int maxY;
     private int colour;
     private Restriction restriction;
-    List<DropItem> drops = new ArrayList<>();
+    Set<DropItem> drops = new TreeSet<>();
 
     public OreMatchEntry(RegisterOreMessage message)
     {
@@ -132,7 +132,7 @@ public class OreMatchEntry
 
     public List<DropItem> getDrops()
     {
-        return drops;
+        return new ArrayList<>(drops);
     }
 
     public List<ItemStack> getOresAndDrops()

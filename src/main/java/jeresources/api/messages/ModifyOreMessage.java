@@ -4,6 +4,7 @@ import jeresources.api.messages.utils.MessageHelper;
 import jeresources.api.messages.utils.MessageKeys;
 import jeresources.api.utils.DropItem;
 import jeresources.api.utils.Priority;
+import jeresources.api.utils.restrictions.Restriction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

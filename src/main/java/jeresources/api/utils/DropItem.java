@@ -184,6 +184,7 @@ public class DropItem implements Comparable<DropItem>
     public int compareTo(DropItem o)
     {
         float result = getSortIndex() - o.getSortIndex();
+        if (Math.round(result) == 0 && item.getIsItemStackEqual(o.item)) return 0;
         return result < 0 ? 1 : -1;
     }
 }

@@ -66,7 +66,7 @@ public class OreAdapter
                 String[] oreParts = ore.split(":");
 
                 Block oreBlock = GameRegistry.findBlock(oreParts[0], oreParts[1]);
-                if (oreBlock == null) continue;
+                if (oreBlock == null || Item.getItemFromBlock(oreBlock) == null) continue;
                 int oreMeta = oreParts.length == 3 ? Integer.parseInt(oreParts[2]) : 0;
                 ItemStack oreStack = new ItemStack(oreBlock, 1, oreMeta);
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
@@ -116,7 +116,7 @@ public class OreAdapter
                 return Restriction.OVERWORLD;
             case "nether":
                 return Restriction.NETHER;
-            case "end":
+            case "the end":
                 return Restriction.END;
             default:
                 return Restriction.OVERWORLD_LIKE;

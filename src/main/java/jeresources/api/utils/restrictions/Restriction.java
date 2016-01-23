@@ -119,4 +119,10 @@ public class Restriction
     {
         return blockRestriction.toString() + ", " + dimensionRestriction.toString() + ", " + biomeRestriction.toString();
     }
+
+    @Override
+    public int hashCode()
+    {
+        return blockRestriction.hashCode() ^ dimensionRestriction.hashCode() ^ biomeRestriction.hashCode();
+    }
 }

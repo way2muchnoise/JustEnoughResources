@@ -180,4 +180,10 @@ public class DimensionRestriction
     {
         return "Dimension: " + type + (type != Type.NONE ? " " + min + "-" + max : "");
     }
+
+    @Override
+    public int hashCode()
+    {
+        return type.hashCode() ^ min ^ max;
+    }
 }
