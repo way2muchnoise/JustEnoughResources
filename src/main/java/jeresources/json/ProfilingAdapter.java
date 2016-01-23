@@ -10,11 +10,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
+
+import net.minecraftforge.common.DimensionManager;
 
 public class ProfilingAdapter
 {
-    public static void write(final Map<String, Map<String, Float[]>> distributionDataWorlds, final Map<String, ConcurrentMap<String, Boolean>> silkTouchMapWorlds, Map<String, ConcurrentMap<String, Map<String, Float>>> dropsMapWorlds)
+
+    public static class DimensionData
+    {
+        public Map<String, Float[]> distribution = new HashMap<>();
+        public Map<String, Boolean> silkTouchMap = new HashMap<>();
+        public Map<String, Map<String, Float>> dropsMap = new HashMap<>();
+    }
+
+    public static void write(final Map<Integer, DimensionData> allDimensionData)
     {
         try
         {
@@ -22,23 +31,18 @@ public class ProfilingAdapter
             writer.setIndent("\t");
             writer.beginArray();
 
-            for (String world : distributionDataWorlds.keySet())
+            for (int dim : allDimensionData.keySet())
             {
-                Map<String, Float[]> distributionData = distributionDataWorlds.get(world);
-                if (distributionData == null) distributionData = new HashMap<>();
-                Map<String, Boolean> silkTouchMap = silkTouchMapWorlds.get(world);
-                if (silkTouchMap == null) silkTouchMap = new HashMap<>();
-                Map<String, Map<String, Float>> dropsMap = dropsMapWorlds.get(world);
-                if (dropsMap == null) dropsMap = new HashMap<>();
+                DimensionData dimensionData = allDimensionData.get(dim);
 
-                Set<String> blockKeys = Sets.union(distributionData.keySet(), dropsMap.keySet());
+                Set<String> blockKeys = Sets.union(dimensionData.distribution.keySet(), dimensionData.dropsMap.keySet());
 
                 for (String blockKey : blockKeys)
                 {
                     writer.beginObject();
                     writer.name("ore").value(blockKey);
 
-                    Float[] distribution = distributionData.get(blockKey);
+                    Float[] distribution = dimensionData.distribution.get(blockKey);
                     if (distribution != null && distribution.length > 0)
                     {
                         StringBuilder sb = new StringBuilder();
@@ -57,7 +61,7 @@ public class ProfilingAdapter
                         writer.name("distrib").value(sb.toString());
                     }
 
-                    Map<String, Float> drops = dropsMap.get(blockKey);
+                    Map<String, Float> drops = dimensionData.dropsMap.get(blockKey);
                     if (drops != null && !drops.isEmpty())
                     {
                         StringBuilder dropsString = new StringBuilder();
@@ -68,12 +72,13 @@ public class ProfilingAdapter
                         writer.name("drops").value(dropsString.toString());
                     }
 
-                    Boolean canSilkTouch = silkTouchMap.get(blockKey);
+                    Boolean canSilkTouch = dimensionData.silkTouchMap.get(blockKey);
                     if (canSilkTouch != null)
                     {
                         writer.name("silktouch").value(canSilkTouch);
                     }
-                    writer.name("dim").value(world);
+
+                    writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionName());
                     writer.endObject();
                 }
             }

@@ -19,26 +19,21 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 public class ChunkProfiler implements Runnable
 {
     private final World world;
     private final ProfilingTimer timer;
     private final List<Chunk> chunks;
-    private final ConcurrentMap<String, Integer[]> distributionMap;
-    private final ConcurrentMap<String, Boolean> silkTouchMap;
-    ConcurrentMap<String, Map<String, Float>> dropsMap;
+    private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, ConcurrentMap<String, Integer[]> distributionMap, ConcurrentMap<String, Boolean> silkTouchMap, ConcurrentMap<String, Map<String, Float>> dropsMap, ProfilingTimer timer)
+    public ChunkProfiler(World world, List<Chunk> chunks, ProfiledDimensionData dimensionData, ProfilingTimer timer)
     {
         this.world = world;
         this.chunks = chunks;
-        this.distributionMap = distributionMap;
-        this.silkTouchMap = silkTouchMap;
-        this.dropsMap = dropsMap;
+        this.dimensionData = dimensionData;
         this.timer = timer;
     }
 
@@ -77,17 +72,17 @@ public class ChunkProfiler implements Runnable
                         key = MapKeys.getKey(pickBlock);
                     }
 
-                    if (!dropsMap.containsKey(key))
+                    if (!dimensionData.dropsMap.containsKey(key))
                     {
                         IBlockState blockState = block.getStateFromMeta(meta);
-                        dropsMap.put(key, getDrops(block, world, blockPos, blockState));
+                        dimensionData.dropsMap.put(key, getDrops(block, world, blockPos, blockState));
                     }
 
-                    if (!silkTouchMap.containsKey(key))
+                    if (!dimensionData.silkTouchMap.containsKey(key))
                     {
                         IBlockState blockState = block.getStateFromMeta(meta);
                         boolean canSilkTouch = block.canSilkHarvest(world, blockPos, blockState, player);
-                        silkTouchMap.put(key, canSilkTouch);
+                        dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
 
                     Integer[] array = temp.get(key);
@@ -102,7 +97,7 @@ public class ChunkProfiler implements Runnable
 
         for (Map.Entry<String, Integer[]> entry : temp.entrySet())
         {
-            Integer[] array = this.distributionMap.get(entry.getKey());
+            Integer[] array = dimensionData.distributionMap.get(entry.getKey());
             if (array == null)
             {
                 array = new Integer[CHUNK_HEIGHT];
@@ -110,7 +105,7 @@ public class ChunkProfiler implements Runnable
             }
             for (int i = 0; i < CHUNK_HEIGHT; i++)
                 array[i] += entry.getValue()[i];
-            this.distributionMap.put(entry.getKey(), array);
+            dimensionData.distributionMap.put(entry.getKey(), array);
         }
 
         this.timer.endChunk(world.provider.getDimensionId());

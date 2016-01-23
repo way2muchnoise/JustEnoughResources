@@ -4,40 +4,28 @@ import jeresources.json.ProfilingAdapter;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
 public class Profiler implements Runnable
 {
-    private final ExecutorService executor;
-    private final ConcurrentMap<String, ConcurrentMap<String, Integer[]>> distributionMap;
-    private final ConcurrentMap<String, ConcurrentMap<String, Boolean>> silkTouchMap;
-    private final ConcurrentMap<String, ConcurrentMap<String, Map<String, Float>>> dropsMap;
+    private final ConcurrentMap<Integer, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
     private final int chunkCount;
     private final boolean allWorlds;
+    private ProfilingExecutor currentExecutor;
 
     private Profiler(ICommandSender sender, int chunkCount, boolean allWorlds)
     {
         this.sender = sender;
-        final int processors = Runtime.getRuntime().availableProcessors();
-        this.executor = Executors.newFixedThreadPool(processors - 1);
-        this.distributionMap = new ConcurrentHashMap<>();
-        this.silkTouchMap = new ConcurrentHashMap<>();
-        this.dropsMap = new ConcurrentHashMap<>();
+        this.allDimensionData = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
-        this.timer = new ProfilingTimer(sender, chunkCount, allWorlds);
+        this.timer = new ProfilingTimer(sender, chunkCount);
         this.allWorlds = allWorlds;
-    }
-
-    public ExecutorService getExecutor() {
-        return executor;
     }
 
     @Override
@@ -46,45 +34,11 @@ public class Profiler implements Runnable
         if (!allWorlds)
         {
             WorldServer world = (WorldServer) this.sender.getEntityWorld();
-            int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-
-            ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
-            world.addScheduledTask(chunkGetter);
+            profileWorld(world);
         } else
         {
-            WorldServer world = DimensionManager.getWorld(-1);
-            int chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-
-            ChunkGetter chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
-            world.addScheduledTask(chunkGetter);
-
-            world = DimensionManager.getWorld(1);
-            chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-
-            chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
-            world.addScheduledTask(chunkGetter);
-
-            world = DimensionManager.getWorld(0);
-            chunkGetterRunCount = (int) Math.ceil(chunkCount / (float) ChunkGetter.CHUNKS_PER_RUN);
-
-            chunkGetter = new ChunkGetter(chunkGetterRunCount, world, this);
-            world.addScheduledTask(chunkGetter);
-        }
-
-
-
-        while (true)
-        {
-            try
-            {
-                if (executor.awaitTermination(10, TimeUnit.SECONDS))
-                {
-                    break;
-                }
-            } catch (InterruptedException ex)
-            {
-                // continue waiting
-            }
+            for (WorldServer world : DimensionManager.getWorlds())
+                profileWorld(world);
         }
 
         writeData();
@@ -92,46 +46,53 @@ public class Profiler implements Runnable
         this.timer.complete();
     }
 
-    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks)
+    private void profileWorld(final WorldServer worldServer)
     {
-        addWorld(dummyWorld);
-        try
-        {
-            this.executor.execute(new ChunkProfiler(dummyWorld, chunks,
-                    this.distributionMap.get(dummyWorld.getDimName()),
-                    this.silkTouchMap.get(dummyWorld.getDimName()),
-                    this.dropsMap.get(dummyWorld.getDimName()), this.timer.addDim(dummyWorld.getDimName(), dummyWorld.getDimId())));
-        }
-        catch(RejectedExecutionException ignored)
-        {
-            // the player has forced profiling to stop
-        }
+        final ProfilingExecutor executor = new ProfilingExecutor(this);
+        this.currentExecutor = executor;
+        this.allDimensionData.put(worldServer.provider.getDimensionId(), new ProfiledDimensionData());
+
+        DummyWorld dummyWorld = new DummyWorld(worldServer);
+        dummyWorld.init();
+        ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
+        worldServer.addScheduledTask(chunkGetter);
+
+        executor.awaitTermination();
+        this.currentExecutor = null;
+
+        dummyWorld.clearChunks();
     }
 
-    private void addWorld(DummyWorld world)
-    {
-        this.distributionMap.put(world.getDimName(), new ConcurrentHashMap<String, Integer[]>());
-        this.silkTouchMap.put(world.getDimName(), new ConcurrentHashMap<String, Boolean>());
-        this.dropsMap.put(world.getDimName(), new ConcurrentHashMap<String, Map<String, Float>>());
+    public ProfilingTimer getTimer() {
+        return timer;
+    }
+
+    public ConcurrentMap<Integer, ProfiledDimensionData> getAllDimensionData() {
+        return allDimensionData;
     }
 
     private void writeData()
     {
-        Map<String, Map<String, Float[]>> distribs = new HashMap<>();
-        for (Map.Entry<String, ConcurrentMap<String, Integer[]>> worldEntry : this.distributionMap.entrySet())
+        Map<Integer, ProfilingAdapter.DimensionData> allData = new HashMap<>();
+        for (Integer dim : this.allDimensionData.keySet())
         {
-            Map<String, Float[]> worldDistribs = distribs.get(worldEntry.getKey());
-            if (worldDistribs == null) worldDistribs = new HashMap<>();
-            for (Map.Entry<String, Integer[]> entry : worldEntry.getValue().entrySet())
+            ProfiledDimensionData profiledData = this.allDimensionData.get(dim);
+            ProfilingAdapter.DimensionData data = new ProfilingAdapter.DimensionData();
+            data.dropsMap = profiledData.dropsMap;
+            data.silkTouchMap = profiledData.silkTouchMap;
+
+            for (Map.Entry<String, Integer[]> entry : profiledData.distributionMap.entrySet())
             {
                 Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
                 for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
-                    array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(worldEntry.getKey());
-                worldDistribs.put(entry.getKey(), array);
+                    array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(dim);
+                data.distribution.put(entry.getKey(), array);
             }
-            distribs.put(worldEntry.getKey(), worldDistribs);
+
+            allData.put(dim, data);
         }
-        ProfilingAdapter.write(distribs, this.silkTouchMap, this.dropsMap);
+
+        ProfilingAdapter.write(allData);
     }
 
     private static Profiler currentProfiler;
@@ -147,10 +108,10 @@ public class Profiler implements Runnable
     public static boolean stop()
     {
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
-        currentProfiler.executor.shutdownNow();
+        if (currentProfiler.currentExecutor != null)
+            currentProfiler.currentExecutor.shutdownNow();
         currentProfiler.writeData();
         return true;
     }
-
 
 }
