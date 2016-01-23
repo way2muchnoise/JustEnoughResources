@@ -9,61 +9,65 @@ import java.util.Map;
 
 public class ProfilingTimer
 {
-    private long[] start;
     private final ICommandSender sender;
-    private int[] chunkCounter, threadCounter;
     private int totalChunks;
-    private boolean allWorlds;
-    private boolean[] completed;
-    private Map<String, Integer> dims;
+    private final Map<Integer, DimensionCounters> dimensionsMap = new HashMap<>();
 
-    public ProfilingTimer(ICommandSender sender, int chunkCount, boolean allWorlds)
+    private static class DimensionCounters
+    {
+        public final long start = System.currentTimeMillis();
+        public int chunkCounter;
+        public int threadCounter;
+        public boolean completed;
+    }
+
+    public ProfilingTimer(ICommandSender sender, int chunkCount)
     {
         this.sender = sender;
-        this.start = new long[allWorlds ? 3 : 1];
-        this.chunkCounter = new int[allWorlds ? 3 : 1];
-        this.threadCounter = new int[allWorlds ? 3 : 1];
-        this.completed = new boolean[allWorlds ? 3 : 1];
         this.totalChunks = chunkCount;
-        this.allWorlds = allWorlds;
-        this.dims = new HashMap<>();
     }
 
     public void startChunk(int dim)
     {
-        dim += allWorlds ? 1 : 0;
-        if (this.start[dim] == 0)
-            this.start[dim] = System.currentTimeMillis();
-        this.threadCounter[dim]++;
+        DimensionCounters counters = this.dimensionsMap.get(dim);
+        if (counters == null)
+        {
+            counters = new DimensionCounters();
+            this.dimensionsMap.put(dim, counters);
+            send("[" + DimensionManager.getProvider(dim).getDimensionName() + "] Started profiling");
+        }
+        counters.threadCounter++;
     }
 
     public void endChunk(int dim)
     {
-        dim += allWorlds ? 1 : 0;
-        this.threadCounter[dim]--;
-        if (++this.chunkCounter[dim] % 100 == 0)
+        DimensionCounters counters = dimensionsMap.get(dim);
+        counters.threadCounter--;
+        if (++counters.chunkCounter % 100 == 0)
             sendSpeed(dim);
-        if (this.totalChunks == this.chunkCounter[dim])
-            this.completed[dim] = true;
+        if (this.totalChunks == counters.chunkCounter)
+            counters.completed = true;
     }
 
     public void complete()
     {
-        for (int i = 0; i < this.completed.length; i++)
+        for (int dim : this.dimensionsMap.keySet())
         {
-            this.completed[i] = true;
-            send("[" + DimensionManager.getProvider(i - (allWorlds ? 1 : 0)).getDimensionName() + "] Completed profiling of " +
-                    (getBlocksPerLayer(i) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
-                    (System.currentTimeMillis() - this.start[i]) + " ms saved to blocks.json");
+            DimensionCounters counters = dimensionsMap.get(dim);
+            counters.completed = true;
+            send("[" + DimensionManager.getProvider(dim).getDimensionName() + "] Completed profiling of " +
+                    (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
+                    (System.currentTimeMillis() - counters.start) + " ms saved to blocks.json");
         }
     }
 
     public synchronized boolean isCompleted()
     {
-        boolean completed = true;
-        for (boolean worldCompleted : this.completed)
-            completed &= worldCompleted;
-        return completed;
+        for (DimensionCounters counters : dimensionsMap.values())
+            if (!counters.completed)
+                return false;
+
+        return true;
     }
 
     private void send(String s)
@@ -73,25 +77,16 @@ public class ProfilingTimer
 
     private void sendSpeed(int dim)
     {
-        float time = (System.currentTimeMillis() - this.start[dim]) * 1.0F / this.chunkCounter[dim];
-        String message = "[" + DimensionManager.getProvider(dim - (allWorlds ? 1 : 0)).getDimensionName() + "] Scanned " +
-                this.chunkCounter[dim] + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
+        DimensionCounters counters = dimensionsMap.get(dim);
+        float time = (System.currentTimeMillis() - counters.start) * 1.0F / counters.chunkCounter;
+        String message = "[" + DimensionManager.getProvider(dim).getDimensionName() + "] Scanned " +
+                counters.chunkCounter + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
         send(message);
     }
 
     public long getBlocksPerLayer(int dim)
     {
-        return this.chunkCounter[dim] * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
-    }
-
-    public long getBlocksPerLayer(String dim)
-    {
-        return getBlocksPerLayer(this.dims.get(dim) + (allWorlds ? 1 : 0));
-    }
-
-    public ProfilingTimer addDim(String dimName, int dimId)
-    {
-        this.dims.put(dimName, dimId);
-        return this;
+        DimensionCounters counters = dimensionsMap.get(dim);
+        return counters.chunkCounter * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
     }
 }

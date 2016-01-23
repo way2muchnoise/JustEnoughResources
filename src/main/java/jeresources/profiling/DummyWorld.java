@@ -43,6 +43,11 @@ public class DummyWorld extends WorldServer
         this.chunkProvider = new DummyChunkProvider(this, this.theChunkProviderServer);
     }
 
+    public void clearChunks()
+    {
+        ((DummyChunkProvider) this.chunkProvider).clearChunks();
+    }
+
     @Override
     public Entity getEntityByID(int i)
     {
@@ -113,16 +118,6 @@ public class DummyWorld extends WorldServer
         return 0;
     }
 
-    public String getDimName()
-    {
-        return provider.getDimensionName().split(" ").length > 1 ? provider.getDimensionName().split(" ")[1] : provider.getDimensionName();
-    }
-
-    public int getDimId()
-    {
-        return provider.getDimensionId();
-    }
-
     private static class DummyChunkProvider implements IChunkProvider
     {
         private final World dummyWorld;
@@ -141,6 +136,11 @@ public class DummyWorld extends WorldServer
             {
                 this.realChunkProvider = chunkProvider;
             }
+        }
+
+        public void clearChunks()
+        {
+            this.id2ChunkMap = new LongHashMap<>();
         }
 
         @Override
