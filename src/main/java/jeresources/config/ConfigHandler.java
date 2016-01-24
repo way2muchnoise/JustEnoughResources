@@ -66,11 +66,6 @@ public class ConfigHandler
         prop.setLanguageKey("jer.config.extraRange.title");
         Settings.EXTRA_RANGE = prop.getInt();
 
-        prop = config.get(Configuration.CATEGORY_GENERAL, "dimNames", true);
-        prop.comment = TranslationHelper.translateToLocal("jer.config.dimNames.description");
-        prop.setLanguageKey("jer.config.dimNames.title");
-        Settings.useDimNames = prop.getBoolean();
-
         prop = config.get(Configuration.CATEGORY_GENERAL, "diyData", true);
         prop.comment = TranslationHelper.translateToLocal("jer.config.diyData.description");
         prop.setLanguageKey("jer.config.diyData.title");

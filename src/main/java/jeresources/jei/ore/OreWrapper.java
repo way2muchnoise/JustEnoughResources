@@ -11,6 +11,8 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -35,11 +37,6 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public int getLineColor()
     {
         return this.oreMatchEntry.getColour();
-    }
-
-    public List<String> getRestrictions()
-    {
-        return this.oreMatchEntry.getRestrictions();
     }
 
     @Override
@@ -107,6 +104,14 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         int maxY = this.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
         Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
         Font.small.print(TranslationHelper.translateToLocal("jer.ore.drops"), OreCategory.X_DROP_ITEM, OreCategory.Y_DROP_ITEM - 8);
+
+        List<String> dimensions = oreMatchEntry.getDimensions();
+        if (dimensions.size() == 1)
+        {
+            String dimension = dimensions.get(0);
+            int x = (recipeWidth - minecraft.fontRendererObj.getStringWidth(dimension)) / 2;
+            Font.normal.print(dimension, x, 0);
+        }
     }
 
     @Override
@@ -150,7 +155,21 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         {
             if (this.oreMatchEntry.isSilkTouchNeeded(itemStack))
                 tooltip.add(Conditional.silkTouch.toString());
-            tooltip.addAll(this.getRestrictions());
+
+            List<String> biomes = oreMatchEntry.getBiomeRestrictions();
+            if (biomes.size() > 0)
+            {
+                tooltip.add(StatCollector.translateToLocal("jer.ore.biomes") + ":");
+                tooltip.addAll(biomes);
+            }
+
+            List<String> dimensions = oreMatchEntry.getDimensions();
+            if (dimensions.size() > 1)
+            {
+                tooltip.add(StatCollector.translateToLocal("jer.ore.dimensions") + ":");
+                tooltip.addAll(dimensions);
+            }
+
         } else
             tooltip.add(TranslationHelper.translateToLocal("jer.ore.average") + " " + this.oreMatchEntry.getDropItem(itemStack).chanceString());
         return tooltip;
