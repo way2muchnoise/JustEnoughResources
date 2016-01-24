@@ -164,9 +164,14 @@ public class OreMatchEntry
         return list;
     }
 
-    public List<String> getRestrictions()
+    public List<String> getBiomeRestrictions()
     {
-        return this.restriction.getStringList(Settings.useDimNames);
+        return this.restriction.getBiomeRestrictions();
+    }
+
+    public List<String> getDimensions()
+    {
+        return this.restriction.getDimensionRestrictions();
     }
 
     public DropItem getDropItem(ItemStack itemStack)

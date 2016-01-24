@@ -53,11 +53,11 @@ public class DimensionRestriction
         this.max = Math.max(maxDim, minDim);
     }
 
-    public List<String> getValidDimensions(BlockRestriction blockRestriction, boolean getNames)
+    public List<String> getValidDimensions(BlockRestriction blockRestriction)
     {
         Set<Integer> dimensions = DimensionRegistry.getDimensions(blockRestriction);
-        if (dimensions != null) return getDimensionString(dimensions, getNames);
-        return getAltDimensionString(DimensionRegistry.getAltDimensions(), getNames);
+        if (dimensions != null) return getDimensionString(dimensions);
+        return getAltDimensionString(DimensionRegistry.getAltDimensions());
     }
 
     private Set<Integer> getValidDimensions(Set<Integer> dimensions)
@@ -71,46 +71,23 @@ public class DimensionRestriction
         return result;
     }
 
-    private List<String> getDimensionString(Set<Integer> dimensions, boolean getNames)
+    private List<String> getDimensionString(Set<Integer> dimensions)
     {
-        return getStringList(getValidDimensions(dimensions), getNames);
+        return getStringList(getValidDimensions(dimensions));
     }
 
-    private List<String> getStringList(Set<Integer> set, boolean getNames)
+    private List<String> getStringList(Set<Integer> set)
     {
-        List<String> result = new ArrayList<String>();
-        int lastParsed = Integer.MIN_VALUE;
-        if (getNames)
+        List<String> result = new ArrayList<>();
+        for (Integer i : set)
         {
-            for (Integer i : set)
-            {
-                String dimName = DimensionRegistry.getDimensionName(i);
-                if (dimName != null) result.add("  " + dimName);
-            }
-        } else
-        {
-            String sResult = "";
-            Iterator<Integer> itr = set.iterator();
-            while (itr.hasNext())
-            {
-                int dimension = itr.next();
-                if (dimension == lastParsed + 1)
-                {
-                    if (!sResult.endsWith("-")) sResult += "-";
-                    if (!itr.hasNext()) sResult += dimension;
-                } else
-                {
-                    if (sResult.endsWith("-")) sResult += lastParsed;
-                    sResult += (sResult.length() > 0 ? "," : "") + dimension;
-                }
-                lastParsed = dimension;
-            }
-            result.add(sResult);
+            String dimName = DimensionRegistry.getDimensionName(i);
+            if (dimName != null) result.add("  " + dimName);
         }
         return result;
     }
 
-    private List<String> getAltDimensionString(Set<Integer> dimensions, boolean getNames)
+    private List<String> getAltDimensionString(Set<Integer> dimensions)
     {
         Set<Integer> validDimensions = new TreeSet<Integer>();
         int dimMin = Integer.MAX_VALUE;
@@ -122,7 +99,7 @@ public class DimensionRestriction
         }
         for (int i = Math.min(min, dimMin) - 1; i <= Math.max(max, dimMax) + 1; i++)
             if (!dimensions.contains(i)) validDimensions.add(i);
-        List<String> result = getStringList(getValidDimensions(type != Type.NONE ? validDimensions : dimensions), getNames);
+        List<String> result = getStringList(getValidDimensions(type != Type.NONE ? validDimensions : dimensions));
         if (result.isEmpty()) result.add(StatCollector.translateToLocal("ner.dim.no"));
         switch (type)
         {

@@ -70,16 +70,14 @@ public class Restriction
         dimensionRestriction = new DimensionRestriction(tagCompound.getCompoundTag(MessageKeys.dimensionRestriction));
     }
 
-    public List<String> getStringList(boolean getNames)
+    public List<String> getBiomeRestrictions()
     {
-        List<String> result = new ArrayList<String>();
-        result.add(StatCollector.translateToLocal("jer.ore.dimensions") + ":");
-        result.addAll(dimensionRestriction.getValidDimensions(blockRestriction, getNames));
-        List<String> biomes = new ArrayList<String>();
-        biomes.add(StatCollector.translateToLocal("jer.ore.biomes") + ":");
-        biomes.addAll(biomeRestriction.toStringList());
-        if (biomes.size() > 1) result.addAll(biomes);
-        return result;
+        return biomeRestriction.toStringList();
+    }
+
+    public List<String> getDimensionRestrictions()
+    {
+        return dimensionRestriction.getValidDimensions(blockRestriction);
     }
 
     public NBTTagCompound writeToNBT()
