@@ -33,4 +33,9 @@ public class Font
     {
         fontRenderer.drawString(String.valueOf(o), x, y, color, shadow);
     }
+
+    public int getStringWidth(String string)
+    {
+        return fontRenderer.getStringWidth(string);
+    }
 }

@@ -2,7 +2,6 @@ package jeresources.jei.ore;
 
 import jeresources.api.utils.DropItem;
 import jeresources.api.utils.conditionals.Conditional;
-import jeresources.config.Settings;
 import jeresources.entries.OreMatchEntry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
@@ -10,6 +9,7 @@ import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
@@ -20,11 +20,13 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.lwjgl.input.Mouse;
+
 public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
 {
-    protected static final int X_OFFSPRING = 59;
-    protected static final int Y_OFFSPRING = 52;
-    protected static final int X_AXIS_SIZE = 90;
+    protected static final int X_OFFSET = 49-20;
+    protected static final int Y_OFFSET = 52;
+    protected static final int X_AXIS_SIZE = 100+20+8;
     protected static final int Y_AXIS_SIZE = 40;
 
     private final OreMatchEntry oreMatchEntry;
@@ -81,13 +83,13 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         double max = 0;
         for (double d : array)
             if (d > max) max = d;
-        double xPrev = X_OFFSPRING;
-        double yPrev = Y_OFFSPRING;
+        double xPrev = X_OFFSET;
+        double yPrev = Y_OFFSET;
         double space = X_AXIS_SIZE / ((array.length - 1) * 1D);
         for (int i = 0; i < array.length; i++)
         {
             double value = array[i];
-            double y = Y_OFFSPRING - ((value / max) * Y_AXIS_SIZE);
+            double y = Y_OFFSET - ((value / max) * Y_AXIS_SIZE);
             if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
             {
                 double x = xPrev + space;
@@ -97,19 +99,41 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
             yPrev = y;
         }
 
-        Font.small.print("0%", X_OFFSPRING - 10, Y_OFFSPRING - 7);
-        Font.small.print(String.format("%.2f", max * 100) + "%", X_OFFSPRING - 20, Y_OFFSPRING - Y_AXIS_SIZE);
-        int minY = this.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE;
-        Font.small.print(minY < 0 ? 0 : minY, X_OFFSPRING - 3, Y_OFFSPRING + 2);
-        int maxY = this.oreMatchEntry.getMaxY() + Settings.EXTRA_RANGE;
-        Font.small.print(maxY > 255 ? 255 : maxY, X_OFFSPRING + X_AXIS_SIZE, Y_OFFSPRING + 2);
+        final int xPercents = X_OFFSET - 2;
+        final int yPercents = Y_OFFSET - 7;
+
+        final String minPercent = "0%";
+        final int minPercentWidth = Font.small.getStringWidth(minPercent);
+        Font.small.print(minPercent, xPercents - minPercentWidth, yPercents);
+        final String maxPercent = String.format("%.2f", max * 100) + "%";
+        final int maxPercentWidth = Font.small.getStringWidth(maxPercent);
+        Font.small.print(maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
+
+        final int yLabels = Y_OFFSET;
+        final int xLabels = X_OFFSET;
+
+        final int minLabel = this.oreMatchEntry.getMinY();
+        final int minLabelWidth = Font.small.getStringWidth(String.valueOf(minLabel));
+        final int minLabelOffset = xLabels - (minLabelWidth / 2);
+        Font.small.print(minLabel, minLabelOffset, yLabels);
+
+        final int maxLabel = this.oreMatchEntry.getMaxY();
+        final int maxLabelWidth = Font.small.getStringWidth(String.valueOf(maxLabel));
+        final int maxLabelOffset = xLabels + X_AXIS_SIZE - (maxLabelWidth / 2);
+        Font.small.print(maxLabel, maxLabelOffset, yLabels);
+
+        final int midLabel = (maxLabel + minLabel) / 2;
+        final int midLabelWidth = Font.small.getStringWidth(String.valueOf(midLabel));
+        final int midLabelOffset = xLabels + (X_AXIS_SIZE / 2) - (midLabelWidth / 2);
+        Font.small.print(midLabel, midLabelOffset, yLabels);
+
         Font.small.print(TranslationHelper.translateToLocal("jer.ore.drops"), OreCategory.X_DROP_ITEM, OreCategory.Y_DROP_ITEM - 8);
 
         List<String> dimensions = oreMatchEntry.getDimensions();
         if (dimensions.size() == 1)
         {
             String dimension = dimensions.get(0);
-            int x = (recipeWidth - minecraft.fontRendererObj.getStringWidth(dimension)) / 2;
+            int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
             Font.normal.print(dimension, x, 0);
         }
     }
@@ -177,27 +201,36 @@ public class OreWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
 
     private List<String> getLineTooltip(int mouseX, List<String> tooltip)
     {
-        float[] chances = this.oreMatchEntry.getChances();
-        double space = X_AXIS_SIZE / (chances.length * 1D);
+        final double exactMouseX = getExactMouseX(mouseX);
+        final float[] chances = this.oreMatchEntry.getChances();
+        final double space = X_AXIS_SIZE / (chances.length * 1D);
         // Calculate the hovered over y value
-        int index = (int) ((mouseX - X_OFFSPRING) / space);
-        int yValue = Math.max(0, index + this.oreMatchEntry.getMinY() - Settings.EXTRA_RANGE + 1);
+        final int index = (int) ((exactMouseX - X_OFFSET + 1) / space);
+        final int yValue = index + this.oreMatchEntry.getMinY();
         if (index >= 0 && index < chances.length)
         {
             float chance = chances[index] * 100;
-            tooltip.add("Y: " + yValue +String.format(" (%.2G%%)", chance));
+            tooltip.add("Y: " + yValue + String.format(" (%.2G%%)", chance));
         }
 
         return tooltip;
     }
 
-    private boolean onGraph(int mouseX, int mouseY)
-    {
-        return mouseX >= X_OFFSPRING - 1
-            && mouseX < X_OFFSPRING + X_AXIS_SIZE
-            && mouseY >= Y_OFFSPRING - Y_AXIS_SIZE - 1
-            && mouseY < Y_OFFSPRING;
+    private static double getExactMouseX(final int mouseX) {
+        Minecraft mc = Minecraft.getMinecraft();
+        final ScaledResolution scaledresolution = new ScaledResolution(mc);
+        final int scaledWidth = scaledresolution.getScaledWidth();
+        final double mouseXExact = Mouse.getX() * scaledWidth / (double) mc.displayWidth;
+        final double mouseXFraction = mouseXExact - Math.floor(mouseXExact);
+        return mouseX + mouseXFraction;
     }
 
-
+    private boolean onGraph(int mouseX, int mouseY)
+    {
+        return mouseX >= X_OFFSET - 1
+            && mouseX < X_OFFSET + X_AXIS_SIZE
+            && mouseY >= Y_OFFSET - Y_AXIS_SIZE - 1
+            && mouseY < Y_OFFSET;
+    }
+    
 }

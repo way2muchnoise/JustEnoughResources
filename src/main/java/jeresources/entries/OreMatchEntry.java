@@ -78,16 +78,21 @@ public class OreMatchEntry
         }
         if (minY == 256) minY = 0;
         if (maxY == 0) maxY = 255;
+
+        if (minY < 128)
+            minY = 0;
+        else
+            minY = 128;
+
+        if (maxY <= 127)
+            maxY = 127;
+        else
+            maxY = 255;
     }
 
     public float[] getChances()
     {
-        return getChances(Settings.EXTRA_RANGE);
-    }
-
-    public float[] getChances(int extraRange)
-    {
-        return Arrays.copyOfRange(chances, Math.max(minY - extraRange, 0), Math.min(maxY + extraRange + 2, 255));
+        return Arrays.copyOfRange(chances, minY , maxY + 1);
     }
 
     public int getMinY()

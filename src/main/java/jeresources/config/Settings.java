@@ -9,7 +9,6 @@ public final class Settings
     public static int ITEMS_PER_ROW;
     public static int ITEMS_PER_COLUMN;
 
-    public static int EXTRA_RANGE;
     public static Side side;
     public static boolean useDIYdata;
 

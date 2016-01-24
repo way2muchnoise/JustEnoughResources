@@ -2,10 +2,6 @@ jer.config.itemsPerColumn.title=每列显示物品数
 jer.config.itemsPerColumn.description=调整JEI面板中每列显示地牢资源与生物掉落物的数量
 jer.config.itemsPerRow.title=每行显示物品数
 jer.config.itemsPerRow.description=调整JEI面板中每行显示地牢资源的数量
-jer.config.extraRange.title=层数范围
-jer.config.extraRange.description=调整矿物生成中显示的层数最大值
-jer.config.dimNames.title=使用维度名称
-jer.config.dimNames.description=使用维度的名称而非内部编号
 jer.config.enchantsBlacklist.title=附魔黑名单
 jer.config.enchantsBlacklist.description=将特定附魔列入JEI附魔界面黑名单
 

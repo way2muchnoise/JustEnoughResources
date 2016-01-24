@@ -2,10 +2,6 @@ jer.config.itemsPerColumn.title=Кол-во предметов в столбце
 jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и мобов
 jer.config.itemsPerRow.title=Кол-во предметов в ряду
 jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
-jer.config.extraRange.title=Доп. дальность
-jer.config.extraRange.description=Отображает дополнительные y-уровни на графике в JEI-просмотре руд
-jer.config.dimNames.title=Использовать имена измерений
-jer.config.dimNames.description=Меняет числовые обозначения измерений на именные
 jer.config.enchantsBlacklist.title=Чёрный список для зачарований
 jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
 

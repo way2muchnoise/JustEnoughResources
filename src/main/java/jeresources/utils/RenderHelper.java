@@ -46,15 +46,15 @@ public class RenderHelper
         GlStateManager.popMatrix();
     }
 
-    public static void drawLine(double x1, double y1, double x2, double y2, int color)
+    public static void drawLine(double xBegin, double yBegin, double xEnd, double yEnd, int color)
     {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
         GlStateManager.color(ColorHelper.getRed(color), ColorHelper.getGreen(color), ColorHelper.getBlue(color));
         GL11.glLineWidth(scale * 1.3F);
         GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex2d(x1, y1);
-        GL11.glVertex2d(x2, y2);
+        GL11.glVertex2d(xBegin, yBegin);
+        GL11.glVertex2d(xEnd, yEnd);
         GL11.glEnd();
     }
 

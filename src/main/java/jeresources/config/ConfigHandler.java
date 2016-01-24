@@ -60,18 +60,11 @@ public class ConfigHandler
         prop.setLanguageKey("jer.config.itemsPerRow.title");
         Settings.ITEMS_PER_ROW = prop.getInt();
 
-        prop = config.get(Configuration.CATEGORY_GENERAL, "extraRange", 3);
-        prop.comment = TranslationHelper.translateToLocal("jer.config.extraRange.description");
-        prop.setMinValue(0).setMaxValue(25);
-        prop.setLanguageKey("jer.config.extraRange.title");
-        Settings.EXTRA_RANGE = prop.getInt();
-
         prop = config.get(Configuration.CATEGORY_GENERAL, "diyData", true);
         prop.comment = TranslationHelper.translateToLocal("jer.config.diyData.description");
         prop.setLanguageKey("jer.config.diyData.title");
         prop.requiresMcRestart();
         Settings.useDIYdata = prop.getBoolean();
-
 
         prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam"});
         prop.comment = TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description");
