@@ -38,11 +38,11 @@ jer.enchantments.title=可用附魔属性
 jer.plant.title=植物掉落信息
 
 #Ore View
-jer.ore.title=矿物生成
-jer.ore.bestY=常见层数
-jer.ore.silkTouch=需要精准采集
-jer.ore.biomes=生物群系
-jer.ore.dimensions=有效生物群系
+jer.worldgen.title=矿物生成
+jer.worldgen.bestY=常见层数
+jer.worldgen.silkTouch=需要精准采集
+jer.worldgen.biomes=生物群系
+jer.worldgen.dimensions=有效生物群系
 
 #Mob View
 jer.mob.title=生物资源

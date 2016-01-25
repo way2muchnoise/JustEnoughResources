@@ -1,13 +1,10 @@
 package jeresources.entries;
 
-import jeresources.api.messages.RegisterMobMessage;
-import jeresources.api.utils.DropItem;
-import jeresources.api.utils.LightLevel;
+import jeresources.api.drop.DropItem;
+import jeresources.api.conditionals.LightLevel;
 import jeresources.utils.MobHelper;
-import jeresources.utils.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,15 +61,6 @@ public class MobEntry
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
-    public MobEntry(RegisterMobMessage message)
-    {
-        if (!ReflectionHelper.isInstanceOf(message.getMobClass(), EntityLivingBase.class)) return;
-        entity = (EntityLivingBase) ReflectionHelper.initialize(message.getMobClass(), World.class, null);
-        this.lightLevel = message.getLightLevel();
-        Collections.addAll(drops, message.getDrops());
-        Collections.sort(drops);
-    }
-
     public EntityLivingBase getEntity()
     {
         return entity;
@@ -108,6 +96,12 @@ public class MobEntry
         drops.add(item);
         Collections.sort(drops);
         return true;
+    }
+
+    public void addDrops(DropItem... drops)
+    {
+        for (DropItem drop : drops)
+            addDrop(drop);
     }
 
     public LightLevel getLightLevel()

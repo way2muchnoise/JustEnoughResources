@@ -1,21 +1,21 @@
 package jeresources.compatibility.thaumcraft;
 
+import jeresources.api.drop.DropItem;
+import jeresources.api.conditionals.LightLevel;
 import jeresources.api.distributions.DistributionCustom;
+import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.distributions.DistributionSquare;
-import jeresources.api.messages.ModifyOreMessage;
-import jeresources.api.messages.RegisterOreMessage;
-import jeresources.api.utils.*;
-import jeresources.api.utils.conditionals.Conditional;
+import jeresources.api.conditionals.Conditional;
+import jeresources.api.render.TextModifier;
 import jeresources.compatibility.CompatBase;
 import jeresources.entries.MobEntry;
-import jeresources.registry.MessageRegistry;
-import jeresources.utils.ModList;
+import jeresources.entries.WorldGenEntry;
+import jeresources.compatibility.ModList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import thaumcraft.common.Thaumcraft;
 import thaumcraft.common.config.Config;
 import thaumcraft.common.entities.monster.EntityBrainyZombie;
 import thaumcraft.common.entities.monster.EntityMindSpider;
@@ -29,9 +29,9 @@ public class ThaumcraftCompat extends CompatBase
 {
 
     @Override
-    protected void init(boolean initOres)
+    protected void init(boolean worldGen)
     {
-        if (initOres)
+        if (worldGen)
             registerThaumcraftOres();
         registerThaumcraftMobs();
     }
@@ -39,9 +39,6 @@ public class ThaumcraftCompat extends CompatBase
     @Optional.Method(modid = ModList.Names.THAUMCRAFT)
     private void registerThaumcraftOres()
     {
-        ItemStack amber = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_amber"));
-        DropItem amberDrop = new DropItem(new ItemStack(GameRegistry.findItem(ModList.Names.THAUMCRAFT, "amber")));
-        MessageRegistry.addMessage(new ModifyOreMessage(amber, Priority.FIRST, amberDrop));
         if (Config.genCinnibar) genCinnabar();
         if (Config.genAmber) genAmber();
     }
@@ -49,7 +46,7 @@ public class ThaumcraftCompat extends CompatBase
     @Optional.Method(modid = ModList.Names.THAUMCRAFT)
     private void registerThaumcraftMobs()
     {
-        Conditional randomAspect = new Conditional("jer.randomAspect.text", Modifier.pink);
+        Conditional randomAspect = new Conditional("jer.randomAspect.text", TextModifier.pink);
         String[] tainted = new String[]{"Tainted areas"};
         DropItem flesh = new DropItem(Items.rotten_flesh, 0, 2);
         DropItem brain = new DropItem(GameRegistry.findItem(ModList.Names.THAUMCRAFT, "brain"), 0, 1);
@@ -107,7 +104,8 @@ public class ThaumcraftCompat extends CompatBase
         float[] distribution = DistributionHelpers.getSquareDistribution(minY, maxY - (int) maxYRange, chance);
         DistributionHelpers.addDistribution(distribution, DistributionHelpers.getRampDistribution(maxY, (int) (maxY - maxYRange), chance), maxY - (int) maxYRange);
         ItemStack amber = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_amber"));
-        registerOre(new RegisterOreMessage(amber, new DistributionCustom(distribution)));
+        DropItem amberDrop = new DropItem(new ItemStack(GameRegistry.findItem(ModList.Names.THAUMCRAFT, "amber")));
+        registerWorldGen(new WorldGenEntry(amber, new DistributionCustom(distribution), amberDrop));
     }
 
     @Optional.Method(modid = ModList.Names.THAUMCRAFT)
@@ -118,6 +116,6 @@ public class ThaumcraftCompat extends CompatBase
         float numVeins = 18F;
         float chance = numVeins / (maxY * 256);
         ItemStack ore = new ItemStack(GameRegistry.findBlock(ModList.Names.THAUMCRAFT, "ore_cinnabar"));
-        registerOre(new RegisterOreMessage(ore, new DistributionSquare(minY, maxY, chance)));
+        registerWorldGen(new WorldGenEntry(ore, new DistributionSquare(minY, maxY, chance)));
     }
 }

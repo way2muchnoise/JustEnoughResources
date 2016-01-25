@@ -29,11 +29,11 @@ jer.enchantments.title=Enchantments
 jer.plant.title=Plant Drops
 
 #Ore View
-jer.ore.title=Ore Gen
-jer.ore.bestY=bestY
-jer.ore.silkTouch=Silk Touch Nodig
-jer.ore.biomes=Spawn Biomes
-jer.ore.dimensions=Spawn Dimensions
+jer.worldgen.title=Ore Gen
+jer.worldgen.bestY=bestY
+jer.worldgen.silkTouch=Silk Touch Nodig
+jer.worldgen.biomes=Spawn Biomes
+jer.worldgen.dimensions=Spawn Dimensions
 
 #Mob View
 jer.mob.title=Mob Drops

@@ -1,6 +1,6 @@
 package jeresources.utils;
 
-import jeresources.api.utils.DropItem;
+import jeresources.api.drop.DropItem;
 import jeresources.entries.MobEntry;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;

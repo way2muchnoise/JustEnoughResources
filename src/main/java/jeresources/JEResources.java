@@ -1,12 +1,12 @@
 package jeresources;
 
+import jeresources.compatibility.JERAPI;
 import jeresources.config.ConfigHandler;
 import jeresources.config.Settings;
 import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.MetaData;
 import jeresources.reference.Reference;
-import jeresources.registry.MessageRegistry;
 import jeresources.utils.LogHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -42,17 +42,9 @@ public class JEResources
 
         LogHelper.info("Registering Events...");
         PROXY.registerEvents();
-    }
 
-    @Mod.EventHandler
-    public void imcCallback(FMLInterModComms.IMCEvent event)
-    {
-        for (final FMLInterModComms.IMCMessage imcMessage : event.getMessages())
-        {
-            LogHelper.debug("Message Received - Sender: " + imcMessage.getSender() + " - Message Type: " + imcMessage.key);
-            if (imcMessage.isNBTMessage())
-                MessageRegistry.registerMessage(imcMessage.key, imcMessage.getNBTValue());
-        }
+        LogHelper.info("Init API...");
+        JERAPI.init(event.getAsmData());
     }
 
     @Mod.EventHandler

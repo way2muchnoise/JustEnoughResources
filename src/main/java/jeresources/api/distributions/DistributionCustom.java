@@ -1,7 +1,5 @@
 package jeresources.api.distributions;
 
-import jeresources.api.utils.DistributionHelpers;
-
 public class DistributionCustom extends DistributionBase
 {
 

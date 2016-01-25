@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class EnchantmentRegistry
 {
-    private static Set<EnchantmentEntry> enchantments = new HashSet<EnchantmentEntry>();
+    private Set<EnchantmentEntry> enchantments = new HashSet<EnchantmentEntry>();
     private static EnchantmentRegistry instance = null;
 
     public static EnchantmentRegistry getInstance()

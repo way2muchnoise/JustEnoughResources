@@ -1,27 +1,26 @@
 package jeresources.compatibility;
 
 import jeresources.config.Settings;
-import jeresources.json.OreAdapter;
-import jeresources.registry.MessageRegistry;
-import jeresources.utils.ModList;
+import jeresources.json.WorldGenAdapter;
 
 public class Compatibility
 {
     public static void init()
     {
-        boolean initOres = true;
+        boolean initWorldGen = true;
         if (Settings.useDIYdata)
         {
-            if (OreAdapter.hasOreEntry())
+            if (WorldGenAdapter.hasWorldGenDIYData())
             {
-                OreAdapter.readEntrys();
-                initOres = false;
+                WorldGenAdapter.readDIYData();
+                initWorldGen = false;
             }
         }
         for (ModList mod : ModList.values())
-            mod.initialise(initOres);
-
-        MessageRegistry.processMessages(initOres);
+            mod.initialise(initWorldGen);
+        MobRegistryImpl.commit();
+        if (initWorldGen)
+            WorldGenRegistryImpl.commit();
         Settings.initedCompat = true;
     }
 }

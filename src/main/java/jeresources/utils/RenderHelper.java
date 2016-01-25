@@ -1,6 +1,8 @@
 package jeresources.utils;
 
-import jeresources.api.utils.ColorHelper;
+import jeresources.api.render.ColourHelper;
+import jeresources.api.render.IMobRenderHook;
+import jeresources.compatibility.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -27,7 +29,7 @@ public class RenderHelper
     {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
-        GlStateManager.color(ColorHelper.getRed(color), ColorHelper.getGreen(color), ColorHelper.getBlue(color));
+        GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
         GL11.glLineWidth(scale * 1.3F);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2d(xBegin, yBegin);
@@ -50,7 +52,7 @@ public class RenderHelper
     {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
-        GlStateManager.color(ColorHelper.getRed(color), ColorHelper.getGreen(color), ColorHelper.getBlue(color));
+        GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
         GL11.glLineWidth(scale * 1.3F);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2d(xBegin, yBegin);
@@ -62,7 +64,7 @@ public class RenderHelper
     {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
-        GlStateManager.color(ColorHelper.getRed(color), ColorHelper.getGreen(color), ColorHelper.getBlue(color));
+        GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
         GL11.glPointSize(scale * 1.3F);
         GL11.glBegin(GL11.GL_POINTS);
         GL11.glVertex2d(x, y);
@@ -83,24 +85,12 @@ public class RenderHelper
         float prevRotationYawHead = entityLivingBase.prevRotationYawHead;
         float rotationYawHead = entityLivingBase.rotationYawHead;
         net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-        if (entityLivingBase instanceof EntityDragon || entityLivingBase instanceof EntityBat)
-        {
-            GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-            if (entityLivingBase instanceof EntityDragon)
-            {
-                pitch = -pitch - 80;
-                GlStateManager.rotate(yaw < 90 ? (yaw < -90 ? 90 : -yaw) : -90, 0.0F, 1.0F, 0.0F);
-            } else pitch = -pitch;
-        }
-        if (entityLivingBase instanceof EntityGuardian && ((EntityGuardian) entityLivingBase).isElder())
-        {
-            GlStateManager.scale(0.6F, 0.6F, 0.6F);
-        }
-        if (entityLivingBase instanceof EntitySquid)
-        {
-            GlStateManager.rotate(50.0F, 1.0F, 0.0F, 0.0F);
-        }
+        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(entityLivingBase, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
+        x = renderInfo.x;
+        y = renderInfo.y;
+        scale = renderInfo.scale;
+        yaw = renderInfo.yaw;
+        pitch = renderInfo.pitch;
         GlStateManager.rotate(-((float) Math.atan((double) (pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
         entityLivingBase.renderYawOffset = (float) Math.atan((double) (yaw / 40.0F)) * 20.0F;
         entityLivingBase.rotationYaw = (float) Math.atan((double) (yaw / 40.0F)) * 40.0F;

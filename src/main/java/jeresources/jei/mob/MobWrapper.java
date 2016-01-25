@@ -1,6 +1,7 @@
 package jeresources.jei.mob;
 
-import jeresources.api.utils.DropItem;
+import jeresources.api.drop.DropItem;
+import jeresources.compatibility.ModList;
 import jeresources.entries.MobEntry;
 import jeresources.utils.*;
 import mezz.jei.api.gui.ITooltipCallback;

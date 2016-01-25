@@ -7,8 +7,8 @@ import jeresources.jei.enchantment.EnchantmentCategory;
 import jeresources.jei.enchantment.EnchantmentHandler;
 import jeresources.jei.mob.MobCategory;
 import jeresources.jei.mob.MobHandler;
-import jeresources.jei.ore.OreCategory;
-import jeresources.jei.ore.OreHandler;
+import jeresources.jei.worldgen.WorldGenCategory;
+import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
 import jeresources.reference.Reference;
@@ -19,7 +19,7 @@ public class JEIConfig implements IModPlugin
 {
     public static final String MOB = Reference.ID + ".mob";
     public static final String DUNGEON = Reference.ID + ".dungeon";
-    public static final String ORE = Reference.ID + ".ore";
+    public static final String WORLDGEN = Reference.ID + ".worldgen";
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
 
@@ -38,8 +38,8 @@ public class JEIConfig implements IModPlugin
     @Override
     public void register(IModRegistry registry)
     {
-        registry.addRecipeHandlers(new PlantHandler(), new OreHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
-        registry.addRecipeCategories(new PlantCategory(), new OreCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
+        registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
+        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
     }
 
     @Override

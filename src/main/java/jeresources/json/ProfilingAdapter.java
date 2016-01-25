@@ -27,7 +27,7 @@ public class ProfilingAdapter
     {
         try
         {
-            JsonWriter writer = new JsonWriter(new FileWriter(new File(ConfigHandler.getConfigDir(), "blocks.json")));
+            JsonWriter writer = new JsonWriter(new FileWriter(new File(ConfigHandler.getConfigDir(), "world-gen-scan.json")));
             writer.setIndent("\t");
             writer.beginArray();
 
@@ -40,7 +40,7 @@ public class ProfilingAdapter
                 for (String blockKey : blockKeys)
                 {
                     writer.beginObject();
-                    writer.name("ore").value(blockKey);
+                    writer.name("block").value(blockKey);
 
                     Float[] distribution = dimensionData.distribution.get(blockKey);
                     if (distribution != null && distribution.length > 0)

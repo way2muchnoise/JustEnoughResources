@@ -1,6 +1,6 @@
 package jeresources.utils;
 
-import jeresources.api.utils.PlantDrop;
+import jeresources.api.drop.PlantDrop;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandom;
 import net.minecraftforge.common.ForgeHooks;

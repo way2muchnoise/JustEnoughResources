@@ -40,12 +40,12 @@ jer.enchantments.title=Enchantments
 jer.plant.title=Plant Drops
 
 #Ore View
-jer.ore.title=World Gen
-jer.ore.silkTouch=Silk Touch Needed
-jer.ore.biomes=Spawn Biomes
-jer.ore.dimensions=Valid Dimensions
-jer.ore.drops=Drops
-jer.ore.average=Avg. Drop:
+jer.worldgen.title=World Gen
+jer.worldgen.silkTouch=Silk Touch Needed
+jer.worldgen.biomes=Spawn Biomes
+jer.worldgen.dimensions=Valid Dimensions
+jer.worldgen.drops=Drops
+jer.worldgen.average=Avg. Drop:
 
 #Mob View
 jer.mob.title=Mob Drops

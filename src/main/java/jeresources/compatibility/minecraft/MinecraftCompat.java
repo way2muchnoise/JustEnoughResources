@@ -3,24 +3,23 @@ package jeresources.compatibility.minecraft;
 import jeresources.api.distributions.DistributionSquare;
 import jeresources.api.distributions.DistributionTriangular;
 import jeresources.api.distributions.DistributionUnderWater;
-import jeresources.api.messages.ModifyOreMessage;
-import jeresources.api.messages.RegisterOreMessage;
-import jeresources.api.utils.DropItem;
-import jeresources.api.utils.LightLevel;
-import jeresources.api.utils.PlantDrop;
-import jeresources.api.utils.Priority;
-import jeresources.api.utils.conditionals.Conditional;
-import jeresources.api.utils.restrictions.BiomeRestriction;
-import jeresources.api.utils.restrictions.BlockRestriction;
-import jeresources.api.utils.restrictions.DimensionRestriction;
-import jeresources.api.utils.restrictions.Restriction;
+import jeresources.api.drop.DropItem;
+import jeresources.api.conditionals.LightLevel;
+import jeresources.api.drop.PlantDrop;
+import jeresources.api.conditionals.Conditional;
+import jeresources.api.render.IMobRenderHook;
+import jeresources.api.restrictions.BiomeRestriction;
+import jeresources.api.restrictions.BlockRestriction;
+import jeresources.api.restrictions.DimensionRestriction;
+import jeresources.api.restrictions.Restriction;
 import jeresources.compatibility.CompatBase;
 import jeresources.entries.MobEntry;
 import jeresources.entries.PlantEntry;
+import jeresources.entries.WorldGenEntry;
 import jeresources.registry.DungeonRegistry;
-import jeresources.registry.MessageRegistry;
 import jeresources.utils.MobHelper;
 import jeresources.utils.ReflectionHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
@@ -36,28 +35,13 @@ import java.util.HashMap;
 public class MinecraftCompat extends CompatBase
 {
     @Override
-    protected void init(boolean initOres)
+    protected void init(boolean worldGen)
     {
         registerVanillaMobs();
         registerDungeonLoot();
-        if (initOres)
-        {
+        if (worldGen)
             registerOres();
-            registerVanillaOreDrops();
-        }
         registerVanillaPlants();
-    }
-
-    private void registerVanillaOreDrops()
-    {
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new DropItem(new ItemStack(Items.clay_ball, 4))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.clay), Priority.FIRST, new DropItem(new ItemStack(Items.clay_ball, 4))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.coal_ore), Priority.FIRST, new DropItem(new ItemStack(Items.coal))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.diamond_ore), Priority.FIRST, new DropItem(new ItemStack(Items.diamond))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.lapis_ore), Priority.FIRST, new DropItem(new ItemStack(Items.dye, 4, 4))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.emerald_ore), Priority.FIRST, new DropItem(new ItemStack(Items.emerald))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.redstone_ore), Priority.FIRST, new DropItem(new ItemStack(Items.redstone, 4))));
-        MessageRegistry.addMessage(new ModifyOreMessage(new ItemStack(Blocks.quartz_ore), Priority.FIRST, new DropItem(new ItemStack(Items.quartz, 4))));
     }
 
     private void registerVanillaMobs()
@@ -102,6 +86,7 @@ public class MinecraftCompat extends CompatBase
         //End Dragon
         DropItem egg = new DropItem(new ItemStack(Blocks.dragon_egg), 1, 1);
         registerMob(new MobEntry(new EntityDragon(world), LightLevel.any, egg));
+        registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
 
         //Enderman
         DropItem pearl = new DropItem(Items.ender_pearl, 0, 1);
@@ -166,6 +151,7 @@ public class MinecraftCompat extends CompatBase
 
         //Bats
         registerMob(new MobEntry(new EntityBat(world), LightLevel.hostile));
+        registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
 
         //Spider
         DropItem string = new DropItem(Items.string, 0, 2);
@@ -178,6 +164,7 @@ public class MinecraftCompat extends CompatBase
         //Squid
         DropItem ink = new DropItem(Items.dye, 0, 1, 3);
         registerMob(new MobEntry(new EntitySquid(world), LightLevel.any, new String[]{"In water"}, ink));
+        registerMobRenderHook(EntitySquid.class, RenderHooks.SQUID);
 
         //Rabbit
         DropItem rabbitHide = new DropItem(Items.rabbit_hide, 0, 1);
@@ -199,6 +186,7 @@ public class MinecraftCompat extends CompatBase
         elderGuardian.setElder();
         registerMob(new MobEntry(new EntityGuardian(world), LightLevel.any, new String[]{"Ocean monument"}, prismarineCrystal, prismarineShard, rawFish, sponge, rareFish, rareSalmon, rarePuffer, rareClown));
         registerMob(new MobEntry(elderGuardian, LightLevel.any, new String[]{"Ocean monument"}, prismarineCrystal, prismarineShard, rawFish, sponge, rareFish, rareSalmon, rarePuffer, rareClown));
+        registerMobRenderHook(EntityGuardian.class, RenderHooks.ELDER_GUARDIAN);
 
     }
 
@@ -215,14 +203,15 @@ public class MinecraftCompat extends CompatBase
 
     private void registerOres()
     {
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.lapis_ore), new DistributionTriangular(15, 15, 0.001F), true));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.iron_ore), new DistributionSquare(20, 8, 1, 64)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.redstone_ore), new DistributionSquare(8, 7, 1, 16), true));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.diamond_ore), new DistributionSquare(1, 7, 1, 16), true));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.emerald_ore), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.gold_ore), new DistributionSquare(2, 8, 1, 32)));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 1, 128), true));
-        registerOre(new RegisterOreMessage(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 1, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.lapis_ore), new DistributionTriangular(15, 15, 0.001F), true, new DropItem(new ItemStack(Items.dye, 4, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.iron_ore), new DistributionSquare(20, 8, 1, 64)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.redstone_ore), new DistributionSquare(8, 7, 1, 16), true, new DropItem(new ItemStack(Items.redstone, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.diamond_ore), new DistributionSquare(1, 7, 1, 16), true, new DropItem(new ItemStack(Items.diamond))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.emerald_ore), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS), true, new DropItem(new ItemStack(Items.emerald))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.gold_ore), new DistributionSquare(2, 8, 1, 32)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 1, 128), true, new DropItem(new ItemStack(Items.coal))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 1, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true, new DropItem(new ItemStack(Items.quartz, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new DropItem(new ItemStack(Items.clay_ball, 4))));
     }
 
     private void registerVanillaPlants()

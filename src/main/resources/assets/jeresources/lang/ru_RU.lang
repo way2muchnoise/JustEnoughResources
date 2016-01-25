@@ -38,11 +38,11 @@ jer.enchantments.title=Зачарования
 jer.plant.title=Плоды растений
 
 #Ore View
-jer.ore.title=Генерация руд
-jer.ore.bestY=Лучшее значение по Y
-jer.ore.silkTouch=Необходимо шёлковое касание
-jer.ore.biomes=Появляется в биомах
-jer.ore.dimensions=Допустимые измерения
+jer.worldgen.title=Генерация руд
+jer.worldgen.bestY=Лучшее значение по Y
+jer.worldgen.silkTouch=Необходимо шёлковое касание
+jer.worldgen.biomes=Появляется в биомах
+jer.worldgen.dimensions=Допустимые измерения
 
 #Mob View
 jer.mob.title=Добыча мобов

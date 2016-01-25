@@ -1,6 +1,5 @@
 package jeresources.entries;
 
-import jeresources.api.messages.RegisterDungeonMessage;
 import jeresources.utils.ReflectionHelper;
 import jeresources.utils.WeightedRandomChestContentHelper;
 import net.minecraft.item.ItemStack;
@@ -28,14 +27,6 @@ public class DungeonEntry
         this.name = name;
         this.minStacks = chestGenHooks.getMin();
         this.maxStacks = chestGenHooks.getMax();
-    }
-
-    public DungeonEntry(RegisterDungeonMessage message)
-    {
-        chestDrops = message.getChestDrops();
-        name = message.getName();
-        maxStacks = message.getMaxStacks();
-        minStacks = message.getMinStacks();
     }
 
     public boolean containsItem(ItemStack itemStack)

@@ -10,7 +10,7 @@ public final class Resources
         public static final class Jei
         {
             public static final BackgroundDrawable MOB = new BackgroundDrawable(Textures.Gui.Jei.MOB, 163, 120);
-            public static final BackgroundDrawable ORE = new BackgroundDrawable(Textures.Gui.Jei.ORE, 156, 80);
+            public static final BackgroundDrawable WORLD_GEN = new BackgroundDrawable(Textures.Gui.Jei.WORLD_GEN, 156, 80);
             public static final BackgroundDrawable DUNGEON = new BackgroundDrawable(Textures.Gui.Jei.DUNGEON, 163, 120);
             public static final BackgroundDrawable PLANT = new BackgroundDrawable(Textures.Gui.Jei.PLANT, 165, 120);
             public static final BackgroundDrawable ENCHANTMENT = new BackgroundDrawable(Textures.Gui.Jei.ENCHANTMENT, 163, 120);

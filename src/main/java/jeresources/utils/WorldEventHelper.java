@@ -1,7 +1,7 @@
 package jeresources.utils;
 
-import jeresources.api.utils.restrictions.BlockRestriction;
-import jeresources.api.utils.restrictions.DimensionRegistry;
+import jeresources.api.restrictions.BlockRestriction;
+import jeresources.api.restrictions.DimensionRegistry;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

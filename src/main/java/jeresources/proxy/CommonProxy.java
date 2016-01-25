@@ -4,11 +4,11 @@ import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
 import jeresources.entries.DungeonEntry;
 import jeresources.entries.MobEntry;
-import jeresources.entries.OreMatchEntry;
+import jeresources.entries.WorldGenEntry;
 import jeresources.entries.PlantEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.registry.*;
-import jeresources.utils.ModList;
+import jeresources.compatibility.ModList;
 import jeresources.utils.WorldEventHelper;
 import mezz.jei.api.IRecipeRegistry;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ public class CommonProxy
         if (Loader.isModLoaded(ModList.Names.JEI))
         {
             IRecipeRegistry recipeRegistry = JEIConfig.getRecipeRegistry();
-            for (OreMatchEntry entry : OreRegistry.getOres())
+            for (WorldGenEntry entry : WorldGenRegistry.getInstance().getWorldGen())
                 recipeRegistry.addRecipe(entry);
             for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
                 recipeRegistry.addRecipe(entry);

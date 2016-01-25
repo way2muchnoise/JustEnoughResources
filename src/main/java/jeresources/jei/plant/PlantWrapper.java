@@ -1,6 +1,6 @@
 package jeresources.jei.plant;
 
-import jeresources.api.utils.PlantDrop;
+import jeresources.api.drop.PlantDrop;
 import jeresources.entries.PlantEntry;
 import jeresources.utils.CollectionHelper;
 import jeresources.utils.RenderHelper;
