@@ -2,10 +2,6 @@ jer.config.itemsPerColumn.title=Items Per Kolom
 jer.config.itemsPerColumn.description=Veranderd het aantal items per kolom in the JEI views
 jer.config.itemsPerRow.title=Items Per RIj
 jer.config.itemsPerRow.description=Veranderd het aantal items per rij in the JEI views
-jer.config.extraRange.title=Extra range
-jer.config.extraRange.description=Veranderd het aantal y-level dat wordt getoont
-jer.config.dimNames.title=Gebruik dimensie namen
-jer.config.dimNames.description=Gebruik dimensie namen ipv nummers
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Pagina

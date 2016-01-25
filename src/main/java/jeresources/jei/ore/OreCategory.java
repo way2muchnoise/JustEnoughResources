@@ -17,9 +17,9 @@ import javax.annotation.Nonnull;
 
 public class OreCategory implements IRecipeCategory
 {
-    protected static final int X_ITEM = 17;
+    protected static final int X_ITEM = 5;
     protected static final int Y_ITEM = 21;
-    protected static final int X_DROP_ITEM = 17;
+    protected static final int X_DROP_ITEM = 5;
     protected static final int Y_DROP_ITEM = 66;
     private static final int DROP_ITEM_COUNT = 8;
 
@@ -47,8 +47,8 @@ public class OreCategory implements IRecipeCategory
     @Override
     public void drawExtras(Minecraft minecraft)
     {
-        RenderHelper.drawArrow(OreWrapper.X_OFFSPRING, OreWrapper.Y_OFFSPRING, OreWrapper.X_OFFSPRING + OreWrapper.X_AXIS_SIZE, OreWrapper.Y_OFFSPRING, ColorHelper.GRAY);
-        RenderHelper.drawArrow(OreWrapper.X_OFFSPRING, OreWrapper.Y_OFFSPRING, OreWrapper.X_OFFSPRING, OreWrapper.Y_OFFSPRING - OreWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
+        RenderHelper.drawLine(OreWrapper.X_OFFSET, OreWrapper.Y_OFFSET, OreWrapper.X_OFFSET + OreWrapper.X_AXIS_SIZE, OreWrapper.Y_OFFSET, ColorHelper.GRAY);
+        RenderHelper.drawLine(OreWrapper.X_OFFSET, OreWrapper.Y_OFFSET, OreWrapper.X_OFFSET, OreWrapper.Y_OFFSET - OreWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
     }
 
     @Override
