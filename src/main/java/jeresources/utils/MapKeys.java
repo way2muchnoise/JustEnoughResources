@@ -1,7 +1,6 @@
 package jeresources.utils;
 
 import jeresources.api.drop.DropItem;
-
 import jeresources.api.restrictions.Restriction;
 import jeresources.entries.WorldGenEntry;
 import net.minecraft.item.Item;

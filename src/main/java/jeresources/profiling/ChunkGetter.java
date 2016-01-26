@@ -1,11 +1,11 @@
 package jeresources.profiling;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChunkGetter implements Runnable
 {

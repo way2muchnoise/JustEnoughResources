@@ -3,6 +3,7 @@ package jeresources.json;
 import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
 import jeresources.config.ConfigHandler;
+import net.minecraftforge.common.DimensionManager;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,8 +11,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import net.minecraftforge.common.DimensionManager;
 
 public class ProfilingAdapter
 {

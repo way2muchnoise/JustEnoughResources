@@ -1,6 +1,9 @@
 package jeresources.compatibility;
 
-import jeresources.api.*;
+import jeresources.api.IJERAPI;
+import jeresources.api.IMobRegistry;
+import jeresources.api.IWorldGenRegistry;
+import jeresources.api.JERPlugin;
 import jeresources.utils.ReflectionHelper;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 

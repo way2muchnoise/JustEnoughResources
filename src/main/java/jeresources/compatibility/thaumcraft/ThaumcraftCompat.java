@@ -1,16 +1,16 @@
 package jeresources.compatibility.thaumcraft;
 
-import jeresources.api.drop.DropItem;
+import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.distributions.DistributionSquare;
-import jeresources.api.conditionals.Conditional;
+import jeresources.api.drop.DropItem;
 import jeresources.api.render.TextModifier;
 import jeresources.compatibility.CompatBase;
+import jeresources.compatibility.ModList;
 import jeresources.entries.MobEntry;
 import jeresources.entries.WorldGenEntry;
-import jeresources.compatibility.ModList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

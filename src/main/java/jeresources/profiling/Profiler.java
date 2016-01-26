@@ -1,14 +1,14 @@
 package jeresources.profiling;
 
 import jeresources.json.ProfilingAdapter;
-
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Profiler implements Runnable
 {

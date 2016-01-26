@@ -1,7 +1,7 @@
 package jeresources.entries;
 
-import jeresources.api.drop.DropItem;
 import jeresources.api.conditionals.LightLevel;
+import jeresources.api.drop.DropItem;
 import jeresources.utils.MobHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

@@ -1,13 +1,12 @@
 package jeresources.compatibility.minecraft;
 
+import jeresources.api.conditionals.Conditional;
+import jeresources.api.conditionals.LightLevel;
 import jeresources.api.distributions.DistributionSquare;
 import jeresources.api.distributions.DistributionTriangular;
 import jeresources.api.distributions.DistributionUnderWater;
 import jeresources.api.drop.DropItem;
-import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.PlantDrop;
-import jeresources.api.conditionals.Conditional;
-import jeresources.api.render.IMobRenderHook;
 import jeresources.api.restrictions.BiomeRestriction;
 import jeresources.api.restrictions.BlockRestriction;
 import jeresources.api.restrictions.DimensionRestriction;
@@ -19,7 +18,6 @@ import jeresources.entries.WorldGenEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.utils.MobHelper;
 import jeresources.utils.ReflectionHelper;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;

@@ -1,7 +1,5 @@
 package jeresources;
 
-import jeresources.api.IJERAPI;
-import jeresources.api.JERPlugin;
 import jeresources.compatibility.JERAPI;
 import jeresources.config.ConfigHandler;
 import jeresources.config.Settings;
@@ -14,7 +12,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;

@@ -2,8 +2,8 @@ package jeresources.entries;
 
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionHelpers;
-import jeresources.api.render.ColourHelper;
 import jeresources.api.drop.DropItem;
+import jeresources.api.render.ColourHelper;
 import jeresources.api.restrictions.Restriction;
 import net.minecraft.item.ItemStack;
 

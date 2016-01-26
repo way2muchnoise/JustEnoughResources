@@ -1,14 +1,14 @@
 package jeresources.proxy;
 
 import jeresources.compatibility.Compatibility;
+import jeresources.compatibility.ModList;
 import jeresources.config.Settings;
 import jeresources.entries.DungeonEntry;
 import jeresources.entries.MobEntry;
-import jeresources.entries.WorldGenEntry;
 import jeresources.entries.PlantEntry;
+import jeresources.entries.WorldGenEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.registry.*;
-import jeresources.compatibility.ModList;
 import jeresources.utils.WorldEventHelper;
 import mezz.jei.api.IRecipeRegistry;
 import net.minecraft.item.ItemStack;

@@ -7,10 +7,10 @@ import jeresources.jei.enchantment.EnchantmentCategory;
 import jeresources.jei.enchantment.EnchantmentHandler;
 import jeresources.jei.mob.MobCategory;
 import jeresources.jei.mob.MobHandler;
-import jeresources.jei.worldgen.WorldGenCategory;
-import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
+import jeresources.jei.worldgen.WorldGenCategory;
+import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.reference.Reference;
 import mezz.jei.api.*;
 

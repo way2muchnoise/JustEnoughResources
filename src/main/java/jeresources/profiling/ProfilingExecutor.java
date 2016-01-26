@@ -1,12 +1,12 @@
 package jeresources.profiling;
 
+import net.minecraft.world.chunk.Chunk;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import net.minecraft.world.chunk.Chunk;
 
 public class ProfilingExecutor {
 	private final ExecutorService executor;

@@ -1,7 +1,7 @@
 package jeresources.jei.worldgen;
 
-import jeresources.api.drop.DropItem;
 import jeresources.api.conditionals.Conditional;
+import jeresources.api.drop.DropItem;
 import jeresources.entries.WorldGenEntry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
@@ -12,15 +12,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-
 import net.minecraftforge.fluids.FluidStack;
+import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.lwjgl.input.Mouse;
 
 public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
 {

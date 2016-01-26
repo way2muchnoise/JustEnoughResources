@@ -2,7 +2,10 @@ package jeresources.api.restrictions;
 
 import net.minecraft.util.StatCollector;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class DimensionRestriction
 {

@@ -1,7 +1,6 @@
 package jeresources.api.drop;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PlantDrop
 {

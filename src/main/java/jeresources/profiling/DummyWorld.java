@@ -21,7 +21,6 @@ import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;

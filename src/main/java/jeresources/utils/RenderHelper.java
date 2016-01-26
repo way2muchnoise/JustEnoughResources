@@ -14,10 +14,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.monster.EntityGuardian;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySquid;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
