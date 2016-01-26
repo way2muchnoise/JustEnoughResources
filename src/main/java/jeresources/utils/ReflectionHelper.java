@@ -3,8 +3,7 @@ package jeresources.utils;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
 import java.util.Set;
 
 public class ReflectionHelper extends net.minecraftforge.fml.relauncher.ReflectionHelper
@@ -57,20 +56,18 @@ public class ReflectionHelper extends net.minecraftforge.fml.relauncher.Reflecti
         return false;
     }
 
-    public static <T> List<T> getInstances(ASMDataTable asmDataTable, Class annotationClass, Class<T> instanceClass) {
-        String annotationClassName = annotationClass.getCanonicalName();
-        Set<ASMDataTable.ASMData> asmDatas = asmDataTable.getAll(annotationClassName);
-        List<T> instances = new ArrayList<>();
-        for (ASMDataTable.ASMData asmData : asmDatas) {
+    public static <T> void injectIntoFields(ASMDataTable asmDataTable, Class annotation, Class<T> type, T instance) {
+        String annotationClassName = annotation.getCanonicalName();
+        Set<ASMDataTable.ASMData> asmDataSet = asmDataTable.getAll(annotationClassName);
+        for (ASMDataTable.ASMData asmData : asmDataSet) {
             try {
-                Class<?> asmClass = Class.forName(asmData.getClassName());
-                Class<? extends T> asmInstanceClass = asmClass.asSubclass(instanceClass);
-                T instance = asmInstanceClass.newInstance();
-                instances.add(instance);
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-                LogHelper.warn("Failed to load: {}" + asmData.getClassName());
+                Class clazz = Class.forName(asmData.getClassName());
+                Field field = clazz.getField(asmData.getObjectName());
+                if (field.getType() == type)
+                    field.set(null, instance);
+            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+                LogHelper.warn("Failed to set: {}" + asmData.getClassName() + "." + asmData.getObjectName());
             }
         }
-        return instances;
     }
 }

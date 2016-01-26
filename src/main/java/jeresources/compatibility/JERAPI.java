@@ -4,8 +4,6 @@ import jeresources.api.*;
 import jeresources.utils.ReflectionHelper;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
-import java.util.List;
-
 public class JERAPI implements IJERAPI
 {
     private IWorldGenRegistry worldGenRegistry;
@@ -27,9 +25,7 @@ public class JERAPI implements IJERAPI
 
     public static void init(ASMDataTable asmDataTable)
     {
-        List<IJERPlugin> list = ReflectionHelper.getInstances(asmDataTable, JERPlugin.class, IJERPlugin.class);
-        for (IJERPlugin plugin : list)
-            plugin.APIDelivery(getInstance());
+        ReflectionHelper.injectIntoFields(asmDataTable, JERPlugin.class, IJERAPI.class, JERAPI.getInstance());
     }
 
     @Override

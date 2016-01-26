@@ -1,5 +1,7 @@
 package jeresources;
 
+import jeresources.api.IJERAPI;
+import jeresources.api.JERPlugin;
 import jeresources.compatibility.JERAPI;
 import jeresources.config.ConfigHandler;
 import jeresources.config.Settings;
@@ -20,9 +22,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION_FULL, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "after:JEI;", clientSideOnly = true)
 public class JEResources
 {
-    @Mod.Instance(Reference.ID)
-    public static JEResources INSTANCE;
-
     @Mod.Metadata(Reference.ID)
     public static ModMetadata metadata;
 
@@ -43,7 +42,7 @@ public class JEResources
         LogHelper.info("Registering Events...");
         PROXY.registerEvents();
 
-        LogHelper.info("Init API...");
+        LogHelper.info("Providing API...");
         JERAPI.init(event.getAsmData());
     }
 
