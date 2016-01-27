@@ -1,6 +1,5 @@
 package jeresources.registry;
 
-import jeresources.api.drop.DropItem;
 import jeresources.api.drop.PlantDrop;
 import jeresources.entries.PlantEntry;
 import jeresources.utils.MapKeys;
@@ -13,8 +12,8 @@ import java.util.Map;
 
 public class PlantRegistry
 {
-    private Map<String, PlantEntry> registry = new LinkedHashMap<>();
-    private static PlantRegistry instance = null;
+    private Map<String, PlantEntry> registry;
+    private static PlantRegistry instance;
 
     public static PlantRegistry getInstance()
     {
@@ -25,6 +24,7 @@ public class PlantRegistry
 
     public PlantRegistry()
     {
+        registry = new LinkedHashMap<>();
         registerPlant(PlantEntry.registerGrass());
     }
 

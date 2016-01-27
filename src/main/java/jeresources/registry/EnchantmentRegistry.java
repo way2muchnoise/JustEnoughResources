@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class EnchantmentRegistry
 {
-    private Set<EnchantmentEntry> enchantments = new HashSet<EnchantmentEntry>();
-    private static EnchantmentRegistry instance = null;
+    private Set<EnchantmentEntry> enchantments;
+    private static EnchantmentRegistry instance;
 
     public static EnchantmentRegistry getInstance()
     {
@@ -24,13 +24,14 @@ public class EnchantmentRegistry
 
     public EnchantmentRegistry()
     {
+        enchantments = new HashSet<>();
         for (Enchantment enchantment : getEnchants())
             if (enchantment != null) enchantments.add(new EnchantmentEntry(enchantment));
     }
 
     public Set<EnchantmentEntry> getEnchantments(ItemStack itemStack)
     {
-        Set<EnchantmentEntry> set = new HashSet<EnchantmentEntry>();
+        Set<EnchantmentEntry> set = new HashSet<>();
         for (EnchantmentEntry enchantment : enchantments)
         {
             if (itemStack.getItem() == Items.book && enchantment.getEnchantment().isAllowedOnBooks())
@@ -38,11 +39,6 @@ public class EnchantmentRegistry
             else if (enchantment.getEnchantment().canApply(itemStack)) set.add(enchantment);
         }
         return set;
-    }
-
-    public Set<EnchantmentEntry> getEnchantments()
-    {
-        return enchantments;
     }
 
     private void excludeFormRegistry(Enchantment enchantment)
@@ -62,11 +58,6 @@ public class EnchantmentRegistry
     {
         for (String enchant : excludedEnchants)
             excludeFormRegistry(enchant);
-    }
-
-    public void clear()
-    {
-        instance = new EnchantmentRegistry();
     }
 
     private static Enchantment[] getEnchants()

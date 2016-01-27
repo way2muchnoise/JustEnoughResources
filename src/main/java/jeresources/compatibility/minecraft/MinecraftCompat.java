@@ -28,7 +28,6 @@ import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.IPlantable;
 
 import java.util.HashMap;
 

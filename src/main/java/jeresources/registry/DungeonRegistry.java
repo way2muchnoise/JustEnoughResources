@@ -3,7 +3,6 @@ package jeresources.registry;
 import jeresources.entries.DungeonEntry;
 import jeresources.utils.ReflectionHelper;
 import jeresources.utils.TranslationHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;
 
 import java.util.ArrayList;
@@ -13,9 +12,9 @@ import java.util.Map;
 
 public class DungeonRegistry
 {
-    private Map<String, DungeonEntry> registry = new LinkedHashMap<String, DungeonEntry>();
-    public static Map<String, String> categoryToLocalKeyMap = new LinkedHashMap<String, String>();
-    private static DungeonRegistry instance = null;
+    private Map<String, DungeonEntry> registry;
+    public static Map<String, String> categoryToLocalKeyMap = new LinkedHashMap<>();
+    private static DungeonRegistry instance;
 
     public static DungeonRegistry getInstance()
     {
@@ -26,6 +25,7 @@ public class DungeonRegistry
 
     public DungeonRegistry()
     {
+        registry = new LinkedHashMap<>();
         addCategoryMapping("mineshaftCorridor", "jer.dungeon.mineshaftCorridor");
         addCategoryMapping("pyramidDesertyChest", "jer.dungeon.pyramidDesertyChest");
         addCategoryMapping("pyramidJungleChest", "jer.dungeon.pyramidJungleChest");
@@ -74,17 +74,9 @@ public class DungeonRegistry
         registry.put(name, entry);
     }
 
-    public List<DungeonEntry> getDungeons(ItemStack item)
-    {
-        List<DungeonEntry> list = new ArrayList<DungeonEntry>();
-        for (DungeonEntry entry : registry.values())
-            if (entry.containsItem(item)) list.add(entry);
-        return list;
-    }
-
     public List<DungeonEntry> getDungeons()
     {
-        return new ArrayList<DungeonEntry>(registry.values());
+        return new ArrayList<>(registry.values());
     }
 
     public String getNumStacks(DungeonEntry entry)
@@ -93,10 +85,5 @@ public class DungeonRegistry
         int min = entry.getMinStacks();
         if (min == max) return String.format(TranslationHelper.translateToLocal("jer.stacks"), max);
         return String.format(TranslationHelper.translateToLocal("jer.stacks"), min + " - " + max);
-    }
-
-    public void clear()
-    {
-        instance = new DungeonRegistry();
     }
 }
