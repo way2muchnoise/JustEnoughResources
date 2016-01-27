@@ -134,7 +134,7 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     private IBlockState getBlockState()
     {
         if (this.plantEntry.getPlant() != null)
-            return this.plantEntry.getPlant().getPlant(null, null).withProperty(BlockCrops.AGE, ((int) System.currentTimeMillis() / 900) % 8);
+            return this.plantEntry.getPlant().getPlant(null, null).cycleProperty(BlockCrops.AGE);
         else
             return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
     }
