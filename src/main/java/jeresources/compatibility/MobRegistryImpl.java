@@ -85,7 +85,9 @@ public class MobRegistryImpl implements IMobRegistry
     {
         for (MobEntry entry : registers)
             MobRegistry.getInstance().registerMob(entry);
+        registers.clear();
         for (Tuple<Class<? extends EntityLivingBase>, DropItem[]> tuple : addedDrops)
             MobRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
+        addedDrops.clear();
     }
 }

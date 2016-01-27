@@ -19,6 +19,7 @@ public class Compatibility
         for (ModList mod : ModList.values())
             mod.initialise(initWorldGen);
         MobRegistryImpl.commit();
+        PlantRegistryImpl.commit();
         if (initWorldGen)
             WorldGenRegistryImpl.commit();
         Settings.initedCompat = true;

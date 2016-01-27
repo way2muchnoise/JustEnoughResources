@@ -17,14 +17,14 @@ public class PlantEntry
 {
     private IPlantable plant;
     private ItemStack plantStack;
-    private Map<String, PlantDrop> drops = new LinkedHashMap<String, PlantDrop>();
+    private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
 
     public static PlantEntry registerGrass()
     {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
         PlantEntry grass = new PlantEntry(new ItemStack(Blocks.tallgrass, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
-        grass.multiplyWeight(8);
+        grass.totalWeight *= 8;
         return grass;
     }
 
@@ -44,9 +44,9 @@ public class PlantEntry
         this(itemStack, null, drops);
     }
 
-    public PlantEntry(IPlantable plant, PlantDrop... drops)
+    public <T extends Item & IPlantable> PlantEntry(T plant, PlantDrop... drops)
     {
-        this(new ItemStack((Item) plant), plant, drops);
+        this(new ItemStack(plant), plant, drops);
     }
 
     public void add(PlantDrop entry)
@@ -68,7 +68,7 @@ public class PlantEntry
 
     public List<PlantDrop> getDrops()
     {
-        return new ArrayList<PlantDrop>(this.drops.values());
+        return new ArrayList<>(this.drops.values());
     }
 
     public List<ItemStack> getDropItemStacks()
@@ -82,11 +82,6 @@ public class PlantEntry
     public PlantDrop getDrop(ItemStack itemStack)
     {
         return this.drops.get(MapKeys.getKey(itemStack));
-    }
-
-    public void multiplyWeight(int multiplier)
-    {
-        this.totalWeight *= multiplier;
     }
 
     public int getTotalWeight()

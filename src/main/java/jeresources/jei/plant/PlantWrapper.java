@@ -131,10 +131,24 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         return toPrint;
     }
 
+    private IBlockState state;
+    private long timer = -1;
+    private static final int TICKS = 1000; // 1s
+
     private IBlockState getBlockState()
     {
         if (this.plantEntry.getPlant() != null)
-            return this.plantEntry.getPlant().getPlant(null, null).cycleProperty(BlockCrops.AGE);
+        {
+            if (timer == -1) timer = System.currentTimeMillis()+ TICKS;
+            if (this.state == null)
+                this.state = this.plantEntry.getPlant().getPlant(null, null);
+            if (System.currentTimeMillis() > timer)
+            {
+                this.state = this.state.cycleProperty(BlockCrops.AGE);
+                this.timer = System.currentTimeMillis() + TICKS;
+            }
+            return this.state;
+        }
         else
             return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
     }

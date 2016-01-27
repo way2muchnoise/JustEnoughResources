@@ -20,6 +20,7 @@ public interface IMobRenderHook<T extends EntityLivingBase>
     }
 
     /**
+     * This method will be called up drawing mobs in the view
      *
      * @param renderInfo contains info about the current render context see {@link RenderInfo}
      * @param entity the entity that will be rendered

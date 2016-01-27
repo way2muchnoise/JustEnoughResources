@@ -56,7 +56,9 @@ public class WorldGenRegistryImpl implements IWorldGenRegistry
     {
         for (WorldGenEntry entry : registers)
             WorldGenRegistry.getInstance().registerEntry(entry);
+        registers.clear();
         for (Tuple<ItemStack, DropItem[]> tuple : addedDrops)
             WorldGenRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
+        addedDrops.clear();
     }
 }
