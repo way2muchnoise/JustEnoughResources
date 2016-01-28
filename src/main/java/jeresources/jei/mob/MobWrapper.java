@@ -85,7 +85,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         RenderHelper.renderEntity(
                 37, 110 - offsetY, scale,
                 38 - mouseX,
-                80 - offsetY - mouseY,
+                70 - offsetY - mouseY,
                 entityLivingBase
         );
         RenderHelper.stopScissor();
