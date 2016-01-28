@@ -27,31 +27,31 @@ public class MobRegistryImpl implements IMobRegistry
     }
 
     @Override
-    public void registerMob(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, DropItem... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, maxExp, maxExp, biomes, drops));
     }
 
     @Override
-    public void registerMob(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, DropItem... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, biomes, drops));
     }
 
     @Override
-    public void registerMob(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, DropItem... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, exp, biomes, drops));
     }
 
     @Override
-    public void registerMob(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, exp, drops));
     }
 
     @Override
-    public void registerMob(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, maxExp, maxExp, drops));
     }
