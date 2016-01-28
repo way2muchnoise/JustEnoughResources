@@ -19,7 +19,7 @@ public class JEIConfig implements IModPlugin
 {
     public static final String MOB = Reference.ID + ".mob";
     public static final String DUNGEON = Reference.ID + ".dungeon";
-    public static final String WORLDGEN = Reference.ID + ".worldgen";
+    public static final String WORLD_GEN = Reference.ID + ".worldgen";
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
 
@@ -42,10 +42,17 @@ public class JEIConfig implements IModPlugin
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
     }
 
+    @Deprecated
     @Override
     public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry)
     {
-        JEIConfig.recipeRegistry = recipeRegistry;
+
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime)
+    {
+        JEIConfig.recipeRegistry = jeiRuntime.getRecipeRegistry();
         JEResources.PROXY.initCompatibility();
     }
 

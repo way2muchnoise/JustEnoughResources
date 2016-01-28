@@ -20,7 +20,7 @@ public class WorldGenHandler implements IRecipeHandler<WorldGenEntry>
     @Override
     public String getRecipeCategoryUid()
     {
-        return JEIConfig.WORLDGEN;
+        return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull

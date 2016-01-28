@@ -27,7 +27,7 @@ public class WorldGenCategory implements IRecipeCategory
     @Override
     public String getUid()
     {
-        return JEIConfig.WORLDGEN;
+        return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull

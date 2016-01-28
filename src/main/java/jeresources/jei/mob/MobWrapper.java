@@ -74,12 +74,18 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
+
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
         RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.8F, 59.0F, 79.0F);
         RenderHelper.renderEntity(
                 37, 110 - offsetY, scale,
-                RenderHelper.getLeft(minecraft, recipeWidth) + 38 - RenderHelper.getMousePosition().x,
-                RenderHelper.getTop(minecraft, recipeHeight) + 80 - offsetY - RenderHelper.getMousePosition().y,
+                38 - mouseX,
+                80 - offsetY - mouseY,
                 entityLivingBase
         );
         RenderHelper.stopScissor();
@@ -88,12 +94,6 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateToLocal("jer.mob.biome") : TranslationHelper.translateToLocal("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
         Font.normal.print(this.mob.getLightLevel(), 7, 22);
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-
     }
 
     @Override

@@ -86,6 +86,12 @@ public class EnchantmentWrapper implements IRecipeWrapper
     @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
+
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments())
         {
@@ -97,12 +103,6 @@ public class EnchantmentWrapper implements IRecipeWrapper
             String toPrint = TranslationHelper.getLocalPageInfo(this.set, this.lastSet);
             Font.normal.print(toPrint, PAGE_X, PAGE_Y);
         }
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-
     }
 
     @Override

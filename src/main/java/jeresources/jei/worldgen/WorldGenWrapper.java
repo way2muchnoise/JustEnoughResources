@@ -77,6 +77,12 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
     @Deprecated
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
+
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
+    {
         float[] array = this.worldGenEntry.getChances();
         double max = 0;
         for (double d : array)
@@ -134,12 +140,6 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
             Font.normal.print(dimension, x, 0);
         }
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
-
     }
 
     @Override
