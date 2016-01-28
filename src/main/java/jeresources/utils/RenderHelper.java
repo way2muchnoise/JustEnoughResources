@@ -191,39 +191,4 @@ public class RenderHelper
     {
         return Minecraft.getMinecraft().getRenderManager();
     }
-
-    public static Dimension displaySize()
-    {
-        Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution res = new ScaledResolution(mc);
-        return new Dimension(res.getScaledWidth(), res.getScaledHeight());
-    }
-
-    public static Dimension displayRes()
-    {
-        Minecraft mc = Minecraft.getMinecraft();
-        return new Dimension(mc.displayWidth, mc.displayHeight);
-    }
-
-    public static Point getMousePosition(int eventX, int eventY)
-    {
-        Dimension size = displaySize();
-        Dimension res = displayRes();
-        return new Point(eventX * size.width / res.width, size.height - eventY * size.height / res.height - 1);
-    }
-
-    public static Point getMousePosition()
-    {
-        return getMousePosition(Mouse.getX(), Mouse.getY());
-    }
-
-    public static float getTop(Minecraft mc, int height)
-    {
-        return (mc.currentScreen.height - height) / 2;
-    }
-
-    public static float getLeft(Minecraft mc, int width)
-    {
-        return (mc.currentScreen.width - width) / 2;
-    }
 }
