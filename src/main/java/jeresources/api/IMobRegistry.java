@@ -3,10 +3,11 @@ package jeresources.api;
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.DropItem;
 import jeresources.api.render.IMobRenderHook;
+import jeresources.api.render.IScissorHook;
 import net.minecraft.entity.EntityLivingBase;
 
 /**
- * Use to register mobs, mob drops and {@link IMobRenderHook}s
+ * Use to register mobs, mob drops, {@link IMobRenderHook}s and {@link IScissorHook}s
  */
 public interface IMobRegistry
 {
@@ -18,5 +19,13 @@ public interface IMobRegistry
 
     void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops);
 
+    /**
+     * Add a hook for scissoring in the mob view
+     * The stacktrace will be used to see what called the render
+     *
+     * @param caller the class that will call the render
+     * @param scissorHook your {@link IScissorHook}
+     */
+    void registerScissorHook(Class caller, IScissorHook scissorHook);
     void registerRenderHook(Class<? extends EntityLivingBase> entity, IMobRenderHook renderHook);
 }

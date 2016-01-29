@@ -2,6 +2,7 @@ package jeresources.utils;
 
 import jeresources.api.render.ColourHelper;
 import jeresources.api.render.IMobRenderHook;
+import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.block.state.IBlockState;
@@ -178,8 +179,9 @@ public class RenderHelper
         int scissorY = Math.round(guiTop - h - y);
         int scissorW = Math.round(w);
         int scissorH = Math.round(h);
+        IScissorHook.ScissorInfo scissorInfo = MobRegistryImpl.applyScissorHooks(new IScissorHook.ScissorInfo(scissorX, scissorY, scissorW, scissorH));
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(scissorX, scissorY, scissorW, scissorH);
+        GL11.glScissor(scissorInfo.x, scissorInfo.y, scissorInfo.width, scissorInfo.height);
     }
 
     public static void stopScissor()
