@@ -4,6 +4,8 @@ import net.minecraftforge.common.DimensionManager;
 
 import java.util.*;
 
+import net.minecraft.world.WorldProvider;
+
 public class DimensionRegistry
 {
     private static Map<BlockRestriction, Set<Integer>> registry = new HashMap<BlockRestriction, Set<Integer>>();
@@ -34,22 +36,39 @@ public class DimensionRegistry
 
         private String getName()
         {
-            if (name == null && DimensionManager.getWorld(dimId) != null && DimensionManager.getProvider(dimId) != null)
+            if (name == null)
             {
-                name = DimensionManager.getProvider(dimId).getDimensionName();
-                if (age && !name.startsWith("Age")) name += " (Age)";
+                WorldProvider worldProvider = getWorldProvider(dimId);
+                if (worldProvider != null)
+                {
+                    name = worldProvider.getDimensionName();
+                    if (age && !name.startsWith("Age")) name += " (Age)";
+                }
+                else
+                {
+                    name = String.valueOf("Dimension ID " + dimId);
+                }
             }
-            return name == null ? String.valueOf(dimId) : name;
+
+            return name;
         }
 
-        private int getDimId()
+        private static WorldProvider getWorldProvider(int dimId)
         {
-            return dimId;
-        }
+            WorldProvider worldProvider = null;
+            if (DimensionManager.isDimensionRegistered(dimId))
+            {
+                if (DimensionManager.getWorld(dimId) != null)
+                {
+                    worldProvider = DimensionManager.getProvider(dimId);
+                }
+                else
+                {
+                    worldProvider = DimensionManager.createProviderFor(dimId);
+                }
+            }
 
-        private boolean isAge()
-        {
-            return age;
+            return worldProvider;
         }
     }
 
