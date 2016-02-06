@@ -63,13 +63,8 @@ public class ChunkProfiler implements Runnable
 
                     ItemStack pickBlock = block.getPickBlock(movingObjectPosition, world, blockPos, player);
                     String key;
-                    if (pickBlock == null)
-                    {
-                        key = block.getRegistryName() + ':' + meta;
-                    } else
-                    {
-                        key = MapKeys.getKey(pickBlock);
-                    }
+                    if (pickBlock == null) key = block.getRegistryName() + ':' + meta;
+                    else key = MapKeys.getKey(pickBlock);
 
                     if (!dimensionData.dropsMap.containsKey(key))
                     {
@@ -117,25 +112,22 @@ public class ChunkProfiler implements Runnable
         for (int i = 0; i < totalTries; i++)
         {
             List<ItemStack> drops = block.getDrops(world, pos, state, 0);
-            for (ItemStack drop : drops) {
+            //TODO: Add handling for tile entities (not chests)
+            for (ItemStack drop : drops)
+            {
                 if (drop == null)
                     continue;
                 String key = MapKeys.getKey(drop);
                 Integer count = dropsMap.get(key);
-                if (count != null) {
-                    count += drop.stackSize;
-                } else {
-                    count = drop.stackSize;
-                }
+                if (count != null) count += drop.stackSize;
+                else count = drop.stackSize;
                 dropsMap.put(key, count);
             }
         }
 
         final Map<String, Float> dropsMapAverage = new HashMap<>(dropsMap.size());
         for (Map.Entry<String, Integer> dropEntry : dropsMap.entrySet())
-        {
             dropsMapAverage.put(dropEntry.getKey(), dropEntry.getValue() / (float) totalTries);
-        }
 
         return dropsMapAverage;
     }
