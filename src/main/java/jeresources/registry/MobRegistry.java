@@ -40,7 +40,7 @@ public class MobRegistry
     public void addDrops(Class<? extends EntityLivingBase> entity, DropItem... drops)
     {
         for (MobEntry entry : registry)
-            if (ReflectionHelper.isInstanceOf(entry.getClass(), entity))
+            if (ReflectionHelper.isInstanceOf(entry.getEntity().getClass(), entity))
                 entry.addDrops(drops);
     }
 }
