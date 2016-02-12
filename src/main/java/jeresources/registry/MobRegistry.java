@@ -1,5 +1,6 @@
 package jeresources.registry;
 
+import jeresources.api.conditionals.WatchableData;
 import jeresources.api.drop.DropItem;
 import jeresources.entries.MobEntry;
 import jeresources.utils.ReflectionHelper;
@@ -37,10 +38,11 @@ public class MobRegistry
         return new ArrayList<>(registry);
     }
 
-    public void addDrops(Class<? extends EntityLivingBase> entity, DropItem... drops)
+    public void addDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops)
     {
         for (MobEntry entry : registry)
             if (ReflectionHelper.isInstanceOf(entry.getEntity().getClass(), entity))
-                entry.addDrops(drops);
+                if (watchableData.isEqual(entry.getEntity().getDataWatcher()))
+                    entry.addDrops(drops);
     }
 }
