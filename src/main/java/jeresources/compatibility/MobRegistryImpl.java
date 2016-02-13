@@ -60,6 +60,12 @@ public class MobRegistryImpl implements IMobRegistry
     }
 
     @Override
+    public void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops)
+    {
+        registerDrops(entity, WatchableData.EMPTY, drops);
+    }
+
+    @Override
     public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops)
     {
         addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>>(entity, new Tuple<>(watchableData, drops)));

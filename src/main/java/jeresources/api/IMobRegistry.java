@@ -18,6 +18,7 @@ public interface IMobRegistry
     void register(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops);
     void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops);
 
+    void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops);
     void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops);
 
     /**
