@@ -42,7 +42,8 @@ public class MobRegistry
     {
         for (MobEntry entry : registry)
             if (ReflectionHelper.isInstanceOf(entry.getEntity().getClass(), entity))
-                if (watchableData.isValid(entry.getEntity().getDataWatcher()))
-                    entry.addDrops(drops);
+                if (!watchableData.getExactClassMatchFlag() || entry.getEntity().getClass() == entity)
+                    if (watchableData.isValid(entry.getEntity().getDataWatcher()))
+                        entry.addDrops(drops);
     }
 }

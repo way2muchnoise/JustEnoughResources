@@ -10,6 +10,9 @@ public class WatchableData
     // Empty
     public static final WatchableData EMPTY = new WatchableData();
 
+    // Exact match
+    public static final WatchableData EXACT_CLASS = new WatchableData().setExactClassMatch();
+
     // Skeleton
     public static final WatchableData REGULAR_SKELETON = new WatchableData().add(13, 0);
     public static final WatchableData WITHER_SKELETON = new WatchableData().add(13, 1);
@@ -28,14 +31,39 @@ public class WatchableData
     public static final WatchableData LARGE_SLIME = new WatchableData().add(16, 4);
 
     private Map<Integer, Set<Object>> watches;
+    private boolean exactClassMatch;
 
     /**
      * This class is used in {@link jeresources.api.IMobRegistry#registerDrops(Class, WatchableData, DropItem...)}
      * It uses {@link DataWatcher} to see if the {@link net.minecraft.entity.EntityLivingBase} fulfills the given terms
+     * You can also set an exactClassMatch flag that will make it only apply to exact class match and not child classes
      */
     public WatchableData()
     {
         this.watches = new HashMap<>();
+        this.exactClassMatch = false;
+    }
+
+    /**
+     * Set the {@link #exactClassMatch} flag
+     *
+     * @return the current {@link WatchableData}
+     */
+    public WatchableData setExactClassMatch()
+    {
+        this.exactClassMatch = true;
+        return this;
+    }
+
+    /**
+     * Unset the {@link #exactClassMatch} flag
+     *
+     * @return the current {@link WatchableData}
+     */
+    public WatchableData unsetExactClassMatch()
+    {
+        this.exactClassMatch = false;
+        return this;
     }
 
     /**
@@ -103,5 +131,15 @@ public class WatchableData
             }
         }
         return isValid;
+    }
+
+    /**
+     * Get the {@link #exactClassMatch} flag
+     *
+     * @return the {@link #exactClassMatch} flag
+     */
+    public boolean getExactClassMatchFlag()
+    {
+        return this.exactClassMatch;
     }
 }
