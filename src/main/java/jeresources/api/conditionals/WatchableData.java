@@ -14,21 +14,21 @@ public class WatchableData
     public static final WatchableData EXACT_CLASS = new WatchableData().setExactClassMatch();
 
     // Skeleton
-    public static final WatchableData REGULAR_SKELETON = new WatchableData().add(13, 0);
-    public static final WatchableData WITHER_SKELETON = new WatchableData().add(13, 1);
+    public static final WatchableData REGULAR_SKELETON = new WatchableData().add(13, new Byte((byte)0));
+    public static final WatchableData WITHER_SKELETON = new WatchableData().add(13, new Byte((byte)1));
 
     // Creeper
-    public static final WatchableData REGULAR_CREEPER = new WatchableData().add(17, 0);
-    public static final WatchableData POWERED_CREEPER = new WatchableData().add(17, 1);
+    public static final WatchableData REGULAR_CREEPER = new WatchableData().add(17, new Byte((byte)0));
+    public static final WatchableData POWERED_CREEPER = new WatchableData().add(17, new Byte((byte)1));
 
     // Guardian
     public static final WatchableData REGULAR_GUARDIAN = new WatchableData().add(16, 0, 2);
     public static final WatchableData ELDER_GUARDIAN = new WatchableData().add(16, 4, 6);
 
     // Slimes
-    public static final WatchableData SMALL_SLIME = new WatchableData().add(16, 1);
-    public static final WatchableData MEDIUM_SLIME = new WatchableData().add(16, 2);
-    public static final WatchableData LARGE_SLIME = new WatchableData().add(16, 4);
+    public static final WatchableData SMALL_SLIME = new WatchableData().add(16, new Byte((byte)1));
+    public static final WatchableData MEDIUM_SLIME = new WatchableData().add(16, new Byte((byte)2));
+    public static final WatchableData LARGE_SLIME = new WatchableData().add(16, new Byte((byte)4));
 
     private Map<Integer, Set<Object>> watches;
     private boolean exactClassMatch;
