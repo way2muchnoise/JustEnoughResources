@@ -2,6 +2,7 @@ package jeresources.compatibility;
 
 import jeresources.api.IMobRegistry;
 import jeresources.api.conditionals.LightLevel;
+import jeresources.api.conditionals.WatchableData;
 import jeresources.api.drop.DropItem;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class MobRegistryImpl implements IMobRegistry
 {
     private static List<MobEntry> registers = new ArrayList<>();
-    private static List<Tuple<Class<? extends EntityLivingBase>, DropItem[]>> addedDrops = new ArrayList<>();
+    private static List<Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>>> addedDrops = new ArrayList<>();
     private static Map<Class<? extends EntityLivingBase>, List<IMobRenderHook>> renderHooks = new HashMap<>();
     private static Map<String, List<IScissorHook>> scissorHooks = new HashMap<>();
 
@@ -61,7 +62,13 @@ public class MobRegistryImpl implements IMobRegistry
     @Override
     public void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops)
     {
-        addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, DropItem[]>(entity, drops));
+        registerDrops(entity, WatchableData.EMPTY, drops);
+    }
+
+    @Override
+    public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops)
+    {
+        addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>>(entity, new Tuple<>(watchableData, drops)));
     }
 
     @Override
@@ -114,8 +121,8 @@ public class MobRegistryImpl implements IMobRegistry
         for (MobEntry entry : registers)
             MobRegistry.getInstance().registerMob(entry);
         registers.clear();
-        for (Tuple<Class<? extends EntityLivingBase>, DropItem[]> tuple : addedDrops)
-            MobRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
+        for (Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>> tuple : addedDrops)
+            MobRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond().getFirst(), tuple.getSecond().getSecond());
         addedDrops.clear();
     }
 }

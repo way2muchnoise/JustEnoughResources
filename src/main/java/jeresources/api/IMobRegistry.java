@@ -1,6 +1,7 @@
 package jeresources.api;
 
 import jeresources.api.conditionals.LightLevel;
+import jeresources.api.conditionals.WatchableData;
 import jeresources.api.drop.DropItem;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
@@ -17,6 +18,14 @@ public interface IMobRegistry
     void register(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops);
     void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops);
 
+    /**
+     * Adds drops to mobs use {@link WatchableData} to add some more specifics to define the mob
+     *
+     * @param entity entity {@link Class} extending {@link EntityLivingBase}
+     * @param watchableData the {@link WatchableData} to define the extra terms
+     * @param drops drops to be added
+     */
+    void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops);
     void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops);
 
     /**
