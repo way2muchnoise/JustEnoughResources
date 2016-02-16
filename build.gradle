@@ -26,7 +26,7 @@ repositories {
         name = "thaumcraft"
         url = "https://dl.dropboxusercontent.com/u/47135879/"
         layout "pattern", {
-            artifact "[module]-${version_minecraft}-[revision]-deobf.[ext]"
+            artifact "[module]-${version_minecraft}-[revision].[ext]"
         }
     }
 }
@@ -34,6 +34,7 @@ repositories {
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
     deobfCompile name: 'thaumcraft', version: "${version_thaumcraft}", ext: 'jar'
+    deobfCompile name: 'baubles', version: "${version_baubles}", ext: 'jar'
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
