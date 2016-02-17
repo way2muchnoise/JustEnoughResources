@@ -88,13 +88,18 @@ public class WorldGenAdapter
 
                         int meta = 0;
                         float averageAmount = 1;
+                        int fortuneLevel = 0;
                         if (dropSplit.length >= 3)
                         {
                             meta = Integer.parseInt(dropSplit[2]);
-                            if (dropSplit.length == 4)
+                            if (dropSplit.length >= 4)
+                            {
                                 averageAmount = Float.parseFloat(dropSplit[3]);
+                                if (dropSplit.length >= 5)
+                                    fortuneLevel = Integer.parseInt(dropSplit[4]);
+                            }
                         }
-                        dropList.add(new DropItem(new ItemStack(item, 1, meta), averageAmount));
+                        dropList.add(new DropItem(new ItemStack(item, 1, meta), averageAmount, fortuneLevel));
                     }
                 }
 

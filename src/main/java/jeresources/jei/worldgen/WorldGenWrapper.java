@@ -193,7 +193,12 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             }
 
         } else
-            tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + " " + this.worldGenEntry.getDropItem(itemStack).chanceString());
+        {
+            DropItem dropItem = this.worldGenEntry.getDropItem(itemStack);
+            if (this.worldGenEntry.getDropItem(itemStack).fortuneLevel > 0)
+                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel());
+            tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + " " + dropItem.chanceString());
+        }
         return tooltip;
     }
 

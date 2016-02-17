@@ -3,6 +3,7 @@ package jeresources.api.drop;
 import jeresources.api.conditionals.Conditional;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class DropItem implements Comparable<DropItem>
     public ItemStack item;
     public float chance;
     public List<String> conditionals = new ArrayList<String>();
+    public int fortuneLevel;
     private float sortIndex;
 
     public DropItem(ItemStack item)
@@ -22,17 +24,23 @@ public class DropItem implements Comparable<DropItem>
 
     public DropItem(ItemStack item, float chance)
     {
-        this(item, 0, 1, chance);
+        this(item, 0, 1, chance, 0);
+    }
+
+    public DropItem(ItemStack item, float chance, int fortuneLevel)
+    {
+        this(item, 0, 1, chance, fortuneLevel);
     }
 
     /**
      * @param item    The dropped {@link net.minecraft.item.ItemStack} (chance for drop will be 100%)
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
+     * @param conditionals a list of conditionals for this drop
      */
     public DropItem(ItemStack item, int minDrop, int maxDrop, Conditional... conditionals)
     {
-        this(item, minDrop, maxDrop, 1F, conditionals);
+        this(item, minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
@@ -40,8 +48,10 @@ public class DropItem implements Comparable<DropItem>
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
      * @param chance  the chance the {@param item} gets dropped
+     * @param fortuneLevel the level of fortune needed
+     * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(ItemStack item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
+    public DropItem(ItemStack item, int minDrop, int maxDrop, float chance, int fortuneLevel, Conditional... conditionals)
     {
         this.item = item;
         this.minDrop = minDrop;
@@ -50,6 +60,7 @@ public class DropItem implements Comparable<DropItem>
         sortIndex = Math.min(chance, 1F) * (float) (minDrop + maxDrop);
         for (Conditional conditional : conditionals)
             this.conditionals.add(conditional.toString());
+        this.fortuneLevel = fortuneLevel;
     }
 
     /**
@@ -59,7 +70,7 @@ public class DropItem implements Comparable<DropItem>
      */
     public DropItem(Item item, int minDrop, int maxDrop, Conditional... conditionals)
     {
-        this(new ItemStack(item), minDrop, maxDrop, 1F, conditionals);
+        this(new ItemStack(item), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
@@ -67,10 +78,11 @@ public class DropItem implements Comparable<DropItem>
      * @param itemDamage the damage on the item
      * @param minDrop    the maximum amount dropped
      * @param maxDrop    the minimum amount dropped
+     * @param conditionals a list of conditionals for this drop
      */
     public DropItem(Item item, int itemDamage, int minDrop, int maxDrop, Conditional... conditionals)
     {
-        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, 1F, conditionals);
+        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
@@ -78,10 +90,11 @@ public class DropItem implements Comparable<DropItem>
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
      * @param chance  the chance the {@param item} gets dropped
+     * @param conditionals a list of conditionals for this drop
      */
     public DropItem(Item item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
     {
-        this(new ItemStack(item), minDrop, maxDrop, chance, conditionals);
+        this(new ItemStack(item), minDrop, maxDrop, chance, 0, conditionals);
     }
 
     /**
@@ -90,10 +103,23 @@ public class DropItem implements Comparable<DropItem>
      * @param minDrop    the maximum amount dropped
      * @param maxDrop    the minimum amount dropped
      * @param chance     the chance the {@param item} gets dropped
+     * @param conditionals a list of conditionals for this drop
      */
     public DropItem(Item item, int itemDamage, int minDrop, int maxDrop, float chance, Conditional... conditionals)
     {
-        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, chance, conditionals);
+        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, chance, 0, conditionals);
+    }
+
+    /**
+     * @param item    The dropped {@link net.minecraft.item.ItemStack}
+     * @param minDrop the maximum amount dropped
+     * @param maxDrop the minimum amount dropped
+     * @param chance  the chance the {@param item} gets dropped
+     * @param conditionals a list of conditionals for this drop
+     */
+    public DropItem(ItemStack item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
+    {
+        this(item, minDrop, maxDrop, chance, 0, conditionals);
     }
 
     public String toString()
@@ -136,6 +162,11 @@ public class DropItem implements Comparable<DropItem>
     public float getSortIndex()
     {
         return sortIndex;
+    }
+
+    public String getFortuneLevel()
+    {
+        return StatCollector.translateToLocal("enchantment.level." + fortuneLevel);
     }
 
     @Override

@@ -45,6 +45,7 @@ jer.worldgen.silkTouch=Silk Touch Needed
 jer.worldgen.biomes=Spawn Biomes
 jer.worldgen.dimensions=Valid Dimensions
 jer.worldgen.drops=Drops
+jer.worldgen.fortune=Fortune lvl:
 jer.worldgen.average=Avg. Drop:
 
 #Mob View

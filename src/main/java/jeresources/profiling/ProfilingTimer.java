@@ -57,7 +57,7 @@ public class ProfilingTimer
             counters.completed = true;
             send("[" + DimensionManager.getProvider(dim).getDimensionName() + "] Completed profiling of " +
                     (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
-                    (System.currentTimeMillis() - counters.start) + " ms saved to blocks.json");
+                    (System.currentTimeMillis() - counters.start) + " ms saved to world-gen-scan.json");
         }
     }
 

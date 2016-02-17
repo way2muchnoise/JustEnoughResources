@@ -8,5 +8,5 @@ class ProfiledDimensionData
 {
 	public final ConcurrentMap<String, Integer[]> distributionMap = new ConcurrentHashMap<>();
 	public final ConcurrentMap<String, Boolean> silkTouchMap = new ConcurrentHashMap<>();
-	public final ConcurrentMap<String, Map<String, Float>> dropsMap = new ConcurrentHashMap<>();
+	public final ConcurrentMap<String, Map<String, Map<Integer, Float>>> dropsMap = new ConcurrentHashMap<>();
 }

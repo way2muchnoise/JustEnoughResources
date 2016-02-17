@@ -19,7 +19,7 @@ public class ProfilingAdapter
     {
         public Map<String, Float[]> distribution = new HashMap<>();
         public Map<String, Boolean> silkTouchMap = new HashMap<>();
-        public Map<String, Map<String, Float>> dropsMap = new HashMap<>();
+        public Map<String, Map<String, Map<Integer, Float>>> dropsMap = new HashMap<>();
     }
 
     public static void write(final Map<Integer, DimensionData> allDimensionData)
@@ -60,14 +60,13 @@ public class ProfilingAdapter
                         writer.name("distrib").value(sb.toString());
                     }
 
-                    Map<String, Float> drops = dimensionData.dropsMap.get(blockKey);
+                    Map<String, Map<Integer, Float>> drops = dimensionData.dropsMap.get(blockKey);
                     if (drops != null && !drops.isEmpty())
                     {
                         StringBuilder dropsString = new StringBuilder();
-                        for (Map.Entry<String, Float> dropEntry : drops.entrySet())
-                        {
-                            dropsString.append(dropEntry.getKey()).append(":").append(dropEntry.getValue()).append(",");
-                        }
+                        for (Map.Entry<String, Map<Integer, Float>> dropEntry : drops.entrySet())
+                            for (Map.Entry<Integer, Float> fortuneEntry : dropEntry.getValue().entrySet())
+                                dropsString.append(dropEntry.getKey()).append(":").append(fortuneEntry.getValue()).append(":").append(fortuneEntry.getKey()).append(",");
                         writer.name("drops").value(dropsString.toString());
                     }
 

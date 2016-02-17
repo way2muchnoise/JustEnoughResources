@@ -4,6 +4,7 @@ import jeresources.utils.MapKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -18,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChunkProfiler implements Runnable
 {
@@ -105,30 +107,38 @@ public class ChunkProfiler implements Runnable
         this.timer.endChunk(world.provider.getDimensionId());
     }
 
-    public static Map<String, Float> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
+    public static Map<String, Map<Integer, Float>> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
         final int totalTries = 10000;
 
-        final Map<String, Integer> dropsMap = new HashMap<>();
-        for (int i = 0; i < totalTries; i++)
+        final Map<String, Map<Integer, Float>> resultMap = new HashMap<>();
+        for (int fortune = 0; fortune <= 3; fortune++)
         {
-            List<ItemStack> drops = block.getDrops(world, pos, state, 0);
-            //TODO: Add handling for tile entities (not chests)
-            for (ItemStack drop : drops)
+            final Map<String, Integer> dropsMap = new HashMap<>();
+            for (int i = 0; i < totalTries; i++)
             {
-                if (drop == null)
-                    continue;
-                String key = MapKeys.getKey(drop);
-                Integer count = dropsMap.get(key);
-                if (count != null) count += drop.stackSize;
-                else count = drop.stackSize;
-                dropsMap.put(key, count);
+                List<ItemStack> drops = block.getDrops(world, pos, state, fortune);
+                //TODO: Add handling for tile entities (not chests)
+                for (ItemStack drop : drops)
+                {
+                    if (drop == null)
+                        continue;
+                    String key = MapKeys.getKey(drop);
+                    Integer count = dropsMap.get(key);
+                    if (count != null) count += drop.stackSize;
+                    else count = drop.stackSize;
+                    dropsMap.put(key, count);
+                }
+            }
+
+            for (Map.Entry<String, Integer> dropEntry : dropsMap.entrySet())
+            {
+                Map<Integer, Float> fortuneMap = resultMap.get(dropEntry.getKey());
+                if (fortuneMap == null) fortuneMap = new HashMap<>();
+                fortuneMap.put(fortune, dropEntry.getValue() / (float) totalTries);
+                resultMap.put(dropEntry.getKey(), fortuneMap);
             }
         }
 
-        final Map<String, Float> dropsMapAverage = new HashMap<>(dropsMap.size());
-        for (Map.Entry<String, Integer> dropEntry : dropsMap.entrySet())
-            dropsMapAverage.put(dropEntry.getKey(), dropEntry.getValue() / (float) totalTries);
-
-        return dropsMapAverage;
+        return resultMap;
     }
 }
