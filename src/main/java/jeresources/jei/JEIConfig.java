@@ -23,16 +23,18 @@ public class JEIConfig implements IModPlugin
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
 
+    @Deprecated
     @Override
     public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers)
     {
 
     }
 
+    @Deprecated
     @Override
     public void onItemRegistryAvailable(IItemRegistry itemRegistry)
     {
-        JEIConfig.itemRegistry = itemRegistry;
+
     }
 
     @Override
@@ -40,6 +42,7 @@ public class JEIConfig implements IModPlugin
     {
         registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
+        JEIConfig.itemRegistry = registry.getItemRegistry();
     }
 
     @Deprecated
