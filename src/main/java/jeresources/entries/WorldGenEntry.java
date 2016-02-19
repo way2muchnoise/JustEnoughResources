@@ -19,7 +19,7 @@ public class WorldGenEntry
     private int colour;
     private Restriction restriction;
     private DistributionBase distribution;
-    private Set<DropItem> drops = new TreeSet<>();
+    private Map<Integer, Set<DropItem>> drops;
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, DropItem... drops)
     {
@@ -28,6 +28,7 @@ public class WorldGenEntry
         this.restriction = restriction;
         this.colour = ColourHelper.BLACK;
         this.silktouch = silktouch;
+        this.drops = new HashMap<>();
         addDrops(drops);
         calcChances();
     }
@@ -49,12 +50,18 @@ public class WorldGenEntry
 
     public void addDrops(DropItem... drops)
     {
-        Collections.addAll(this.drops, drops);
+        for (DropItem drop : drops)
+        {
+            Set<DropItem> dropSet = this.drops.get(drop.fortuneLevel);
+            if (dropSet == null) dropSet = new TreeSet<>();
+            dropSet.add(drop);
+            this.drops.put(drop.fortuneLevel, dropSet);
+        }
     }
 
     public void addDrops(Collection<DropItem> drops)
     {
-        this.drops.addAll(drops);
+        addDrops(drops.toArray(new DropItem[drops.size()]));
     }
 
     private void calcChances()
@@ -116,6 +123,9 @@ public class WorldGenEntry
 
     public List<DropItem> getDrops()
     {
+        Set<DropItem> drops = new TreeSet<>();
+        for (Set<DropItem> dropSet : this.drops.values())
+            drops.addAll(dropSet);
         return new ArrayList<>(drops);
     }
 
@@ -123,7 +133,7 @@ public class WorldGenEntry
     {
         List<ItemStack> list = new LinkedList<>();
         list.add(this.block);
-        for (DropItem dropItem: drops)
+        for (DropItem dropItem : getDrops())
             if (!list.contains(dropItem.item)) list.add(dropItem.item);
         return list;
     }
