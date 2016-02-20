@@ -194,9 +194,9 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
 
         } else
         {
-            DropItem dropItem = this.worldGenEntry.getDropItem(itemStack);
-            if (this.worldGenEntry.getDropItem(itemStack).fortuneLevel > 0)
-                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel());
+            DropItem dropItem = this.worldGenEntry.getDrops().get(slot-1);
+            if (dropItem.fortuneLevel > 0)
+                tooltip.add("§3" + TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel());
             tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + " " + dropItem.chanceString());
         }
         return tooltip;
