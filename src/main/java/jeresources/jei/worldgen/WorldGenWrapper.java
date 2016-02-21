@@ -56,7 +56,7 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
         return this.worldGenEntry.getBlock();
     }
 
-    public List<DropItem> getDrops()
+    public List<ItemStack> getDrops()
     {
         return this.worldGenEntry.getDrops();
     }
@@ -194,10 +194,13 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
 
         } else
         {
-            DropItem dropItem = this.worldGenEntry.getDrops().get(slot-1);
-            if (dropItem.fortuneLevel > 0)
-                tooltip.add("§3" + TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel());
-            tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + " " + dropItem.chanceString());
+            for (DropItem dropItem : this.worldGenEntry.getDropItems(itemStack))
+            {
+                String line = TranslationHelper.translateToLocal("jer.worldgen.average") + " " + dropItem.chanceString();
+                if (dropItem.fortuneLevel > 0)
+                    line += "  " + TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel();
+                tooltip.add(line);
+            }
         }
         return tooltip;
     }

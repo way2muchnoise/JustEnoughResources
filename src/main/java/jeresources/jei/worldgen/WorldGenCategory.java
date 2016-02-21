@@ -1,6 +1,5 @@
 package jeresources.jei.worldgen;
 
-import jeresources.api.drop.DropItem;
 import jeresources.api.render.ColourHelper;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
@@ -11,7 +10,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -71,12 +69,7 @@ public class WorldGenCategory implements IRecipeCategory
             recipeLayout.getItemStacks().addTooltipCallback(worldGenWrapper);
             recipeLayout.getItemStacks().set(0, worldGenWrapper.getBlock());
             for (int i = 0; i < Math.min(DROP_ITEM_COUNT, worldGenWrapper.getDrops().size()); i++)
-            {
-                DropItem drop = worldGenWrapper.getDrops().get(i);
-                ItemStack itemStack = drop.item.copy();
-                itemStack.stackSize = Math.max(1, (int)Math.floor(drop.chance));
-                recipeLayout.getItemStacks().set(i + 1, itemStack);
-            }
+                recipeLayout.getItemStacks().set(i + 1, worldGenWrapper.getDrops().get(i));
         }
     }
 

@@ -5,6 +5,7 @@ import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.drop.DropItem;
 import jeresources.api.render.ColourHelper;
 import jeresources.api.restrictions.Restriction;
+import jeresources.utils.MapKeys;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
@@ -19,7 +20,8 @@ public class WorldGenEntry
     private int colour;
     private Restriction restriction;
     private DistributionBase distribution;
-    private Map<Integer, Set<DropItem>> drops;
+    private Map<String, Set<DropItem>> drops;
+    private Map<String, ItemStack> dropsDisplay;
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, DropItem... drops)
     {
@@ -29,6 +31,7 @@ public class WorldGenEntry
         this.colour = ColourHelper.BLACK;
         this.silktouch = silktouch;
         this.drops = new HashMap<>();
+        this.dropsDisplay = new HashMap<>();
         addDrops(drops);
         calcChances();
     }
@@ -52,10 +55,17 @@ public class WorldGenEntry
     {
         for (DropItem drop : drops)
         {
-            Set<DropItem> dropSet = this.drops.get(drop.fortuneLevel);
+            Set<DropItem> dropSet = this.drops.get(MapKeys.getKey(drop.item));
             if (dropSet == null) dropSet = new TreeSet<>();
             dropSet.add(drop);
-            this.drops.put(drop.fortuneLevel, dropSet);
+            String mapKey = MapKeys.getKey(drop.item);
+            this.drops.put(mapKey, dropSet);
+            if (!this.dropsDisplay.containsKey(mapKey))
+            {
+                ItemStack itemStack = drop.item.copy();
+                itemStack.stackSize = Math.max(1, drop.minDrop);
+                this.dropsDisplay.put(mapKey, itemStack);
+            }
         }
     }
 
@@ -121,20 +131,16 @@ public class WorldGenEntry
         return colour;
     }
 
-    public List<DropItem> getDrops()
+    public List<ItemStack> getDrops()
     {
-        Set<DropItem> drops = new TreeSet<>();
-        for (Set<DropItem> dropSet : this.drops.values())
-            drops.addAll(dropSet);
-        return new ArrayList<>(drops);
+        return new ArrayList<>(this.dropsDisplay.values());
     }
 
     public List<ItemStack> getBlockAndDrops()
     {
         List<ItemStack> list = new LinkedList<>();
         list.add(this.block);
-        for (DropItem dropItem : getDrops())
-            if (!list.contains(dropItem.item)) list.add(dropItem.item);
+        list.addAll(getDrops());
         return list;
     }
 
@@ -153,12 +159,11 @@ public class WorldGenEntry
         return this.restriction.getDimensionRestrictions();
     }
 
-    public DropItem getDropItem(ItemStack itemStack)
+    public List<DropItem> getDropItems(ItemStack itemStack)
     {
-        for (DropItem drop : getDrops())
-            if (drop.item.isItemEqual(itemStack))
-                return drop;
-        return null;
+        List<DropItem> list = new ArrayList<>(this.drops.get(MapKeys.getKey(itemStack)));
+        Collections.reverse(list);
+        return list;
     }
 
     @Override
@@ -174,7 +179,8 @@ public class WorldGenEntry
 
     public void merge(WorldGenEntry entry)
     {
-        addDrops(entry.getDrops());
+        for (Set<DropItem> dropSet : this.drops.values())
+            addDrops(dropSet);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
     }
 }

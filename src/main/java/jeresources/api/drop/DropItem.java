@@ -29,7 +29,7 @@ public class DropItem implements Comparable<DropItem>
 
     public DropItem(ItemStack item, float chance, int fortuneLevel)
     {
-        this(item, (int)Math.floor(chance),(int)Math.ceil(chance), chance, fortuneLevel);
+        this(item, (int)Math.floor(chance), (int)Math.ceil(chance), chance, fortuneLevel);
     }
 
     /**
