@@ -10,6 +10,7 @@ import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
@@ -194,11 +195,15 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
 
         } else
         {
+            tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average"));
             for (DropItem dropItem : this.worldGenEntry.getDropItems(itemStack))
             {
-                String line = TranslationHelper.translateToLocal("jer.worldgen.average") + " " + dropItem.chanceString();
+                String line = "  ";
                 if (dropItem.fortuneLevel > 0)
-                    line += "  " + TranslationHelper.translateToLocal("jer.worldgen.fortune") + " " + dropItem.getFortuneLevel();
+                    line += Enchantment.fortune.getTranslatedName(dropItem.fortuneLevel);
+                else
+                    line += TranslationHelper.translateToLocal("jer.worldgen.base");
+                line += ": " + dropItem.chanceString();
                 tooltip.add(line);
             }
         }
