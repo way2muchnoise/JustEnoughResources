@@ -8,7 +8,7 @@ import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -19,7 +19,6 @@ import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import thaumcraft.common.entities.monster.cult.EntityCultist;
 import thaumcraft.common.entities.monster.tainted.EntityTaintVillager;
 import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
@@ -28,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
+public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack>
 {
     private MobEntry mob;
     private float scale;
@@ -41,12 +40,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         this.offsetY = getOffsetY(mob.getEntity());
     }
 
-    @Override
-    public List getInputs()
-    {
-        return null;
-    }
-
+    @Nonnull
     @Override
     public List getOutputs()
     {
@@ -56,25 +50,6 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     public List<ItemStack> getDrops()
     {
         return this.mob.getDropsItemStacks();
-    }
-
-    @Override
-    public List<FluidStack> getFluidInputs()
-    {
-        return null;
-    }
-
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-
     }
 
     @Override
@@ -96,12 +71,6 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
-    @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-
-    }
-
     @Nullable
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY)
@@ -109,12 +78,6 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
         if (this.mob.getBiomes().length > 1 && isOnBiome(mouseX, mouseY))
             return CollectionHelper.create(this.mob.getBiomes());
         return null;
-    }
-
-    @Override
-    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-        return false;
     }
 
     @Override

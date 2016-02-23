@@ -7,16 +7,14 @@ import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
+public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack>
 {
     public DungeonEntry chest;
 
@@ -25,12 +23,7 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
         this.chest = chest;
     }
 
-    @Override
-    public List getInputs()
-    {
-        return null;
-    }
-
+    @Nonnull
     @Override
     public List getOutputs()
     {
@@ -51,25 +44,6 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     }
 
     @Override
-    public List<FluidStack> getFluidInputs()
-    {
-        return null;
-    }
-
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-
-    }
-
-    @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
         Font.normal.print(TranslationHelper.translateToLocal(this.chest.getName()), 60, 7);
@@ -80,19 +54,6 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
     {
         RenderHelper.renderChest(15, 20, -40, 20, getLidAngle());
-    }
-
-    @Nullable
-    @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY)
-    {
-        return null;
-    }
-
-    @Override
-    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-        return false;
     }
 
     @Override

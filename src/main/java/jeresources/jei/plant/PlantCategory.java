@@ -5,13 +5,14 @@ import jeresources.reference.Resources;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 
-public class PlantCategory implements IRecipeCategory
+public class PlantCategory extends BlankRecipeCategory
 {
     private static final int GRASS_X = 79;
     private static final int GRASS_Y = 10;
@@ -38,18 +39,6 @@ public class PlantCategory implements IRecipeCategory
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.PLANT;
-    }
-
-    @Override
-    public void drawExtras(Minecraft minecraft)
-    {
-
-    }
-
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-
     }
 
     @Override
