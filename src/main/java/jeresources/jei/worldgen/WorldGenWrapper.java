@@ -7,6 +7,7 @@ import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -21,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
+public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack>
 {
     protected static final int X_OFFSET = 49-20;
     protected static final int Y_OFFSET = 52;
@@ -40,12 +41,7 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
         return this.worldGenEntry.getColour();
     }
 
-    @Override
-    public List getInputs()
-    {
-        return null;
-    }
-
+    @Nonnull
     @Override
     public List getOutputs()
     {
@@ -60,25 +56,6 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
     public List<ItemStack> getDrops()
     {
         return this.worldGenEntry.getDrops();
-    }
-
-    @Override
-    public List<FluidStack> getFluidInputs()
-    {
-        return null;
-    }
-
-    @Override
-    public List<FluidStack> getFluidOutputs()
-    {
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-
     }
 
     @Override
@@ -143,12 +120,6 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
         }
     }
 
-    @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight)
-    {
-
-    }
-
     @Nullable
     @Override
     public List<String> getTooltipStrings(int mouseX, int mouseY)
@@ -157,12 +128,6 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
         if (onGraph(mouseX, mouseY))
             tooltip = getLineTooltip(mouseX, tooltip);
         return tooltip;
-    }
-
-    @Override
-    public boolean handleClick(@Nonnull Minecraft minecraft, int mouseX, int mouseY, int mouseButton)
-    {
-        return false;
     }
 
     @Override

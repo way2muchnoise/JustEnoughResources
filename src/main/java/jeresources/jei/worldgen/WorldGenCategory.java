@@ -7,13 +7,13 @@ import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 
-public class WorldGenCategory implements IRecipeCategory
+public class WorldGenCategory extends BlankRecipeCategory
 {
     protected static final int X_ITEM = 5;
     protected static final int Y_ITEM = 21;
@@ -43,16 +43,10 @@ public class WorldGenCategory implements IRecipeCategory
     }
 
     @Override
-    public void drawExtras(Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColourHelper.GRAY);
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColourHelper.GRAY);
-    }
-
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-
     }
 
     @Override

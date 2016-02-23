@@ -6,13 +6,12 @@ import jeresources.reference.Resources;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 
-public class DungeonCategory implements IRecipeCategory
+public class DungeonCategory extends BlankRecipeCategory
 {
     protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
@@ -46,18 +45,6 @@ public class DungeonCategory implements IRecipeCategory
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.DUNGEON;
-    }
-
-    @Override
-    public void drawExtras(Minecraft minecraft)
-    {
-
-    }
-
-    @Override
-    public void drawAnimations(Minecraft minecraft)
-    {
-
     }
 
     @Override
