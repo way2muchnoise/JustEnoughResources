@@ -27,6 +27,11 @@ public class DropItem implements Comparable<DropItem>
         this(item, chance, 0);
     }
 
+    /**
+     * @param item the dropped {@link ItemStack}
+     * @param chance chance of drop, can be above 1 to indicate more than 1 drops
+     * @param fortuneLevel the fortune level needed for these results
+     */
     public DropItem(ItemStack item, float chance, int fortuneLevel)
     {
         this(item, (int)Math.floor(chance), (int)Math.ceil(chance), chance, fortuneLevel);
@@ -162,11 +167,6 @@ public class DropItem implements Comparable<DropItem>
     public float getSortIndex()
     {
         return sortIndex;
-    }
-
-    public String getFortuneLevel()
-    {
-        return StatCollector.translateToLocal("enchantment.level." + fortuneLevel);
     }
 
     @Override
