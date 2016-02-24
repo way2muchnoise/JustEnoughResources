@@ -182,10 +182,9 @@ public class DummyWorld extends WorldServer
         }
 
         @Override
-        public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_)
+        public boolean populateChunk(IChunkProvider chunkProvider, Chunk chunk, int x, int z)
         {
-            // no retrogen of ocean monuments
-            return false;
+            return realChunkProvider.populateChunk(chunkProvider, chunk, x, z);
         }
 
         @Override
