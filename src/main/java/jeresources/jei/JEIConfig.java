@@ -1,6 +1,10 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
+import jeresources.entries.DungeonEntry;
+import jeresources.entries.MobEntry;
+import jeresources.entries.PlantEntry;
+import jeresources.entries.WorldGenEntry;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -12,9 +16,16 @@ import jeresources.jei.plant.PlantHandler;
 import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.reference.Reference;
+import jeresources.registry.DungeonRegistry;
+import jeresources.registry.MobRegistry;
+import jeresources.registry.PlantRegistry;
+import jeresources.registry.WorldGenRegistry;
 import mezz.jei.api.*;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 @JEIPlugin
 public class JEIConfig extends BlankModPlugin
@@ -30,26 +41,20 @@ public class JEIConfig extends BlankModPlugin
     {
         registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
-        JEIConfig.itemRegistry = registry.getItemRegistry();
-    }
-
-    @Override
-    public void onRuntimeAvailable(@Nonnull IJeiRuntime jeiRuntime)
-    {
-        JEIConfig.recipeRegistry = jeiRuntime.getRecipeRegistry();
         JEResources.PROXY.initCompatibility();
-    }
 
-    private static IRecipeRegistry recipeRegistry;
-    private static IItemRegistry itemRegistry;
+        List<Object> recipes = new ArrayList<>();
+        for (WorldGenEntry entry : WorldGenRegistry.getInstance().getWorldGen())
+            recipes.add(entry);
+        for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
+            recipes.add(entry);
+        for (MobEntry entry : MobRegistry.getInstance().getMobs())
+            recipes.add(entry);
+        for (ItemStack entry : registry.getItemRegistry().getItemList())
+            recipes.add(entry);
+        for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons())
+            recipes.add(entry);
 
-    public static IRecipeRegistry getRecipeRegistry()
-    {
-        return recipeRegistry;
-    }
-
-    public static IItemRegistry getItemRegistry()
-    {
-        return itemRegistry;
+        registry.addRecipes(recipes);
     }
 }
