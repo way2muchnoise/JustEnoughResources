@@ -9,6 +9,7 @@ import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
 import jeresources.jei.enchantment.EnchantmentHandler;
+import jeresources.jei.enchantment.EnchantmentMaker;
 import jeresources.jei.mob.MobCategory;
 import jeresources.jei.mob.MobHandler;
 import jeresources.jei.plant.PlantCategory;
@@ -21,7 +22,6 @@ import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
 import mezz.jei.api.*;
-import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -50,11 +50,10 @@ public class JEIConfig extends BlankModPlugin
             recipes.add(entry);
         for (MobEntry entry : MobRegistry.getInstance().getMobs())
             recipes.add(entry);
-        for (ItemStack entry : registry.getItemRegistry().getItemList())
-            recipes.add(entry);
         for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons())
             recipes.add(entry);
 
         registry.addRecipes(recipes);
+        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getItemRegistry()));
     }
 }
