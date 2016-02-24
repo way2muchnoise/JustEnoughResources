@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,10 +30,19 @@ public class EnchantmentWrapper extends BlankRecipeWrapper
     private int set, lastSet;
     private int nextCycle;
 
-    public EnchantmentWrapper(ItemStack itemStack)
+    @Nullable
+    public static EnchantmentWrapper create(@Nonnull ItemStack itemStack)
+    {
+        List<EnchantmentEntry> enchantments = new LinkedList<>(EnchantmentRegistry.getInstance().getEnchantments(itemStack));
+        if (enchantments.isEmpty())
+            return null;
+        return new EnchantmentWrapper(itemStack, enchantments);
+    }
+
+    private EnchantmentWrapper(@Nonnull ItemStack itemStack, @Nonnull List<EnchantmentEntry> enchantments)
     {
         this.itemStack = itemStack;
-        this.enchantments = new LinkedList<>(EnchantmentRegistry.getInstance().getEnchantments(itemStack));
+        this.enchantments = enchantments;
         this.set = 0;
         this.lastSet = this.enchantments.size() / (ENTRYS_PER_PAGE + 1);
         this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;

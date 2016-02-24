@@ -5,6 +5,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,10 +171,12 @@ public class DropItem implements Comparable<DropItem>
     }
 
     @Override
-    public int compareTo(DropItem o)
+    public int compareTo(@Nonnull DropItem o)
     {
-        float result = getSortIndex() - o.getSortIndex();
-        if (Math.round(result) == 0 && item.getIsItemStackEqual(o.item)) return 0;
-        return result < 0 ? 1 : -1;
+        if (item.getIsItemStackEqual(o.item))
+        {
+            return Integer.compare(o.fortuneLevel, fortuneLevel);
+        }
+        return Float.compare(getSortIndex(), o.getSortIndex());
     }
 }

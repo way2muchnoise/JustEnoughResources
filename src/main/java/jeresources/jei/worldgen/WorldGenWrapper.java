@@ -1,5 +1,6 @@
 package jeresources.jei.worldgen;
 
+import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.DropItem;
 import jeresources.entries.WorldGenEntry;
@@ -161,14 +162,22 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
         } else
         {
             tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average"));
+            String previousChanceString = null;
             for (DropItem dropItem : this.worldGenEntry.getDropItems(itemStack))
             {
+                final String chanceString = dropItem.chanceString();
+                if (Objects.equal(chanceString, previousChanceString)) {
+                    continue;
+                } else {
+                    previousChanceString = chanceString;
+                }
+
                 String line = "  ";
                 if (dropItem.fortuneLevel > 0)
                     line += Enchantment.fortune.getTranslatedName(dropItem.fortuneLevel);
                 else
                     line += TranslationHelper.translateToLocal("jer.worldgen.base");
-                line += ": " + dropItem.chanceString();
+                line += ": " + chanceString;
                 tooltip.add(line);
             }
         }

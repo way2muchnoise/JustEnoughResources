@@ -8,13 +8,13 @@ import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 public class MobEntry
 {
     private EntityLivingBase entity;
-    private List<DropItem> drops = new ArrayList<DropItem>();
+    private TreeSet<DropItem> drops = new TreeSet<>();
     private LightLevel lightLevel;
     private List<String> biomes = new ArrayList<String>();
     private int minExp, maxExp;
@@ -94,7 +94,6 @@ public class MobEntry
         for (DropItem drop : drops)
             if (drop.item.isItemEqual(item.item)) return false;
         drops.add(item);
-        Collections.sort(drops);
         return true;
     }
 
@@ -107,14 +106,6 @@ public class MobEntry
     public LightLevel getLightLevel()
     {
         return lightLevel;
-    }
-
-    public void removeDrop(ItemStack item)
-    {
-        int i = 0;
-        for (; i < drops.size(); i++)
-            if (drops.get(i).item.isItemEqual(item)) break;
-        if (i < drops.size()) drops.remove(i);
     }
 
     public String getExp()
