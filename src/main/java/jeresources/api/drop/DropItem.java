@@ -3,7 +3,6 @@ package jeresources.api.drop;
 import jeresources.api.conditionals.Conditional;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

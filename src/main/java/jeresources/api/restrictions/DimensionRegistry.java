@@ -1,10 +1,9 @@
 package jeresources.api.restrictions;
 
+import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.*;
-
-import net.minecraft.world.WorldProvider;
 
 public class DimensionRegistry
 {

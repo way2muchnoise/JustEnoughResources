@@ -2,10 +2,8 @@ package jeresources.jei.enchantment;
 
 
 import jeresources.jei.JEIConfig;
-import jeresources.registry.EnchantmentRegistry;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 

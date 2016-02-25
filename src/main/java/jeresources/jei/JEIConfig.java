@@ -21,7 +21,9 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
-import mezz.jei.api.*;
+import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.JEIPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

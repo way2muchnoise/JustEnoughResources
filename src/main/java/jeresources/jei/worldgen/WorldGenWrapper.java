@@ -9,13 +9,11 @@ import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;

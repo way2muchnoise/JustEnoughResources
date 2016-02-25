@@ -15,10 +15,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
 
 public class RenderHelper
 {
