@@ -1,10 +1,7 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
-import jeresources.entries.DungeonEntry;
-import jeresources.entries.MobEntry;
-import jeresources.entries.PlantEntry;
-import jeresources.entries.WorldGenEntry;
+import jeresources.entries.*;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -14,13 +11,12 @@ import jeresources.jei.mob.MobCategory;
 import jeresources.jei.mob.MobHandler;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantHandler;
+import jeresources.jei.villager.VillagerCategory;
+import jeresources.jei.villager.VillagerHandler;
 import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.reference.Reference;
-import jeresources.registry.DungeonRegistry;
-import jeresources.registry.MobRegistry;
-import jeresources.registry.PlantRegistry;
-import jeresources.registry.WorldGenRegistry;
+import jeresources.registry.*;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
@@ -37,12 +33,13 @@ public class JEIConfig extends BlankModPlugin
     public static final String WORLD_GEN = Reference.ID + ".worldgen";
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
+    public static final String VILLAGER = Reference.ID + ".villager";
 
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
-        registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler());
-        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory());
+        registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler(), new VillagerHandler());
+        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
         JEResources.PROXY.initCompatibility();
 
         List<Object> recipes = new ArrayList<>();
@@ -53,6 +50,8 @@ public class JEIConfig extends BlankModPlugin
         for (MobEntry entry : MobRegistry.getInstance().getMobs())
             recipes.add(entry);
         for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons())
+            recipes.add(entry);
+        for (VillagerEntry entry : VillagerRegistry.getInstance().getVillagers())
             recipes.add(entry);
 
         registry.addRecipes(recipes);
