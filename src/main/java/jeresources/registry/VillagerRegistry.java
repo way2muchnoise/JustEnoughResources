@@ -60,23 +60,25 @@ public class VillagerRegistry
 
     public void initVillagerNames()
     {
-        addVillagerName(0, 1, "farmer");
-        addVillagerName(0, 2, "fisherman");
-        addVillagerName(0, 3, "shepherd");
-        addVillagerName(0, 4, "fletcher");
+        addVillagerName(0, 0, "farmer");
+        addVillagerName(0, 1, "fisherman");
+        addVillagerName(0, 2, "shepherd");
+        addVillagerName(0, 3, "fletcher");
         addVillagerName(1, 0, "librarian");
         addVillagerName(2, 0, "cleric");
-        addVillagerName(3, 1, "armor");
-        addVillagerName(3, 2, "weapon");
-        addVillagerName(3, 3, "tool");
-        addVillagerName(4, 1, "butcher");
-        addVillagerName(4, 2, "leather");
+        addVillagerName(3, 0, "armor");
+        addVillagerName(3, 1, "weapon");
+        addVillagerName(3, 2, "tool");
+        addVillagerName(4, 0, "butcher");
+        addVillagerName(4, 1, "leather");
     }
 
     public String getVillagerName(int profession, int career)
     {
         Map<Integer, String> map = this.villagerNames.get(profession);
         if (map == null) return "Unknown";
-        return "entity.Villager." + map.get(career);
+        String id = map.get(career);
+        if (id == null) return "Unknown";
+        return "entity.Villager." + id;
     }
 }
