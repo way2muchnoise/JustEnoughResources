@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -21,7 +21,7 @@ public class VillagerEntry
     {
         this.profession = profession;
         this.career = career;
-        this.tradeList = new ArrayList<>();
+        this.tradeList = new LinkedList<>();
         for (EntityVillager.ITradeList[] levelList : tradesList)
         {
             TradeList tradeList = new TradeList();
@@ -74,7 +74,7 @@ public class VillagerEntry
 
     public List<ItemStack> getInputs()
     {
-        List<ItemStack> list = new ArrayList<>();
+        List<ItemStack> list = new LinkedList<>();
         for (List<Trade> trades : this.tradeList)
         {
             for (Trade trade : trades)
@@ -88,7 +88,7 @@ public class VillagerEntry
 
     public List<ItemStack> getOutputs()
     {
-        List<ItemStack> list = new ArrayList<>();
+        List<ItemStack> list = new LinkedList<>();
         for (List<Trade> trades : this.tradeList)
             for (Trade trade : trades)
                 list.add(trade.getMinSellStack());
@@ -110,11 +110,11 @@ public class VillagerEntry
         return VillagerRegistry.getInstance().getVillagerName(profession, career);
     }
 
-    public class TradeList extends ArrayList<Trade>
+    public class TradeList extends LinkedList<Trade>
     {
         public List<ItemStack> getFirstBuyStacks()
         {
-            List<ItemStack> list = new ArrayList<>();
+            List<ItemStack> list = new LinkedList<>();
             for (Trade trade : this)
                 list.add(trade.getMinBuyStack1());
             return list;
@@ -122,7 +122,7 @@ public class VillagerEntry
 
         public List<ItemStack> getSecondBuyStacks()
         {
-            List<ItemStack> list = new ArrayList<>();
+            List<ItemStack> list = new LinkedList<>();
             for (Trade trade : this)
                 list.add(trade.getMinBuyStack2());
             return list;
@@ -130,7 +130,7 @@ public class VillagerEntry
 
         public List<ItemStack> getSellStacks()
         {
-            List<ItemStack> list = new ArrayList<>();
+            List<ItemStack> list = new LinkedList<>();
             for (Trade trade : this)
                 list.add(trade.getMinSellStack());
             return list;
