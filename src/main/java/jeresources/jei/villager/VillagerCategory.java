@@ -53,6 +53,7 @@ public class VillagerCategory extends BlankRecipeCategory
             }
 
             // TODO: change focus of recipe mode or figure out way to handle it properly
+            // added sublist functions to the TradeList (but where to get the item searched for?)
             for (int i = 0; i < wrapper.getMaxLevel(); i++)
             {
                 recipeLayout.getItemStacks().set(3 * i, wrapper.getTrades(i).getFirstBuyStacks());

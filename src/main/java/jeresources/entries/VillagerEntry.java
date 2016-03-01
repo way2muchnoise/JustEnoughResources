@@ -135,6 +135,24 @@ public class VillagerEntry
                 list.add(trade.getMinSellStack());
             return list;
         }
+
+        public TradeList getSubListSell(ItemStack itemStack)
+        {
+            TradeList list = new TradeList();
+            for (Trade trade : this)
+                if (trade.sellsItem(itemStack))
+                    list.add(trade);
+            return list;
+        }
+
+        public TradeList getSubListBuy(ItemStack itemStack)
+        {
+            TradeList list = new TradeList();
+            for (Trade trade : this)
+                if (trade.buy1.isItemEqual(itemStack))
+                    list.add(trade);
+            return list;
+        }
     }
 
     public class Trade
@@ -158,6 +176,16 @@ public class VillagerEntry
             this.sell = sell;
             this.minSell = minSell;
             this.maxSell = maxSell;
+        }
+
+        public boolean sellsItem(ItemStack itemStack)
+        {
+            return this.sell.isItemEqual(itemStack);
+        }
+
+        public boolean buysItem(ItemStack itemStack)
+        {
+            return this.buy1.isItemEqual(itemStack) || this.buy2.isItemEqual(itemStack);
         }
 
         public ItemStack getMinBuyStack1()
