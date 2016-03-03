@@ -13,7 +13,7 @@ public class VillagerRegistry
 {
     private static VillagerRegistry instance;
 
-    private List<VillagerEntry> villagers;
+    private Map<Integer, Map<Integer, VillagerEntry>> villagers;
     private Map<Integer, Map<Integer, String>> villagerNames;
 
     public static VillagerRegistry getInstance()
@@ -25,7 +25,7 @@ public class VillagerRegistry
 
     private VillagerRegistry()
     {
-        this.villagers = new ArrayList<>();
+        this.villagers = new HashMap<>();
         this.villagerNames = new HashMap<>();
         initVillagerNames();
         EntityVillager.ITradeList[][][][] tradeMapList = TradeHelper.getTrades();
@@ -42,7 +42,10 @@ public class VillagerRegistry
 
     public void addVillagerEntry(VillagerEntry entry)
     {
-        this.villagers.add(entry);
+        Map<Integer, VillagerEntry> entryMap = this.villagers.get(entry.getProfession());
+        if (entryMap == null) entryMap = new HashMap<>();
+        entryMap.put(entry.getCareer(), entry);
+        this.villagers.put(entry.getProfession(), entryMap);
     }
 
     public void addVillagerName(int profession, int career, String name)
@@ -55,7 +58,11 @@ public class VillagerRegistry
 
     public List<VillagerEntry> getVillagers()
     {
-        return villagers;
+        List<VillagerEntry> list = new ArrayList<>();
+        for (Map<Integer, VillagerEntry> villagerMap : this.villagers.values())
+            for (VillagerEntry villager : villagerMap.values())
+                list.add(villager);
+        return list;
     }
 
     public void initVillagerNames()

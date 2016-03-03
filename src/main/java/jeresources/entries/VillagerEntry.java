@@ -17,53 +17,31 @@ public class VillagerEntry
     private final List<TradeList> tradeList;
     private final int profession, career;
 
-    public VillagerEntry(int profession, int career, EntityVillager.ITradeList[][] tradesList)
+    public VillagerEntry(int profession, int career, EntityVillager.ITradeList[][] tradesLists)
     {
         this.profession = profession;
         this.career = career;
         this.tradeList = new LinkedList<>();
-        for (EntityVillager.ITradeList[] levelList : tradesList)
-        {
-            TradeList tradeList = new TradeList();
-            for (EntityVillager.ITradeList trade : levelList)
-            {
-                MerchantRecipeList tempList = new MerchantRecipeList();
-                for (int itr = 0; itr < 100; itr++)
-                    trade.modifyMerchantRecipeList(tempList, r);
-                ItemStack buy1 = tempList.get(0).getItemToBuy();
-                ItemStack buy2 = tempList.get(0).getSecondItemToBuy();
-                ItemStack sell = tempList.get(0).getItemToSell();
-                int minBuy1, minBuy2, minSell;
-                int maxBuy1, maxBuy2, maxSell;
-                minBuy1 = maxBuy1 = buy1.stackSize;
-                if (buy2 != null) minBuy2 = maxBuy2 = buy2.stackSize;
-                else minBuy2 = maxBuy2 = 0;
-                minSell = maxSell = sell.stackSize;
-                for (MerchantRecipe merchantRecipe : tempList)
-                {
-                    if (minBuy1 > merchantRecipe.getItemToBuy().stackSize)
-                        minBuy1 = merchantRecipe.getItemToBuy().stackSize;
-                    if (buy2 != null && minBuy2 > merchantRecipe.getSecondItemToBuy().stackSize)
-                        minBuy2 = merchantRecipe.getSecondItemToBuy().stackSize;
-                    if (minSell > merchantRecipe.getItemToSell().stackSize)
-                        minSell = merchantRecipe.getItemToSell().stackSize;
+        addITradeLists(tradesLists);
+    }
 
-                    if (maxBuy1 < merchantRecipe.getItemToBuy().stackSize)
-                        maxBuy1 = merchantRecipe.getItemToBuy().stackSize;
-                    if (buy2 != null && maxBuy2 < merchantRecipe.getSecondItemToBuy().stackSize)
-                        maxBuy2 = merchantRecipe.getSecondItemToBuy().stackSize;
-                    if (maxSell < merchantRecipe.getItemToSell().stackSize)
-                        maxSell = merchantRecipe.getItemToSell().stackSize;
-                }
-                tradeList.add(
-                    new Trade(
-                        buy1, minBuy1, maxBuy1,
-                        buy2, minBuy2, maxBuy2,
-                        sell, minSell, maxSell
-                    )
-                );
-            }
-            this.tradeList.add(tradeList);
+    public void addITradeList(int level, EntityVillager.ITradeList tradeList)
+    {
+        TradeList trades = this.tradeList.size() > level ? this.tradeList.get(level) : new TradeList();
+        trades.addITradeList(tradeList);
+        this.tradeList.add(trades);
+    }
+
+    public void addITradeLists(EntityVillager.ITradeList[][] tradesLists)
+    {
+        int i = 0;
+        for (EntityVillager.ITradeList[] levelList : tradesLists)
+        {
+            TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList();
+            for (EntityVillager.ITradeList trade : levelList)
+                trades.addITradeList(trade);
+            this.tradeList.add(trades);
+            i++;
         }
     }
 
@@ -103,6 +81,11 @@ public class VillagerEntry
     public int getProfession()
     {
         return profession;
+    }
+
+    public int getCareer()
+    {
+        return career;
     }
 
     public String getName()
@@ -152,6 +135,45 @@ public class VillagerEntry
                 if (trade.buy1.isItemEqual(itemStack))
                     list.add(trade);
             return list;
+        }
+
+        public void addITradeList(EntityVillager.ITradeList tradeList)
+        {
+            MerchantRecipeList tempList = new MerchantRecipeList();
+            for (int itr = 0; itr < 100; itr++)
+                tradeList.modifyMerchantRecipeList(tempList, r);
+            ItemStack buy1 = tempList.get(0).getItemToBuy();
+            ItemStack buy2 = tempList.get(0).getSecondItemToBuy();
+            ItemStack sell = tempList.get(0).getItemToSell();
+            int minBuy1, minBuy2, minSell;
+            int maxBuy1, maxBuy2, maxSell;
+            minBuy1 = maxBuy1 = buy1.stackSize;
+            if (buy2 != null) minBuy2 = maxBuy2 = buy2.stackSize;
+            else minBuy2 = maxBuy2 = 0;
+            minSell = maxSell = sell.stackSize;
+            for (MerchantRecipe merchantRecipe : tempList)
+            {
+                if (minBuy1 > merchantRecipe.getItemToBuy().stackSize)
+                    minBuy1 = merchantRecipe.getItemToBuy().stackSize;
+                if (buy2 != null && minBuy2 > merchantRecipe.getSecondItemToBuy().stackSize)
+                    minBuy2 = merchantRecipe.getSecondItemToBuy().stackSize;
+                if (minSell > merchantRecipe.getItemToSell().stackSize)
+                    minSell = merchantRecipe.getItemToSell().stackSize;
+
+                if (maxBuy1 < merchantRecipe.getItemToBuy().stackSize)
+                    maxBuy1 = merchantRecipe.getItemToBuy().stackSize;
+                if (buy2 != null && maxBuy2 < merchantRecipe.getSecondItemToBuy().stackSize)
+                    maxBuy2 = merchantRecipe.getSecondItemToBuy().stackSize;
+                if (maxSell < merchantRecipe.getItemToSell().stackSize)
+                    maxSell = merchantRecipe.getItemToSell().stackSize;
+            }
+            this.add(
+                new Trade(
+                    buy1, minBuy1, maxBuy1,
+                    buy2, minBuy2, maxBuy2,
+                    sell, minSell, maxSell
+                )
+            );
         }
     }
 
