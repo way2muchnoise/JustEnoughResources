@@ -40,6 +40,24 @@ public class VillagerRegistry
         }
     }
 
+    public void addVillagerTrade(int profession, int career, int level, EntityVillager.ITradeList... tradeList)
+    {
+        Map<Integer, VillagerEntry> entryMap = this.villagers.get(profession);
+        if (entryMap == null) return;
+        VillagerEntry entry = entryMap.get(career);
+        if (entry == null) return;
+        entry.addITradeList(level, tradeList);
+    }
+
+    public void addVillagerTrades(int profession, int career, EntityVillager.ITradeList[][] tradeLists)
+    {
+        Map<Integer, VillagerEntry> entryMap = this.villagers.get(profession);
+        if (entryMap == null) return;
+        VillagerEntry entry = entryMap.get(career);
+        if (entry == null) return;
+        entry.addITradeLists(tradeLists);
+    }
+
     public void addVillagerEntry(VillagerEntry entry)
     {
         Map<Integer, VillagerEntry> entryMap = this.villagers.get(entry.getProfession());

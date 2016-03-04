@@ -25,10 +25,11 @@ public class VillagerEntry
         addITradeLists(tradesLists);
     }
 
-    public void addITradeList(int level, EntityVillager.ITradeList tradeList)
+    public void addITradeList(int level, EntityVillager.ITradeList... tradeLists)
     {
         TradeList trades = this.tradeList.size() > level ? this.tradeList.get(level) : new TradeList();
-        trades.addITradeList(tradeList);
+        for (EntityVillager.ITradeList tradeList : tradeLists)
+            trades.addITradeList(tradeList);
         this.tradeList.add(trades);
     }
 
