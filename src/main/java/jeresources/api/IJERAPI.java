@@ -9,4 +9,5 @@ public interface IJERAPI
     IMobRegistry getMobRegistry();
     IWorldGenRegistry getWorldGenRegistry();
     IPlantRegistry getPlantRegistry();
+    IVillagerRegistry getVillagerRegistry();
 }

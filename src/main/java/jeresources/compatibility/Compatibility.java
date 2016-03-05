@@ -22,6 +22,7 @@ public class Compatibility
         PlantRegistryImpl.commit();
         if (initWorldGen)
             WorldGenRegistryImpl.commit();
+        VillagerRegistryImpl.commit();
         Settings.initedCompat = true;
     }
 }

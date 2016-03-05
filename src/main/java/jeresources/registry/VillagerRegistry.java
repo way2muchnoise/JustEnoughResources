@@ -4,10 +4,7 @@ import jeresources.entries.VillagerEntry;
 import jeresources.utils.TradeHelper;
 import net.minecraft.entity.passive.EntityVillager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VillagerRegistry
 {
@@ -40,13 +37,18 @@ public class VillagerRegistry
         }
     }
 
-    public void addVillagerTrade(int profession, int career, int level, EntityVillager.ITradeList... tradeList)
+    public void addVillagerTrade(int profession, int career, int level, List<EntityVillager.ITradeList> tradeList)
     {
         Map<Integer, VillagerEntry> entryMap = this.villagers.get(profession);
         if (entryMap == null) return;
         VillagerEntry entry = entryMap.get(career);
         if (entry == null) return;
         entry.addITradeList(level, tradeList);
+    }
+
+    public void addVillagerTrade(int profession, int career, int level, EntityVillager.ITradeList... tradeList)
+    {
+        addVillagerTrade(profession, career, level, Arrays.asList(tradeList));
     }
 
     public void addVillagerTrades(int profession, int career, EntityVillager.ITradeList[][] tradeLists)
