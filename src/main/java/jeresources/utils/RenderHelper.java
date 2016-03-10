@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
 
 public class RenderHelper
@@ -184,6 +186,12 @@ public class RenderHelper
     public static void stopScissor()
     {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
+    }
+
+    public static void drawTexture(int x, int y, int u, int v, int width, int height, ResourceLocation resource)
+    {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
+        GuiUtils.drawTexturedModalRect(x, y, u, v, width, height, 0);
     }
 
     private static RenderManager getRenderManager()

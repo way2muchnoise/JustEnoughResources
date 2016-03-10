@@ -15,7 +15,5 @@ public final class Textures
             public static final String ENCHANTMENT = GUI_DIR + "JEIEnchantmentGUI.png";
             public static final String VILLAGER = GUI_DIR + "JEIVillagerGUI.png";
         }
-
-
     }
 }

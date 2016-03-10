@@ -47,4 +47,9 @@ public class BackgroundDrawable implements IDrawable
         minecraft.getTextureManager().bindTexture(this.resource);
         GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
     }
+
+    public ResourceLocation getResource()
+    {
+        return resource;
+    }
 }

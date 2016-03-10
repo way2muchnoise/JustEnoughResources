@@ -1,6 +1,7 @@
 package jeresources.jei.villager;
 
 import jeresources.entries.VillagerEntry;
+import jeresources.reference.Resources;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
 import jeresources.utils.TranslationHelper;
@@ -56,7 +57,9 @@ public class VillagerWrapper extends BlankRecipeWrapper
         );
         RenderHelper.stopScissor();
 
-        // TODO: @mezz said to draw arrows here
+        int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getMaxLevel()) / 2;
+        for (int i = 0; i < getMaxLevel(); i++)
+            RenderHelper.drawTexture(125, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
 
         Font.normal.print(TranslationHelper.translateToLocal(entry.getName()), 10, 20);
         Font.normal.print(TranslationHelper.translateToLocal("jer.villager.buys"), VillagerCategory.X_FIRST_ITEM + 2, VillagerCategory.Y_ITEM_DISTANCE * ((6 - getMaxLevel()) / 2) - 10);
