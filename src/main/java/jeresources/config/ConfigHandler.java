@@ -66,9 +66,10 @@ public class ConfigHandler
         prop.requiresMcRestart();
         Settings.useDIYdata = prop.getBoolean();
 
-        prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam"});
+        prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam", "soulBound"});
         prop.comment = TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description");
         prop.setLanguageKey("jer.config.enchantsBlacklist.title");
+        prop.requiresMcRestart();
         Settings.excludedEnchants = prop.getStringList();
 
         if (config.hasChanged())
