@@ -1,6 +1,6 @@
 package jeresources.utils;
 
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entries.WorldGenEntry;
 import net.minecraft.item.Item;
@@ -24,7 +24,7 @@ public class MapKeys
         return plant.getPlant(null, null).getBlock().getUnlocalizedName();
     }
 
-    public static String getKey(DropItem dropItem)
+    public static String getKey(LootDrop dropItem)
     {
         return getKey(dropItem.item);
     }

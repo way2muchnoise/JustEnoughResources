@@ -1,6 +1,6 @@
 package jeresources.api.conditionals;
 
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 
@@ -35,7 +35,7 @@ public class WatchableData
     private boolean exactClassMatch;
 
     /**
-     * This class is used in {@link jeresources.api.IMobRegistry#registerDrops(Class, WatchableData, DropItem...)}
+     * This class is used in {@link jeresources.api.IMobRegistry#registerDrops(Class, WatchableData, LootDrop...)}
      * It uses {@link EntityDataManager} to see if the {@link net.minecraft.entity.EntityLivingBase} fulfills the given terms
      * You can also set an exactClassMatch flag that will make it only apply to exact class match and not child classes
      */

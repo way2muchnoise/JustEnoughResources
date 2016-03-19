@@ -1,6 +1,6 @@
 package jeresources.utils;
 
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.entries.MobEntry;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
@@ -10,7 +10,7 @@ public class MobHelper
 {
     public static boolean dropsItem(MobEntry entry, ItemStack item)
     {
-        for (DropItem dropItem : entry.getDrops())
+        for (LootDrop dropItem : entry.getDrops())
             if (dropItem.item.isItemEqual(item)) return true;
         return false;
     }

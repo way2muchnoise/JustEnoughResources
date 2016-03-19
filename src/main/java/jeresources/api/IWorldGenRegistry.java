@@ -1,7 +1,7 @@
 package jeresources.api;
 
 import jeresources.api.distributions.DistributionBase;
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import net.minecraft.item.ItemStack;
 
@@ -11,10 +11,10 @@ import net.minecraft.item.ItemStack;
  */
 public interface IWorldGenRegistry
 {
-    void register(ItemStack block, DistributionBase distribution, DropItem... drops);
-    void register(ItemStack block, DistributionBase distribution, Restriction restriction, DropItem... drops);
-    void register(ItemStack block, DistributionBase distribution, boolean silktouch, DropItem... drops);
-    void register(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, DropItem... drops);
+    void register(ItemStack block, DistributionBase distribution, LootDrop... drops);
+    void register(ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops);
+    void register(ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops);
+    void register(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops);
 
-    void registerDrops(ItemStack block, DropItem... drops);
+    void registerDrops(ItemStack block, LootDrop... drops);
 }

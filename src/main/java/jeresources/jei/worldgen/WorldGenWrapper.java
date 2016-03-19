@@ -2,7 +2,7 @@ package jeresources.jei.worldgen;
 
 import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.entries.WorldGenEntry;
 import jeresources.utils.Font;
 import jeresources.utils.RenderHelper;
@@ -161,7 +161,7 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
         {
             tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average"));
             String previousChanceString = null;
-            for (DropItem dropItem : this.worldGenEntry.getDropItems(itemStack))
+            for (LootDrop dropItem : this.worldGenEntry.getLootDrops(itemStack))
             {
                 final String chanceString = dropItem.chanceString();
                 if (Objects.equal(chanceString, previousChanceString)) {

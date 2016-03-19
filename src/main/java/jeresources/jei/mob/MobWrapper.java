@@ -1,6 +1,6 @@
 package jeresources.jei.mob;
 
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.entries.MobEntry;
 import jeresources.utils.CollectionHelper;
 import jeresources.utils.Font;
@@ -52,7 +52,7 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
-        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.8F, 59.0F, 79.0F);
+        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.2F, 59.0F, 79.0F);
         RenderHelper.renderEntity(
                 37, 110 - offsetY, scale,
                 38 - mouseX,
@@ -92,7 +92,7 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
 
     public List<String> getToolTip(ItemStack stack)
     {
-        for (DropItem item : mob.getDrops())
+        for (LootDrop item : mob.getDrops())
             if (item.item.isItemEqual(stack))
                 return item.conditionals;
         return null;

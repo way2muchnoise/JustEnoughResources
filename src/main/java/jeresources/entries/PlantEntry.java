@@ -71,7 +71,7 @@ public class PlantEntry
         return new ArrayList<>(this.drops.values());
     }
 
-    public List<ItemStack> getDropItemStacks()
+    public List<ItemStack> getLootDropStacks()
     {
         List<ItemStack> list = new ArrayList<>();
         for (PlantDrop drop : getDrops())

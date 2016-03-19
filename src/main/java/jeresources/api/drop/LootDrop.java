@@ -3,12 +3,17 @@ package jeresources.api.drop;
 import jeresources.api.conditionals.Conditional;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.storage.loot.functions.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-public class DropItem implements Comparable<DropItem>
+public class LootDrop implements Comparable<LootDrop>
 {
     public int minDrop, maxDrop;
     public ItemStack item;
@@ -16,13 +21,14 @@ public class DropItem implements Comparable<DropItem>
     public List<String> conditionals = new ArrayList<String>();
     public int fortuneLevel;
     private float sortIndex;
+    private boolean enchanted;
 
-    public DropItem(ItemStack item)
+    public LootDrop(ItemStack item)
     {
         this(item, item.stackSize);
     }
 
-    public DropItem(ItemStack item, float chance)
+    public LootDrop(ItemStack item, float chance)
     {
         this(item, chance, 0);
     }
@@ -32,7 +38,7 @@ public class DropItem implements Comparable<DropItem>
      * @param chance chance of drop, can be above 1 to indicate more than 1 drops
      * @param fortuneLevel the fortune level needed for these results
      */
-    public DropItem(ItemStack item, float chance, int fortuneLevel)
+    public LootDrop(ItemStack item, float chance, int fortuneLevel)
     {
         this(item, (int)Math.floor(chance), (int)Math.ceil(chance), chance, fortuneLevel);
     }
@@ -43,7 +49,7 @@ public class DropItem implements Comparable<DropItem>
      * @param maxDrop the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(ItemStack item, int minDrop, int maxDrop, Conditional... conditionals)
+    public LootDrop(ItemStack item, int minDrop, int maxDrop, Conditional... conditionals)
     {
         this(item, minDrop, maxDrop, 1F, 0, conditionals);
     }
@@ -56,7 +62,7 @@ public class DropItem implements Comparable<DropItem>
      * @param fortuneLevel the level of fortune needed
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(ItemStack item, int minDrop, int maxDrop, float chance, int fortuneLevel, Conditional... conditionals)
+    public LootDrop(ItemStack item, int minDrop, int maxDrop, float chance, int fortuneLevel, Conditional... conditionals)
     {
         this.item = item;
         this.minDrop = minDrop;
@@ -73,7 +79,7 @@ public class DropItem implements Comparable<DropItem>
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
      */
-    public DropItem(Item item, int minDrop, int maxDrop, Conditional... conditionals)
+    public LootDrop(Item item, int minDrop, int maxDrop, Conditional... conditionals)
     {
         this(new ItemStack(item), minDrop, maxDrop, 1F, 0, conditionals);
     }
@@ -85,7 +91,7 @@ public class DropItem implements Comparable<DropItem>
      * @param maxDrop    the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(Item item, int itemDamage, int minDrop, int maxDrop, Conditional... conditionals)
+    public LootDrop(Item item, int itemDamage, int minDrop, int maxDrop, Conditional... conditionals)
     {
         this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, 1F, 0, conditionals);
     }
@@ -97,7 +103,7 @@ public class DropItem implements Comparable<DropItem>
      * @param chance  the chance the {@param item} gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(Item item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
+    public LootDrop(Item item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
     {
         this(new ItemStack(item), minDrop, maxDrop, chance, 0, conditionals);
     }
@@ -110,7 +116,7 @@ public class DropItem implements Comparable<DropItem>
      * @param chance     the chance the {@param item} gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(Item item, int itemDamage, int minDrop, int maxDrop, float chance, Conditional... conditionals)
+    public LootDrop(Item item, int itemDamage, int minDrop, int maxDrop, float chance, Conditional... conditionals)
     {
         this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, chance, 0, conditionals);
     }
@@ -122,9 +128,56 @@ public class DropItem implements Comparable<DropItem>
      * @param chance  the chance the {@param item} gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public DropItem(ItemStack item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
+    public LootDrop(ItemStack item, int minDrop, int maxDrop, float chance, Conditional... conditionals)
     {
         this(item, minDrop, maxDrop, chance, 0, conditionals);
+    }
+
+    public LootDrop(Item item, float chance, LootFunction... lootFunctions)
+    {
+        this(new ItemStack(item), chance);
+        this.enchanted = false;
+        addLootFunctions(lootFunctions);
+    }
+
+    public LootDrop addLootFunctions(LootFunction[] lootFunctions)
+    {
+        return addLootFunctions(Arrays.asList(lootFunctions));
+    }
+
+    public LootDrop addLootFunctions(Collection<LootFunction> lootFunctions)
+    {
+        lootFunctions.forEach(this::addLootFunction);
+        return this;
+    }
+
+    public LootDrop addLootFunction(LootFunction lootFunction)
+    {
+        if (lootFunction instanceof SetCount)
+        {
+            this.minDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMin());
+            this.item.stackSize = this.minDrop < 1 ? 1 : this.minDrop;
+            this.maxDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMax());
+        } else if (lootFunction instanceof SetMetadata)
+        {
+            this.item.setItemDamage(MathHelper.floor_float(((SetMetadata)lootFunction).metaRange.getMin()));
+        }
+        else if (lootFunction instanceof SetNBT)
+        {
+            NBTTagCompound compound = this.item.getTagCompound();
+            if (compound == null) compound = (NBTTagCompound)((SetNBT)lootFunction).tag.copy();
+            else compound.merge(((SetNBT)lootFunction).tag);
+            this.item.setTagCompound(compound);
+        } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels)
+        {
+            enchanted = true;
+        }
+        return this;
+    }
+
+    public boolean isEnchanted()
+    {
+        return enchanted;
     }
 
     public String toString()
@@ -170,7 +223,7 @@ public class DropItem implements Comparable<DropItem>
     }
 
     @Override
-    public int compareTo(@Nonnull DropItem o)
+    public int compareTo(@Nonnull LootDrop o)
     {
         if (ItemStack.areItemStacksEqual(item, o.item))
         {

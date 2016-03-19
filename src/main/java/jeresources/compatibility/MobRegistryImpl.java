@@ -3,7 +3,7 @@ package jeresources.compatibility;
 import jeresources.api.IMobRegistry;
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.conditionals.WatchableData;
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.entries.MobEntry;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class MobRegistryImpl implements IMobRegistry
 {
     private static List<MobEntry> registers = new ArrayList<>();
-    private static List<Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>>> addedDrops = new ArrayList<>();
+    private static List<Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>>> addedDrops = new ArrayList<>();
     private static Map<Class<? extends EntityLivingBase>, List<IMobRenderHook>> renderHooks = new HashMap<>();
     private static Map<String, List<IScissorHook>> scissorHooks = new HashMap<>();
 
@@ -30,45 +30,45 @@ public class MobRegistryImpl implements IMobRegistry
     }
 
     @Override
-    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, maxExp, maxExp, biomes, drops));
     }
 
     @Override
-    public void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, biomes, drops));
     }
 
     @Override
-    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, exp, biomes, drops));
     }
 
     @Override
-    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, exp, drops));
     }
 
     @Override
-    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, DropItem... drops)
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops)
     {
         registers.add(new MobEntry(entity, lightLevel, maxExp, maxExp, drops));
     }
 
     @Override
-    public void registerDrops(Class<? extends EntityLivingBase> entity, DropItem... drops)
+    public void registerDrops(Class<? extends EntityLivingBase> entity, LootDrop... drops)
     {
         registerDrops(entity, WatchableData.EMPTY, drops);
     }
 
     @Override
-    public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops)
+    public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootDrop... drops)
     {
-        addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>>(entity, new Tuple<>(watchableData, drops)));
+        addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>>(entity, new Tuple<>(watchableData, drops)));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class MobRegistryImpl implements IMobRegistry
         for (MobEntry entry : registers)
             MobRegistry.getInstance().registerMob(entry);
         registers.clear();
-        for (Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, DropItem[]>> tuple : addedDrops)
+        for (Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>> tuple : addedDrops)
             MobRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond().getFirst(), tuple.getSecond().getSecond());
         addedDrops.clear();
     }

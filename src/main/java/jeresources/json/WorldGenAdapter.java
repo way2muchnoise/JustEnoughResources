@@ -7,7 +7,7 @@ import com.google.gson.JsonParser;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
-import jeresources.api.drop.DropItem;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.config.ConfigHandler;
 import jeresources.entries.WorldGenEntry;
@@ -77,7 +77,7 @@ public class WorldGenAdapter
                 }
                 DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
 
-                List<DropItem> dropList = new ArrayList<>();
+                List<LootDrop> dropList = new ArrayList<>();
                 if (!drops.isEmpty())
                 {
                     for (String drop : drops.split(","))
@@ -99,11 +99,11 @@ public class WorldGenAdapter
                                     fortuneLevel = Integer.parseInt(dropSplit[4]);
                             }
                         }
-                        dropList.add(new DropItem(new ItemStack(item, 1, meta), averageAmount, fortuneLevel));
+                        dropList.add(new LootDrop(new ItemStack(item, 1, meta), averageAmount, fortuneLevel));
                     }
                 }
 
-                WorldGenRegistry.getInstance().registerEntry(new WorldGenEntry(blockStack, distribution, getRestriction(dim), silktouch, dropList.toArray(new DropItem[dropList.size()])));
+                WorldGenRegistry.getInstance().registerEntry(new WorldGenEntry(blockStack, distribution, getRestriction(dim), silktouch, dropList.toArray(new LootDrop[dropList.size()])));
             }
         } catch (FileNotFoundException e)
         {

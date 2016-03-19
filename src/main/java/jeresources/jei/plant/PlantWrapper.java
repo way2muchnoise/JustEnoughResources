@@ -34,14 +34,14 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
 
     public List<ItemStack> getDrops()
     {
-        return plantEntry.getDropItemStacks();
+        return plantEntry.getLootDropStacks();
     }
 
     @Nonnull
     @Override
     public List getOutputs()
     {
-        return plantEntry.getDropItemStacks();
+        return plantEntry.getLootDropStacks();
     }
 
     @Override
