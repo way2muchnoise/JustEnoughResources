@@ -1,5 +1,6 @@
 package jeresources.api.restrictions;
 
+import jeresources.utils.BiomeHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -23,9 +24,10 @@ public class BiomeRestriction
     public static final BiomeRestriction COLD = new BiomeRestriction(BiomeDictionary.Type.COLD);
     public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT, BiomeDictionary.Type.COLD);
 
-    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, BiomeGenBase.extremeHills, BiomeGenBase.extremeHillsEdge);
+    private static final int extremeHillsBiomeId = 3, extremeHillsEdgeBiomeId = 20;
+    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, BiomeGenBase.getBiome(extremeHillsBiomeId), BiomeGenBase.getBiome(extremeHillsEdgeBiomeId));
 
-    private ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+    private List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
     private Type type;
 
     public BiomeRestriction()
@@ -60,7 +62,7 @@ public class BiomeRestriction
                 this.biomes.addAll(Arrays.asList(moreBiomes));
                 break;
             default:
-                biomes = new ArrayList<BiomeGenBase>(Arrays.asList(BiomeGenBase.getBiomeGenArray()));
+                biomes = BiomeHelper.getAllBiomes();
                 biomes.remove(biome);
                 biomes.removeAll(Arrays.asList(moreBiomes));
         }
@@ -82,7 +84,7 @@ public class BiomeRestriction
                 biomes = getBiomes(biomeType, biomeTypes);
                 break;
             default:
-                biomes = new ArrayList<BiomeGenBase>(Arrays.asList(BiomeGenBase.getBiomeGenArray()));
+                biomes = BiomeHelper.getAllBiomes();
                 biomes.removeAll(getBiomes(biomeType, biomeTypes));
         }
     }
@@ -107,7 +109,7 @@ public class BiomeRestriction
     {
         List<String> result = new ArrayList<String>();
         for (BiomeGenBase biome : biomes)
-            if (!biome.biomeName.equals("")) result.add("  " + biome.biomeName);
+            if (!biome.getBiomeName().equals("")) result.add("  " + biome.getBiomeName());
         return result;
     }
 
@@ -122,7 +124,7 @@ public class BiomeRestriction
         return false;
     }
 
-    public boolean isMergeable(BiomeRestriction other)
+    public boolean isMergeAble(BiomeRestriction other)
     {
         return other.type == Type.NONE || (this.type != Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
     }

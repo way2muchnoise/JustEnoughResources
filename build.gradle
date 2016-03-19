@@ -33,16 +33,16 @@ repositories {
 
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
-    deobfCompile name: 'thaumcraft', version: "${version_thaumcraft}", ext: 'jar'
-    deobfCompile name: 'baubles', version: "${version_baubles}", ext: 'jar'
+    //deobfCompile name: 'thaumcraft', version: "${version_thaumcraft}", ext: 'jar'
+    //deobfCompile name: 'baubles', version: "${version_baubles}", ext: 'jar'
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 group = "jeresources"
 archivesBaseName = "JustEnoughResources"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 minecraft {
     version = "${version_minecraft}-${version_forge}"

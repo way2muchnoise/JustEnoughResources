@@ -27,19 +27,19 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
     @Override
     public List getOutputs()
     {
-        return CollectionHelper.create(this.chest.getItemStacks());
+        return this.chest.getItemStacks();
     }
 
     public int amountOfItems()
     {
-        return this.chest.getItemStacks().length;
+        return this.chest.getItemStacks().size();
     }
 
     public List<ItemStack> getItems(int slot, int slots)
     {
-        List<ItemStack> list = CollectionHelper.create(this.chest.getItemStacks()[slot]);
+        List<ItemStack> list = this.chest.getItemStacks().subList(slot, slot+1);
         for (int n = 1; n < (amountOfItems() / slots) + 1; n++)
-            list.add(this.amountOfItems() <= slot + slots * n ? null : this.chest.getItemStacks()[slot + slots * n]);
+            list.add(this.amountOfItems() <= slot + slots * n ? null : this.chest.getItemStacks().get(slot + slots * n));
         return list;
     }
 
@@ -59,7 +59,7 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
     @Override
     public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip)
     {
-        tooltip.add(getChanceString(ingredient));
+        tooltip.add(this.chest.getChestDrop(ingredient).toString());
     }
 
     private boolean done;
@@ -81,14 +81,5 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
     public void resetLid()
     {
         lidStart = (int) System.currentTimeMillis() / 100;
-    }
-
-    public String getChanceString(ItemStack itemStack)
-    {
-        Float chance = this.chest.getChange(itemStack);
-        if (chance == null) return null;
-        chance *= 100;
-        String format = chance < 100 ? "%2.1f" : "%2.0f";
-        return String.format(format, chance).replace(',', '.') + "%";
     }
 }

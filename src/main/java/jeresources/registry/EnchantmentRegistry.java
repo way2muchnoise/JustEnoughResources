@@ -44,7 +44,7 @@ public class EnchantmentRegistry
     private void excludeFormRegistry(Enchantment enchantment)
     {
         for (Iterator<EnchantmentEntry> itr = enchantments.iterator(); itr.hasNext(); )
-            if (itr.next().getEnchantment().effectId == enchantment.effectId) itr.remove();
+            if (itr.next().getEnchantment().getName().equals(enchantment.getName())) itr.remove();
     }
 
     private void excludeFormRegistry(String sEnchantment)
@@ -60,8 +60,8 @@ public class EnchantmentRegistry
             excludeFormRegistry(enchant);
     }
 
-    private static Enchantment[] getEnchants()
+    private static Iterable<Enchantment> getEnchants()
     {
-        return ReflectionHelper.getPrivateValue(Enchantment.class, null, "field_180311_a", "enchantmentsList");
+        return Enchantment.enchantmentRegistry;
     }
 }

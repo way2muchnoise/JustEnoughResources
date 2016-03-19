@@ -40,10 +40,10 @@ public class MobRegistry
 
     public void addDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, DropItem... drops)
     {
-        for (MobEntry entry : registry)
-            if (ReflectionHelper.isInstanceOf(entry.getEntity().getClass(), entity))
-                if (!watchableData.getExactClassMatchFlag() || entry.getEntity().getClass() == entity)
-                    if (watchableData.isValid(entry.getEntity().getDataWatcher()))
-                        entry.addDrops(drops);
+        registry.stream()
+                .filter(entry -> ReflectionHelper.isInstanceOf(entry.getEntity().getClass(), entity))
+                .filter(entry -> !watchableData.getExactClassMatchFlag() || entry.getEntity().getClass() == entity)
+                .filter(entry -> watchableData.isValid(entry.getEntity().getDataManager()))
+                .forEach(entry -> entry.addDrops(drops));
     }
 }

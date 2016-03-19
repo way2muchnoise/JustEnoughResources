@@ -24,7 +24,7 @@ public class MobHelper
 
     public static EntitySlime setSlimeSize(EntitySlime slime, int size)
     {
-        slime.setSlimeSize(size);
+        //slime.setSlimeSize(size);
         return slime;
     }
 }

@@ -1,7 +1,8 @@
 package jeresources.api.conditionals;
 
 import jeresources.api.drop.DropItem;
-import net.minecraft.entity.DataWatcher;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ public class WatchableData
     // Exact match
     public static final WatchableData EXACT_CLASS = new WatchableData().setExactClassMatch();
 
-    // Skeleton
+    /*// Skeleton
     public static final WatchableData REGULAR_SKELETON = new WatchableData().add(13, (byte)0);
     public static final WatchableData WITHER_SKELETON = new WatchableData().add(13, (byte)1);
 
@@ -28,14 +29,14 @@ public class WatchableData
     // Slimes
     public static final WatchableData SMALL_SLIME = new WatchableData().add(16, (byte)1);
     public static final WatchableData MEDIUM_SLIME = new WatchableData().add(16, (byte)2);
-    public static final WatchableData LARGE_SLIME = new WatchableData().add(16, (byte)4);
+    public static final WatchableData LARGE_SLIME = new WatchableData().add(16, (byte)4);*/
 
-    private Map<Integer, Set<Object>> watches;
+    private Map<DataParameter<?>, Set<Object>> watches;
     private boolean exactClassMatch;
 
     /**
      * This class is used in {@link jeresources.api.IMobRegistry#registerDrops(Class, WatchableData, DropItem...)}
-     * It uses {@link DataWatcher} to see if the {@link net.minecraft.entity.EntityLivingBase} fulfills the given terms
+     * It uses {@link EntityDataManager} to see if the {@link net.minecraft.entity.EntityLivingBase} fulfills the given terms
      * You can also set an exactClassMatch flag that will make it only apply to exact class match and not child classes
      */
     public WatchableData()
@@ -69,16 +70,16 @@ public class WatchableData
     /**
      * Add an extra term
      *
-     * @param id the id in the {@link DataWatcher}
+     * @param dataParameter the dataParameter in the {@link EntityDataManager}
      * @param values possible values for the given ID
      * @return the current {@link WatchableData}
      */
-    public WatchableData add(int id, Object... values)
+    public WatchableData add(DataParameter<?> dataParameter, Object... values)
     {
-        Set<Object> set = this.watches.get(id);
+        Set<Object> set = this.watches.get(dataParameter);
         if (set == null) set = new HashSet<>();
         Collections.addAll(set, values);
-        this.watches.put(id, set);
+        this.watches.put(dataParameter, set);
         return this;
     }
 
@@ -90,7 +91,7 @@ public class WatchableData
      */
     public WatchableData add(WatchableData other)
     {
-        for (Map.Entry<Integer, Set<Object>> entry : other.watches.entrySet())
+        for (Map.Entry<DataParameter<?>, Set<Object>> entry : other.watches.entrySet())
             add(entry.getKey(), entry.getValue().toArray());
         return this;
     }
@@ -98,39 +99,27 @@ public class WatchableData
     /**
      * Remove an id from to check
      *
-     * @param id the id to remove
+     * @param dataParameter the {@link DataParameter} to remove
      * @return the current {@link WatchableData}
      */
-    public WatchableData remove(int id)
+    public WatchableData remove(DataParameter dataParameter)
     {
-        this.watches.remove(id);
+        this.watches.remove(dataParameter);
         return this;
     }
 
     /**
-     * Check if this {@link WatchableData} is valid for given {@link DataWatcher}
+     * Check if this {@link WatchableData} is valid for given {@link EntityDataManager}
      *
-     * @param dataWatcher the {@link DataWatcher} to check
-     * @return true if the given {@link DataWatcher} fulfills all terms in the {@link WatchableData}
+     * @param dataManager the {@link EntityDataManager} to check
+     * @return true if the given {@link EntityDataManager} fulfills all terms in the {@link WatchableData}
      */
-    public boolean isValid(DataWatcher dataWatcher)
+    public boolean isValid(EntityDataManager dataManager)
     {
-        boolean isValid = true;
-        for (DataWatcher.WatchableObject object : dataWatcher.getAllWatched())
-        {
-            if (this.watches.containsKey(object.getDataValueId()))
-            {
-                boolean inSet = false;
-                for (Object obj : this.watches.get(object.getDataValueId()))
-                {
-                    inSet = object.getObject().equals(obj);
-                    if (inSet) break;
-                }
-                isValid = inSet;
-                if (!isValid) break;
-            }
-        }
-        return isValid;
+        for (Map.Entry<DataParameter<?>, Set<Object>> entry : this.watches.entrySet())
+            if (!entry.getValue().contains(dataManager.get(entry.getKey())))
+                return false;
+        return true;
     }
 
     /**

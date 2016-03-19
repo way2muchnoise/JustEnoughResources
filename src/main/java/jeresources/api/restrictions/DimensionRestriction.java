@@ -1,6 +1,6 @@
 package jeresources.api.restrictions;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,13 +92,13 @@ public class DimensionRestriction
         for (int i = Math.min(min, dimMin) - 1; i <= Math.max(max, dimMax) + 1; i++)
             if (!dimensions.contains(i)) validDimensions.add(i);
         List<String> result = getStringList(getValidDimensions(type != Type.NONE ? validDimensions : dimensions));
-        if (result.isEmpty()) result.add(StatCollector.translateToLocal("ner.dim.no"));
+        if (result.isEmpty()) result.add(I18n.translateToLocal("ner.dim.no"));
         switch (type)
         {
             default:
                 break;
             case NONE:
-                result.add(0, StatCollector.translateToLocal("ner.not"));
+                result.add(0, I18n.translateToLocal("ner.not"));
                 break;
             case BLACKLIST:
                 result.add(0, "<=");

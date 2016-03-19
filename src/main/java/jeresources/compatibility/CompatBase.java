@@ -17,22 +17,7 @@ public abstract class CompatBase
 {
     protected static World world = DimensionManager.getWorld(0);
 
-    public static boolean load(ModList mod, boolean worldGen)
-    {
-        if (mod.isLoaded())
-        {
-            LogHelper.info("Loading compatibility for " + mod.getName());
-            CompatBase compat = (CompatBase) ReflectionHelper.initialize(mod.compatClass());
-            compat.init(worldGen);
-            return true;
-        } else
-        {
-            LogHelper.info(mod.getName() + " not loaded - skipping");
-        }
-        return false;
-    }
-
-    protected abstract void init(boolean worldGen);
+    public abstract void init(boolean worldGen);
 
     public void registerMob(MobEntry entry)
     {

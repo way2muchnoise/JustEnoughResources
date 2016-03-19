@@ -1,59 +1,62 @@
 package jeresources.entries;
 
-import jeresources.utils.ReflectionHelper;
-import jeresources.utils.WeightedRandomChestContentHelper;
+import jeresources.api.drop.DropItem;
+import jeresources.registry.DungeonRegistry;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.functions.*;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DungeonEntry
 {
-    private Map<ItemStack, Float> chestDrops = new LinkedHashMap<ItemStack, Float>();
+    private List<ChestDrop> drops;
     private String name;
     private int maxStacks, minStacks;
 
-    public DungeonEntry(String name, ChestGenHooks chestGenHooks)
+    public DungeonEntry(String name, LootTable lootTable)
     {
-        int totalWeight = 0;
-        List<WeightedRandomChestContent> content = ReflectionHelper.getPrivateValue(ChestGenHooks.class, chestGenHooks, "contents");
-        for (WeightedRandomChestContent chestItem : content)
-            totalWeight += chestItem.itemWeight;
-        for (WeightedRandomChestContent chestItem : WeightedRandomChestContentHelper.sort(content.toArray(new WeightedRandomChestContent[content.size()])))
-            chestDrops.put(chestItem.theItemId, (float) (chestItem.maxStackSize + chestItem.minStackSize) / 2 * (float) chestItem.itemWeight / totalWeight);
+        this.drops = new ArrayList<>();
         this.name = name;
-        this.minStacks = chestGenHooks.getMin();
-        this.maxStacks = chestGenHooks.getMax();
+        final float[] tmpMinStacks = {0};
+        final float[] tmpMaxStacks = {0};
+        Arrays.stream(lootTable.pools).forEach(
+                pool -> {
+                    tmpMinStacks[0] += pool.rolls.getMin();
+                    tmpMaxStacks[0] += pool.rolls.getMax() + pool.bonusRolls.getMax();
+                    final float totalWeight = Arrays.stream(pool.lootEntries).parallel().mapToInt(entry -> entry.weight).sum();
+                    Arrays.stream(pool.lootEntries).parallel()
+                            .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
+                            .map(entry -> new ChestDrop(entry.item, entry.weight / totalWeight, entry.functions)).forEach(drops::add);
+                }
+        );
+        this.drops.removeIf(drop -> drop == null);
+        this.minStacks = MathHelper.floor_float(tmpMinStacks[0]);
+        this.maxStacks = MathHelper.floor_float(tmpMaxStacks[0]);
     }
 
     public boolean containsItem(ItemStack itemStack)
     {
-        for (ItemStack item : chestDrops.keySet())
-            if (item.isItemEqual(itemStack)) return true;
-        return false;
+        return drops.parallelStream().anyMatch(drop -> drop.item.isItemEqual(itemStack));
     }
 
     public String getName()
     {
-        return name;
+        String name = DungeonRegistry.categoryToLocalKeyMap.get(this.name);
+        return name == null ? this.name : name;
     }
 
-    public Map<ItemStack, Float> getChestDrops()
+    public List<ItemStack> getItemStacks()
     {
-        return chestDrops;
-    }
-
-    public ItemStack[] getItemStacks()
-    {
-        return chestDrops.keySet().toArray(new ItemStack[chestDrops.size()]);
-    }
-
-    public Float getChange(ItemStack itemStack)
-    {
-        return chestDrops.get(itemStack);
+        return drops.parallelStream().map(drop -> drop.item).collect(Collectors.toList());
     }
 
     public int getMaxStacks()
@@ -64,5 +67,57 @@ public class DungeonEntry
     public int getMinStacks()
     {
         return minStacks;
+    }
+
+    public ChestDrop getChestDrop(ItemStack ingredient)
+    {
+        return drops.parallelStream().filter(drop -> ItemStack.areItemsEqual(drop.item, ingredient)).findFirst().orElse(null);
+    }
+
+    public static class ChestDrop extends DropItem
+    {
+        private boolean enchanted;
+
+        public ChestDrop(Item item, float chance, LootFunction... lootFunctions)
+        {
+            super(new ItemStack(item), chance);
+            this.enchanted = false;
+            addLootFunctions(lootFunctions);
+        }
+
+        public ChestDrop addLootFunctions(LootFunction[] lootFunctions)
+        {
+            return addLootFunctions(Arrays.asList(lootFunctions));
+        }
+
+        public ChestDrop addLootFunctions(Collection<LootFunction> lootFunctions)
+        {
+            lootFunctions.forEach(this::addLootFunction);
+            return this;
+        }
+
+        public ChestDrop addLootFunction(LootFunction lootFunction)
+        {
+            if (lootFunction instanceof SetCount)
+            {
+                this.minDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMin());
+                this.item.stackSize = this.minDrop;
+                this.maxDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMax());
+            } else if (lootFunction instanceof SetMetadata)
+            {
+                this.item.setItemDamage(MathHelper.floor_float(((SetMetadata)lootFunction).metaRange.getMin()));
+            }
+            else if (lootFunction instanceof SetNBT)
+            {
+                NBTTagCompound compound = this.item.getTagCompound();
+                if (compound == null) compound = (NBTTagCompound)((SetNBT)lootFunction).tag.copy();
+                else compound.merge(((SetNBT)lootFunction).tag);
+                this.item.setTagCompound(compound);
+            } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels)
+            {
+                enchanted = true;
+            }
+            return this;
+        }
     }
 }

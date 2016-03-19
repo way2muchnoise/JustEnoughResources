@@ -172,7 +172,7 @@ public class DropItem implements Comparable<DropItem>
     @Override
     public int compareTo(@Nonnull DropItem o)
     {
-        if (item.getIsItemStackEqual(o.item))
+        if (ItemStack.areItemStacksEqual(item, o.item))
         {
             return Integer.compare(o.fortuneLevel, fortuneLevel);
         }

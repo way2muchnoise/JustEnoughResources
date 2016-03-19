@@ -14,8 +14,8 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.BossInfo;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -95,9 +95,9 @@ public class RenderHelper
         entityLivingBase.prevRotationYawHead = entityLivingBase.rotationYaw;
         GlStateManager.translate(0.0F, entityLivingBase.getYOffset(), 0.0F);
         getRenderManager().setPlayerViewY(180.0F);
-        String temp = BossStatus.bossName;
-        getRenderManager().renderEntityWithPosYaw(entityLivingBase, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        BossStatus.bossName = temp;
+        //String temp = BossStatus.bossName;
+        getRenderManager().doRenderEntity(entityLivingBase, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        //BossStatus.bossName = temp;
         entityLivingBase.renderYawOffset = renderYawOffset;
         entityLivingBase.rotationYaw = rotationYaw;
         entityLivingBase.rotationPitch = rotationPitch;

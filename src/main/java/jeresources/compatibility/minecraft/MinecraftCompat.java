@@ -12,12 +12,13 @@ import jeresources.api.restrictions.BlockRestriction;
 import jeresources.api.restrictions.DimensionRestriction;
 import jeresources.api.restrictions.Restriction;
 import jeresources.compatibility.CompatBase;
+import jeresources.entries.DungeonEntry;
 import jeresources.entries.MobEntry;
 import jeresources.entries.PlantEntry;
 import jeresources.entries.WorldGenEntry;
 import jeresources.registry.DungeonRegistry;
+import jeresources.utils.LootHelper;
 import jeresources.utils.MobHelper;
-import jeresources.utils.ReflectionHelper;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
@@ -27,14 +28,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ChestGenHooks;
-
-import java.util.HashMap;
 
 public class MinecraftCompat extends CompatBase
 {
     @Override
-    protected void init(boolean worldGen)
+    public void init(boolean worldGen)
     {
         registerVanillaMobs();
         registerDungeonLoot();
@@ -189,15 +187,16 @@ public class MinecraftCompat extends CompatBase
 
     }
 
-    @SuppressWarnings("unchecked")
     private void registerDungeonLoot()
     {
-        HashMap<String, ChestGenHooks> dungeons = ReflectionHelper.getPrivateValue(ChestGenHooks.class, null, "chestInfo");
-        ChestGenHooks bonusChest = ChestGenHooks.getInfo(ChestGenHooks.BONUS_CHEST);
-        if (dungeons != null)
-            for (ChestGenHooks chestGenHook : dungeons.values())
-                if (chestGenHook != bonusChest)
-                    DungeonRegistry.getInstance().registerChestHook(chestGenHook);
+        LootHelper.getAllChestLootTablesResourceLocations().stream()
+                .forEach(resourceLocation -> DungeonRegistry.getInstance()
+                        .registerDungeonEntry(
+                            new DungeonEntry(
+                                    resourceLocation.getResourcePath(),
+                                    world.getLootTableManager().getLootTableFromLocation(resourceLocation)
+                            )
+                ));
     }
 
     private void registerOres()

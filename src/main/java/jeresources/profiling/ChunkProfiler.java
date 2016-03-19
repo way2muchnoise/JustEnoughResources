@@ -6,10 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -45,11 +45,11 @@ public class ChunkProfiler implements Runnable
 
     private void profileChunk(Chunk chunk)
     {
-        this.timer.startChunk(world.provider.getDimensionId());
+        this.timer.startChunk(world.provider.getDimension());
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
-        MovingObjectPosition movingObjectPosition = new MovingObjectPosition(new Vec3(0, 0, 0), EnumFacing.DOWN, blockPos);
+        RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
         final int maxY = chunk.getTopFilledSegment();
@@ -58,23 +58,22 @@ public class ChunkProfiler implements Runnable
                 for (int z = 0; z < CHUNK_SIZE; z++)
                 {
                     blockPos.set(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
-                    Block block = chunk.getBlock(x, y, z);
-                    int meta = chunk.getBlockMetadata(blockPos);
+                    IBlockState blockState = chunk.getBlockState(x, y, z);
+                    Block block = blockState.getBlock();
+                    int meta = block.getMetaFromState(blockState);
 
-                    ItemStack pickBlock = block.getPickBlock(movingObjectPosition, world, blockPos, player);
+                    ItemStack pickBlock = block.getPickBlock(blockState, rayTraceResult, world, blockPos, player);
                     String key;
                     if (pickBlock == null) key = block.getRegistryName() + ':' + meta;
                     else key = MapKeys.getKey(pickBlock);
 
                     if (!dimensionData.dropsMap.containsKey(key))
                     {
-                        IBlockState blockState = block.getStateFromMeta(meta);
                         dimensionData.dropsMap.put(key, getDrops(block, world, blockPos, blockState));
                     }
 
                     if (!dimensionData.silkTouchMap.containsKey(key))
                     {
-                        IBlockState blockState = block.getStateFromMeta(meta);
                         boolean canSilkTouch = block.canSilkHarvest(world, blockPos, blockState, player);
                         dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
@@ -102,7 +101,7 @@ public class ChunkProfiler implements Runnable
             dimensionData.distributionMap.put(entry.getKey(), array);
         }
 
-        this.timer.endChunk(world.provider.getDimensionId());
+        this.timer.endChunk(world.provider.getDimension());
     }
 
     public static Map<String, Map<Integer, Float>> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {

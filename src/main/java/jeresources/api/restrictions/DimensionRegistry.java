@@ -40,7 +40,7 @@ public class DimensionRegistry
                 WorldProvider worldProvider = getWorldProvider(dimId);
                 if (worldProvider != null)
                 {
-                    name = worldProvider.getDimensionName();
+                    name = worldProvider.getDimensionType().getName();
                     if (age && !name.startsWith("Age")) name += " (Age)";
                 }
                 else

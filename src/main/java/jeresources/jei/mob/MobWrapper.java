@@ -1,7 +1,6 @@
 package jeresources.jei.mob;
 
 import jeresources.api.drop.DropItem;
-import jeresources.compatibility.ModList;
 import jeresources.entries.MobEntry;
 import jeresources.utils.CollectionHelper;
 import jeresources.utils.Font;
@@ -19,9 +18,6 @@ import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.item.ItemStack;
-import thaumcraft.common.entities.monster.cult.EntityCultist;
-import thaumcraft.common.entities.monster.tainted.EntityTaintVillager;
-import thaumcraft.common.entities.monster.tainted.EntityTaintacle;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -142,12 +138,6 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         else if (entityLivingBase instanceof EntityDragon) offsetY = 15;
         else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
         else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
-        else if (ModList.thaumcraft.isLoaded())
-        {
-            if (entityLivingBase instanceof EntityTaintacle) offsetY = 50;
-            else if (entityLivingBase instanceof EntityTaintVillager) offsetY = -10;
-            else if (entityLivingBase instanceof EntityCultist) offsetY = -10;
-        }
         return offsetY;
     }
 }

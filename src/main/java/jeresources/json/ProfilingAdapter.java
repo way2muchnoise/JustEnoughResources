@@ -76,7 +76,7 @@ public class ProfilingAdapter
                         writer.name("silktouch").value(canSilkTouch);
                     }
 
-                    writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionName());
+                    writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionType().getName());
                     writer.endObject();
                 }
             }

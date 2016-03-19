@@ -81,7 +81,7 @@ public class Restriction
 
     public boolean isMergeable(Restriction restriction)
     {
-        if (!biomeRestriction.isMergeable(restriction.biomeRestriction)) return false;
+        if (!biomeRestriction.isMergeAble(restriction.biomeRestriction)) return false;
         if (!blockRestriction.equals(restriction.blockRestriction)) return false;
         if (!dimensionRestriction.isMergeable(restriction.dimensionRestriction)) return false;
         return true;

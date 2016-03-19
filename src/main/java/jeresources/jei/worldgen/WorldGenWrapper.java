@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
@@ -146,14 +146,14 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
             List<String> biomes = worldGenEntry.getBiomeRestrictions();
             if (biomes.size() > 0)
             {
-                tooltip.add(StatCollector.translateToLocal("jer.worldgen.biomes") + ":");
+                tooltip.add(I18n.translateToLocal("jer.worldgen.biomes") + ":");
                 tooltip.addAll(biomes);
             }
 
             List<String> dimensions = worldGenEntry.getDimensions();
             if (dimensions.size() > 1)
             {
-                tooltip.add(StatCollector.translateToLocal("jer.worldgen.dimensions") + ":");
+                tooltip.add(I18n.translateToLocal("jer.worldgen.dimensions") + ":");
                 tooltip.addAll(dimensions);
             }
 
@@ -172,7 +172,7 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
 
                 String line = "  ";
                 if (dropItem.fortuneLevel > 0)
-                    line += Enchantment.fortune.getTranslatedName(dropItem.fortuneLevel);
+                    line += Enchantment.getEnchantmentByLocation("fortune").getTranslatedName(dropItem.fortuneLevel);
                 else
                     line += TranslationHelper.translateToLocal("jer.worldgen.base");
                 line += ": " + chanceString;

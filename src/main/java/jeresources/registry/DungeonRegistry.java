@@ -1,9 +1,7 @@
 package jeresources.registry;
 
 import jeresources.entries.DungeonEntry;
-import jeresources.utils.ReflectionHelper;
 import jeresources.utils.TranslationHelper;
-import net.minecraftforge.common.ChestGenHooks;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,17 +24,18 @@ public class DungeonRegistry
     public DungeonRegistry()
     {
         registry = new LinkedHashMap<>();
-        addCategoryMapping("mineshaftCorridor", "jer.dungeon.mineshaftCorridor");
-        addCategoryMapping("pyramidDesertyChest", "jer.dungeon.pyramidDesertyChest");
-        addCategoryMapping("pyramidJungleChest", "jer.dungeon.pyramidJungleChest");
-        addCategoryMapping("pyramidJungleDispenser", "jer.dungeon.pyramidJungleDispenser");
-        addCategoryMapping("strongholdCorridor", "jer.dungeon.strongholdCorridor");
-        addCategoryMapping("strongholdLibrary", "jer.dungeon.strongholdLibrary");
-        addCategoryMapping("strongholdCrossing", "jer.dungeon.strongholdCrossing");
-        addCategoryMapping("villageBlacksmith", "jer.dungeon.villageBlacksmith");
-        addCategoryMapping("bonusChest", "jer.dungeon.bonusChest");
-        addCategoryMapping("dungeonChest", "jer.dungeon.dungeonChest");
-        addCategoryMapping("netherFortress", "jer.dungeon.netherFortress");
+        addCategoryMapping("chests/abandoned_mineshaft", "jer.dungeon.abandonedMineshaftChest");
+        addCategoryMapping("chests/desert_pyramid", "jer.dungeon.desertPyramidChest");
+        addCategoryMapping("chests/jungle_temple", "jer.dungeon.pyramidJungleChest");
+        addCategoryMapping("chests/igloo_chest", "jer.dungeon.iglooChest");
+        addCategoryMapping("chests/stronghold_corridor", "jer.dungeon.strongholdCorridorChest");
+        addCategoryMapping("chests/stronghold_library", "jer.dungeon.strongholdLibraryChest");
+        addCategoryMapping("chests/stronghold_crossing", "jer.dungeon.strongholdCrossingChest");
+        addCategoryMapping("chests/village_blacksmith", "jer.dungeon.villageBlacksmithChest");
+        addCategoryMapping("chests/spawn_bonus_chest", "jer.dungeon.spawnBonusChest");
+        addCategoryMapping("chests/simple_dungeon", "jer.dungeon.simpleDungeonChest");
+        addCategoryMapping("chests/nether_bridge", "jer.dungeon.netherBridgeChest");
+        addCategoryMapping("chests/end_city_treasure", "jer.dungeon.endCityTreasureChest");
     }
 
     public static boolean addCategoryMapping(String category, String name)
@@ -47,24 +46,6 @@ public class DungeonRegistry
             return true;
         }
         return false;
-    }
-
-    public boolean registerChestHook(String name, ChestGenHooks chestGenHooks)
-    {
-        if (!registry.containsKey(name))
-        {
-            registry.put(name, new DungeonEntry(name, chestGenHooks));
-            return true;
-        }
-        return false;
-    }
-
-    public boolean registerChestHook(ChestGenHooks chestGenHooks)
-    {
-        String name = ReflectionHelper.getPrivateValue(ChestGenHooks.class, chestGenHooks, "category");
-        if (categoryToLocalKeyMap.containsKey(name))
-            return registerChestHook(categoryToLocalKeyMap.get(name), chestGenHooks);
-        return registerChestHook(name, chestGenHooks);
     }
 
     public void registerDungeonEntry(DungeonEntry entry)
