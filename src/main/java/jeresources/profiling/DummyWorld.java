@@ -111,7 +111,7 @@ public class DummyWorld extends WorldServer
         return true;
     }
 
-    private static class DummyChunkProvider implements IChunkProvider, IChunkGenerator
+    private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator
     {
         private final World dummyWorld;
         private final IChunkGenerator realChunkGenerator;
@@ -121,6 +121,7 @@ public class DummyWorld extends WorldServer
 
         public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer)
         {
+            super(dummyWorld, chunkProviderServer.chunkLoader, chunkProviderServer.chunkGenerator);
             this.dummyWorld = dummyWorld;
             this.realChunkGenerator = chunkProviderServer.chunkGenerator;
             this.realChunkProvider = chunkProviderServer;
@@ -147,12 +148,6 @@ public class DummyWorld extends WorldServer
         public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
         {
             return null;
-        }
-
-        @Override
-        public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position)
-        {
-            return realChunkGenerator.getStrongholdGen(worldIn, structureName, position);
         }
 
         @Override
