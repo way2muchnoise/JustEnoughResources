@@ -1,6 +1,6 @@
-package jeresources.entries;
+package jeresources.entry;
 
-import jeresources.utils.TranslationHelper;
+import jeresources.util.TranslationHelper;
 import net.minecraft.enchantment.Enchantment;
 
 public class EnchantmentEntry

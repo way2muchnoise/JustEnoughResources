@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 

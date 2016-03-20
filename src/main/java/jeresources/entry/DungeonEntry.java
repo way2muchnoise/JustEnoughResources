@@ -1,4 +1,4 @@
-package jeresources.entries;
+package jeresources.entry;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.registry.DungeonRegistry;
@@ -7,20 +7,18 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootTable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DungeonEntry
 {
-    private List<LootDrop> drops;
+    private Set<LootDrop> drops;
     private String name;
     private int maxStacks, minStacks;
 
     public DungeonEntry(String name, LootTable lootTable)
     {
-        this.drops = new ArrayList<>();
+        this.drops = new TreeSet<>();
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};

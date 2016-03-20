@@ -19,17 +19,17 @@ jer.not=Нет
 
 #Dungeon View
 jer.dungeon.title=Сундуки подземелий
-jer.dungeon.mineshaftCorridor=Заброшенная шахта
-jer.dungeon.pyramidDesertyChest=Храм в пустыне
-jer.dungeon.pyramidJungleChest=Заброшенная шахта
-jer.dungeon.pyramidJungleDispenser=Храм в джунглях
-jer.dungeon.strongholdCorridor=Коридор крепости
-jer.dungeon.strongholdLibrary=Библиотека крепости
-jer.dungeon.strongholdCrossing=Пересечение крепости
-jer.dungeon.villageBlacksmith=Деревенская кузница
-jer.dungeon.bonusChest=Бонусный сундук
-jer.dungeon.dungeonChest=Подземелье
-jer.dungeon.netherFortress=Крепость Нижнего мира
+jer.dungeon.abandonedMineshaftChest=Заброшенная шахта
+jer.dungeon.desertPyramidChest=Храм в пустыне
+jer.dungeon.pyramidJungleChest=Храм в джунглях
+jer.dungeon.strongholdCorridorChest=Коридор крепости
+jer.dungeon.strongholdLibraryChest=Библиотека крепости
+jer.dungeon.strongholdCrossingChest=Пересечение крепости
+jer.dungeon.villageBlacksmithChest=Деревенская кузница
+jer.dungeon.spawnBonusChest=Бонусный сундук
+jer.dungeon.simpleDungeonChest=Подземелье
+jer.dungeon.netherFortressChest=Крепость Нижнего мира
+jer.dungeon.endCityTreasureChest=End City
 
 #Enchantments View
 jer.enchantments.title=Зачарования

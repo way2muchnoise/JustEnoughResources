@@ -1,7 +1,7 @@
 package jeresources.registry;
 
-import jeresources.entries.VillagerEntry;
-import jeresources.utils.TradeHelper;
+import jeresources.entry.VillagerEntry;
+import jeresources.util.TradeHelper;
 import net.minecraft.entity.passive.EntityVillager;
 
 import java.util.*;

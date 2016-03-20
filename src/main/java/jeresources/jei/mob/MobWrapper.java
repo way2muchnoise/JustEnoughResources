@@ -1,11 +1,11 @@
 package jeresources.jei.mob;
 
 import jeresources.api.drop.LootDrop;
-import jeresources.entries.MobEntry;
-import jeresources.utils.CollectionHelper;
-import jeresources.utils.Font;
-import jeresources.utils.RenderHelper;
-import jeresources.utils.TranslationHelper;
+import jeresources.entry.MobEntry;
+import jeresources.util.CollectionHelper;
+import jeresources.util.Font;
+import jeresources.util.RenderHelper;
+import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -16,7 +16,7 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -138,6 +138,7 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         else if (entityLivingBase instanceof EntityDragon) offsetY = 15;
         else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
         else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
+        else if (entityLivingBase instanceof EntityAnimal) offsetY = -20;
         return offsetY;
     }
 }

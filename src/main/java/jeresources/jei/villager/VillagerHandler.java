@@ -1,6 +1,6 @@
 package jeresources.jei.villager;
 
-import jeresources.entries.VillagerEntry;
+import jeresources.entry.VillagerEntry;
 import jeresources.jei.JEIConfig;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

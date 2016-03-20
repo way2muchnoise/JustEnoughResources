@@ -11,16 +11,17 @@ jer.stacks=Stacks
 
 #Dungeon View
 jer.dungeon.title=Kisten
-jer.dungeon.mineshaftCorridor=Mineshaft
-jer.dungeon.pyramidDesertyChest=Woestijn Tempel
-jer.dungeon.pyramidJungleChest=Mineshaft
-jer.dungeon.pyramidJungleDispenser=Jungle Tempel
-jer.dungeon.strongholdCorridor=Stronghold gang
-jer.dungeon.strongholdLibrary=Stronghold Bibliotheek
-jer.dungeon.strongholdCrossing=Stronghold Kruising
-jer.dungeon.villageBlacksmith=Smit
-jer.dungeon.bonusChest=Bonus
-jer.dungeon.dungeonChest=Grot
+jer.dungeon.abandonedMineshaftChest=Mineshaft
+jer.dungeon.desertPyramidChest=Woestijn Tempel
+jer.dungeon.pyramidJungleChest=Jungle Tempel
+jer.dungeon.strongholdCorridorChest=Stronghold gang
+jer.dungeon.strongholdLibraryChest=Stronghold Bibliotheek
+jer.dungeon.strongholdCrossingChest=Stronghold Kruising
+jer.dungeon.villageBlacksmithChest=Smit
+jer.dungeon.spawnBonusChest=Bonus
+jer.dungeon.simpleDungeonChest=Grot
+jer.dungeon.netherBridgeChest=Nether Burg
+jer.dungeon.endCityTreasureChest=End Stad
 
 #Enchantments View
 jer.enchantments.title=Enchantments

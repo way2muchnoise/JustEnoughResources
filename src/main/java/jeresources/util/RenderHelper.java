@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.render.ColourHelper;
 import jeresources.api.render.IMobRenderHook;
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.BossInfo;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
 

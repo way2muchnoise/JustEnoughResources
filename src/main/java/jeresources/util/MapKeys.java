@@ -1,8 +1,8 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
-import jeresources.entries.WorldGenEntry;
+import jeresources.entry.WorldGenEntry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IPlantable;

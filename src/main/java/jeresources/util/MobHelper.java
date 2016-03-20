@@ -1,7 +1,7 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.drop.LootDrop;
-import jeresources.entries.MobEntry;
+import jeresources.entry.MobEntry;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class MobHelper
 
     public static EntitySlime setSlimeSize(EntitySlime slime, int size)
     {
-        //slime.setSlimeSize(size);
+        slime.setSlimeSize(size);
         return slime;
     }
 }

@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.drop.LootDrop;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.LootTableManager;
 
 import java.util.*;
 

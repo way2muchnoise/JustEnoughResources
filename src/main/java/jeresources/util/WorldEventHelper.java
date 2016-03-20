@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.restrictions.BlockRestriction;
 import jeresources.api.restrictions.DimensionRegistry;

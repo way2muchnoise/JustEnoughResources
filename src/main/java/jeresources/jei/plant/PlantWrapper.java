@@ -1,9 +1,9 @@
 package jeresources.jei.plant;
 
 import jeresources.api.drop.PlantDrop;
-import jeresources.entries.PlantEntry;
-import jeresources.utils.CollectionHelper;
-import jeresources.utils.RenderHelper;
+import jeresources.entry.PlantEntry;
+import jeresources.util.CollectionHelper;
+import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.block.Block;

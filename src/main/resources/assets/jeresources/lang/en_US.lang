@@ -21,17 +21,17 @@ jer.not=Not
 
 #Dungeon View
 jer.dungeon.title=Dungeon Chests
-jer.dungeon.mineshaftCorridor=Mineshaft
-jer.dungeon.pyramidDesertyChest=Desert Temple
-jer.dungeon.pyramidJungleChest=Mineshaft
-jer.dungeon.pyramidJungleDispenser=Jungle Temple
-jer.dungeon.strongholdCorridor=Stronghold Corridor
-jer.dungeon.strongholdLibrary=Stronghold Library
-jer.dungeon.strongholdCrossing=Stronghold Crossing
-jer.dungeon.villageBlacksmith=Blacksmith
-jer.dungeon.bonusChest=Bonus
-jer.dungeon.dungeonChest=Dungeon
-jer.dungeon.netherFortress=Nether Fortress
+jer.dungeon.abandonedMineshaftChest=Mineshaft
+jer.dungeon.desertPyramidChest=Desert Temple
+jer.dungeon.pyramidJungleChest=Jungle Temple
+jer.dungeon.strongholdCorridorChest=Stronghold Corridor
+jer.dungeon.strongholdLibraryChest=Stronghold Library
+jer.dungeon.strongholdCrossingChest=Stronghold Crossing
+jer.dungeon.villageBlacksmithChest=Blacksmith
+jer.dungeon.spawnBonusChest=Bonus
+jer.dungeon.simpleDungeonChest=Dungeon
+jer.dungeon.netherBridgeChest=Nether Fortress
+jer.dungeon.endCityTreasureChest=End City
 
 #Enchantments View
 jer.enchantments.title=Enchantments

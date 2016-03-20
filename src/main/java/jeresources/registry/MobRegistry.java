@@ -2,8 +2,8 @@ package jeresources.registry;
 
 import jeresources.api.conditionals.WatchableData;
 import jeresources.api.drop.LootDrop;
-import jeresources.entries.MobEntry;
-import jeresources.utils.ReflectionHelper;
+import jeresources.entry.MobEntry;
+import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 
 import java.util.ArrayList;

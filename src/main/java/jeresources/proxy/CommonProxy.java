@@ -3,7 +3,7 @@ package jeresources.proxy;
 import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
 import jeresources.registry.EnchantmentRegistry;
-import jeresources.utils.WorldEventHelper;
+import jeresources.util.WorldEventHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy

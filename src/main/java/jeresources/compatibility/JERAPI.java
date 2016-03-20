@@ -1,7 +1,7 @@
 package jeresources.compatibility;
 
 import jeresources.api.*;
-import jeresources.utils.ReflectionHelper;
+import jeresources.util.ReflectionHelper;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 public class JERAPI implements IJERAPI

@@ -1,8 +1,8 @@
 package jeresources.registry;
 
 import jeresources.api.drop.LootDrop;
-import jeresources.entries.WorldGenEntry;
-import jeresources.utils.MapKeys;
+import jeresources.entry.WorldGenEntry;
+import jeresources.util.MapKeys;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;

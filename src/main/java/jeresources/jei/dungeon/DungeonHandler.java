@@ -1,6 +1,6 @@
 package jeresources.jei.dungeon;
 
-import jeresources.entries.DungeonEntry;
+import jeresources.entry.DungeonEntry;
 import jeresources.jei.JEIConfig;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

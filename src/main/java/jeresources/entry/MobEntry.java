@@ -1,32 +1,31 @@
-package jeresources.entries;
+package jeresources.entry;
 
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
-import jeresources.utils.LootHelper;
-import jeresources.utils.MobHelper;
+import jeresources.util.LootHelper;
+import jeresources.util.MobHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootTable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MobEntry
 {
     private EntityLivingBase entity;
-    private TreeSet<LootDrop> drops = new TreeSet<>();
+    private Set<LootDrop> drops;
     private LightLevel lightLevel;
-    private List<String> biomes = new ArrayList<String>();
+    private List<String> biomes;
     private int minExp, maxExp;
 
     public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops)
     {
         this.entity = entity;
         this.lightLevel = lightLevel;
+        this.biomes = new ArrayList<>();
         this.biomes.addAll(Arrays.asList(biomes));
+        this.drops = new TreeSet<>();
         this.drops.addAll(Arrays.asList(drops));
         this.maxExp = maxExp;
         this.minExp = minExp;
@@ -52,7 +51,9 @@ public class MobEntry
     {
         this.entity = entity;
         this.lightLevel = lightLevel;
+        this.biomes = new ArrayList<>();
         this.biomes.add("Any");
+        this.drops = new TreeSet<>();
         this.drops.addAll(Arrays.asList(drops));
         this.maxExp = maxExp;
         this.minExp = minExp;

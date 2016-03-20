@@ -1,8 +1,8 @@
 package jeresources.registry;
 
 import jeresources.api.drop.PlantDrop;
-import jeresources.entries.PlantEntry;
-import jeresources.utils.MapKeys;
+import jeresources.entry.PlantEntry;
+import jeresources.util.MapKeys;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;

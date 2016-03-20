@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;

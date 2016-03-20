@@ -1,6 +1,6 @@
 package jeresources.profiling;
 
-import jeresources.utils.MapKeys;
+import jeresources.util.MapKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;

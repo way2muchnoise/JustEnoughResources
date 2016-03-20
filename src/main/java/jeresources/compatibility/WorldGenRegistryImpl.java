@@ -4,7 +4,7 @@ import jeresources.api.IWorldGenRegistry;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
-import jeresources.entries.WorldGenEntry;
+import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;

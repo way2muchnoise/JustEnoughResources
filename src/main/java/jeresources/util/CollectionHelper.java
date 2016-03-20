@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import net.minecraft.item.ItemStack;
 
@@ -8,7 +8,6 @@ import java.util.List;
 
 public class CollectionHelper
 {
-
     public static List<ItemStack> create(ItemStack... itemStacks)
     {
         return new ArrayList<>(Arrays.asList(itemStacks));

@@ -1,6 +1,6 @@
 package jeresources.jei.plant;
 
-import jeresources.entries.PlantEntry;
+import jeresources.entry.PlantEntry;
 import jeresources.jei.JEIConfig;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

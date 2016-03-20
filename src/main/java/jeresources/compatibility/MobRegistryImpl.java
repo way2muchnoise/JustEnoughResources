@@ -6,9 +6,9 @@ import jeresources.api.conditionals.WatchableData;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
-import jeresources.entries.MobEntry;
+import jeresources.entry.MobEntry;
 import jeresources.registry.MobRegistry;
-import jeresources.utils.ReflectionHelper;
+import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Tuple;
 

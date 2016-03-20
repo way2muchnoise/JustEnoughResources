@@ -1,10 +1,9 @@
 package jeresources.registry;
 
-import jeresources.entries.EnchantmentEntry;
+import jeresources.entry.EnchantmentEntry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import java.util.HashSet;
 import java.util.Iterator;

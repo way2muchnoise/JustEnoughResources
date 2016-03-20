@@ -1,14 +1,12 @@
 package jeresources.compatibility;
 
 import jeresources.api.render.IMobRenderHook;
-import jeresources.entries.MobEntry;
-import jeresources.entries.PlantEntry;
-import jeresources.entries.WorldGenEntry;
+import jeresources.entry.MobEntry;
+import jeresources.entry.PlantEntry;
+import jeresources.entry.WorldGenEntry;
 import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
-import jeresources.utils.LogHelper;
-import jeresources.utils.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;

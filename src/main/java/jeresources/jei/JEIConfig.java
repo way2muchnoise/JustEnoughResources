@@ -1,7 +1,7 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
-import jeresources.entries.*;
+import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;

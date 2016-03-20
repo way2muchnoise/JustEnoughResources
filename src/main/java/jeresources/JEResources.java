@@ -7,7 +7,7 @@ import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.MetaData;
 import jeresources.reference.Reference;
-import jeresources.utils.LogHelper;
+import jeresources.util.LogHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;

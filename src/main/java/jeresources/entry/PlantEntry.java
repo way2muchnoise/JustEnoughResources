@@ -1,8 +1,8 @@
-package jeresources.entries;
+package jeresources.entry;
 
 import jeresources.api.drop.PlantDrop;
-import jeresources.utils.MapKeys;
-import jeresources.utils.SeedHelper;
+import jeresources.util.MapKeys;
+import jeresources.util.SeedHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

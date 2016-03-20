@@ -1,4 +1,4 @@
-package jeresources.entries;
+package jeresources.entry;
 
 import jeresources.registry.VillagerRegistry;
 import net.minecraft.entity.passive.EntityVillager;

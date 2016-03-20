@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.reference.Reference;
 import net.minecraftforge.fml.common.FMLLog;

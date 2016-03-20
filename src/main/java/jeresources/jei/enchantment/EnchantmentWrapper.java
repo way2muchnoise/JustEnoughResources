@@ -1,10 +1,10 @@
 package jeresources.jei.enchantment;
 
-import jeresources.entries.EnchantmentEntry;
+import jeresources.entry.EnchantmentEntry;
 import jeresources.registry.EnchantmentRegistry;
-import jeresources.utils.CollectionHelper;
-import jeresources.utils.Font;
-import jeresources.utils.TranslationHelper;
+import jeresources.util.CollectionHelper;
+import jeresources.util.Font;
+import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

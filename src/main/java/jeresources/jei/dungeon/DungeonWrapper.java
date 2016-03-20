@@ -1,11 +1,10 @@
 package jeresources.jei.dungeon;
 
-import jeresources.entries.DungeonEntry;
+import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
-import jeresources.utils.CollectionHelper;
-import jeresources.utils.Font;
-import jeresources.utils.RenderHelper;
-import jeresources.utils.TranslationHelper;
+import jeresources.util.Font;
+import jeresources.util.RenderHelper;
+import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;

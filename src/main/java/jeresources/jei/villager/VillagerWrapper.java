@@ -1,10 +1,10 @@
 package jeresources.jei.villager;
 
-import jeresources.entries.VillagerEntry;
+import jeresources.entry.VillagerEntry;
 import jeresources.reference.Resources;
-import jeresources.utils.Font;
-import jeresources.utils.RenderHelper;
-import jeresources.utils.TranslationHelper;
+import jeresources.util.Font;
+import jeresources.util.RenderHelper;
+import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityVillager;
@@ -50,10 +50,10 @@ public class VillagerWrapper extends BlankRecipeWrapper
     {
         RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.8F, 59.0F, 79.0F);
         RenderHelper.renderEntity(
-                37, 120, 36.0F,
+                37, 118, 36.0F,
                 38 - mouseX,
                 80 - mouseY,
-                new EntityVillager(null, entry.getProfession())
+                new EntityVillager(minecraft.theWorld, entry.getProfession())
         );
         RenderHelper.stopScissor();
 

@@ -1,7 +1,7 @@
 package jeresources.registry;
 
-import jeresources.entries.DungeonEntry;
-import jeresources.utils.TranslationHelper;
+import jeresources.entry.DungeonEntry;
+import jeresources.util.TranslationHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

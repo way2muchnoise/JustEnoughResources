@@ -1,11 +1,11 @@
-package jeresources.entries;
+package jeresources.entry;
 
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.render.ColourHelper;
 import jeresources.api.restrictions.Restriction;
-import jeresources.utils.MapKeys;
+import jeresources.util.MapKeys;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;

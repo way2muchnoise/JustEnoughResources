@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import jeresources.api.drop.PlantDrop;
 import net.minecraft.item.ItemStack;

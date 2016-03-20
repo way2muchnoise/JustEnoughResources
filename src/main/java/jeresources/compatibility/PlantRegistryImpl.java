@@ -2,7 +2,7 @@ package jeresources.compatibility;
 
 import jeresources.api.IPlantRegistry;
 import jeresources.api.drop.PlantDrop;
-import jeresources.entries.PlantEntry;
+import jeresources.entry.PlantEntry;
 import jeresources.registry.PlantRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;

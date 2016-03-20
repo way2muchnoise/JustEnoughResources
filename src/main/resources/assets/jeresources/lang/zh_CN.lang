@@ -19,17 +19,17 @@ jer.not=否
 
 #Dungeon View
 jer.dungeon.title=地牢资源
-jer.dungeon.mineshaftCorridor=废弃矿井
-jer.dungeon.pyramidDesertyChest=沙漠神殿
-jer.dungeon.pyramidJungleChest=废弃矿井
-jer.dungeon.pyramidJungleDispenser=丛林神庙
-jer.dungeon.strongholdCorridor=要塞走廊
-jer.dungeon.strongholdLibrary=要塞图书馆
-jer.dungeon.strongholdCrossing=要塞交叉走廊
-jer.dungeon.villageBlacksmith=铁匠铺
-jer.dungeon.bonusChest=奖励箱子
-jer.dungeon.dungeonChest=小型地牢
-jer.dungeon.netherFortress=下界要塞
+jer.dungeon.abandonedMineshaftChest=废弃矿井
+jer.dungeon.desertPyramidChest=沙漠神殿
+jer.dungeon.pyramidJungleChest=丛林神庙
+jer.dungeon.strongholdCorridorChest=要塞走廊
+jer.dungeon.strongholdLibraryChest=要塞图书馆
+jer.dungeon.strongholdCrossingChest=要塞交叉走廊
+jer.dungeon.villageBlacksmithChest=铁匠铺
+jer.dungeon.spawnBonusChest=奖励箱子
+jer.dungeon.simpleDungeonChest=小型地牢
+jer.dungeon.netherFortressChest=下界要塞
+jer.dungeon.endCityTreasureChest=End City
 
 #Enchantments View
 jer.enchantments.title=可用附魔属性

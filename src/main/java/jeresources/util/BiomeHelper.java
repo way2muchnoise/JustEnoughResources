@@ -1,4 +1,4 @@
-package jeresources.utils;
+package jeresources.util;
 
 import net.minecraft.world.biome.BiomeGenBase;
 

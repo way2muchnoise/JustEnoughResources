@@ -18,7 +18,7 @@ public class LootDrop implements Comparable<LootDrop>
     public int minDrop, maxDrop;
     public ItemStack item;
     public float chance;
-    public List<String> conditionals = new ArrayList<String>();
+    public List<String> conditionals;
     public int fortuneLevel;
     private float sortIndex;
     private boolean enchanted;
@@ -69,6 +69,7 @@ public class LootDrop implements Comparable<LootDrop>
         this.maxDrop = maxDrop;
         this.chance = chance;
         sortIndex = Math.min(chance, 1F) * (float) (minDrop + maxDrop);
+        this.conditionals = new ArrayList<>();
         for (Conditional conditional : conditionals)
             this.conditionals.add(conditional.toString());
         this.fortuneLevel = fortuneLevel;
@@ -226,9 +227,7 @@ public class LootDrop implements Comparable<LootDrop>
     public int compareTo(@Nonnull LootDrop o)
     {
         if (ItemStack.areItemStacksEqual(item, o.item))
-        {
             return Integer.compare(o.fortuneLevel, fortuneLevel);
-        }
-        return Float.compare(getSortIndex(), o.getSortIndex());
+        return Float.compare(o.getSortIndex(), getSortIndex());
     }
 }

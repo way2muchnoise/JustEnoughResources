@@ -1,7 +1,7 @@
 package jeresources.config;
 
 import jeresources.reference.Reference;
-import jeresources.utils.TranslationHelper;
+import jeresources.util.TranslationHelper;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;

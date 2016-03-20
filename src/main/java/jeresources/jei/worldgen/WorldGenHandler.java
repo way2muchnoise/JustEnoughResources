@@ -1,6 +1,6 @@
 package jeresources.jei.worldgen;
 
-import jeresources.entries.WorldGenEntry;
+import jeresources.entry.WorldGenEntry;
 import jeresources.jei.JEIConfig;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;

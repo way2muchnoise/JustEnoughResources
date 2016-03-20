@@ -2,7 +2,7 @@ package jeresources.jei.enchantment;
 
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.utils.TranslationHelper;
+import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;

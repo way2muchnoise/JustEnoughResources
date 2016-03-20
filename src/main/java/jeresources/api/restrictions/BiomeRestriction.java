@@ -1,6 +1,6 @@
 package jeresources.api.restrictions;
 
-import jeresources.utils.BiomeHelper;
+import jeresources.util.BiomeHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
 
