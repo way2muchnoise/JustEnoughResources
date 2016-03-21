@@ -8,9 +8,11 @@ import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.entry.MobEntry;
 import jeresources.registry.MobRegistry;
+import jeresources.util.LootHelper;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.storage.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +29,12 @@ public class MobRegistryImpl implements IMobRegistry
     protected MobRegistryImpl()
     {
 
+    }
+
+    @Override
+    public void register(EntityLivingBase entityLivingBase, LootTable lootTable)
+    {
+        registers.add(new MobEntry(entityLivingBase, lootTable));
     }
 
     @Override
@@ -66,9 +74,21 @@ public class MobRegistryImpl implements IMobRegistry
     }
 
     @Override
+    public void registerDrops(Class<? extends EntityLivingBase> entity, LootTable lootTable)
+    {
+        registerDrops(entity, LootHelper.toDrops(lootTable).toArray(new LootDrop[0]));
+    }
+
+    @Override
     public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootDrop... drops)
     {
-        addedDrops.add(new Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>>(entity, new Tuple<>(watchableData, drops)));
+        addedDrops.add(new Tuple<>(entity, new Tuple<>(watchableData, drops)));
+    }
+
+    @Override
+    public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootTable lootTable)
+    {
+        registerDrops(entity, watchableData, LootHelper.toDrops(lootTable).toArray(new LootDrop[0]));
     }
 
     @Override

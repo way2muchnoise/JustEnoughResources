@@ -6,12 +6,14 @@ import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * Use to register mobs, mob drops, {@link IMobRenderHook}s and {@link IScissorHook}s
  */
 public interface IMobRegistry
 {
+    void register(EntityLivingBase entityLivingBase, LootTable lootTable);
     void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops);
     void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops);
     void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops);
@@ -26,7 +28,9 @@ public interface IMobRegistry
      * @param drops drops to be added
      */
     void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootDrop... drops);
+    void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootTable lootTable);
     void registerDrops(Class<? extends EntityLivingBase> entity, LootDrop... drops);
+    void registerDrops(Class<? extends EntityLivingBase> entity, LootTable lootTable);
 
     /**
      * Add a hook for scissoring in the mob view
