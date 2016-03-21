@@ -63,9 +63,13 @@ public class ChunkProfiler implements Runnable
                     int meta = block.getMetaFromState(blockState);
 
                     ItemStack pickBlock = block.getPickBlock(blockState, rayTraceResult, world, blockPos, player);
-                    String key;
-                    if (pickBlock == null) key = block.getRegistryName() + ':' + meta;
-                    else key = MapKeys.getKey(pickBlock);
+                    final String key;
+                    if (pickBlock == null || pickBlock.getItem() == null) {
+                        key = block.getRegistryName() + ':' + meta;
+                    }
+                    else {
+                        key = MapKeys.getKey(pickBlock);
+                    }
 
                     if (!dimensionData.dropsMap.containsKey(key))
                     {
