@@ -17,6 +17,10 @@ import jeresources.entry.WorldGenEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MobRegistry;
 import jeresources.util.LootHelper;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.monster.EntityGuardian;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeedFood;
@@ -41,6 +45,11 @@ public class MinecraftCompat extends CompatBase
             .forEach(entry -> MobRegistry.getInstance()
                 .registerMob(new MobEntry(entry.getValue(),
                         world.getLootTableManager().getLootTableFromLocation(entry.getKey()))));
+
+        registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
+        registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
+        registerMobRenderHook(EntityGuardian.class, RenderHooks.ELDER_GUARDIAN);
+        registerMobRenderHook(EntitySquid.class, RenderHooks.SQUID);
     }
 
     private void registerDungeonLoot()

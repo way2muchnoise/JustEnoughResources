@@ -42,19 +42,11 @@ public class JEIConfig extends BlankModPlugin
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
         JEResources.PROXY.initCompatibility();
 
-        List<Object> recipes = new ArrayList<>();
-        for (WorldGenEntry entry : WorldGenRegistry.getInstance().getWorldGen())
-            recipes.add(entry);
-        for (PlantEntry entry : PlantRegistry.getInstance().getAllPlants())
-            recipes.add(entry);
-        for (MobEntry entry : MobRegistry.getInstance().getMobs())
-            recipes.add(entry);
-        for (DungeonEntry entry : DungeonRegistry.getInstance().getDungeons())
-            recipes.add(entry);
-        for (VillagerEntry entry : VillagerRegistry.getInstance().getVillagers())
-            recipes.add(entry);
-
-        registry.addRecipes(recipes);
+        registry.addRecipes(WorldGenRegistry.getInstance().getWorldGen());
+        registry.addRecipes(PlantRegistry.getInstance().getAllPlants());
+        registry.addRecipes(MobRegistry.getInstance().getMobs());
+        registry.addRecipes(DungeonRegistry.getInstance().getDungeons());
+        registry.addRecipes(VillagerRegistry.getInstance().getVillagers());
         registry.addRecipes(EnchantmentMaker.createRecipes(registry.getItemRegistry()));
     }
 }

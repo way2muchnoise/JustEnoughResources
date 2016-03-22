@@ -18,7 +18,7 @@ public class DungeonEntry
 
     public DungeonEntry(String name, LootTable lootTable)
     {
-        this.drops = new TreeSet<>();
+        this.drops = new HashSet<>();
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
@@ -32,7 +32,7 @@ public class DungeonEntry
                     .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.functions)).forEach(drops::add);
             }
         );
-        this.drops.removeIf(drop -> drop == null);
+        this.drops = new TreeSet<>(this.drops);
         this.minStacks = MathHelper.floor_float(tmpMinStacks[0]);
         this.maxStacks = MathHelper.floor_float(tmpMaxStacks[0]);
     }
