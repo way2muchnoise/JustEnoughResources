@@ -162,7 +162,8 @@ public class DummyWorld extends WorldServer
         @Override
         public Chunk getLoadedChunk(int x, int z)
         {
-            return null;
+            final long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x, z);
+            return this.id2ChunkMap.getValueByKey(chunkKey);
         }
 
         @Override
