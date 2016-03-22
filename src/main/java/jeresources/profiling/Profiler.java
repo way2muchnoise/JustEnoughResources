@@ -50,7 +50,8 @@ public class Profiler implements Runnable
     {
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
-        this.allDimensionData.put(worldServer.provider.getDimension(), new ProfiledDimensionData());
+        int dimId = worldServer.provider.getDimensionType().getId();
+        this.allDimensionData.put(dimId, new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);
         dummyWorld.init();

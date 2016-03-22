@@ -37,7 +37,7 @@ public class DummyWorld extends WorldServer
 
     public DummyWorld(WorldServer world)
     {
-        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimension(), world.theProfiler);
+        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.theProfiler);
         this.provider.registerWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
     }
@@ -162,7 +162,8 @@ public class DummyWorld extends WorldServer
         @Override
         public Chunk getLoadedChunk(int x, int z)
         {
-            return null;
+            final long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x, z);
+            return this.id2ChunkMap.getValueByKey(chunkKey);
         }
 
         @Override

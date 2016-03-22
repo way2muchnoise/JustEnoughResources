@@ -14,6 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +25,12 @@ public class ChunkProfiler implements Runnable
     private final World world;
     private final ProfilingTimer timer;
     private final List<Chunk> chunks;
+    @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, ProfiledDimensionData dimensionData, ProfilingTimer timer)
+    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer)
     {
         this.world = world;
         this.chunks = chunks;
@@ -45,7 +47,8 @@ public class ChunkProfiler implements Runnable
 
     private void profileChunk(Chunk chunk)
     {
-        this.timer.startChunk(world.provider.getDimension());
+        int dimId = world.provider.getDimensionType().getId();
+        this.timer.startChunk(dimId);
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
@@ -105,7 +108,7 @@ public class ChunkProfiler implements Runnable
             dimensionData.distributionMap.put(entry.getKey(), array);
         }
 
-        this.timer.endChunk(world.provider.getDimension());
+        this.timer.endChunk(dimId);
     }
 
     public static Map<String, Map<Integer, Float>> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
