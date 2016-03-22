@@ -37,7 +37,7 @@ public class DummyWorld extends WorldServer
 
     public DummyWorld(WorldServer world)
     {
-        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimension(), world.theProfiler);
+        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.theProfiler);
         this.provider.registerWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
     }

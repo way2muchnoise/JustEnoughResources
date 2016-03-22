@@ -10,9 +10,10 @@ public class WorldEventHelper
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
     {
-        if (!DimensionRegistry.contains(event.world.provider.getDimension()))
+        int dimId = event.world.provider.getDimensionType().getId();
+        if (!DimensionRegistry.contains(dimId))
         {
-            DimensionRegistry.registerDimension(BlockRestriction.STONE, event.world.provider.getDimension(), false/*ModList.mystcraft.isLoaded() && MystCompat.isMystDim(event.world.provider.dimensionId)*/);
+            DimensionRegistry.registerDimension(BlockRestriction.STONE, dimId, false/*ModList.mystcraft.isLoaded() && MystCompat.isMystDim(event.world.provider.dimensionId)*/);
         }
     }
 }
