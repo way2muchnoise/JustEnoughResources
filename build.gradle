@@ -39,7 +39,7 @@ dependencies {
 }
 
 group = "jeresources"
-archivesBaseName = "JustEnoughResources"
+archivesBaseName = "JustEnoughResources-" + version_minecraft;
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -78,8 +78,6 @@ processResources {
     // Move access transformers to META-INF
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
-
-version = "${version_minecraft}-${version_major}.${version_minor}.${version_revis}"
 
 jar {
     manifest {
