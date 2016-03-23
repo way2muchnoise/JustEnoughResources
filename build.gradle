@@ -44,6 +44,13 @@ archivesBaseName = "JustEnoughResources"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+version = version_major + '.' + version_minor + '.' + version_revis;
+
+//adds the build number to the end of the version string if on a build server
+if (System.getenv().DRONE_BUILD_NUMBER != null) {
+    version += ".${System.getenv().DRONE_BUILD_NUMBER}"
+}
+
 minecraft {
     version = "${version_minecraft}-${version_forge}"
     mappings = "${version_mappings}"
@@ -51,9 +58,7 @@ minecraft {
 
     useDepAts = true
 
-    replace "@MAJOR@", version_major
-    replace "@MINOR@", version_minor
-    replace "@REVIS@", version_revis
+    replace "@VERSION@", project.version
 
     replaceIn "reference/Reference.java"
     replaceIn "package-info.java"
