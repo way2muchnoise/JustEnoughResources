@@ -16,7 +16,7 @@ public class MetaData
     {
         metadata.modId = Reference.ID;
         metadata.name = Reference.NAME;
-        metadata.description = Reference.NAME + " is an addon for JEI that adds tons of stuff to about ores, mobs, ...";
+        metadata.description = Reference.NAME + " is an addon for JEI that adds tons of stuff about world gen, plant drop, mob loot, chest loot, villagers and enchantments";
         //metadata.url = "";
         //metadata.logoFile = "assets/" + Reference.ID + "/logo.png";
         metadata.version = Reference.VERSION;

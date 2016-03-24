@@ -22,29 +22,20 @@ repositories {
         name = "jei"
         url =  "http://dvs1.progwml6.com/files/maven"
     }
-    ivy {
-        name = "thaumcraft"
-        url = "https://dl.dropboxusercontent.com/u/47135879/"
-        layout "pattern", {
-            artifact "[module]-${version_minecraft}-[revision].[ext]"
-        }
-    }
 }
 
 dependencies {
     deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
-    //deobfCompile name: 'thaumcraft', version: "${version_thaumcraft}", ext: 'jar'
-    //deobfCompile name: 'baubles', version: "${version_baubles}", ext: 'jar'
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
 group = "jeresources"
-archivesBaseName = "JustEnoughResources-" + version_minecraft;
+archivesBaseName = "JustEnoughResources-" + version_minecraft
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-version = version_major + '.' + version_minor + '.' + version_revis;
+version = version_major + '.' + version_minor + '.' + version_revis
 
 //adds the build number to the end of the version string if on a build server
 if (System.getenv().DRONE_BUILD_NUMBER != null) {

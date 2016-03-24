@@ -1,7 +1,6 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
-import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonHandler;
 import jeresources.jei.enchantment.EnchantmentCategory;
@@ -22,8 +21,6 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 @JEIPlugin
 public class JEIConfig extends BlankModPlugin

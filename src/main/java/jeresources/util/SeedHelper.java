@@ -10,6 +10,7 @@ import java.util.List;
 
 public class SeedHelper
 {
+    @SuppressWarnings("unchecked")
     public static List<PlantDrop> getSeeds()
     {
         List<PlantDrop> result = new ArrayList<PlantDrop>();

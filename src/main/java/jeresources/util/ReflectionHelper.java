@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class ReflectionHelper extends net.minecraftforge.fml.relauncher.ReflectionHelper
 {
     public static Class findClass(String name)
