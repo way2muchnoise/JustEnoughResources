@@ -15,6 +15,7 @@ import jeresources.registry.WorldGenRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -64,7 +65,7 @@ public class WorldGenAdapter
 
                 String[] blockParts = block.split(":");
 
-                Block blockBlock = GameRegistry.findBlock(blockParts[0], blockParts[1]);
+                Block blockBlock = Block.blockRegistry.getObject(new ResourceLocation(blockParts[0], blockParts[1]));
                 if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
                 int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
                 ItemStack blockStack = new ItemStack(blockBlock, 1, oreMeta);
@@ -83,7 +84,7 @@ public class WorldGenAdapter
                     for (String drop : drops.split(","))
                     {
                         String[] dropSplit = drop.split(":");
-                        Item item = GameRegistry.findItem(dropSplit[0], dropSplit[1]);
+                        Item item = Item.itemRegistry.getObject(new ResourceLocation(dropSplit[0], dropSplit[1]));
                         if (item == null) continue;
 
                         int meta = 0;
