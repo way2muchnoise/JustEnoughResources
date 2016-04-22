@@ -155,7 +155,7 @@ public class RenderHelper
         GlStateManager.translate(0.5F, 0.5F, 0.5F);
         GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-        mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         mc.getBlockRendererDispatcher().renderBlockBrightness(block, 1.0F);
         GlStateManager.popMatrix();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();

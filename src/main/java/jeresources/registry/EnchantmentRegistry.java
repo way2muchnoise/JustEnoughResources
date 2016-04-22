@@ -33,7 +33,7 @@ public class EnchantmentRegistry
         Set<EnchantmentEntry> set = new HashSet<>();
         for (EnchantmentEntry enchantment : enchantments)
         {
-            if (itemStack.getItem() == Items.book && enchantment.getEnchantment().isAllowedOnBooks())
+            if (itemStack.getItem() == Items.BOOK && enchantment.getEnchantment().isAllowedOnBooks())
                 set.add(enchantment);
             else if (enchantment.getEnchantment().canApply(itemStack)) set.add(enchantment);
         }
@@ -61,6 +61,6 @@ public class EnchantmentRegistry
 
     private static Iterable<Enchantment> getEnchants()
     {
-        return Enchantment.enchantmentRegistry;
+        return Enchantment.REGISTRY;
     }
 }

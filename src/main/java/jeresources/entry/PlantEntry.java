@@ -23,7 +23,7 @@ public class PlantEntry
     public static PlantEntry registerGrass()
     {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
-        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.tallgrass, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
+        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALLGRASS, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
     }

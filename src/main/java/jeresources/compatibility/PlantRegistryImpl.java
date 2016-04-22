@@ -17,7 +17,7 @@ public class PlantRegistryImpl implements IPlantRegistry
 {
     private static List<PlantEntry> registers = new ArrayList<>();
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
-    private static final ItemStack grass = new ItemStack(Blocks.tallgrass, 1, 1);
+    private static final ItemStack grass = new ItemStack(Blocks.TALLGRASS, 1, 1);
 
     @Override
     public void register(ItemStack itemStack, IPlantable plant, PlantDrop... drops)
@@ -40,7 +40,7 @@ public class PlantRegistryImpl implements IPlantRegistry
     @Override
     public void registerDrops(ItemStack itemStack, PlantDrop... drops)
     {
-        if (itemStack.isItemEqual(new ItemStack(Blocks.tallgrass, 1, 1)))
+        if (itemStack.isItemEqual(grass))
         addedDrops.add(new Tuple<>(itemStack, drops));
     }
 

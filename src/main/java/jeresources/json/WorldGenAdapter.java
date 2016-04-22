@@ -65,7 +65,7 @@ public class WorldGenAdapter
 
                 String[] blockParts = block.split(":");
 
-                Block blockBlock = Block.blockRegistry.getObject(new ResourceLocation(blockParts[0], blockParts[1]));
+                Block blockBlock = Block.REGISTRY.getObject(new ResourceLocation(blockParts[0], blockParts[1]));
                 if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
                 int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
                 ItemStack blockStack = new ItemStack(blockBlock, 1, oreMeta);
@@ -84,7 +84,7 @@ public class WorldGenAdapter
                     for (String drop : drops.split(","))
                     {
                         String[] dropSplit = drop.split(":");
-                        Item item = Item.itemRegistry.getObject(new ResourceLocation(dropSplit[0], dropSplit[1]));
+                        Item item = Item.REGISTRY.getObject(new ResourceLocation(dropSplit[0], dropSplit[1]));
                         if (item == null) continue;
 
                         int meta = 0;

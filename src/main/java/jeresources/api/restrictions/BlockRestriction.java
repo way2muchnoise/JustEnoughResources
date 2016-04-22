@@ -5,9 +5,9 @@ import net.minecraft.init.Blocks;
 
 public class BlockRestriction
 {
-    public static final BlockRestriction STONE = new BlockRestriction(Blocks.stone);
-    public static final BlockRestriction NETHER = new BlockRestriction(Blocks.netherrack);
-    public static final BlockRestriction END = new BlockRestriction(Blocks.end_stone);
+    public static final BlockRestriction STONE = new BlockRestriction(Blocks.STONE);
+    public static final BlockRestriction NETHER = new BlockRestriction(Blocks.NETHERRACK);
+    public static final BlockRestriction END = new BlockRestriction(Blocks.END_STONE);
 
     private Block block;
     private int metadata;

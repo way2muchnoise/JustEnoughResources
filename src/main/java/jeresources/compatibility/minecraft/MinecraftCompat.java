@@ -62,44 +62,44 @@ public class MinecraftCompat extends CompatBase
 
     private void registerOres()
     {
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.lapis_ore), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.dye, 4, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.iron_ore), new DistributionSquare(20, 8, 1, 64)));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.redstone_ore), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.redstone, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.diamond_ore), new DistributionSquare(1, 7, 1, 16), true, new LootDrop(new ItemStack(Items.diamond))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.emerald_ore), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS), true, new LootDrop(new ItemStack(Items.emerald))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.gold_ore), new DistributionSquare(2, 8, 1, 32)));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.coal_ore), new DistributionSquare(20, 16, 1, 128), true, new LootDrop(new ItemStack(Items.coal))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.quartz_ore), new DistributionSquare(20, 14, 1, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.quartz, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.clay), new DistributionUnderWater(0.0035F), new LootDrop(new ItemStack(Items.clay_ball, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.DYE, 4, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(20, 8, 1, 64)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.REDSTONE, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new DistributionSquare(1, 7, 1, 16), true, new LootDrop(new ItemStack(Items.DIAMOND))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.EMERALD_ORE), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS), true, new LootDrop(new ItemStack(Items.EMERALD))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionSquare(2, 8, 1, 32)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COAL_ORE), new DistributionSquare(20, 16, 1, 128), true, new LootDrop(new ItemStack(Items.COAL))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.QUARTZ_ORE), new DistributionSquare(20, 14, 1, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.QUARTZ, 4))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.CLAY), new DistributionUnderWater(0.0035F), new LootDrop(new ItemStack(Items.CLAY_BALL, 4))));
     }
 
     private void registerVanillaPlants()
     {
         // Potato
-        ItemSeedFood potatoPlant = (ItemSeedFood) Items.potato;
-        PlantDrop potato = new PlantDrop(new ItemStack(Items.potato), 1, 4);
-        PlantDrop poisonous = new PlantDrop(new ItemStack(Items.poisonous_potato), 0.02F);
+        ItemSeedFood potatoPlant = (ItemSeedFood) Items.POTATO;
+        PlantDrop potato = new PlantDrop(new ItemStack(Items.POTATO), 1, 4);
+        PlantDrop poisonous = new PlantDrop(new ItemStack(Items.POISONOUS_POTATO), 0.02F);
         registerPlant(new PlantEntry(potatoPlant, potato, poisonous));
 
         //Carrot
-        ItemSeedFood carrotPlant = (ItemSeedFood) Items.carrot;
-        PlantDrop carrot = new PlantDrop(new ItemStack(Items.carrot), 1, 4);
+        ItemSeedFood carrotPlant = (ItemSeedFood) Items.CARROT;
+        PlantDrop carrot = new PlantDrop(new ItemStack(Items.CARROT), 1, 4);
         registerPlant(new PlantEntry(carrotPlant, carrot));
 
         //Wheat
-        ItemSeeds wheatPlant = (ItemSeeds) Items.wheat_seeds;
-        PlantDrop wheat = new PlantDrop(new ItemStack(Items.wheat), 1, 1);
-        PlantDrop seeds = new PlantDrop(new ItemStack(Items.wheat_seeds), 0, 3);
+        ItemSeeds wheatPlant = (ItemSeeds) Items.WHEAT_SEEDS;
+        PlantDrop wheat = new PlantDrop(new ItemStack(Items.WHEAT), 1, 1);
+        PlantDrop seeds = new PlantDrop(new ItemStack(Items.WHEAT_SEEDS), 0, 3);
         registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
 
         //Melon
-        ItemSeeds melonStem = (ItemSeeds) Items.melon_seeds;
-        PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.melon), 3, 7);
+        ItemSeeds melonStem = (ItemSeeds) Items.MELON_SEEDS;
+        PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.MELON), 3, 7);
         registerPlant(new PlantEntry(melonStem, melonSlice));
 
         //Pumpkin
-        ItemSeeds pumpkinStem = (ItemSeeds) Items.pumpkin_seeds;
-        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.pumpkin), 1, 1);
+        ItemSeeds pumpkinStem = (ItemSeeds) Items.PUMPKIN_SEEDS;
+        PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.PUMPKIN), 1, 1);
         registerPlant(new PlantEntry(pumpkinStem, pumpkin));
     }
 }

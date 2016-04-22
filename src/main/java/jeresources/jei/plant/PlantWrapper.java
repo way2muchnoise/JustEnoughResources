@@ -117,6 +117,6 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
 
     private IBlockState getFarmland()
     {
-        return Blocks.farmland.getDefaultState();
+        return Blocks.FARMLAND.getDefaultState();
     }
 }
