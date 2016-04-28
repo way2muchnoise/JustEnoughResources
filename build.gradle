@@ -82,6 +82,16 @@ curseforge {
         changelog ='git log -1 --pretty=%B'.execute().text.trim()
         changelogType = 'text'
         releaseType = 'alpha'
+        addGameVersion "${version_minecraft}"
+        mainArtifact(jar) {
+            displayName :
+            relations {
+                requiredLibrary 'just-enough-items-jei'
+            }
+        }
+        addArtifact deobfJar
+        addArtifact sourcesJar
+        addArtifact apiJar
     }
 }
 
