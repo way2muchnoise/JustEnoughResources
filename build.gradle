@@ -79,12 +79,11 @@ curseforge {
     apiKey = System.getenv().CURSE_KEY == null ? '0' : System.getenv().CURSE_KEY
     project {
         id = curse_project_id
-        changelog ='git log -1 --pretty=%B'.execute().text.trim()
+        changelog = 'git log -1 --pretty=%B'.execute().text.trim()
         changelogType = 'text'
         releaseType = 'alpha'
         addGameVersion "${version_minecraft}"
         mainArtifact(jar) {
-            displayName :
             relations {
                 requiredLibrary 'just-enough-items-jei'
             }
