@@ -75,25 +75,6 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-curseforge {
-    apiKey = System.getenv().CURSE_KEY == null ? '0' : System.getenv().CURSE_KEY
-    project {
-        id = curse_project_id
-        changelog = 'git log -1 --pretty=%B'.execute().text.trim()
-        changelogType = 'text'
-        releaseType = 'alpha'
-        addGameVersion "${version_minecraft}"
-        mainArtifact(jar) {
-            relations {
-                requiredLibrary 'just-enough-items-jei'
-            }
-        }
-        addArtifact deobfJar
-        addArtifact sourcesJar
-        addArtifact apiJar
-    }
-}
-
 jar {
     manifest {
         attributes 'FMLAT': 'jeresources_at.cfg'
@@ -122,4 +103,23 @@ task apiJar(type: Jar, dependsOn: 'sourceMainJava') {
 
 artifacts {
     archives deobfJar, sourcesJar, apiJar
+}
+
+curseforge {
+    apiKey = System.getenv().CURSE_KEY == null ? '0' : System.getenv().CURSE_KEY
+    project {
+        id = curse_project_id
+        changelog = 'git log -1 --pretty=%B'.execute().text.trim()
+        changelogType = 'text'
+        releaseType = 'alpha'
+        addGameVersion "${version_minecraft}"
+        mainArtifact(jar) {
+            relations {
+                requiredLibrary 'just-enough-items-jei'
+            }
+        }
+        addArtifact deobfJar
+        addArtifact sourcesJar
+        addArtifact apiJar
+    }
 }
