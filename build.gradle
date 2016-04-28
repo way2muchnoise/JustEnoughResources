@@ -10,6 +10,11 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
+
+plugins {
+    id "com.matthewprenger.cursegradle" version "1.0.7"
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'idea'
 
@@ -68,6 +73,16 @@ processResources {
 
     // Move access transformers to META-INF
     rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+curseforge {
+    apiKey = System.getenv().CURSE_KEY == null ? '0' : System.getenv().CURSE_KEY
+    project {
+        id = curse_project_id
+        changelog ='git log -1 --pretty=%B'.execute().text.trim()
+        changelogType = 'text'
+        releaseType = 'alpha'
+    }
 }
 
 jar {
