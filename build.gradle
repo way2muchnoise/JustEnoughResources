@@ -111,15 +111,21 @@ curseforge {
         id = curse_project_id
         changelog = 'git log -1 --pretty=%B'.execute().text.trim()
         changelogType = 'text'
-        releaseType = 'alpha'
-        addGameVersion "${version_minecraft}"
-        mainArtifact(jar) {
+        releaseType =  'alpha'
+        mainArtifact (jar) {
+            displayName = "${jar.archiveName}".replace(".jar", "")
             relations {
                 requiredLibrary 'just-enough-items-jei'
             }
         }
-        addArtifact deobfJar
-        addArtifact sourcesJar
-        addArtifact apiJar
+        addArtifact (deobfJar) {
+            displayName = "${deobfJar.archiveName}".replace(".jar", "")
+        }
+        addArtifact (sourcesJar) {
+            displayName = "${sourcesJar.archiveName}".replace(".jar", "")
+        }
+        addArtifact (apiJar) {
+            displayName = "${apiJar.archiveName}".replace(".jar", "")
+        }
     }
 }
