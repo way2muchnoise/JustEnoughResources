@@ -30,6 +30,7 @@ jer.dungeon.spawnBonusChest=奖励箱子
 jer.dungeon.simpleDungeonChest=小型地牢
 jer.dungeon.netherFortressChest=下界要塞
 jer.dungeon.endCityTreasureChest=End City
+jer.dungeon.iglooChest=Igloo
 
 #Enchantments View
 jer.enchantments.title=可用附魔属性
