@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -93,6 +94,15 @@ public class VillagerEntry
     public String getName()
     {
         return VillagerRegistry.getInstance().getVillagerName(profession, career);
+    }
+
+    public List<Integer> getPossibleLevels(Focus focus)
+    {
+        List<Integer> levels = new ArrayList<>();
+        for (int i = 0; i < tradeList.size(); i++)
+            if (tradeList.get(i) != null && tradeList.get(i).getFocusedList(focus).size() > 0)
+                levels.add(i);
+        return levels;
     }
 
     public class TradeList extends LinkedList<Trade>

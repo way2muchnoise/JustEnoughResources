@@ -2,10 +2,12 @@ package jeresources.jei.villager;
 
 import jeresources.entry.VillagerEntry;
 import jeresources.reference.Resources;
+import jeresources.util.FocusHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.gui.Focus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityVillager;
 
@@ -45,6 +47,11 @@ public class VillagerWrapper extends BlankRecipeWrapper
         return entry.getMaxLevel();
     }
 
+    public List<Integer> getPossibleLevels(Focus focus)
+    {
+        return entry.getPossibleLevels(focus);
+    }
+
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
@@ -57,10 +64,15 @@ public class VillagerWrapper extends BlankRecipeWrapper
         );
         RenderHelper.stopScissor();
 
-        int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getMaxLevel()) / 2;
-        for (int i = 0; i < getMaxLevel(); i++)
-            RenderHelper.drawTexture(125, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
+        Focus focus = FocusHelper.getFocus();
+        int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getPossibleLevels(focus).size()) / 2;
+        int i;
+        for (i = 0; i < getPossibleLevels(focus).size(); i++)
+            RenderHelper.drawTexture(130, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
+        i = 0;
+        for (int level : getPossibleLevels(focus))
+            Font.normal.print("lv. " + level, 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
 
-        Font.normal.print(TranslationHelper.translateToLocal(entry.getName()), 10, 20);
+        Font.normal.print(TranslationHelper.translateToLocal(entry.getName()), 10, 25);
     }
 }

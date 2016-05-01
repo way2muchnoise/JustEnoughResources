@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
 
 public class VillagerCategory extends BlankRecipeCategory
 {
-    protected static final int X_FIRST_ITEM = 90;
+    protected static final int X_FIRST_ITEM = 95;
     protected static final int X_ITEM_DISTANCE = 18;
-    protected static final int X_ITEM_RESULT = 145;
+    protected static final int X_ITEM_RESULT = 150;
     protected static final int Y_ITEM_DISTANCE = 22;
 
     @Nonnull
@@ -47,21 +47,24 @@ public class VillagerCategory extends BlankRecipeCategory
         if (recipeWrapper instanceof VillagerWrapper)
         {
             VillagerWrapper wrapper = (VillagerWrapper)recipeWrapper;
-            int y = Y_ITEM_DISTANCE * (6 - wrapper.getMaxLevel()) / 2;
-            for (int i = 0; i < wrapper.getMaxLevel(); i++)
+            Focus focus = FocusHelper.getFocus();
+            int y = Y_ITEM_DISTANCE * (6 - wrapper.getPossibleLevels(focus).size()) / 2;
+            for (int i = 0; i < wrapper.getPossibleLevels(focus).size(); i++)
             {
                 recipeLayout.getItemStacks().init(3 * i, true, X_FIRST_ITEM, y + i * Y_ITEM_DISTANCE);
                 recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
                 recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
             }
 
-            Focus focus = FocusHelper.getFocus();
-            for (int i = 0; i < wrapper.getMaxLevel(); i++)
+
+            int i = 0;
+            for (int level : wrapper.getPossibleLevels(focus))
             {
-                VillagerEntry.TradeList tradeList = wrapper.getTrades(i).getFocusedList(focus);
+                VillagerEntry.TradeList tradeList = wrapper.getTrades(level).getFocusedList(focus);
                 recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
                 recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
                 recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
+                i++;
             }
         }
     }
