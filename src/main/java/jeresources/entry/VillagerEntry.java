@@ -1,6 +1,7 @@
 package jeresources.entry;
 
 import jeresources.registry.VillagerRegistry;
+import mezz.jei.gui.Focus;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
@@ -136,6 +137,20 @@ public class VillagerEntry
                 if (trade.buysItem(itemStack))
                     list.add(trade);
             return list;
+        }
+
+        public TradeList getFocusedList(Focus focus)
+        {
+            switch (focus.getMode())
+            {
+                case INPUT:
+                    return getSubListBuy(focus.getStack());
+                case OUTPUT:
+                    return  getSubListSell(focus.getStack());
+                case NONE:
+                default:
+                    return this;
+            }
         }
 
         public void addITradeList(EntityVillager.ITradeList tradeList)

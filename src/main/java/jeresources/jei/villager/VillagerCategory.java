@@ -1,12 +1,15 @@
 package jeresources.jei.villager;
 
+import jeresources.entry.VillagerEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
+import jeresources.util.FocusHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.gui.Focus;
 
 import javax.annotation.Nonnull;
 
@@ -52,13 +55,13 @@ public class VillagerCategory extends BlankRecipeCategory
                 recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
             }
 
-            // TODO: change focus of recipe mode or figure out way to handle it properly
-            // added sublist functions to the TradeList (but where to get the item searched for?)
+            Focus focus = FocusHelper.getFocus();
             for (int i = 0; i < wrapper.getMaxLevel(); i++)
             {
-                recipeLayout.getItemStacks().set(3 * i, wrapper.getTrades(i).getFirstBuyStacks());
-                recipeLayout.getItemStacks().set(3 * i + 1, wrapper.getTrades(i).getSecondBuyStacks());
-                recipeLayout.getItemStacks().set(3 * i + 2, wrapper.getTrades(i).getSellStacks());
+                VillagerEntry.TradeList tradeList = wrapper.getTrades(i).getFocusedList(focus);
+                recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
+                recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
+                recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
             }
         }
     }
