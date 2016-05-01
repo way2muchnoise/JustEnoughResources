@@ -133,7 +133,7 @@ public class VillagerEntry
         {
             TradeList list = new TradeList();
             for (Trade trade : this)
-                if (trade.buy1.isItemEqual(itemStack))
+                if (trade.buysItem(itemStack))
                     list.add(trade);
             return list;
         }

@@ -62,7 +62,5 @@ public class VillagerWrapper extends BlankRecipeWrapper
             RenderHelper.drawTexture(125, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
 
         Font.normal.print(TranslationHelper.translateToLocal(entry.getName()), 10, 20);
-        Font.normal.print(TranslationHelper.translateToLocal("jer.villager.buys"), VillagerCategory.X_FIRST_ITEM + 2, VillagerCategory.Y_ITEM_DISTANCE * ((6 - getMaxLevel()) / 2) - 10);
-        Font.normal.print(TranslationHelper.translateToLocal("jer.villager.sells"), VillagerCategory.X_ITEM_RESULT, VillagerCategory.Y_ITEM_DISTANCE * ((6 - getMaxLevel()) / 2) -10);
     }
 }

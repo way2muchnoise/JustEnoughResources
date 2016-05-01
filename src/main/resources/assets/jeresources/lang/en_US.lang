@@ -57,8 +57,6 @@ jer.mob.exp=Experience Dropped
 
 #Villager View
 jer.villager.title=Villager Trades
-jer.villager.buys=Buys
-jer.villager.sells=Sells
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
 jer.magmaCream.text=Small and Large Magma Cubes

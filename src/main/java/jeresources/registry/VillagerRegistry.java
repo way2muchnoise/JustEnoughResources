@@ -80,8 +80,7 @@ public class VillagerRegistry
     {
         List<VillagerEntry> list = new ArrayList<>();
         for (Map<Integer, VillagerEntry> villagerMap : this.villagers.values())
-            for (VillagerEntry villager : villagerMap.values())
-                list.add(villager);
+            list.addAll(villagerMap.values());
         return list;
     }
 
