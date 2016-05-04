@@ -78,7 +78,7 @@ public class MobEntry
 
     public String getMobName()
     {
-        return entity.getName();
+        return MobHelper.getExpandedName(this);
     }
 
     public LootDrop[] getDrops()

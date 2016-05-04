@@ -9,13 +9,18 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
 public abstract class CompatBase
 {
-    protected static World world = DimensionManager.getWorld(0);
+    protected static World getWorld()
+    {
+        return Minecraft.getMinecraft().theWorld;
+    }
 
     public abstract void init(boolean worldGen);
 

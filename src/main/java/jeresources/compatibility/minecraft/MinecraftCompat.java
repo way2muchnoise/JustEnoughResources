@@ -24,6 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.storage.loot.LootTableManager;
 
 public class MinecraftCompat extends CompatBase
 {
@@ -39,10 +40,10 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaMobs()
     {
-        LootHelper.getAllMobLootTables(world).entrySet().stream()
+        LootHelper.getAllMobLootTables(getWorld()).entrySet().stream()
             .forEach(entry -> registerMob(new MobEntry(
                     entry.getValue(),
-                    world.getLootTableManager().getLootTableFromLocation(entry.getKey()))
+                    LootHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
             ));
 
         registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
@@ -56,7 +57,7 @@ public class MinecraftCompat extends CompatBase
         LootHelper.getAllChestLootTablesResourceLocations().stream()
             .forEach(resourceLocation -> registerDungeonEntry(new DungeonEntry(
                     resourceLocation.getResourcePath(),
-                    world.getLootTableManager().getLootTableFromLocation(resourceLocation))
+                    LootHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
             ));
     }
 
