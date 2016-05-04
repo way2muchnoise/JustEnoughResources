@@ -5,7 +5,7 @@ import jeresources.api.restrictions.DimensionRegistry;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class WorldEventHelper
+public class WorldEventhandler
 {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event)
