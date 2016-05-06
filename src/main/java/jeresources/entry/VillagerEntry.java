@@ -233,7 +233,8 @@ public class VillagerEntry
 
         public boolean buysItem(ItemStack itemStack)
         {
-            return this.buy1.isItemEqual(itemStack) || this.buy2.isItemEqual(itemStack);
+            if (this.buy2 != null) return this.buy1.isItemEqual(itemStack) || this.buy2.isItemEqual(itemStack);
+            else return this.buy1.isItemEqual(itemStack);
         }
 
         public ItemStack getMinBuyStack1()
