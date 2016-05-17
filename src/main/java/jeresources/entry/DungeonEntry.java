@@ -2,10 +2,12 @@ package jeresources.entry;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.registry.DungeonRegistry;
+import jeresources.util.LootHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,14 +24,14 @@ public class DungeonEntry
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
-        Arrays.stream(lootTable.pools).forEach(
+        LootHelper.getPools(lootTable).forEach(
             pool -> {
-                tmpMinStacks[0] += pool.rolls.getMin();
-                tmpMaxStacks[0] += pool.rolls.getMax() + pool.bonusRolls.getMax();
-                final float totalWeight = Arrays.stream(pool.lootEntries).parallel().mapToInt(entry -> entry.weight).sum();
-                Arrays.stream(pool.lootEntries).parallel()
+                tmpMinStacks[0] += pool.getRolls().getMin();
+                tmpMaxStacks[0] += pool.getRolls().getMax() + pool.getBonusRolls().getMax();
+                final float totalWeight = LootHelper.getEntries(pool).stream().parallel().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
+                LootHelper.getEntries(pool).stream().parallel()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
-                    .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.functions)).forEach(drops::add);
+                    .map(entry -> new LootDrop(LootHelper.getItem(entry), entry.getEffectiveWeight(0) / totalWeight, LootHelper.getFunctions(entry))).forEach(drops::add);
             }
         );
         this.drops = new TreeSet<>(this.drops);

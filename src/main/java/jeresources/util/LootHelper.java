@@ -5,28 +5,52 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootEntryItem;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraft.world.storage.loot.LootTableManager;
+import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.functions.LootFunction;
 
 import java.io.File;
 import java.util.*;
 
 public class LootHelper
 {
+    // TODO: remove these ones Forge has decent iteration of loot tables
+
+    public static List<LootPool> getPools(LootTable table)
+    {
+        return ReflectionHelper.getPrivateValue(LootTable.class, table, "pools", "field_186466_c");
+    }
+
+    public static List<LootEntry> getEntries(LootPool pool)
+    {
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "lootEntries", "field_186453_a");
+    }
+
+    public static Item getItem(LootEntryItem lootEntry)
+    {
+        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "item", "field_186368_a");
+    }
+
+    public static LootFunction[] getFunctions(LootEntryItem lootEntry)
+    {
+        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "functions", "field_186369_b");
+    }
+
+    // END REMOVE section
+
+
     public static List<LootDrop> toDrops(LootTable table)
     {
         List<LootDrop> drops = new ArrayList<>();
 
-        Arrays.stream(table.pools).forEach(
+        getPools(table).forEach(
             pool -> {
-                final float totalWeight = Arrays.stream(pool.lootEntries).parallel().mapToInt(entry -> entry.weight).sum();
-                Arrays.stream(pool.lootEntries).parallel()
+                final float totalWeight = getEntries(pool).stream().parallel().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
+                getEntries(pool).stream().parallel()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
-                    .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.functions)).forEach(drops::add);
+                    .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, getFunctions(entry))).forEach(drops::add);
             }
         );
 
