@@ -16,8 +16,6 @@ import java.util.*;
 
 public class LootHelper
 {
-    // TODO: remove these ones Forge has decent iteration of loot tables
-
     public static List<LootPool> getPools(LootTable table)
     {
         return ReflectionHelper.getPrivateValue(LootTable.class, table, "pools", "field_186466_c");
@@ -37,8 +35,6 @@ public class LootHelper
     {
         return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "functions", "field_186369_b");
     }
-
-    // END REMOVE section
 
 
     public static List<LootDrop> toDrops(LootTable table)
@@ -97,8 +93,8 @@ public class LootHelper
         mobTables.put(LootTableList.ENTITIES_CHICKEN, new EntityChicken(world));
         mobTables.put(LootTableList.ENTITIES_PIG, new EntityPig(world));
         mobTables.put(LootTableList.ENTITIES_HORSE, new EntityHorse(world));
-        mobTables.put(LootTableList.ENTITIES_ZOMBIE_HORSE, new EntityHorse(world){{setType(HorseArmorType.ZOMBIE);}});
-        mobTables.put(LootTableList.ENTITIES_SKELETON_HORSE, new EntityHorse(world){{setType(HorseArmorType.SKELETON);}});
+        mobTables.put(LootTableList.ENTITIES_ZOMBIE_HORSE, new EntityHorse(world){{setType(HorseType.ZOMBIE);}});
+        mobTables.put(LootTableList.ENTITIES_SKELETON_HORSE, new EntityHorse(world){{setType(HorseType.SKELETON);}});
         mobTables.put(LootTableList.ENTITIES_COW, new EntityCow(world));
         mobTables.put(LootTableList.ENTITIES_MUSHROOM_COW, new EntityMooshroom(world));
         mobTables.put(LootTableList.ENTITIES_WOLF, new EntityWolf(world));

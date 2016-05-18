@@ -1,7 +1,7 @@
 package jeresources.api.restrictions;
 
 import jeresources.util.BiomeHelper;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.ArrayList;
@@ -25,9 +25,9 @@ public class BiomeRestriction
     public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT, BiomeDictionary.Type.COLD);
 
     private static final int extremeHillsBiomeId = 3, extremeHillsEdgeBiomeId = 20;
-    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, BiomeGenBase.getBiome(extremeHillsBiomeId), BiomeGenBase.getBiome(extremeHillsEdgeBiomeId));
+    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, Biome.getBiome(extremeHillsBiomeId), Biome.getBiome(extremeHillsEdgeBiomeId));
 
-    private List<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+    private List<Biome> biomes = new ArrayList<Biome>();
     private Type type;
 
     public BiomeRestriction()
@@ -35,22 +35,22 @@ public class BiomeRestriction
         this.type = Type.NONE;
     }
 
-    public BiomeRestriction(BiomeGenBase biome)
+    public BiomeRestriction(Biome biome)
     {
         this(Type.WHITELIST, biome);
     }
 
-    public BiomeRestriction(Type type, BiomeGenBase biome)
+    public BiomeRestriction(Type type, Biome biome)
     {
-        this(type, biome, new BiomeGenBase[0]);
+        this(type, biome, new Biome[0]);
     }
 
-    public BiomeRestriction(BiomeGenBase biome, BiomeGenBase... moreBiomes)
+    public BiomeRestriction(Biome biome, Biome... moreBiomes)
     {
         this(Type.WHITELIST, biome, moreBiomes);
     }
 
-    public BiomeRestriction(Type type, BiomeGenBase biome, BiomeGenBase... moreBiomes)
+    public BiomeRestriction(Type type, Biome biome, Biome... moreBiomes)
     {
         this.type = type;
         switch (type)
@@ -89,14 +89,14 @@ public class BiomeRestriction
         }
     }
 
-    private ArrayList<BiomeGenBase> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes)
+    private ArrayList<Biome> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes)
     {
-        ArrayList<BiomeGenBase> biomes = new ArrayList<BiomeGenBase>();
+        ArrayList<Biome> biomes = new ArrayList<>();
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
         for (int i = 1; i < biomeTypes.length; i++)
         {
-            ArrayList<BiomeGenBase> newBiomes = new ArrayList<BiomeGenBase>();
-            for (BiomeGenBase biome : BiomeDictionary.getBiomesForType(biomeTypes[i]))
+            ArrayList<Biome> newBiomes = new ArrayList<>();
+            for (Biome biome : BiomeDictionary.getBiomesForType(biomeTypes[i]))
             {
                 if (biomes.remove(biome)) newBiomes.add(biome);
             }
@@ -107,8 +107,8 @@ public class BiomeRestriction
 
     public List<String> toStringList()
     {
-        List<String> result = new ArrayList<String>();
-        for (BiomeGenBase biome : biomes)
+        List<String> result = new ArrayList<>();
+        for (Biome biome : biomes)
             if (!biome.getBiomeName().equals("")) result.add("  " + biome.getBiomeName());
         return result;
     }

@@ -1,5 +1,7 @@
 package jeresources.profiling;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -7,14 +9,13 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.LongHashMap;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.NextTickListEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -116,7 +117,7 @@ public class DummyWorld extends WorldServer
         private final World dummyWorld;
         private final IChunkGenerator realChunkGenerator;
         private final IChunkProvider realChunkProvider;
-        private LongHashMap<Chunk> id2ChunkMap = new LongHashMap<>();
+        private Long2ObjectMap<Chunk> id2ChunkMap = new Long2ObjectOpenHashMap<>();
         private boolean allowLoading = true;
 
         public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer)
@@ -129,7 +130,7 @@ public class DummyWorld extends WorldServer
 
         public void clearChunks()
         {
-            this.id2ChunkMap = new LongHashMap<>();
+            this.id2ChunkMap = new Long2ObjectOpenHashMap<>();
         }
 
         @Override
@@ -145,7 +146,7 @@ public class DummyWorld extends WorldServer
         }
 
         @Override
-        public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+        public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
         {
             return null;
         }
@@ -162,15 +163,15 @@ public class DummyWorld extends WorldServer
         @Override
         public Chunk getLoadedChunk(int x, int z)
         {
-            final long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x, z);
-            return this.id2ChunkMap.getValueByKey(chunkKey);
+            final long chunkKey = ChunkPos.chunkXZ2Int(x, z);
+            return this.id2ChunkMap.get(chunkKey);
         }
 
         @Override
         public Chunk provideChunk(int x, int z)
         {
-            final long chunkKey = ChunkCoordIntPair.chunkXZ2Int(x, z);
-            Chunk chunk = this.id2ChunkMap.getValueByKey(chunkKey);
+            final long chunkKey = ChunkPos.chunkXZ2Int(x, z);
+            Chunk chunk = this.id2ChunkMap.get(chunkKey);
             if (chunk != null)
             {
                 return chunk;
@@ -192,7 +193,7 @@ public class DummyWorld extends WorldServer
                 throw new ReportedException(crashreport);
             }
 
-            this.id2ChunkMap.add(chunkKey, chunk);
+            this.id2ChunkMap.put(chunkKey, chunk);
 
             this.allowLoading = false;
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.ChunkEvent.Load(chunk));

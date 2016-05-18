@@ -1,16 +1,16 @@
 package jeresources.util;
 
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BiomeHelper
 {
-    public static List<BiomeGenBase> getAllBiomes()
+    public static List<Biome> getAllBiomes()
     {
-        List<BiomeGenBase> biomes = new ArrayList<>();
-        for (BiomeGenBase biomeGenBase : BiomeGenBase.REGISTRY) biomes.add(biomeGenBase);
+        List<Biome> biomes = new ArrayList<>();
+        Biome.REGISTRY.forEach(biomes::add);
         return biomes;
     }
 }

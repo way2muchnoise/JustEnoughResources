@@ -60,7 +60,7 @@ public class ChunkProfiler implements Runnable
             for (int x = 0; x < CHUNK_SIZE; x++)
                 for (int z = 0; z < CHUNK_SIZE; z++)
                 {
-                    blockPos.set(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
+                    blockPos.setPos(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
                     IBlockState blockState = chunk.getBlockState(x, y, z);
                     Block block = blockState.getBlock();
                     int meta = block.getMetaFromState(blockState);
