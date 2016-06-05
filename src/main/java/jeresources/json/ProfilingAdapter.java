@@ -3,11 +3,14 @@ package jeresources.json;
 import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
 import jeresources.config.ConfigHandler;
+import jeresources.util.LogHelper;
 import net.minecraftforge.common.DimensionManager;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -24,9 +27,23 @@ public class ProfilingAdapter
 
     public static void write(final Map<Integer, DimensionData> allDimensionData)
     {
+
+        File oldWorldGenFile = ConfigHandler.getWorldGenFile();
+        if (oldWorldGenFile.exists())
+        {
+            Date date = new Date() ;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+            boolean renamed = oldWorldGenFile.renameTo(new File(ConfigHandler.getConfigDir(), "world-gen-old-" + dateFormat.format(date) + ".json"));
+            if (!renamed)
+            {
+                LogHelper.warn("Could not rename old world-gen file. Aborting.");
+                return;
+            }
+        }
+
         try
         {
-            JsonWriter writer = new JsonWriter(new FileWriter(new File(ConfigHandler.getConfigDir(), "world-gen-scan.json")));
+            JsonWriter writer = new JsonWriter(new FileWriter(ConfigHandler.getWorldGenFile()));
             writer.setIndent("\t");
             writer.beginArray();
 

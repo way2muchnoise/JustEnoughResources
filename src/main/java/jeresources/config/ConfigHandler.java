@@ -17,6 +17,7 @@ public class ConfigHandler
 {
     public static Configuration config;
     private static File configDir;
+    private static String worldGenFileName = "world-gen.json";
 
     public static void init(File configDir)
     {
@@ -33,6 +34,11 @@ public class ConfigHandler
     public static File getConfigDir()
     {
         return configDir;
+    }
+
+    public static File getWorldGenFile()
+    {
+        return new File(configDir, worldGenFileName);
     }
 
     @SubscribeEvent

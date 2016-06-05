@@ -24,6 +24,5 @@ public class Compatibility
         if (initWorldGen)
             WorldGenRegistryImpl.commit();
         VillagerRegistryImpl.commit();
-        Settings.initedCompat = true;
     }
 }

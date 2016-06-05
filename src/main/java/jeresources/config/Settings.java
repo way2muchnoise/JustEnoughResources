@@ -14,7 +14,6 @@ public final class Settings
 
     public static String[] excludedEnchants;
     public static boolean gameLoaded = false;
-    public static boolean initedCompat = false;
 
     public static void reload()
     {

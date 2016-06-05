@@ -29,7 +29,7 @@ public class WorldGenAdapter
 {
     public static boolean hasWorldGenDIYData()
     {
-        return new File(ConfigHandler.getConfigDir(), "world-gen.json").exists();
+        return ConfigHandler.getWorldGenFile().exists();
     }
 
     public static boolean readDIYData()
@@ -37,7 +37,7 @@ public class WorldGenAdapter
         JsonParser parser = new JsonParser();
         try
         {
-            JsonElement base = parser.parse(new FileReader(new File(ConfigHandler.getConfigDir(), "world-gen.json")));
+            JsonElement base = parser.parse(new FileReader(ConfigHandler.getWorldGenFile()));
             if (!base.isJsonArray() || base.getAsJsonArray().size() == 0) return false;
             JsonArray array = base.getAsJsonArray();
             for (int i = 0; i < array.size(); i++)
