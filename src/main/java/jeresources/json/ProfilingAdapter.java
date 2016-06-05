@@ -80,11 +80,28 @@ public class ProfilingAdapter
                     Map<String, Map<Integer, Float>> drops = dimensionData.dropsMap.get(blockKey);
                     if (drops != null && !drops.isEmpty())
                     {
-                        StringBuilder dropsString = new StringBuilder();
-                        for (Map.Entry<String, Map<Integer, Float>> dropEntry : drops.entrySet())
-                            for (Map.Entry<Integer, Float> fortuneEntry : dropEntry.getValue().entrySet())
-                                dropsString.append(dropEntry.getKey()).append(":").append(fortuneEntry.getValue()).append(":").append(fortuneEntry.getKey()).append(",");
-                        writer.name("drops").value(dropsString.toString());
+                        writer.name("dropsList");
+                        writer.beginArray();
+                        {
+                            for (Map.Entry<String, Map<Integer, Float>> dropEntry : drops.entrySet())
+                            {
+                                writer.beginObject();
+                                {
+                                    writer.name("itemStack").value(dropEntry.getKey());
+                                    writer.name("fortunes");
+                                    writer.beginObject();
+                                    {
+                                        for (Map.Entry<Integer, Float> fortuneEntry : dropEntry.getValue().entrySet())
+                                        {
+                                            writer.name(String.valueOf(fortuneEntry.getKey())).value(fortuneEntry.getValue());
+                                        }
+                                    }
+                                    writer.endObject();
+                                }
+                                writer.endObject();
+                            }
+                        }
+                        writer.endArray();
                     }
 
                     Boolean canSilkTouch = dimensionData.silkTouchMap.get(blockKey);

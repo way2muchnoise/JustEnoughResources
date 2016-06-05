@@ -16,7 +16,10 @@ public class MapKeys
         Item item = drop.getItem();
         if (item == null)
             return null;
-        return item.getRegistryName().toString() + ':' + drop.getMetadata();
+        String key = item.getRegistryName().toString() + ':' + drop.getMetadata();
+        if (drop.getTagCompound() != null)
+            key += ':' + drop.getTagCompound().toString();
+        return key;
     }
 
     public static String getKey(IPlantable plant)
