@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import jeresources.config.ConfigHandler;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.DimensionManager;
@@ -57,7 +58,7 @@ public class ProfilingTimer
             counters.completed = true;
             send("[" + DimensionManager.getProvider(dim).getDimensionType().getName() + "] Completed profiling of " +
                     (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
-                    (System.currentTimeMillis() - counters.start) + " ms saved to world-gen-scan.json");
+                    (System.currentTimeMillis() - counters.start) + " ms saved to " + ConfigHandler.getWorldGenFile());
         }
     }
 

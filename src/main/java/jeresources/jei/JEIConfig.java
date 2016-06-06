@@ -17,6 +17,8 @@ import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.BlankModPlugin;
+import mezz.jei.api.IJeiHelpers;
+import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 
@@ -32,9 +34,12 @@ public class JEIConfig extends BlankModPlugin
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
     public static final String VILLAGER = Reference.ID + ".villager";
 
+    private static IJeiHelpers jeiHelpers;
+
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
+        JEIConfig.jeiHelpers = registry.getJeiHelpers();
         registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler(), new VillagerHandler());
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
         JEResources.PROXY.initCompatibility();
@@ -45,5 +50,10 @@ public class JEIConfig extends BlankModPlugin
         registry.addRecipes(DungeonRegistry.getInstance().getDungeons());
         registry.addRecipes(VillagerRegistry.getInstance().getVillagers());
         registry.addRecipes(EnchantmentMaker.createRecipes(registry.getItemRegistry()));
+    }
+
+    public static IJeiHelpers getJeiHelpers()
+    {
+        return jeiHelpers;
     }
 }
