@@ -16,9 +16,17 @@ public class DungeonHandler implements IRecipeHandler<DungeonEntry>
         return DungeonEntry.class;
     }
 
+    @Deprecated
     @Nonnull
     @Override
     public String getRecipeCategoryUid()
+    {
+        return JEIConfig.DUNGEON;
+    }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull DungeonEntry recipe)
     {
         return JEIConfig.DUNGEON;
     }

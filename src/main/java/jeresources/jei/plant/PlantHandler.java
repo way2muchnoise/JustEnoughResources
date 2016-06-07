@@ -16,9 +16,17 @@ public class PlantHandler implements IRecipeHandler<PlantEntry>
         return PlantEntry.class;
     }
 
+    @Deprecated
     @Nonnull
     @Override
     public String getRecipeCategoryUid()
+    {
+        return JEIConfig.PLANT;
+    }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull PlantEntry recipe)
     {
         return JEIConfig.PLANT;
     }

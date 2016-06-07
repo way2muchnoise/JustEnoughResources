@@ -50,6 +50,7 @@ public class LootHelper
             }
         );
 
+        drops.removeIf(Objects::isNull);
         return drops;
     }
 
