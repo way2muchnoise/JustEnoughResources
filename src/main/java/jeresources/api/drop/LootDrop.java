@@ -162,16 +162,16 @@ public class LootDrop implements Comparable<LootDrop>
         } else if (lootFunction instanceof SetMetadata)
         {
             this.item.setItemDamage(MathHelper.floor_float(((SetMetadata)lootFunction).metaRange.getMin()));
-        }
-        else if (lootFunction instanceof SetNBT)
-        {
-            NBTTagCompound compound = this.item.getTagCompound();
-            if (compound == null) compound = (NBTTagCompound)((SetNBT)lootFunction).tag.copy();
-            else compound.merge(((SetNBT)lootFunction).tag);
-            this.item.setTagCompound(compound);
         } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels)
         {
             enchanted = true;
+        } else
+        {
+            try
+            {
+                // TODO: add API thing for loot functions
+                item = lootFunction.apply(item, null, null);
+            } catch (NullPointerException ignored) {}
         }
         return this;
     }
