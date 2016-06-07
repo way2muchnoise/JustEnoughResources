@@ -28,8 +28,8 @@ public class DungeonEntry
             pool -> {
                 tmpMinStacks[0] += pool.getRolls().getMin();
                 tmpMaxStacks[0] += pool.getRolls().getMax() + pool.getBonusRolls().getMax();
-                final float totalWeight = LootHelper.getEntries(pool).stream().parallel().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
-                LootHelper.getEntries(pool).stream().parallel()
+                final float totalWeight = LootHelper.getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
+                LootHelper.getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
                     .map(entry -> new LootDrop(LootHelper.getItem(entry), entry.getEffectiveWeight(0) / totalWeight, LootHelper.getFunctions(entry))).forEach(drops::add);
             }
@@ -41,7 +41,7 @@ public class DungeonEntry
 
     public boolean containsItem(ItemStack itemStack)
     {
-        return drops.parallelStream().anyMatch(drop -> drop.item.isItemEqual(itemStack));
+        return drops.stream().anyMatch(drop -> drop.item.isItemEqual(itemStack));
     }
 
     public String getName()
@@ -52,7 +52,7 @@ public class DungeonEntry
 
     public List<ItemStack> getItemStacks()
     {
-        return drops.parallelStream().map(drop -> drop.item).collect(Collectors.toList());
+        return drops.stream().map(drop -> drop.item).collect(Collectors.toList());
     }
 
     public int getMaxStacks()
@@ -67,7 +67,7 @@ public class DungeonEntry
 
     public LootDrop getChestDrop(ItemStack ingredient)
     {
-        return drops.parallelStream().filter(drop -> ItemStack.areItemsEqual(drop.item, ingredient)).findFirst().orElse(null);
+        return drops.stream().filter(drop -> ItemStack.areItemsEqual(drop.item, ingredient)).findFirst().orElse(null);
     }
 
 }

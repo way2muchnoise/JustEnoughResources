@@ -43,8 +43,8 @@ public class LootHelper
 
         getPools(table).forEach(
             pool -> {
-                final float totalWeight = getEntries(pool).stream().parallel().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
-                getEntries(pool).stream().parallel()
+                final float totalWeight = getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
+                getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
                     .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, getFunctions(entry))).forEach(drops::add);
             }
