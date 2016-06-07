@@ -10,11 +10,8 @@ public class CommonProxy
 {
     public void initCompatibility()
     {
-        if (!Settings.initedCompat)
-        {
-            Compatibility.init();
-            EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
-        }
+        Compatibility.init();
+        EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
     }
 
     public void registerEvents()

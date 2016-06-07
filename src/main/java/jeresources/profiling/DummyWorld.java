@@ -117,7 +117,6 @@ public class DummyWorld extends WorldServer
         private final World dummyWorld;
         private final IChunkGenerator realChunkGenerator;
         private final IChunkProvider realChunkProvider;
-        private Long2ObjectMap<Chunk> id2ChunkMap = new Long2ObjectOpenHashMap<>();
         private boolean allowLoading = true;
 
         public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer)
@@ -130,7 +129,7 @@ public class DummyWorld extends WorldServer
 
         public void clearChunks()
         {
-            this.id2ChunkMap = new Long2ObjectOpenHashMap<>();
+            this.id2ChunkMap.clear();
         }
 
         @Override
