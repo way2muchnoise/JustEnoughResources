@@ -13,16 +13,16 @@ public class VillagersHelper
         int professionId = 0;
         for (VillagerRegistry.VillagerProfession profession : VillagerRegistry.instance().getRegistry())
         {
-            String name = profession.getRegistryName().toString();
             for (VillagerRegistry.VillagerCareer career : getCareers(profession))
             {
                 reg.addVillagerEntry(new VillagerEntry(
-                        name,
+                        career.getName(),
                         professionId,
                         getId(career),
                         getTrades(career)
                 ));
             }
+            professionId++;
         }
     }
 
