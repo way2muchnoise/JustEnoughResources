@@ -3,7 +3,6 @@ package jeresources.compatibility;
 import jeresources.compatibility.minecraft.MinecraftCompat;
 import jeresources.config.Settings;
 import jeresources.json.WorldGenAdapter;
-import net.minecraft.client.Minecraft;
 
 public class Compatibility
 {
@@ -23,6 +22,5 @@ public class Compatibility
         PlantRegistryImpl.commit();
         if (initWorldGen)
             WorldGenRegistryImpl.commit();
-        VillagerRegistryImpl.commit();
     }
 }
