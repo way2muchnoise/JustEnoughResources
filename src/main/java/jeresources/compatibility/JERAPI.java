@@ -9,7 +9,6 @@ public class JERAPI implements IJERAPI
     private IWorldGenRegistry worldGenRegistry;
     private IMobRegistry mobRegistry;
     private IPlantRegistry plantRegistry;
-    private IVillagerRegistry villagerRegistry;
     private static IJERAPI instance;
 
     public static IJERAPI getInstance()
@@ -24,7 +23,6 @@ public class JERAPI implements IJERAPI
         worldGenRegistry = new WorldGenRegistryImpl();
         mobRegistry = new MobRegistryImpl();
         plantRegistry = new PlantRegistryImpl();
-        villagerRegistry = new VillagerRegistryImpl();
     }
 
     public static void init(ASMDataTable asmDataTable)
@@ -48,11 +46,5 @@ public class JERAPI implements IJERAPI
     public IPlantRegistry getPlantRegistry()
     {
         return plantRegistry;
-    }
-
-    @Override
-    public IVillagerRegistry getVillagerRegistry()
-    {
-        return villagerRegistry;
     }
 }
