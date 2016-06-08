@@ -4,6 +4,8 @@ jer.config.itemsPerRow.title=Кол-во предметов в ряду
 jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
 jer.config.enchantsBlacklist.title=Чёрный список для зачарований
 jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
+jer.config.diyData.title=Использовать DIY-данные при просмотрах
+jer.config.diyData.description=Сборка с компактным кодом не будет загружаться, а json-ы будут загружены (требуется перезагрузка MC)
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Страница
@@ -28,9 +30,9 @@ jer.dungeon.strongholdCrossingChest=Пересечение крепости
 jer.dungeon.villageBlacksmithChest=Деревенская кузница
 jer.dungeon.spawnBonusChest=Бонусный сундук
 jer.dungeon.simpleDungeonChest=Подземелье
-jer.dungeon.netherFortressChest=Крепость Нижнего мира
-jer.dungeon.endCityTreasureChest=End City
-jer.dungeon.iglooChest=Igloo
+jer.dungeon.netherBridgeChest=Крепость Незера
+jer.dungeon.endCityTreasureChest=Город Эндера
+jer.dungeon.iglooChest=Иглу
 
 #Enchantments View
 jer.enchantments.title=Зачарования
@@ -40,15 +42,21 @@ jer.plant.title=Плоды растений
 
 #Ore View
 jer.worldgen.title=Генерация руд
-jer.worldgen.bestY=Лучшее значение по Y
 jer.worldgen.silkTouch=Необходимо шёлковое касание
 jer.worldgen.biomes=Появляется в биомах
 jer.worldgen.dimensions=Допустимые измерения
+jer.worldgen.drops=Выпадение
+jer.worldgen.average=Сред. выпадение
+jer.worldgen.base=Обычное
 
 #Mob View
 jer.mob.title=Добыча мобов
+jer.mob.spawn=Появляется в биоме:
 jer.mob.biome=Появляется в биомах: наведите курсор сюда
 jer.mob.exp=Даёт опыта
+
+#Villager View
+jer.villager.title=Торговля с деревенщиной
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
 jer.magmaCream.text=Из маленьких и больших лавовых кубов
