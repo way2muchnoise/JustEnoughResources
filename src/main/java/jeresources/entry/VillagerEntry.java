@@ -1,6 +1,5 @@
 package jeresources.entry;
 
-import jeresources.registry.VillagerRegistry;
 import mezz.jei.gui.Focus;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
@@ -18,31 +17,24 @@ public class VillagerEntry
 
     private final List<TradeList> tradeList;
     private final int profession, career;
+    private final String name;
 
-    public VillagerEntry(int profession, int career, EntityVillager.ITradeList[][] tradesLists)
+    public VillagerEntry(String name, int profession, int career, List<List<EntityVillager.ITradeList>> tradesLists)
     {
+        this.name = name;
         this.profession = profession;
         this.career = career;
         this.tradeList = new LinkedList<>();
         addITradeLists(tradesLists);
     }
 
-    public void addITradeList(int level, List<EntityVillager.ITradeList> tradeLists)
-    {
-        TradeList trades = this.tradeList.size() > level ? this.tradeList.get(level) : new TradeList();
-        for (EntityVillager.ITradeList tradeList : tradeLists)
-            trades.addITradeList(tradeList);
-        this.tradeList.add(trades);
-    }
-
-    public void addITradeLists(EntityVillager.ITradeList[][] tradesLists)
+    public void addITradeLists(List<List<EntityVillager.ITradeList>> tradesLists)
     {
         int i = 0;
-        for (EntityVillager.ITradeList[] levelList : tradesLists)
+        for (List<EntityVillager.ITradeList> levelList : tradesLists)
         {
             TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList();
-            for (EntityVillager.ITradeList trade : levelList)
-                trades.addITradeList(trade);
+            levelList.forEach(trades::addITradeList);
             this.tradeList.add(trades);
             i++;
         }
@@ -81,11 +73,6 @@ public class VillagerEntry
         return tradeList.size();
     }
 
-    public int getProfession()
-    {
-        return profession;
-    }
-
     public int getCareer()
     {
         return career;
@@ -93,7 +80,17 @@ public class VillagerEntry
 
     public String getName()
     {
-        return VillagerRegistry.getInstance().getVillagerName(profession, career);
+        return this.name;
+    }
+
+    public String getDisplayName()
+    {
+        return "entity.Villager." + this.name;
+    }
+
+    public int getProfession()
+    {
+        return this.profession;
     }
 
     public List<Integer> getPossibleLevels(Focus focus)

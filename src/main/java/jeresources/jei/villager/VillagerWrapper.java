@@ -73,6 +73,6 @@ public class VillagerWrapper extends BlankRecipeWrapper
         for (int level : getPossibleLevels(focus))
             Font.normal.print("lv. " + level, 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
 
-        Font.normal.print(TranslationHelper.translateToLocal(entry.getName()), 10, 25);
+        Font.normal.print(TranslationHelper.translateToLocal(entry.getDisplayName()), 10, 25);
     }
 }
