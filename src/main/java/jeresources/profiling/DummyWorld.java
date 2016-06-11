@@ -45,7 +45,7 @@ public class DummyWorld extends WorldServer
 
     public void clearChunks()
     {
-        ((DummyChunkProvider) this.chunkProvider).clearChunks();
+        ((DummyChunkProvider) this.chunkProvider).unloadAllChunks();
     }
 
     @Override
@@ -127,11 +127,6 @@ public class DummyWorld extends WorldServer
             this.realChunkProvider = chunkProviderServer;
         }
 
-        public void clearChunks()
-        {
-            this.id2ChunkMap.clear();
-        }
-
         @Override
         public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_)
         {
@@ -164,6 +159,18 @@ public class DummyWorld extends WorldServer
         {
             final long chunkKey = ChunkPos.chunkXZ2Int(x, z);
             return this.id2ChunkMap.get(chunkKey);
+        }
+
+        @Override
+        public void unloadAllChunks()
+        {
+            this.id2ChunkMap.clear();
+        }
+
+        @Override
+        public boolean saveChunks(boolean p_186027_1_)
+        {
+            return true;
         }
 
         @Override
