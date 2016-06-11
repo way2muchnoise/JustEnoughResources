@@ -64,8 +64,11 @@ public class ChunkProfiler implements Runnable
                     IBlockState blockState = chunk.getBlockState(x, y, z);
                     Block block = blockState.getBlock();
                     int meta = block.getMetaFromState(blockState);
+                    ItemStack pickBlock = null;
+                    try {
+                        pickBlock = block.getPickBlock(blockState, rayTraceResult, world, blockPos, player);
+                    } catch (Exception ignored) {}
 
-                    ItemStack pickBlock = block.getPickBlock(blockState, rayTraceResult, world, blockPos, player);
                     final String key;
                     if (pickBlock == null || pickBlock.getItem() == null) {
                         key = block.getRegistryName().toString() + ':' + meta;
