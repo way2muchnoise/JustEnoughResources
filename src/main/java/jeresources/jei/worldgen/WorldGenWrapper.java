@@ -193,7 +193,8 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
         if (index >= 0 && index < chances.length)
         {
             float chance = chances[index] * 100;
-            tooltip.add("Y: " + yValue + String.format(" (%.2G%%)", chance));
+            String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2G%%)", chance) : " <0.01%";
+            tooltip.add("Y: " + yValue + percent);
         }
 
         return tooltip;
