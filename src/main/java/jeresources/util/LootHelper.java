@@ -36,7 +36,6 @@ public class LootHelper
         return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "functions", "field_186369_b");
     }
 
-
     public static List<LootDrop> toDrops(LootTable table)
     {
         List<LootDrop> drops = new ArrayList<>();
@@ -158,7 +157,7 @@ public class LootHelper
         mobTables.put(LootTableList.ENTITIES_ZOMBIE, new EntityZombie(world));
         mobTables.put(LootTableList.ENTITIES_ZOMBIE_PIGMAN, new EntityPigZombie(world));
         mobTables.put(LootTableList.ENTITIES_SKELETON, new EntitySkeleton(world));
-        mobTables.put(LootTableList.ENTITIES_WITHER_SKELETON, new EntitySkeleton(world){{setSkeletonType(1);}});
+        mobTables.put(LootTableList.ENTITIES_WITHER_SKELETON, new EntitySkeleton(world){{func_189768_a(SkeletonType.WITHER);}});
 
         return mobTables;
     }

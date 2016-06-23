@@ -2,14 +2,14 @@ package jeresources.jei.villager;
 
 import jeresources.entry.VillagerEntry;
 import jeresources.reference.Resources;
-import jeresources.util.FocusHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.gui.Focus;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -17,6 +17,7 @@ import java.util.List;
 public class VillagerWrapper extends BlankRecipeWrapper
 {
     private final VillagerEntry entry;
+    private IFocus<ItemStack> focus;
 
     public VillagerWrapper(VillagerEntry entry)
     {
@@ -47,9 +48,14 @@ public class VillagerWrapper extends BlankRecipeWrapper
         return entry.getMaxLevel();
     }
 
-    public List<Integer> getPossibleLevels(Focus focus)
+    public List<Integer> getPossibleLevels(IFocus focus)
     {
         return entry.getPossibleLevels(focus);
+    }
+
+    public void setFocus(IFocus<ItemStack> focus)
+    {
+        this.focus = focus;
     }
 
     @Override
@@ -64,7 +70,6 @@ public class VillagerWrapper extends BlankRecipeWrapper
         );
         RenderHelper.stopScissor();
 
-        Focus focus = FocusHelper.getFocus();
         int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getPossibleLevels(focus).size()) / 2;
         int i;
         for (i = 0; i < getPossibleLevels(focus).size(); i++)

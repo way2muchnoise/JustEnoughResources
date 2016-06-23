@@ -1,6 +1,6 @@
 package jeresources.entry;
 
-import mezz.jei.gui.Focus;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
@@ -93,7 +93,7 @@ public class VillagerEntry
         return this.profession;
     }
 
-    public List<Integer> getPossibleLevels(Focus focus)
+    public List<Integer> getPossibleLevels(IFocus focus)
     {
         List<Integer> levels = new ArrayList<>();
         for (int i = 0; i < tradeList.size(); i++)
@@ -146,14 +146,14 @@ public class VillagerEntry
             return list;
         }
 
-        public TradeList getFocusedList(Focus focus)
+        public TradeList getFocusedList(IFocus<ItemStack> focus)
         {
             switch (focus.getMode())
             {
                 case INPUT:
-                    return getSubListBuy(focus.getStack());
+                    return getSubListBuy(focus.getValue());
                 case OUTPUT:
-                    return  getSubListSell(focus.getStack());
+                    return  getSubListSell(focus.getValue());
                 case NONE:
                 default:
                     return this;

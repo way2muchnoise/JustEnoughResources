@@ -3,13 +3,13 @@ package jeresources.jei.villager;
 import jeresources.entry.VillagerEntry;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.util.FocusHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.gui.Focus;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -47,7 +47,8 @@ public class VillagerCategory extends BlankRecipeCategory
         if (recipeWrapper instanceof VillagerWrapper)
         {
             VillagerWrapper wrapper = (VillagerWrapper)recipeWrapper;
-            Focus focus = FocusHelper.getFocus();
+            IFocus<ItemStack> focus = recipeLayout.getItemStacks().getFocus();
+            wrapper.setFocus(focus);
             int y = Y_ITEM_DISTANCE * (6 - wrapper.getPossibleLevels(focus).size()) / 2;
             for (int i = 0; i < wrapper.getPossibleLevels(focus).size(); i++)
             {
@@ -55,7 +56,6 @@ public class VillagerCategory extends BlankRecipeCategory
                 recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
                 recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
             }
-
 
             int i = 0;
             for (int level : wrapper.getPossibleLevels(focus))
