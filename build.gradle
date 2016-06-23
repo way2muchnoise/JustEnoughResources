@@ -30,7 +30,8 @@ repositories {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}"
+    deobfCompile "mezz.jei:jei_${version_minecraft}:${version_jei}:api"
+    runtime "mezz.jei:jei_${version_minecraft}:${version_jei}"
     compile fileTree(dir: 'lib', include: '*.jar')
 }
 
