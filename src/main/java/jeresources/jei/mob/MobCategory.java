@@ -59,8 +59,8 @@ public class MobCategory extends BlankRecipeCategory
         {
             MobWrapper mobWrapper = (MobWrapper) recipeWrapper;
             recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
-            for (int i = 0; i < Math.min(recipeWrapper.getOutputs().size(), Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
-                recipeLayout.getItemStacks().set(i, mobWrapper.getDrops().get(i));
+            for (int i = 0; i < Math.min(mobWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
+                recipeLayout.getItemStacks().set(i, mobWrapper.getDrops()[i].getDrops());
         }
     }
 }

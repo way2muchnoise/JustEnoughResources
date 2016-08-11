@@ -40,11 +40,11 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaMobs()
     {
-        LootHelper.getAllMobLootTables(getWorld()).entrySet().stream()
-            .forEach(entry -> registerMob(new MobEntry(
-                    entry.getValue(),
-                    LootHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
-            ));
+        LootHelper.getAllMobLootTables(getWorld()).entrySet().forEach(
+                entry -> registerMob(new MobEntry(
+                entry.getValue(),
+                LootHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
+        ));
 
         registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
         registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
@@ -54,11 +54,11 @@ public class MinecraftCompat extends CompatBase
 
     private void registerDungeonLoot()
     {
-        LootHelper.getAllChestLootTablesResourceLocations().stream()
-            .forEach(resourceLocation -> registerDungeonEntry(new DungeonEntry(
-                    resourceLocation.getResourcePath(),
-                    LootHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
-            ));
+        LootHelper.getAllChestLootTablesResourceLocations().forEach(
+                resourceLocation -> registerDungeonEntry(new DungeonEntry(
+                resourceLocation.getResourcePath(),
+                LootHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
+        ));
     }
 
     private void registerOres()

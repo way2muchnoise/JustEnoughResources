@@ -88,7 +88,7 @@ public class MobEntry
 
     public List<ItemStack> getDropsItemStacks()
     {
-        return this.drops.stream().map(drop -> drop.item).collect(Collectors.toList());
+        return this.drops.stream().map(LootDrop::getDrops).flatMap(List::stream).collect(Collectors.toList());
     }
 
     public String[] getBiomes()

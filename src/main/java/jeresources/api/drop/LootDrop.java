@@ -8,17 +8,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.functions.*;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class LootDrop implements Comparable<LootDrop>
 {
     public int minDrop, maxDrop;
-    public ItemStack item;
+    public ItemStack item, smeltedItem;
     public float chance;
-    public List<String> conditionals;
+    private List<String> conditionals;
     public int fortuneLevel;
     private float sortIndex;
     private boolean enchanted;
@@ -65,6 +62,7 @@ public class LootDrop implements Comparable<LootDrop>
     public LootDrop(ItemStack item, int minDrop, int maxDrop, float chance, int fortuneLevel, Conditional... conditionals)
     {
         this.item = item;
+        this.smeltedItem = null;
         this.minDrop = minDrop;
         this.maxDrop = maxDrop;
         this.chance = chance;
@@ -165,6 +163,9 @@ public class LootDrop implements Comparable<LootDrop>
         } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels)
         {
             enchanted = true;
+        } else if (lootFunction instanceof Smelt)
+        {
+            smeltedItem = lootFunction.apply(item, null, null);
         } else
         {
             try
@@ -179,6 +180,19 @@ public class LootDrop implements Comparable<LootDrop>
     public boolean isEnchanted()
     {
         return enchanted;
+    }
+
+    public boolean canBeCooked()
+    {
+        return smeltedItem != null;
+    }
+
+    public List<ItemStack> getDrops()
+    {
+        List<ItemStack> list = new LinkedList<>();
+        if (item != null)list.add(item);
+        if (smeltedItem != null) list.add(smeltedItem);
+        return list;
     }
 
     public String toString()
@@ -207,7 +221,15 @@ public class LootDrop implements Comparable<LootDrop>
 
     public List<String> getTooltipText()
     {
-        return conditionals;
+        return getTooltipText(false);
+    }
+
+    public List<String> getTooltipText(boolean smelted)
+    {
+        List<String> list = new ArrayList<>(conditionals);
+        if (smelted)
+            list.add(Conditional.burning.toString());
+        return list;
     }
 
     public void addConditionals(List<String> conditionals)
@@ -225,6 +247,7 @@ public class LootDrop implements Comparable<LootDrop>
     {
         if (ItemStack.areItemStacksEqual(item, o.item))
             return Integer.compare(o.fortuneLevel, fortuneLevel);
-        return Float.compare(o.getSortIndex(), getSortIndex());
+        int cmp = Float.compare(o.getSortIndex(), getSortIndex());
+        return cmp != 0 ? cmp : item.getDisplayName().compareTo(o.item.getDisplayName());
     }
 }

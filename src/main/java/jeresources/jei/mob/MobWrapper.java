@@ -44,9 +44,9 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         return this.mob.getDropsItemStacks();
     }
 
-    public List<ItemStack> getDrops()
+    public LootDrop[] getDrops()
     {
-        return this.mob.getDropsItemStacks();
+        return this.mob.getDrops();
     }
 
     @Override
@@ -94,8 +94,12 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
     public List<String> getToolTip(ItemStack stack)
     {
         for (LootDrop item : mob.getDrops())
-            if (item.item.isItemEqual(stack))
-                return item.conditionals;
+        {
+            if (stack.isItemEqual(item.item))
+                return item.getTooltipText();
+            if (item.canBeCooked() && stack.isItemEqual(item.smeltedItem))
+                return item.getTooltipText(true);
+        }
         return null;
     }
 
