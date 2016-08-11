@@ -46,6 +46,10 @@ public class LootHelper
                 getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
                     .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, getFunctions(entry))).forEach(drops::add);
+
+                getEntries(pool).stream()
+                        .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
+                        .map(entry -> toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
             }
         );
 
