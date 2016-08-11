@@ -103,7 +103,6 @@ public class LootHelper
         mobTables.put(LootTableList.ENTITIES_MUSHROOM_COW, new EntityMooshroom(world));
         mobTables.put(LootTableList.ENTITIES_WOLF, new EntityWolf(world));
         mobTables.put(LootTableList.ENTITIES_OCELOT, new EntityOcelot(world));
-        mobTables.put(LootTableList.ENTITIES_SHEEP, new EntitySheep(world));
         EntitySheep whiteSheep = new EntitySheep(world);
         whiteSheep.setFleeceColor(EnumDyeColor.WHITE);
         mobTables.put(LootTableList.ENTITIES_SHEEP_WHITE, whiteSheep);
