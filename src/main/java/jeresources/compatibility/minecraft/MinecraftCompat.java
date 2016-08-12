@@ -14,7 +14,7 @@ import jeresources.entry.DungeonEntry;
 import jeresources.entry.MobEntry;
 import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
-import jeresources.util.LootHelper;
+import jeresources.util.LootTableHelper;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityBat;
@@ -24,7 +24,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootTableManager;
 
 public class MinecraftCompat extends CompatBase
 {
@@ -40,10 +39,10 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaMobs()
     {
-        LootHelper.getAllMobLootTables(getWorld()).entrySet().forEach(
+        LootTableHelper.getAllMobLootTables(getWorld()).entrySet().forEach(
                 entry -> registerMob(new MobEntry(
                 entry.getValue(),
-                LootHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
+                LootTableHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
         ));
 
         registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
@@ -54,10 +53,10 @@ public class MinecraftCompat extends CompatBase
 
     private void registerDungeonLoot()
     {
-        LootHelper.getAllChestLootTablesResourceLocations().forEach(
+        LootTableHelper.getAllChestLootTablesResourceLocations().forEach(
                 resourceLocation -> registerDungeonEntry(new DungeonEntry(
                 resourceLocation.getResourcePath(),
-                LootHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
+                LootTableHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
         ));
     }
 

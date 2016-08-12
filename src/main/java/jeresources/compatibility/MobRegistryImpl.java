@@ -8,7 +8,7 @@ import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.entry.MobEntry;
 import jeresources.registry.MobRegistry;
-import jeresources.util.LootHelper;
+import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.Tuple;
@@ -76,7 +76,7 @@ public class MobRegistryImpl implements IMobRegistry
     @Override
     public void registerDrops(Class<? extends EntityLivingBase> entity, LootTable lootTable)
     {
-        registerDrops(entity, LootHelper.toDrops(lootTable).toArray(new LootDrop[0]));
+        registerDrops(entity, LootTableHelper.toDrops(lootTable).toArray(new LootDrop[0]));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class MobRegistryImpl implements IMobRegistry
     @Override
     public void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootTable lootTable)
     {
-        registerDrops(entity, watchableData, LootHelper.toDrops(lootTable).toArray(new LootDrop[0]));
+        registerDrops(entity, watchableData, LootTableHelper.toDrops(lootTable).toArray(new LootDrop[0]));
     }
 
     @Override

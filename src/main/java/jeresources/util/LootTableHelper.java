@@ -14,7 +14,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 import java.io.File;
 import java.util.*;
 
-public class LootHelper
+public class LootTableHelper
 {
     public static List<LootPool> getPools(LootTable table)
     {
@@ -45,7 +45,7 @@ public class LootHelper
                 final float totalWeight = getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
                 getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
-                    .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, getFunctions(entry))).forEach(drops::add);
+                    .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, entry.conditions, getFunctions(entry))).forEach(drops::add);
 
                 getEntries(pool).stream()
                         .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
@@ -89,7 +89,9 @@ public class LootHelper
         mobTables.put(LootTableList.ENTITIES_SILVERFISH, new EntitySilverfish(world));
         mobTables.put(LootTableList.ENTITIES_ENDERMAN, new EntityEnderman(world));
         mobTables.put(LootTableList.ENTITIES_GUARDIAN, new EntityGuardian(world));
-        mobTables.put(LootTableList.ENTITIES_ELDER_GUARDIAN, new EntityGuardian(world){{setElder();}});
+        EntityGuardian elder = new EntityGuardian(world);
+        elder.setElder();
+        mobTables.put(LootTableList.ENTITIES_ELDER_GUARDIAN, elder);
         mobTables.put(LootTableList.ENTITIES_SHULKER, new EntityShulker(world));
         mobTables.put(LootTableList.ENTITIES_IRON_GOLEM, new EntityIronGolem(world));
         mobTables.put(LootTableList.ENTITIES_SNOWMAN, new EntitySnowman(world));
@@ -160,7 +162,9 @@ public class LootHelper
         mobTables.put(LootTableList.ENTITIES_ZOMBIE, new EntityZombie(world));
         mobTables.put(LootTableList.ENTITIES_ZOMBIE_PIGMAN, new EntityPigZombie(world));
         mobTables.put(LootTableList.ENTITIES_SKELETON, new EntitySkeleton(world));
-        mobTables.put(LootTableList.ENTITIES_WITHER_SKELETON, new EntitySkeleton(world){{func_189768_a(SkeletonType.WITHER);}});
+        EntitySkeleton wither = new EntitySkeleton(world);
+        wither.func_189768_a(SkeletonType.WITHER);
+        mobTables.put(LootTableList.ENTITIES_WITHER_SKELETON, wither);
 
         return mobTables;
     }

@@ -2,7 +2,7 @@ package jeresources.entry;
 
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
-import jeresources.util.LootHelper;
+import jeresources.util.LootTableHelper;
 import jeresources.util.MobHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -68,7 +68,7 @@ public class MobEntry
     public MobEntry(EntityLivingBase entity, LootTable lootTable)
     {
         this(entity, LightLevel.any);
-        this.drops.addAll(LootHelper.toDrops(lootTable));
+        this.drops.addAll(LootTableHelper.toDrops(lootTable));
     }
 
     public EntityLivingBase getEntity()

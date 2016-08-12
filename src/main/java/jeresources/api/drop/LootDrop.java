@@ -1,24 +1,27 @@
 package jeresources.api.drop;
 
 import jeresources.api.conditionals.Conditional;
+import jeresources.util.LootConditionHelper;
+import jeresources.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.*;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LootDrop implements Comparable<LootDrop>
 {
     public int minDrop, maxDrop;
     public ItemStack item, smeltedItem;
     public float chance;
-    private List<String> conditionals;
+    private List<Conditional> conditionals;
     public int fortuneLevel;
+    public boolean enchanted;
     private float sortIndex;
-    private boolean enchanted;
 
     public LootDrop(ItemStack item)
     {
@@ -68,8 +71,7 @@ public class LootDrop implements Comparable<LootDrop>
         this.chance = chance;
         sortIndex = Math.min(chance, 1F) * (float) (minDrop + maxDrop);
         this.conditionals = new ArrayList<>();
-        for (Conditional conditional : conditionals)
-            this.conditionals.add(conditional.toString());
+        Collections.addAll(this.conditionals, conditionals);
         this.fortuneLevel = fortuneLevel;
     }
 
@@ -139,6 +141,29 @@ public class LootDrop implements Comparable<LootDrop>
         addLootFunctions(lootFunctions);
     }
 
+    public LootDrop(Item item, float chance, LootCondition[] lootConditions, LootFunction... lootFunctions)
+    {
+        this(item, chance, lootFunctions);
+        addLootConditions(lootConditions);
+    }
+
+    public LootDrop addLootConditions(LootCondition[] lootFunctions)
+    {
+        return addLootConditions(Arrays.asList(lootFunctions));
+    }
+
+    public LootDrop addLootConditions(Collection<LootCondition> lootFunctions)
+    {
+        lootFunctions.forEach(this::addLootCondition);
+        return this;
+    }
+
+    public LootDrop addLootCondition(LootCondition condition)
+    {
+        LootConditionHelper.applyCondition(condition, this);
+        return this;
+    }
+
     public LootDrop addLootFunctions(LootFunction[] lootFunctions)
     {
         return addLootFunctions(Arrays.asList(lootFunctions));
@@ -152,34 +177,8 @@ public class LootDrop implements Comparable<LootDrop>
 
     public LootDrop addLootFunction(LootFunction lootFunction)
     {
-        if (lootFunction instanceof SetCount)
-        {
-            this.minDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMin());
-            this.item.stackSize = this.minDrop < 1 ? 1 : this.minDrop;
-            this.maxDrop = MathHelper.floor_float(((SetCount)lootFunction).countRange.getMax());
-        } else if (lootFunction instanceof SetMetadata)
-        {
-            this.item.setItemDamage(MathHelper.floor_float(((SetMetadata)lootFunction).metaRange.getMin()));
-        } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels)
-        {
-            enchanted = true;
-        } else if (lootFunction instanceof Smelt)
-        {
-            smeltedItem = lootFunction.apply(item, null, null);
-        } else
-        {
-            try
-            {
-                // TODO: add API thing for loot functions
-                item = lootFunction.apply(item, null, null);
-            } catch (NullPointerException ignored) {}
-        }
+        LootFunctionHelper.applyFunction(lootFunction, this);
         return this;
-    }
-
-    public boolean isEnchanted()
-    {
-        return enchanted;
     }
 
     public boolean canBeCooked()
@@ -226,13 +225,18 @@ public class LootDrop implements Comparable<LootDrop>
 
     public List<String> getTooltipText(boolean smelted)
     {
-        List<String> list = new ArrayList<>(conditionals);
+        List<String> list = conditionals.stream().map(Conditional::toString).collect(Collectors.toList());
         if (smelted)
             list.add(Conditional.burning.toString());
         return list;
     }
 
-    public void addConditionals(List<String> conditionals)
+    public void addConditional(Conditional conditional)
+    {
+        this.conditionals.add(conditional);
+    }
+
+    public void addConditionals(List<Conditional> conditionals)
     {
         this.conditionals.addAll(conditionals);
     }

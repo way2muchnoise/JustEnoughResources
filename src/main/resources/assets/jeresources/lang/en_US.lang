@@ -68,7 +68,8 @@ jer.kingSlime.text=King Slimes only
 jer.beheading.text=Beheading increases chance
 jer.randomAspect.text=Random Aspect
 jer.equipmentDrop.text=Dropped Equipment
-
+jer.affectedByLooting.text=Affected by Looting
+jer.powered.text=When powered
 jer.burning.text=When on fire
 jer.notBurning.text=When not on fire
 jer.wet.text=When wet

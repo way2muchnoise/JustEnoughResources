@@ -8,13 +8,15 @@ import java.util.Map;
 
 public class Conditional
 {
-    public static final Map<Conditional, Conditional> reverse = new LinkedHashMap<Conditional, Conditional>();
+    public static final Map<Conditional, Conditional> reverse = new LinkedHashMap<>();
 
     public static final Conditional magmaCream = new Conditional("jer.magmaCream.text", TextModifier.darkRed);
     public static final Conditional slimeBall = new Conditional("jer.slimeBall.text", TextModifier.lightGreen);
     public static final Conditional rareDrop = new Conditional("jer.rareDrop.text", TextModifier.purple);
     public static final Conditional silkTouch = new Conditional("jer.worldgen.silkTouch", TextModifier.darkCyan);
     public static final Conditional equipmentDrop = new Conditional("jer.equipmentDrop.text", TextModifier.lightCyan);
+    public static final Conditional affectedByLooting = new Conditional("jer.affectedByLooting.text", TextModifier.lightCyan);
+    public static final Conditional powered = new Conditional("jer.powered.text", TextModifier.lightCyan);
 
     public static final Conditional burning = new Conditional("jer.burning.text", TextModifier.lightRed);
     public static final Conditional notBurning = new Conditional("jer.notBurning.text", burning);
