@@ -5,7 +5,6 @@ import jeresources.util.LootConditionHelper;
 import jeresources.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.*;
 
@@ -18,7 +17,7 @@ public class LootDrop implements Comparable<LootDrop>
     public int minDrop, maxDrop;
     public ItemStack item, smeltedItem;
     public float chance;
-    private List<Conditional> conditionals;
+    private Set<Conditional> conditionals;
     public int fortuneLevel;
     public boolean enchanted;
     private float sortIndex;
@@ -70,7 +69,7 @@ public class LootDrop implements Comparable<LootDrop>
         this.maxDrop = maxDrop;
         this.chance = chance;
         sortIndex = Math.min(chance, 1F) * (float) (minDrop + maxDrop);
-        this.conditionals = new ArrayList<>();
+        this.conditionals = new HashSet<>();
         Collections.addAll(this.conditionals, conditionals);
         this.fortuneLevel = fortuneLevel;
     }

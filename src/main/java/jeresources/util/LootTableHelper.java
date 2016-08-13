@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
 import java.io.File;
@@ -24,6 +25,11 @@ public class LootTableHelper
     public static List<LootEntry> getEntries(LootPool pool)
     {
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "lootEntries", "field_186453_a");
+    }
+
+    public static List<LootCondition> getConditions(LootPool pool)
+    {
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "poolConditions", "field_186454_b");
     }
 
     public static Item getItem(LootEntryItem lootEntry)
@@ -43,9 +49,12 @@ public class LootTableHelper
         getPools(table).forEach(
             pool -> {
                 final float totalWeight = getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
+                final List<LootCondition> poolConditions = getConditions(pool);
                 getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
-                    .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, entry.conditions, getFunctions(entry))).forEach(drops::add);
+                    .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, entry.conditions, getFunctions(entry)))
+                    .map(drop -> drop.addLootConditions(poolConditions))
+                    .forEach(drops::add);
 
                 getEntries(pool).stream()
                         .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
