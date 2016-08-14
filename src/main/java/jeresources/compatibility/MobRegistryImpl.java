@@ -11,6 +11,7 @@ import jeresources.registry.MobRegistry;
 import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 
 public class MobRegistryImpl implements IMobRegistry
 {
+    private static Map<MobEntry, ResourceLocation> rawRegisters = new HashMap<>();
     private static List<MobEntry> registers = new ArrayList<>();
     private static List<Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>>> addedDrops = new ArrayList<>();
     private static Map<Class<? extends EntityLivingBase>, List<IMobRenderHook>> renderHooks = new HashMap<>();
@@ -29,6 +31,48 @@ public class MobRegistryImpl implements IMobRegistry
     protected MobRegistryImpl()
     {
 
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel, minExp, maxExp, biomes), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel, minExp, maxExp), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel, exp, biomes), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel, exp), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel, biomes), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity, lightLevel), lootTable);
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, ResourceLocation lootTable)
+    {
+        rawRegisters.put(new MobEntry(entity), lootTable);
     }
 
     @Override
@@ -138,8 +182,11 @@ public class MobRegistryImpl implements IMobRegistry
 
     protected static void commit()
     {
-        for (MobEntry entry : registers)
-            MobRegistry.getInstance().registerMob(entry);
+        rawRegisters.entrySet().forEach(entry ->
+                entry.getKey().addDrops(LootTableHelper.toDrops(CompatBase.getWorld(), entry.getValue())));
+        rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
+        rawRegisters.clear();
+        registers.forEach(MobRegistry.getInstance()::registerMob);
         registers.clear();
         for (Tuple<Class<? extends EntityLivingBase>, Tuple<WatchableData, LootDrop[]>> tuple : addedDrops)
             MobRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond().getFirst(), tuple.getSecond().getSecond());

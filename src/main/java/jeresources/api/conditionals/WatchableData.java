@@ -6,6 +6,10 @@ import net.minecraft.network.datasync.EntityDataManager;
 
 import java.util.*;
 
+/**
+ * @deprecated Implement {@link jeresources.api.conditionals.ICustomEntityProperty} and {@link jeresources.api.conditionals.ICustomLootFunction}
+ */
+@Deprecated
 public class WatchableData
 {
     // Empty

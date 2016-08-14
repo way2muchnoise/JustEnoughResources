@@ -66,6 +66,11 @@ public class LootTableHelper
         return drops;
     }
 
+    public static List<LootDrop> toDrops(World world, ResourceLocation lootTable)
+    {
+        return toDrops(getManager(world).getLootTableFromLocation(lootTable));
+    }
+
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations()
     {
         ArrayList<ResourceLocation> chestTables = new ArrayList<>();

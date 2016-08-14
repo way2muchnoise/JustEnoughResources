@@ -71,6 +71,11 @@ public class MobEntry
         this.drops.addAll(LootTableHelper.toDrops(lootTable));
     }
 
+    public MobEntry(EntityLivingBase entity)
+    {
+        this(entity, LightLevel.any);
+    }
+
     public EntityLivingBase getEntity()
     {
         return entity;
@@ -108,6 +113,11 @@ public class MobEntry
     {
         for (LootDrop drop : drops)
             addDrop(drop);
+    }
+
+    public void addDrops(Collection<LootDrop> drops)
+    {
+        drops.forEach(this::addDrop);
     }
 
     public LightLevel getLightLevel()
