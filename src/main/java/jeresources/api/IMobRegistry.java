@@ -1,13 +1,10 @@
 package jeresources.api;
 
 import jeresources.api.conditionals.LightLevel;
-import jeresources.api.conditionals.WatchableData;
-import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * Use to register new {@link EntityLivingBase}s, {@link IMobRenderHook}s and {@link IScissorHook}s
@@ -34,39 +31,6 @@ public interface IMobRegistry
     void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes,  ResourceLocation lootTable);
     void register(EntityLivingBase entity, LightLevel lightLevel, ResourceLocation lootTable);
     void register(EntityLivingBase entity, ResourceLocation lootTable);
-
-    @Deprecated
-    void register(EntityLivingBase entity, LootTable lootTable);
-    @Deprecated
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops);
-    @Deprecated
-    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops);
-    @Deprecated
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops);
-    @Deprecated
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... drops);
-    @Deprecated
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops);
-
-    /**
-     * @deprecated Use {@link net.minecraftforge.event.LootTableLoadEvent} to edit tables
-     * and implement {@link jeresources.api.conditionals.ICustomEntityProperty} and {@link jeresources.api.conditionals.ICustomLootFunction}
-     * for your added {@link net.minecraft.world.storage.loot.properties.EntityProperty}s and {@link net.minecraft.world.storage.loot.functions.LootFunction}s
-     *
-     * Adds drops to mobs use {@link WatchableData} to add some more specifics to define the mob
-     *
-     * @param entity entity {@link Class} extending {@link EntityLivingBase}
-     * @param watchableData the {@link WatchableData} to define the extra terms
-     * @param drops drops to be added
-     */
-    @Deprecated
-    void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootDrop... drops);
-    @Deprecated
-    void registerDrops(Class<? extends EntityLivingBase> entity, WatchableData watchableData, LootTable lootTable);
-    @Deprecated
-    void registerDrops(Class<? extends EntityLivingBase> entity, LootDrop... drops);
-    @Deprecated
-    void registerDrops(Class<? extends EntityLivingBase> entity, LootTable lootTable);
 
     /**
      * Add a hook for scissoring in the mob view
