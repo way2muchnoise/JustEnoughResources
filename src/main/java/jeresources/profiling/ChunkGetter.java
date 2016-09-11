@@ -44,12 +44,7 @@ public class ChunkGetter implements Runnable
 
                     // add the next task to executor thread first so that the world's scheduledTasks
                     // has a chance to process other things like chat input
-                    executor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            dummyWorld.addScheduledTask(runnable);
-                        }
-                    });
+                    executor.execute(() -> dummyWorld.addScheduledTask(runnable));
                 }
                 else
                     executor.shutdown();
@@ -109,20 +104,7 @@ public class ChunkGetter implements Runnable
             final int chunkX = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterX();
             final int chunkZ = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterZ();
 
-            final List<Chunk> centerChunks = new ArrayList<>();
-            for (int i = 0; i < GENERATE_SIZE; i++)
-            {
-                for (int j = 0; j < GENERATE_SIZE; j++)
-                {
-                    Chunk chunk = dummyWorld.getChunkFromChunkCoords(chunkX + i, chunkZ + j);
-                    if (i > 0 && i < (GENERATE_SIZE - 1) && j > 0 && j < (GENERATE_SIZE - 1))
-                    {
-                        centerChunks.add(chunk);
-                    }
-                }
-            }
-
-            return centerChunks;
+            return ChunkGetter.centerChunks(dummyWorld, chunkX, chunkZ, GENERATE_SIZE);
         }
     }
 
@@ -154,19 +136,6 @@ public class ChunkGetter implements Runnable
             final int chunkX = this.posX;
             final int chunkZ = this.posZ;
 
-            final List<Chunk> centerChunks = new ArrayList<>();
-            for (int i = 0; i < GENERATE_SIZE; i++)
-            {
-                for (int j = 0; j < GENERATE_SIZE; j++)
-                {
-                    Chunk chunk = dummyWorld.getChunkFromChunkCoords(chunkX + i, chunkZ + j);
-                    if (i > 0 && i < (GENERATE_SIZE - 1) && j > 0 && j < (GENERATE_SIZE - 1))
-                    {
-                        centerChunks.add(chunk);
-                    }
-                }
-            }
-
             this.posX += (GENERATE_SIZE - 1);
             if (this.posX > this.maxX)
             {
@@ -174,7 +143,24 @@ public class ChunkGetter implements Runnable
                 this.posZ += (GENERATE_SIZE - 1);
             }
 
-            return centerChunks;
+            return ChunkGetter.centerChunks(dummyWorld, chunkX, chunkZ, GENERATE_SIZE);
         }
+    }
+
+    private static List<Chunk> centerChunks(DummyWorld dummyWorld, int chunkX, int chunkZ, int generate_size)
+    {
+        final List<Chunk> centerChunks = new ArrayList<>();
+        for (int i = 0; i < generate_size; i++)
+        {
+            for (int j = 0; j < generate_size; j++)
+            {
+                Chunk chunk = dummyWorld.getChunkFromChunkCoords(chunkX + i, chunkZ + j);
+                if (i > 0 && i < (generate_size - 1) && j > 0 && j < (generate_size - 1))
+                {
+                    centerChunks.add(chunk);
+                }
+            }
+        }
+        return centerChunks;
     }
 }

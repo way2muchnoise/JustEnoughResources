@@ -48,7 +48,7 @@ public class VillagerWrapper extends BlankRecipeWrapper
         return entry.getMaxLevel();
     }
 
-    public List<Integer> getPossibleLevels(IFocus focus)
+    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus)
     {
         return entry.getPossibleLevels(focus);
     }

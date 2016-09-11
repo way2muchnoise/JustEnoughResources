@@ -2,7 +2,6 @@ package jeresources.compatibility;
 
 import jeresources.api.IMobRegistry;
 import jeresources.api.conditionals.LightLevel;
-import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.entry.MobEntry;

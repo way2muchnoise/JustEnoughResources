@@ -154,7 +154,7 @@ public class DistributionHelpers
     }
 
     /**
-     * @param array
+     * @param array the float array to reverse
      * @return a reversed version of the given array
      */
     public static float[] reverse(float[] array)

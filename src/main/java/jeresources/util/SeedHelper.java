@@ -13,7 +13,7 @@ public class SeedHelper
     @SuppressWarnings("unchecked")
     public static List<PlantDrop> getSeeds()
     {
-        List<PlantDrop> result = new ArrayList<PlantDrop>();
+        List<PlantDrop> result = new ArrayList<>();
         Class seedEntry = ReflectionHelper.findClass("net.minecraftforge.common.ForgeHooks$SeedEntry");
         if (seedEntry == null) return result;
         List seedList = ReflectionHelper.getPrivateValue(ForgeHooks.class, null, "seedList");

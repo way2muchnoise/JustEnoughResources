@@ -41,8 +41,7 @@ public class ChunkProfiler implements Runnable
     @Override
     public void run()
     {
-        for (Chunk chunk : this.chunks)
-            profileChunk(chunk);
+        this.chunks.forEach(this::profileChunk);
     }
 
     private void profileChunk(Chunk chunk)

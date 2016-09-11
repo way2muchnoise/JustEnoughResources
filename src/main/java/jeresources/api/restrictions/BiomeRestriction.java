@@ -7,6 +7,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class BiomeRestriction
@@ -27,7 +28,7 @@ public class BiomeRestriction
     private static final int extremeHillsBiomeId = 3, extremeHillsEdgeBiomeId = 20;
     public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, Biome.getBiome(extremeHillsBiomeId), Biome.getBiome(extremeHillsEdgeBiomeId));
 
-    private List<Biome> biomes = new ArrayList<Biome>();
+    private List<Biome> biomes = new ArrayList<>();
     private Type type;
 
     public BiomeRestriction()
@@ -107,10 +108,7 @@ public class BiomeRestriction
 
     public List<String> toStringList()
     {
-        List<String> result = new ArrayList<>();
-        for (Biome biome : biomes)
-            if (!biome.getBiomeName().equals("")) result.add("  " + biome.getBiomeName());
-        return result;
+        return biomes.stream().filter(biome -> !biome.getBiomeName().equals("")).map(biome -> "  " + biome.getBiomeName()).collect(Collectors.toList());
     }
 
     @Override

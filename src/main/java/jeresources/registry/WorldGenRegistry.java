@@ -40,9 +40,9 @@ public class WorldGenRegistry
 
     public void addDrops(ItemStack block, LootDrop... drops)
     {
-        for (Map.Entry<String, WorldGenEntry> entry : worldGenMap.entrySet())
-            if (entry.getKey().startsWith(MapKeys.getKey(block)))
-                entry.getValue().addDrops(drops);
+        worldGenMap.entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith(MapKeys.getKey(block)))
+                .forEach(entry -> entry.getValue().addDrops(drops));
     }
 
     public List<WorldGenEntry> getWorldGen()

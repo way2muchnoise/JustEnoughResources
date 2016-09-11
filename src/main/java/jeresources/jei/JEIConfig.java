@@ -18,7 +18,6 @@ import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IJeiHelpers;
-import mezz.jei.api.IJeiRuntime;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 

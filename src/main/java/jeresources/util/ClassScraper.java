@@ -9,12 +9,12 @@ public class ClassScraper
     public static Set<Class> getSuperInterfaces(Class[] childInterfaces)
     {
 
-        Set<Class> allInterfaces = new HashSet<Class>();
+        Set<Class> allInterfaces = new HashSet<>();
 
-        for (int i = 0; i < childInterfaces.length; i++)
+        for (Class childInterface : childInterfaces)
         {
-            allInterfaces.add(childInterfaces[i]);
-            allInterfaces.addAll(getSuperInterfaces(childInterfaces[i].getInterfaces()));
+            allInterfaces.add(childInterface);
+            allInterfaces.addAll(getSuperInterfaces(childInterface.getInterfaces()));
         }
 
         return allInterfaces;
@@ -22,7 +22,7 @@ public class ClassScraper
 
     public static Set<Class> getGeneralizations(Class classObject)
     {
-        Set<Class> generalizations = new HashSet<Class>();
+        Set<Class> generalizations = new HashSet<>();
 
         generalizations.add(classObject);
 
@@ -33,11 +33,8 @@ public class ClassScraper
         }
 
         Class[] superInterfaces = classObject.getInterfaces();
-        for (int i = 0; i < superInterfaces.length; i++)
-        {
-            Class superInterface = superInterfaces[i];
+        for (Class superInterface : superInterfaces)
             generalizations.addAll(getGeneralizations(superInterface));
-        }
 
         return generalizations;
     }

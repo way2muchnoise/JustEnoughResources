@@ -3,7 +3,6 @@ package jeresources.util;
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 
 public class Font

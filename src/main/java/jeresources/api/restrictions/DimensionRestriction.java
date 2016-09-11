@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class DimensionRestriction
 {
@@ -55,12 +56,7 @@ public class DimensionRestriction
     private Set<Integer> getValidDimensions(Set<Integer> dimensions)
     {
         if (type == Type.NONE) return dimensions;
-        Set<Integer> result = new TreeSet<Integer>();
-        for (int dimension : dimensions)
-        {
-            if (dimension >= min == (type == Type.WHITELIST) == dimension <= max) result.add(dimension);
-        }
-        return result;
+        return dimensions.stream().filter(dimension -> dimension >= min == (type == Type.WHITELIST) == dimension <= max).collect(Collectors.toCollection(TreeSet::new));
     }
 
     private List<String> getDimensionString(Set<Integer> dimensions)
@@ -81,7 +77,7 @@ public class DimensionRestriction
 
     private List<String> getAltDimensionString(Set<Integer> dimensions)
     {
-        Set<Integer> validDimensions = new TreeSet<Integer>();
+        Set<Integer> validDimensions = new TreeSet<>();
         int dimMin = Integer.MAX_VALUE;
         int dimMax = Integer.MIN_VALUE;
         for (Integer dim : dimensions)
@@ -123,7 +119,7 @@ public class DimensionRestriction
         if (other.type == Type.NONE) return true;
         int dimMin = Math.min(min, other.min) - 1;
         int dimMax = Math.max(max, other.max) + 1;
-        Set<Integer> testDimensions = new TreeSet<Integer>();
+        Set<Integer> testDimensions = new TreeSet<>();
         for (int dim = dimMin; dim <= dimMax; dim++)
             testDimensions.add(dim);
         Set<Integer> thisValidDimensions = getValidDimensions(testDimensions);

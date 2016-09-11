@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PlantEntry
 {
@@ -73,10 +74,7 @@ public class PlantEntry
 
     public List<ItemStack> getLootDropStacks()
     {
-        List<ItemStack> list = new ArrayList<>();
-        for (PlantDrop drop : getDrops())
-            list.add(drop.getDrop());
-        return list;
+        return getDrops().stream().map(PlantDrop::getDrop).collect(Collectors.toList());
     }
 
     public PlantDrop getDrop(ItemStack itemStack)

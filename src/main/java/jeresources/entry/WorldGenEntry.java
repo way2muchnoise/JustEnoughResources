@@ -179,8 +179,7 @@ public class WorldGenEntry
 
     public void merge(WorldGenEntry entry)
     {
-        for (Set<LootDrop> dropSet : this.drops.values())
-            addDrops(dropSet);
+        this.drops.values().forEach(this::addDrops);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
     }
 }

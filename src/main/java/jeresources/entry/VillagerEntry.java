@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class VillagerEntry
 {
@@ -63,8 +64,7 @@ public class VillagerEntry
     {
         List<ItemStack> list = new LinkedList<>();
         for (List<Trade> trades : this.tradeList)
-            for (Trade trade : trades)
-                list.add(trade.getMinSellStack());
+            list.addAll(trades.stream().map(Trade::getMinSellStack).collect(Collectors.toList()));
         return list;
     }
 
@@ -93,7 +93,7 @@ public class VillagerEntry
         return this.profession;
     }
 
-    public List<Integer> getPossibleLevels(IFocus focus)
+    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus)
     {
         List<Integer> levels = new ArrayList<>();
         for (int i = 0; i < tradeList.size(); i++)
@@ -106,44 +106,27 @@ public class VillagerEntry
     {
         public List<ItemStack> getFirstBuyStacks()
         {
-            List<ItemStack> list = new LinkedList<>();
-            for (Trade trade : this)
-                list.add(trade.getMinBuyStack1());
-            return list;
+            return this.stream().map(Trade::getMinBuyStack1).collect(Collectors.toList());
         }
 
         public List<ItemStack> getSecondBuyStacks()
         {
-            List<ItemStack> list = new LinkedList<>();
-            for (Trade trade : this)
-                list.add(trade.getMinBuyStack2());
-            return list;
+            return this.stream().map(Trade::getMinBuyStack2).collect(Collectors.toList());
         }
 
         public List<ItemStack> getSellStacks()
         {
-            List<ItemStack> list = new LinkedList<>();
-            for (Trade trade : this)
-                list.add(trade.getMinSellStack());
-            return list;
+            return this.stream().map(Trade::getMinSellStack).collect(Collectors.toList());
         }
 
         public TradeList getSubListSell(ItemStack itemStack)
         {
-            TradeList list = new TradeList();
-            for (Trade trade : this)
-                if (trade.sellsItem(itemStack))
-                    list.add(trade);
-            return list;
+            return this.stream().filter(trade -> trade.sellsItem(itemStack)).collect(Collectors.toCollection(TradeList::new));
         }
 
         public TradeList getSubListBuy(ItemStack itemStack)
         {
-            TradeList list = new TradeList();
-            for (Trade trade : this)
-                if (trade.buysItem(itemStack))
-                    list.add(trade);
-            return list;
+            return this.stream().filter(trade -> trade.buysItem(itemStack)).collect(Collectors.toCollection(TradeList::new));
         }
 
         public TradeList getFocusedList(IFocus<ItemStack> focus)

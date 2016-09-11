@@ -9,7 +9,7 @@ public class MetaData
     /**
      * Setup mod metadata
      *
-     * @param metadata
+     * @param metadata the current {@link MetaData} to be updated
      * @return edited metadata object
      */
     public static ModMetadata init(ModMetadata metadata)
