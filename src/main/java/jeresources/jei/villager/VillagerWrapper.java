@@ -1,5 +1,6 @@
 package jeresources.jei.villager;
 
+import jeresources.collection.TradeList;
 import jeresources.entry.VillagerEntry;
 import jeresources.reference.Resources;
 import jeresources.util.Font;
@@ -38,7 +39,7 @@ public class VillagerWrapper extends BlankRecipeWrapper
         return entry.getOutputs();
     }
 
-    public VillagerEntry.TradeList getTrades(int level)
+    public TradeList getTrades(int level)
     {
         return entry.getVillagerTrades(level);
     }

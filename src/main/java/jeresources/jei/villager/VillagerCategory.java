@@ -1,6 +1,6 @@
 package jeresources.jei.villager;
 
-import jeresources.entry.VillagerEntry;
+import jeresources.collection.TradeList;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
@@ -60,7 +60,7 @@ public class VillagerCategory extends BlankRecipeCategory
             int i = 0;
             for (int level : wrapper.getPossibleLevels(focus))
             {
-                VillagerEntry.TradeList tradeList = wrapper.getTrades(level).getFocusedList(focus);
+                TradeList tradeList = wrapper.getTrades(level).getFocusedList(focus);
                 recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
                 recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
                 recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
