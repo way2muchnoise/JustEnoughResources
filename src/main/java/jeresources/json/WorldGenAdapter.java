@@ -86,6 +86,7 @@ public class WorldGenAdapter
                     {
                         JsonObject drop = dropElement.getAsJsonObject();
                         JsonElement itemStackElement = drop.get("itemStack");
+                        if (itemStackElement.isJsonNull()) continue;
                         String itemStackString = itemStackElement.getAsString();
                         String[] stackStrings = itemStackString.split(":", 4);
                         Item item = Item.REGISTRY.getObject(new ResourceLocation(stackStrings[0], stackStrings[1]));
