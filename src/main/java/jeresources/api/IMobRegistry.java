@@ -1,6 +1,7 @@
 package jeresources.api;
 
 import jeresources.api.conditionals.LightLevel;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,9 +29,28 @@ public interface IMobRegistry
     void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp,  ResourceLocation lootTable);
     void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes,  ResourceLocation lootTable);
     void register(EntityLivingBase entity, LightLevel lightLevel, int exp, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes,  ResourceLocation lootTable);
+    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable);
     void register(EntityLivingBase entity, LightLevel lightLevel, ResourceLocation lootTable);
     void register(EntityLivingBase entity, ResourceLocation lootTable);
+
+    /**
+     * Register a custom {@link EntityLivingBase} with given parameters
+     *
+     *
+     * @param entity the {@link EntityLivingBase} instance
+     * @param lightLevel the {@link LightLevel} the {@link EntityLivingBase} spawns at
+     * @param minExp minimum exp gained by killing the {@link EntityLivingBase}
+     * @param maxExp maximum exp gained by killing the {@link EntityLivingBase}
+     * @param biomes {@link java.util.List} of {@link String} names of the biomes
+     * @param lootDrops the {@link LootDrop}s to add
+     */
+    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes,  LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LightLevel lightLevel, LootDrop... lootDrops);
+    void register(EntityLivingBase entity, LootDrop... lootDrops);
 
     /**
      * Add a hook for scissoring in the mob view

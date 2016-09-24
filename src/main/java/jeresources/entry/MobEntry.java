@@ -65,6 +65,11 @@ public class MobEntry
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
+    public MobEntry(EntityLivingBase entity, LootDrop... drops)
+    {
+        this(entity, LightLevel.any, drops);
+    }
+
     public MobEntry(EntityLivingBase entity, LootTable lootTable)
     {
         this(entity, LightLevel.any);

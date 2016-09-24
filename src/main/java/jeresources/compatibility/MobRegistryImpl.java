@@ -2,6 +2,7 @@ package jeresources.compatibility;
 
 import jeresources.api.IMobRegistry;
 import jeresources.api.conditionals.LightLevel;
+import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.entry.MobEntry;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class MobRegistryImpl implements IMobRegistry
 {
     private static Map<MobEntry, ResourceLocation> rawRegisters = new HashMap<>();
+    private static List<MobEntry> preppedRegisters = new ArrayList<>();
     private static Map<Class<? extends EntityLivingBase>, List<IMobRenderHook>> renderHooks = new HashMap<>();
     private static Map<String, List<IScissorHook>> scissorHooks = new HashMap<>();
 
@@ -27,6 +29,7 @@ public class MobRegistryImpl implements IMobRegistry
 
     }
 
+    //region lootTables
     @Override
     public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable)
     {
@@ -68,6 +71,44 @@ public class MobRegistryImpl implements IMobRegistry
     {
         rawRegisters.put(new MobEntry(entity), lootTable);
     }
+    //endregion
+
+    //region lootDrops
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, minExp, maxExp, biomes, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, minExp, maxExp, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, exp, biomes, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, exp, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, biomes, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LightLevel lightLevel, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lightLevel, lootDrops));
+    }
+
+    @Override
+    public void register(EntityLivingBase entity, LootDrop... lootDrops) {
+        preppedRegisters.add(new MobEntry(entity, lootDrops));
+    }
+    //endregion
 
     @Override
     public void registerRenderHook(Class<? extends EntityLivingBase> entity, IMobRenderHook renderHook)
@@ -116,6 +157,8 @@ public class MobRegistryImpl implements IMobRegistry
 
     protected static void commit()
     {
+        preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
+        preppedRegisters.clear();
         rawRegisters.entrySet().forEach(entry ->
                 entry.getKey().addDrops(LootTableHelper.toDrops(CompatBase.getWorld(), entry.getValue())));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
