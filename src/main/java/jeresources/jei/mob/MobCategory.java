@@ -6,6 +6,7 @@ import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -42,6 +43,30 @@ public class MobCategory extends BlankRecipeCategory
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
+        int xOffset = 0;
+        int slot = 0;
+        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)
+        {
+            int yOffset = 0;
+            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++)
+            {
+                recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
+                yOffset += SPACING_Y;
+            }
+            xOffset += SPACING_X;
+        }
+
+        if (recipeWrapper instanceof MobWrapper)
+        {
+            MobWrapper mobWrapper = (MobWrapper) recipeWrapper;
+            recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
+            for (int i = 0; i < Math.min(mobWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
+                recipeLayout.getItemStacks().set(i, mobWrapper.getDrops()[i].getDrops());
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int xOffset = 0;
         int slot = 0;
         for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)

@@ -188,7 +188,7 @@ public class LootDrop implements Comparable<LootDrop>
     public List<ItemStack> getDrops()
     {
         List<ItemStack> list = new LinkedList<>();
-        if (item != null)list.add(item);
+        if (item != null) list.add(item);
         if (smeltedItem != null) list.add(smeltedItem);
         return list;
     }

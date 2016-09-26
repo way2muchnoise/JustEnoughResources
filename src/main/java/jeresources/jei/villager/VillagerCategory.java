@@ -6,6 +6,7 @@ import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -47,7 +48,34 @@ public class VillagerCategory extends BlankRecipeCategory
         if (recipeWrapper instanceof VillagerWrapper)
         {
             VillagerWrapper wrapper = (VillagerWrapper)recipeWrapper;
-            IFocus<ItemStack> focus = recipeLayout.getItemStacks().getFocus();
+            IFocus<ItemStack> focus = (IFocus<ItemStack>)recipeLayout.getFocus();
+            wrapper.setFocus(focus);
+            int y = Y_ITEM_DISTANCE * (6 - wrapper.getPossibleLevels(focus).size()) / 2;
+            for (int i = 0; i < wrapper.getPossibleLevels(focus).size(); i++)
+            {
+                recipeLayout.getItemStacks().init(3 * i, true, X_FIRST_ITEM, y + i * Y_ITEM_DISTANCE);
+                recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
+                recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
+            }
+
+            int i = 0;
+            for (int level : wrapper.getPossibleLevels(focus))
+            {
+                TradeList tradeList = wrapper.getTrades(level).getFocusedList(focus);
+                recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
+                recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
+                recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
+                i++;
+            }
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+        if (recipeWrapper instanceof VillagerWrapper)
+        {
+            VillagerWrapper wrapper = (VillagerWrapper) recipeWrapper;
+            IFocus<ItemStack> focus = (IFocus<ItemStack>)recipeLayout.getFocus();
             wrapper.setFocus(focus);
             int y = Y_ITEM_DISTANCE * (6 - wrapper.getPossibleLevels(focus).size()) / 2;
             for (int i = 0; i < wrapper.getPossibleLevels(focus).size(); i++)

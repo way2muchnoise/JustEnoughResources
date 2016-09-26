@@ -6,12 +6,14 @@ import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Objects;
 
 public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack>
 {
@@ -20,6 +22,12 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
     public DungeonWrapper(DungeonEntry chest)
     {
         this.chest = chest;
+    }
+
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients)
+    {
+        ingredients.setOutputs(ItemStack.class, this.chest.getItemStacks());
     }
 
     @Nonnull
@@ -39,6 +47,7 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
         List<ItemStack> list = this.chest.getItemStacks().subList(slot, slot+1);
         for (int n = 1; n < (amountOfItems() / slots) + 1; n++)
             list.add(this.amountOfItems() <= slot + slots * n ? null : this.chest.getItemStacks().get(slot + slots * n));
+        list.removeIf(Objects::isNull);
         return list;
     }
 

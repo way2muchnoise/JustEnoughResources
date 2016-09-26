@@ -5,6 +5,7 @@ import jeresources.entry.PlantEntry;
 import jeresources.util.CollectionHelper;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
@@ -25,6 +26,12 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
         plantEntry = entry;
     }
 
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, CollectionHelper.create(plantEntry.getPlantItemStack()));
+        ingredients.setOutputs(ItemStack.class, plantEntry.getLootDropStacks());
+    }
+
     @Nonnull
     @Override
     public List getInputs()
@@ -32,6 +39,7 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
         return CollectionHelper.create(plantEntry.getPlantItemStack());
     }
 
+    @Deprecated
     public List<ItemStack> getDrops()
     {
         return plantEntry.getLootDropStacks();

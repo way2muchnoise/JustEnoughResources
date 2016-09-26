@@ -7,9 +7,11 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -64,6 +66,23 @@ public class WorldGenCategory extends BlankRecipeCategory
             recipeLayout.getItemStacks().set(0, worldGenWrapper.getBlock());
             for (int i = 0; i < Math.min(DROP_ITEM_COUNT, worldGenWrapper.getDrops().size()); i++)
                 recipeLayout.getItemStacks().set(i + 1, worldGenWrapper.getDrops().get(i));
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+        recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
+
+        for (int i = 0; i < DROP_ITEM_COUNT; i++)
+            recipeLayout.getItemStacks().init(i + 1, false, X_DROP_ITEM + i * 18, Y_DROP_ITEM);
+
+        if (recipeWrapper instanceof WorldGenWrapper)
+        {
+            WorldGenWrapper worldGenWrapper = (WorldGenWrapper) recipeWrapper;
+            recipeLayout.getItemStacks().addTooltipCallback(worldGenWrapper);
+            recipeLayout.getItemStacks().set(0, worldGenWrapper.getBlock());
+            for (int i = 0; i < Math.min(DROP_ITEM_COUNT, worldGenWrapper.getDrops().size()); i++)
+                recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
         }
     }
 

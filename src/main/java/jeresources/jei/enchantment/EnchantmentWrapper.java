@@ -5,6 +5,7 @@ import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -64,6 +65,11 @@ public class EnchantmentWrapper extends BlankRecipeWrapper
                 this.set = this.set == lastSet ? 0 : this.set + 1;
             this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;
         }
+    }
+
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, CollectionHelper.create(itemStack));
     }
 
     @Nonnull

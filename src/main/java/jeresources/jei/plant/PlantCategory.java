@@ -5,8 +5,10 @@ import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -63,6 +65,32 @@ public class PlantCategory extends BlankRecipeCategory
             recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
             for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
                 recipeLayout.getItemStacks().set(i + 1, plantWrapper.getDrops().get(i));
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+        recipeLayout.getItemStacks().init(0, true, GRASS_X, GRASS_Y);
+        int xOffset = 0;
+        int yOffset = 0;
+        for (int i = 0; i < ingredients.getOutputs(ItemStack.class).size(); i++)
+        {
+            recipeLayout.getItemStacks().init(i + 1, false, OUTPUT_X + xOffset, OUTPUT_Y + yOffset);
+            xOffset += OUTPUT_SCALE;
+            if (xOffset > 147)
+            {
+                xOffset = 0;
+                yOffset += OUTPUT_SCALE;
+            }
+        }
+
+        if (recipeWrapper instanceof PlantWrapper)
+        {
+            PlantWrapper plantWrapper = (PlantWrapper) recipeWrapper;
+            recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
+            recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
+            for (int i = 0; i < ingredients.getOutputs(ItemStack.class).size(); i++)
+                recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
         }
     }
 

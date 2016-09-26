@@ -6,8 +6,10 @@ import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -53,6 +55,33 @@ public class DungeonCategory extends BlankRecipeCategory
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
         for (int i = 0; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++)
+        {
+            recipeLayout.getItemStacks().init(i, false, x, y);
+            x += SPACING_X;
+
+            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2)
+            {
+                x = X_FIRST_ITEM;
+                y += SPACING_Y;
+            }
+        }
+
+        if (recipeWrapper instanceof DungeonWrapper)
+        {
+            DungeonWrapper dungeonWrapper = (DungeonWrapper) recipeWrapper;
+            recipeLayout.getItemStacks().addTooltipCallback(dungeonWrapper);
+            int slots = Math.min(dungeonWrapper.amountOfItems(), ITEMS_PER_PAGE);
+            for (int i = 0; i < slots; i++)
+                recipeLayout.getItemStacks().set(i, dungeonWrapper.getItems(i, slots));
+            dungeonWrapper.resetLid();
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+        int x = X_FIRST_ITEM;
+        int y = Y_FIRST_ITEM;
+        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(ItemStack.class).size()); i++)
         {
             recipeLayout.getItemStacks().init(i, false, x, y);
             x += SPACING_X;

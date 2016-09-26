@@ -5,8 +5,10 @@ import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -45,6 +47,16 @@ public class EnchantmentCategory extends BlankRecipeCategory
         {
             EnchantmentWrapper enchantmentWrapper = (EnchantmentWrapper) recipeWrapper;
             recipeLayout.getItemStacks().setFromRecipe(0, enchantmentWrapper.getInputs());
+        }
+    }
+
+    @Override
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+        recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
+
+        if (recipeWrapper instanceof EnchantmentWrapper)
+        {
+            recipeLayout.getItemStacks().setFromRecipe(0, ingredients.getInputs(ItemStack.class));
         }
     }
 }

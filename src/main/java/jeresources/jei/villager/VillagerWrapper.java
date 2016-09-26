@@ -6,6 +6,7 @@ import jeresources.reference.Resources;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.client.Minecraft;
@@ -23,6 +24,12 @@ public class VillagerWrapper extends BlankRecipeWrapper
     public VillagerWrapper(VillagerEntry entry)
     {
         this.entry = entry;
+    }
+
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setInputs(ItemStack.class, entry.getInputs());
+        ingredients.setOutputs(ItemStack.class, entry.getOutputs());
     }
 
     @Nonnull

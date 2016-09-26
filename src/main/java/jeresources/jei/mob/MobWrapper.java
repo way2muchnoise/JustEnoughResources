@@ -7,6 +7,7 @@ import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,6 +36,11 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         this.mob = mob;
         this.scale = getScale(mob.getEntity());
         this.offsetY = getOffsetY(mob.getEntity());
+    }
+
+    @Override
+    public void getIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setOutputs(ItemStack.class, this.mob.getDropsItemStacks());
     }
 
     @Nonnull
