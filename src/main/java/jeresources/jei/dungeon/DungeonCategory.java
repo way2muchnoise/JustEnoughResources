@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class DungeonCategory extends BlankRecipeCategory
+public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
 {
     protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
@@ -50,7 +50,7 @@ public class DungeonCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper)
     {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
@@ -66,19 +66,15 @@ public class DungeonCategory extends BlankRecipeCategory
             }
         }
 
-        if (recipeWrapper instanceof DungeonWrapper)
-        {
-            DungeonWrapper dungeonWrapper = (DungeonWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(dungeonWrapper);
-            int slots = Math.min(dungeonWrapper.amountOfItems(), ITEMS_PER_PAGE);
-            for (int i = 0; i < slots; i++)
-                recipeLayout.getItemStacks().set(i, dungeonWrapper.getItems(i, slots));
-            dungeonWrapper.resetLid();
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        int slots = Math.min(recipeWrapper.amountOfItems(), ITEMS_PER_PAGE);
+        for (int i = 0; i < slots; i++)
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(i, slots));
+        recipeWrapper.resetLid();
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
         for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(ItemStack.class).size()); i++)
@@ -93,15 +89,11 @@ public class DungeonCategory extends BlankRecipeCategory
             }
         }
 
-        if (recipeWrapper instanceof DungeonWrapper)
-        {
-            DungeonWrapper dungeonWrapper = (DungeonWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(dungeonWrapper);
-            int slots = Math.min(dungeonWrapper.amountOfItems(), ITEMS_PER_PAGE);
-            for (int i = 0; i < slots; i++)
-                recipeLayout.getItemStacks().set(i, dungeonWrapper.getItems(i, slots));
-            dungeonWrapper.resetLid();
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        int slots = Math.min(recipeWrapper.amountOfItems(), ITEMS_PER_PAGE);
+        for (int i = 0; i < slots; i++)
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(i, slots));
+        recipeWrapper.resetLid();
     }
 
 }

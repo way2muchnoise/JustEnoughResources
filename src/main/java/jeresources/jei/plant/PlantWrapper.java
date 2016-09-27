@@ -28,7 +28,7 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, CollectionHelper.create(plantEntry.getPlantItemStack()));
+        ingredients.setInput(ItemStack.class, plantEntry.getPlantItemStack());
         ingredients.setOutputs(ItemStack.class, plantEntry.getLootDropStacks());
     }
 

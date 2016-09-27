@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class EnchantmentCategory extends BlankRecipeCategory
+public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
 {
     private static final int ITEM_X = 12;
     private static final int ITEM_Y = 11;
@@ -39,24 +39,17 @@ public class EnchantmentCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
 
-        if (recipeWrapper instanceof EnchantmentWrapper)
-        {
-            EnchantmentWrapper enchantmentWrapper = (EnchantmentWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().setFromRecipe(0, enchantmentWrapper.getInputs());
-        }
+        recipeLayout.getItemStacks().setFromRecipe(0, recipeWrapper.getInputs());
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
 
-        if (recipeWrapper instanceof EnchantmentWrapper)
-        {
-            recipeLayout.getItemStacks().setFromRecipe(0, ingredients.getInputs(ItemStack.class));
-        }
+        recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
     }
 }

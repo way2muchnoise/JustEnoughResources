@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class WorldGenCategory extends BlankRecipeCategory
+public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
 {
     protected static final int X_ITEM = 5;
     protected static final int Y_ITEM = 21;
@@ -52,38 +52,30 @@ public class WorldGenCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
 
         for (int i = 0; i < DROP_ITEM_COUNT; i++)
             recipeLayout.getItemStacks().init(i + 1, false, X_DROP_ITEM + i * 18, Y_DROP_ITEM);
 
-        if (recipeWrapper instanceof WorldGenWrapper)
-        {
-            WorldGenWrapper worldGenWrapper = (WorldGenWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(worldGenWrapper);
-            recipeLayout.getItemStacks().set(0, worldGenWrapper.getBlock());
-            for (int i = 0; i < Math.min(DROP_ITEM_COUNT, worldGenWrapper.getDrops().size()); i++)
-                recipeLayout.getItemStacks().set(i + 1, worldGenWrapper.getDrops().get(i));
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        recipeLayout.getItemStacks().set(0, recipeWrapper.getBlock());
+        for (int i = 0; i < Math.min(DROP_ITEM_COUNT, recipeWrapper.getDrops().size()); i++)
+            recipeLayout.getItemStacks().set(i + 1, recipeWrapper.getDrops().get(i));
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
 
         for (int i = 0; i < DROP_ITEM_COUNT; i++)
             recipeLayout.getItemStacks().init(i + 1, false, X_DROP_ITEM + i * 18, Y_DROP_ITEM);
 
-        if (recipeWrapper instanceof WorldGenWrapper)
-        {
-            WorldGenWrapper worldGenWrapper = (WorldGenWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(worldGenWrapper);
-            recipeLayout.getItemStacks().set(0, worldGenWrapper.getBlock());
-            for (int i = 0; i < Math.min(DROP_ITEM_COUNT, worldGenWrapper.getDrops().size()); i++)
-                recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        recipeLayout.getItemStacks().set(0, recipeWrapper.getBlock());
+        for (int i = 0; i < Math.min(DROP_ITEM_COUNT, recipeWrapper.getDrops().size()); i++)
+            recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
     }
 
 }

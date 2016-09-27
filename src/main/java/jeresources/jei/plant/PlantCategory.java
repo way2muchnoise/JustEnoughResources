@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class PlantCategory extends BlankRecipeCategory
+public class PlantCategory extends BlankRecipeCategory<PlantWrapper>
 {
     private static final int GRASS_X = 79;
     private static final int GRASS_Y = 10;
@@ -42,7 +42,7 @@ public class PlantCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull PlantWrapper recipeWrapper)
     {
         recipeLayout.getItemStacks().init(0, true, GRASS_X, GRASS_Y);
         int xOffset = 0;
@@ -58,18 +58,14 @@ public class PlantCategory extends BlankRecipeCategory
             }
         }
 
-        if (recipeWrapper instanceof PlantWrapper)
-        {
-            PlantWrapper plantWrapper = (PlantWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
-            recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
-            for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
-                recipeLayout.getItemStacks().set(i + 1, plantWrapper.getDrops().get(i));
-        }
+        recipeLayout.getItemStacks().setFromRecipe(0, recipeWrapper.getInputs());
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        for (int i = 0; i < recipeWrapper.getOutputs().size(); i++)
+            recipeLayout.getItemStacks().set(i + 1, recipeWrapper.getDrops().get(i));
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull PlantWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, true, GRASS_X, GRASS_Y);
         int xOffset = 0;
         int yOffset = 0;
@@ -84,14 +80,10 @@ public class PlantCategory extends BlankRecipeCategory
             }
         }
 
-        if (recipeWrapper instanceof PlantWrapper)
-        {
-            PlantWrapper plantWrapper = (PlantWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().setFromRecipe(0, plantWrapper.getInputs());
-            recipeLayout.getItemStacks().addTooltipCallback(plantWrapper);
-            for (int i = 0; i < ingredients.getOutputs(ItemStack.class).size(); i++)
-                recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
-        }
+        recipeLayout.getItemStacks().set(0, ingredients.getInputs(ItemStack.class).get(0));
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        for (int i = 0; i < ingredients.getOutputs(ItemStack.class).size(); i++)
+            recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
     }
 
 }

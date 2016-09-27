@@ -12,7 +12,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 
-public class MobCategory extends BlankRecipeCategory
+public class MobCategory extends BlankRecipeCategory<MobWrapper>
 {
     protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
@@ -41,7 +41,7 @@ public class MobCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper)
     {
         int xOffset = 0;
         int slot = 0;
@@ -56,17 +56,13 @@ public class MobCategory extends BlankRecipeCategory
             xOffset += SPACING_X;
         }
 
-        if (recipeWrapper instanceof MobWrapper)
-        {
-            MobWrapper mobWrapper = (MobWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
-            for (int i = 0; i < Math.min(mobWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
-                recipeLayout.getItemStacks().set(i, mobWrapper.getDrops()[i].getDrops());
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        for (int i = 0; i < Math.min(recipeWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getDrops()[i].getDrops());
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int xOffset = 0;
         int slot = 0;
         for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)
@@ -80,12 +76,8 @@ public class MobCategory extends BlankRecipeCategory
             xOffset += SPACING_X;
         }
 
-        if (recipeWrapper instanceof MobWrapper)
-        {
-            MobWrapper mobWrapper = (MobWrapper) recipeWrapper;
-            recipeLayout.getItemStacks().addTooltipCallback(mobWrapper);
-            for (int i = 0; i < Math.min(mobWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
-                recipeLayout.getItemStacks().set(i, mobWrapper.getDrops()[i].getDrops());
-        }
+        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
+        for (int i = 0; i < Math.min(recipeWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getDrops()[i].getDrops());
     }
 }

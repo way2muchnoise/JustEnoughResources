@@ -69,7 +69,7 @@ public class EnchantmentWrapper extends BlankRecipeWrapper
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, CollectionHelper.create(itemStack));
+        ingredients.setInput(ItemStack.class, itemStack);
     }
 
     @Nonnull
