@@ -18,7 +18,7 @@ import java.util.List;
 
 public class EnchantmentWrapper extends BlankRecipeWrapper
 {
-    private static final int ENTRYS_PER_PAGE = 11;
+    private static final int ENTRIES_PER_PAGE = 11;
     private static final int ENCHANT_X = 35;
     private static final int FIRST_ENCHANT_Y = 7;
     private static final int SPACING_Y = 10;
@@ -45,16 +45,16 @@ public class EnchantmentWrapper extends BlankRecipeWrapper
         this.itemStack = itemStack;
         this.enchantments = enchantments;
         this.set = 0;
-        this.lastSet = this.enchantments.size() / (ENTRYS_PER_PAGE + 1);
+        this.lastSet = this.enchantments.size() / (ENTRIES_PER_PAGE + 1);
         this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;
     }
 
     public List<EnchantmentEntry> getEnchantments()
     {
         doCycle();
-        int last = set * ENTRYS_PER_PAGE + ENTRYS_PER_PAGE;
+        int last = set * ENTRIES_PER_PAGE + ENTRIES_PER_PAGE;
         if (last >= this.enchantments.size()) last = this.enchantments.size();
-        return this.enchantments.subList(set * ENTRYS_PER_PAGE, last);
+        return this.enchantments.subList(set * ENTRIES_PER_PAGE, last);
     }
 
     private void doCycle()
