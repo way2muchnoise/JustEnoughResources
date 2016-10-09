@@ -1,16 +1,16 @@
 package jeresources.jei.enchantment;
 
-import mezz.jei.api.IItemRegistry;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class EnchantmentMaker {
-	public static List<EnchantmentWrapper> createRecipes(IItemRegistry itemRegistry)
+	public static List<EnchantmentWrapper> createRecipes(Collection<ItemStack> itemStacks)
 	{
 		List<EnchantmentWrapper> recipes = new ArrayList<>();
-		for (ItemStack itemStack : itemRegistry.getItemList())
+		for (ItemStack itemStack : itemStacks)
 		{
 			EnchantmentWrapper recipe = EnchantmentWrapper.create(itemStack);
 			if (recipe != null)

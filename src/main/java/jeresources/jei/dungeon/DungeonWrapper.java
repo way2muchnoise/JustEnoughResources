@@ -8,6 +8,7 @@ import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -27,26 +28,26 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients)
     {
-        ingredients.setOutputs(ItemStack.class, this.chest.getItemStacks());
+        ingredients.setOutputs(ItemStack.class, this.chest.getItemStacks(null));
     }
 
     @Nonnull
     @Override
     public List getOutputs()
     {
-        return this.chest.getItemStacks();
+        return this.chest.getItemStacks(null);
     }
 
-    public int amountOfItems()
+    public int amountOfItems(IFocus<ItemStack> focus)
     {
-        return this.chest.getItemStacks().size();
+        return this.chest.getItemStacks(focus).size();
     }
 
-    public List<ItemStack> getItems(int slot, int slots)
+    public List<ItemStack> getItems(IFocus<ItemStack> focus, int slot, int slots)
     {
-        List<ItemStack> list = this.chest.getItemStacks().subList(slot, slot+1);
-        for (int n = 1; n < (amountOfItems() / slots) + 1; n++)
-            list.add(this.amountOfItems() <= slot + slots * n ? null : this.chest.getItemStacks().get(slot + slots * n));
+        List<ItemStack> list = this.chest.getItemStacks(focus).subList(slot, slot+1);
+        for (int n = 1; n < (amountOfItems(focus) / slots) + 1; n++)
+            list.add(this.amountOfItems(focus) <= slot + slots * n ? null : this.chest.getItemStacks(focus).get(slot + slots * n));
         list.removeIf(Objects::isNull);
         return list;
     }

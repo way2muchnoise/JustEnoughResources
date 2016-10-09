@@ -8,11 +8,13 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+@SuppressWarnings("unchecked")
 public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
 {
     protected static final int Y_FIRST_ITEM = 44;
@@ -67,9 +69,10 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
         }
 
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        int slots = Math.min(recipeWrapper.amountOfItems(), ITEMS_PER_PAGE);
+        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
+        int slots = Math.min(recipeWrapper.amountOfItems(focus), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++)
-            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(i, slots));
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(focus, i, slots));
         recipeWrapper.resetLid();
     }
 
@@ -90,9 +93,10 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
         }
 
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        int slots = Math.min(recipeWrapper.amountOfItems(), ITEMS_PER_PAGE);
+        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
+        int slots = Math.min(recipeWrapper.amountOfItems(focus), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++)
-            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(i, slots));
+            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(focus, i, slots));
         recipeWrapper.resetLid();
     }
 

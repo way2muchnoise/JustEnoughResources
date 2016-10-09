@@ -3,6 +3,7 @@ package jeresources.entry;
 import jeresources.api.drop.LootDrop;
 import jeresources.registry.DungeonRegistry;
 import jeresources.util.LootTableHelper;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.LootEntryItem;
@@ -49,9 +50,9 @@ public class DungeonEntry
         return name == null ? this.name : name;
     }
 
-    public List<ItemStack> getItemStacks()
+    public List<ItemStack> getItemStacks(IFocus<ItemStack> focus)
     {
-        return drops.stream().map(drop -> drop.item).collect(Collectors.toList());
+        return drops.stream().map(drop -> drop.item).filter(stack -> focus == null || focus.getMode() == IFocus.Mode.NONE || ItemStack.areItemStacksEqual(stack, focus.getValue())).collect(Collectors.toList());
     }
 
     public int getMaxStacks()

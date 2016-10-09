@@ -16,10 +16,8 @@ import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenHandler;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
-import mezz.jei.api.BlankModPlugin;
-import mezz.jei.api.IJeiHelpers;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -34,6 +32,7 @@ public class JEIConfig extends BlankModPlugin
     public static final String VILLAGER = Reference.ID + ".villager";
 
     private static IJeiHelpers jeiHelpers;
+    private static IJeiRuntime jeiRuntime;
 
     @Override
     public void register(@Nonnull IModRegistry registry)
@@ -48,11 +47,20 @@ public class JEIConfig extends BlankModPlugin
         registry.addRecipes(MobRegistry.getInstance().getMobs());
         registry.addRecipes(DungeonRegistry.getInstance().getDungeons());
         registry.addRecipes(VillagerRegistry.getInstance().getVillagers());
-        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getItemRegistry()));
+        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getIngredients(ItemStack.class)));
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        JEIConfig.jeiRuntime = jeiRuntime;
     }
 
     public static IJeiHelpers getJeiHelpers()
     {
         return jeiHelpers;
+    }
+
+    public static IJeiRuntime getJeiRuntime() {
+        return jeiRuntime;
     }
 }

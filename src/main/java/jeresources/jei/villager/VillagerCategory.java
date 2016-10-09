@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
+@SuppressWarnings("unchecked")
 public class VillagerCategory extends BlankRecipeCategory<VillagerWrapper>
 {
     protected static final int X_FIRST_ITEM = 95;
