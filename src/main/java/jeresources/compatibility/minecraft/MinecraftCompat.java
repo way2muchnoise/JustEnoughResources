@@ -24,6 +24,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableManager;
 
 public class MinecraftCompat extends CompatBase
 {
@@ -39,11 +41,11 @@ public class MinecraftCompat extends CompatBase
 
     private void registerVanillaMobs()
     {
-        LootTableHelper.getAllMobLootTables(getWorld()).entrySet().forEach(
-                entry -> registerMob(new MobEntry(
-                entry.getValue(),
-                LootTableHelper.getManager(getWorld()).getLootTableFromLocation(entry.getKey()))
-        ));
+        World world = getWorld();
+        LootTableManager manager = LootTableHelper.getManager(world);
+        LootTableHelper.getAllMobLootTables(world).entrySet().stream()
+                .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
+                .forEach(this::registerMob);
 
         registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
         registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
@@ -53,11 +55,11 @@ public class MinecraftCompat extends CompatBase
 
     private void registerDungeonLoot()
     {
-        LootTableHelper.getAllChestLootTablesResourceLocations().forEach(
-                resourceLocation -> registerDungeonEntry(new DungeonEntry(
-                resourceLocation.getResourcePath(),
-                LootTableHelper.getManager(getWorld()).getLootTableFromLocation(resourceLocation))
-        ));
+        World world = getWorld();
+        LootTableManager manager = LootTableHelper.getManager(world);
+        LootTableHelper.getAllChestLootTablesResourceLocations().stream()
+                .map(resourceLocation -> new DungeonEntry(resourceLocation.getResourcePath(), manager.getLootTableFromLocation(resourceLocation)))
+                .forEach(this::registerDungeonEntry);
     }
 
     private void registerOres()

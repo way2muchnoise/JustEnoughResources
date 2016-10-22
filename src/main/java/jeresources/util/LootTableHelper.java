@@ -1,6 +1,9 @@
 package jeresources.util;
 
+import javax.annotation.Nullable;
+
 import jeresources.api.drop.LootDrop;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -8,6 +11,9 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.ISaveFormat;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.SaveHandlerMP;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -17,6 +23,26 @@ import java.util.*;
 
 public class LootTableHelper
 {
+    private static final Map<EnumDyeColor, ResourceLocation> sheepColors = new HashMap<>();
+    static {
+        sheepColors.put(EnumDyeColor.WHITE, LootTableList.ENTITIES_SHEEP_WHITE);
+        sheepColors.put(EnumDyeColor.ORANGE, LootTableList.ENTITIES_SHEEP_ORANGE);
+        sheepColors.put(EnumDyeColor.MAGENTA, LootTableList.ENTITIES_SHEEP_MAGENTA);
+        sheepColors.put(EnumDyeColor.LIGHT_BLUE, LootTableList.ENTITIES_SHEEP_LIGHT_BLUE);
+        sheepColors.put(EnumDyeColor.YELLOW, LootTableList.ENTITIES_SHEEP_YELLOW);
+        sheepColors.put(EnumDyeColor.LIME, LootTableList.ENTITIES_SHEEP_LIME);
+        sheepColors.put(EnumDyeColor.PINK, LootTableList.ENTITIES_SHEEP_PINK);
+        sheepColors.put(EnumDyeColor.GRAY, LootTableList.ENTITIES_SHEEP_GRAY);
+        sheepColors.put(EnumDyeColor.SILVER, LootTableList.ENTITIES_SHEEP_SILVER);
+        sheepColors.put(EnumDyeColor.CYAN, LootTableList.ENTITIES_SHEEP_CYAN);
+        sheepColors.put(EnumDyeColor.PURPLE, LootTableList.ENTITIES_SHEEP_PURPLE);
+        sheepColors.put(EnumDyeColor.BLUE, LootTableList.ENTITIES_SHEEP_BLUE);
+        sheepColors.put(EnumDyeColor.BROWN, LootTableList.ENTITIES_SHEEP_BROWN);
+        sheepColors.put(EnumDyeColor.GREEN, LootTableList.ENTITIES_SHEEP_GREEN);
+        sheepColors.put(EnumDyeColor.RED, LootTableList.ENTITIES_SHEEP_RED);
+        sheepColors.put(EnumDyeColor.BLACK, LootTableList.ENTITIES_SHEEP_BLACK);
+    }
+
     public static List<LootPool> getPools(LootTable table)
     {
         return ReflectionHelper.getPrivateValue(LootTable.class, table, "pools", "field_186466_c");
@@ -92,105 +118,62 @@ public class LootTableHelper
 
     public static Map<ResourceLocation, EntityLivingBase> getAllMobLootTables(World world)
     {
-        Map<ResourceLocation, EntityLivingBase> mobTables = new HashMap<>();
+        MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
 
-        mobTables.put(LootTableList.ENTITIES_WITCH, new EntityWitch(world));
-        mobTables.put(LootTableList.ENTITIES_BLAZE, new EntityBlaze(world));
-        mobTables.put(LootTableList.ENTITIES_CREEPER, new EntityCreeper(world));
-        mobTables.put(LootTableList.ENTITIES_SPIDER, new EntitySpider(world));
-        mobTables.put(LootTableList.ENTITIES_CAVE_SPIDER, new EntityCaveSpider(world));
-        mobTables.put(LootTableList.ENTITIES_GIANT, new EntityGiantZombie(world));
-        mobTables.put(LootTableList.ENTITIES_SILVERFISH, new EntitySilverfish(world));
-        mobTables.put(LootTableList.ENTITIES_ENDERMAN, new EntityEnderman(world));
-        mobTables.put(LootTableList.ENTITIES_GUARDIAN, new EntityGuardian(world));
-        EntityGuardian elder = new EntityGuardian(world);
-        elder.setElder();
-        mobTables.put(LootTableList.ENTITIES_ELDER_GUARDIAN, elder);
-        mobTables.put(LootTableList.ENTITIES_SHULKER, new EntityShulker(world));
-        mobTables.put(LootTableList.ENTITIES_IRON_GOLEM, new EntityIronGolem(world));
-        mobTables.put(LootTableList.ENTITIES_SNOWMAN, new EntitySnowman(world));
-        mobTables.put(LootTableList.ENTITIES_RABBIT, new EntityRabbit(world));
-        mobTables.put(LootTableList.ENTITIES_CHICKEN, new EntityChicken(world));
-        mobTables.put(LootTableList.ENTITIES_PIG, new EntityPig(world));
-        mobTables.put(LootTableList.ENTITIES_HORSE, new EntityHorse(world));
-        mobTables.put(LootTableList.ENTITIES_ZOMBIE_HORSE, new EntityHorse(world){{setType(HorseType.ZOMBIE);}});
-        mobTables.put(LootTableList.ENTITIES_SKELETON_HORSE, new EntityHorse(world){{setType(HorseType.SKELETON);}});
-        mobTables.put(LootTableList.ENTITIES_COW, new EntityCow(world));
-        mobTables.put(LootTableList.ENTITIES_MUSHROOM_COW, new EntityMooshroom(world));
-        mobTables.put(LootTableList.ENTITIES_WOLF, new EntityWolf(world));
-        mobTables.put(LootTableList.ENTITIES_OCELOT, new EntityOcelot(world));
-        EntitySheep whiteSheep = new EntitySheep(world);
-        whiteSheep.setFleeceColor(EnumDyeColor.WHITE);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_WHITE, whiteSheep);
-        EntitySheep orangeSheep = new EntitySheep(world);
-        orangeSheep.setFleeceColor(EnumDyeColor.ORANGE);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_ORANGE, orangeSheep);
-        EntitySheep magentaSheep = new EntitySheep(world);
-        magentaSheep.setFleeceColor(EnumDyeColor.MAGENTA);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_MAGENTA, magentaSheep);
-        EntitySheep lightBlueSheep = new EntitySheep(world);
-        lightBlueSheep.setFleeceColor(EnumDyeColor.LIGHT_BLUE);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_LIGHT_BLUE, lightBlueSheep);
-        EntitySheep yellowSheep = new EntitySheep(world);
-        yellowSheep.setFleeceColor(EnumDyeColor.YELLOW);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_YELLOW, yellowSheep);
-        EntitySheep limeSheep = new EntitySheep(world);
-        limeSheep.setFleeceColor(EnumDyeColor.LIME);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_LIME, limeSheep);
-        EntitySheep pinkSheep = new EntitySheep(world);
-        pinkSheep.setFleeceColor(EnumDyeColor.PINK);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_PINK, pinkSheep);
-        EntitySheep graySheep = new EntitySheep(world);
-        graySheep.setFleeceColor(EnumDyeColor.GRAY);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_GRAY, graySheep);
-        EntitySheep silverSheep = new EntitySheep(world);
-        silverSheep.setFleeceColor(EnumDyeColor.SILVER);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_SILVER, silverSheep);
-        EntitySheep cyanSheep = new EntitySheep(world);
-        cyanSheep.setFleeceColor(EnumDyeColor.CYAN);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_CYAN, cyanSheep);
-        EntitySheep purpleSheep = new EntitySheep(world);
-        purpleSheep.setFleeceColor(EnumDyeColor.PURPLE);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_PURPLE, purpleSheep);
-        EntitySheep blueSheep = new EntitySheep(world);
-        blueSheep.setFleeceColor(EnumDyeColor.BLUE);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_BLUE, blueSheep);
-        EntitySheep brownSheep = new EntitySheep(world);
-        brownSheep.setFleeceColor(EnumDyeColor.BROWN);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_BROWN, brownSheep);
-        EntitySheep greenSheep = new EntitySheep(world);
-        greenSheep.setFleeceColor(EnumDyeColor.GREEN);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_GREEN, greenSheep);
-        EntitySheep redSheep = new EntitySheep(world);
-        redSheep.setFleeceColor(EnumDyeColor.RED);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_RED, redSheep);
-        EntitySheep blackSheep = new EntitySheep(world);
-        blackSheep.setFleeceColor(EnumDyeColor.BLACK);
-        mobTables.put(LootTableList.ENTITIES_SHEEP_BLACK, blackSheep);
-        mobTables.put(LootTableList.ENTITIES_BAT, new EntityBat(world));
-        mobTables.put(LootTableList.ENTITIES_SLIME, new EntitySlime(world));
-        mobTables.put(LootTableList.ENTITIES_MAGMA_CUBE, new EntityMagmaCube(world));
-        mobTables.put(LootTableList.ENTITIES_GHAST, new EntityGhast(world));
-        mobTables.put(LootTableList.ENTITIES_SQUID, new EntitySquid(world));
-        mobTables.put(LootTableList.ENTITIES_ENDERMITE, new EntityEndermite(world));
-        mobTables.put(LootTableList.ENTITIES_ZOMBIE, new EntityZombie(world));
-        mobTables.put(LootTableList.ENTITIES_ZOMBIE_PIGMAN, new EntityPigZombie(world));
-        mobTables.put(LootTableList.ENTITIES_SKELETON, new EntitySkeleton(world));
-        EntitySkeleton wither = new EntitySkeleton(world);
-        wither.func_189768_a(SkeletonType.WITHER);
-        mobTables.put(LootTableList.ENTITIES_WITHER_SKELETON, wither);
+        mobTableBuilder.add(LootTableList.ENTITIES_WITCH, EntityWitch.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_BLAZE, EntityBlaze.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_CREEPER, EntityCreeper.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SPIDER, EntitySpider.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_CAVE_SPIDER, EntityCaveSpider.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_GIANT, EntityGiantZombie.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SILVERFISH, EntitySilverfish.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ENDERMAN, EntityEnderman.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_GUARDIAN, EntityGuardian.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ELDER_GUARDIAN, EntityGuardian.class, EntityGuardian::setElder);
+        mobTableBuilder.add(LootTableList.ENTITIES_SHULKER, EntityShulker.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_IRON_GOLEM, EntityIronGolem.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SNOWMAN, EntitySnowman.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_RABBIT, EntityRabbit.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_CHICKEN, EntityChicken.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_PIG, EntityPig.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_HORSE, EntityHorse.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_HORSE, EntityHorse.class, entity -> entity.setType(HorseType.ZOMBIE));
+        mobTableBuilder.add(LootTableList.ENTITIES_SKELETON_HORSE, EntityHorse.class, entity -> entity.setType(HorseType.SKELETON));
+        mobTableBuilder.add(LootTableList.ENTITIES_COW, EntityCow.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_MUSHROOM_COW, EntityMooshroom.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_WOLF, EntityWolf.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_OCELOT, EntityOcelot.class);
 
-        return mobTables;
+        for (Map.Entry<EnumDyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
+            ResourceLocation lootTableList = entry.getValue();
+            EnumDyeColor dyeColor = entry.getKey();
+            mobTableBuilder.add(lootTableList, EntitySheep.class, entity -> entity.setFleeceColor(dyeColor));
+        }
+
+        mobTableBuilder.add(LootTableList.ENTITIES_BAT, EntityBat.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SLIME, EntitySlime.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_MAGMA_CUBE, EntityMagmaCube.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_GHAST, EntityGhast.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SQUID, EntitySquid.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ENDERMITE, EntityEndermite.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE, EntityZombie.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_PIGMAN, EntityPigZombie.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SKELETON, EntitySkeleton.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_WITHER_SKELETON, EntitySkeleton.class, entity -> entity.setSkeletonType(SkeletonType.WITHER));
+
+        return mobTableBuilder.getMobTables();
     }
 
     private static LootTableManager manager;
 
-    public static LootTableManager getManager(World world)
+    public static LootTableManager getManager(@Nullable World world)
     {
-        if (world.getLootTableManager() == null)
+        if (world == null || world.getLootTableManager() == null)
         {
-            if(manager == null)
-                manager = new LootTableManager(new File(new File(world.getSaveHandler().getWorldDirectory(), "data"), "loot_tables"));
+            if(manager == null) {
+                ISaveHandler saveHandler = FakeClientWorld.saveHandler;
+                manager = new LootTableManager(new File(new File(saveHandler.getWorldDirectory(), "data"), "loot_tables"));
+            }
             return manager;
         }
         return world.getLootTableManager();
