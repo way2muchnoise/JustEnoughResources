@@ -1,8 +1,8 @@
 package jeresources.util;
 
 import jeresources.reference.Reference;
-import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Helper class for logging
@@ -11,40 +11,27 @@ import org.apache.logging.log4j.Level;
  */
 public class LogHelper
 {
-    /**
-     * General logging method
-     *
-     * @param level Level of the log
-     * @param obj   object to log
-     */
-    public static void log(Level level, Object obj)
-    {
-        FMLLog.log(Reference.ID, level, String.valueOf(obj));
+    public static void trace(String message, Object... params) {
+        log(Level.TRACE, message, params);
     }
 
-    /**
-     * Used for logging on debug level
-     *
-     * @param obj object to log
-     */
-    public static void debug(Object obj)
-    {
-        log(Level.DEBUG, obj);
+    public static void debug(String message, Object... params) {
+        log(Level.DEBUG, message, params);
     }
 
-    /**
-     * Used for logging on info level
-     *
-     * @param obj object to log
-     */
-    public static void info(Object obj)
-    {
-        log(Level.INFO, obj);
+    public static void info(String message, Object... params) {
+        log(Level.INFO, message, params);
     }
 
-    public static void warn(Object obj)
-    {
-        log(Level.WARN, obj);
+    public static void warn(String message, Object... params) {
+        log(Level.WARN, message, params);
+    }
 
+    public static void error(String message, Object... params) {
+        log(Level.ERROR, message, params);
+    }
+
+    private static void log(Level logLevel, String message, Object... params) {
+        LogManager.getLogger(Reference.ID).log(logLevel, message, params);
     }
 }

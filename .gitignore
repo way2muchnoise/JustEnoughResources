@@ -21,6 +21,7 @@ MinecraftForge-License.txt
 *.iml
 *.ipr
 *.iws
+/classes
 
 ## eclipse
 /.settings

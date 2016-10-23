@@ -9,7 +9,9 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
+import jeresources.util.FakeClientWorld;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
@@ -17,7 +19,11 @@ public abstract class CompatBase
 {
     protected static World getWorld()
     {
-        return Minecraft.getMinecraft().theWorld;
+        World world = Minecraft.getMinecraft().theWorld;
+        if (world == null) {
+            world = new FakeClientWorld();
+        }
+        return world;
     }
 
     public abstract void init(boolean worldGen);
