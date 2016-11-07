@@ -15,6 +15,7 @@ public final class Resources
             public static final BackgroundDrawable PLANT = new BackgroundDrawable(Textures.Gui.Jei.PLANT, 165, 120);
             public static final BackgroundDrawable ENCHANTMENT = new BackgroundDrawable(Textures.Gui.Jei.ENCHANTMENT, 163, 120);
             public static final BackgroundDrawable VILLAGER = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 163, 120);
+            public static final ResourceLocation TABS = new ResourceLocation(Reference.ID, Textures.Gui.Jei.TABS);
         }
     }
 
