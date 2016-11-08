@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class MobCategory extends BlankRecipeCategory<MobWrapper>
 {
@@ -18,6 +19,12 @@ public class MobCategory extends BlankRecipeCategory<MobWrapper>
     protected static final int Y_FIRST_ITEM = 43;
     protected static int SPACING_X = 72 / Settings.ITEMS_PER_ROW;
     protected static int SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
+
+    private IDrawable icon;
+
+    public MobCategory() {
+        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16);
+    }
 
     @Nonnull
     @Override
@@ -38,6 +45,13 @@ public class MobCategory extends BlankRecipeCategory<MobWrapper>
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.MOB;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
     }
 
     @Override

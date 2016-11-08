@@ -7,15 +7,21 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
 {
     private static final int ITEM_X = 12;
     private static final int ITEM_Y = 11;
+
+    private IDrawable icon;
+
+    public EnchantmentCategory() {
+        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 0, 16, 16);
+    }
 
     @Nonnull
     @Override
@@ -36,6 +42,13 @@ public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.ENCHANTMENT;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
     }
 
     @Override

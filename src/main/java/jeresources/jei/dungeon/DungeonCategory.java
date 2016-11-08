@@ -9,10 +9,10 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @SuppressWarnings("unchecked")
 public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
@@ -28,6 +28,12 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
         ITEMS_PER_PAGE = Settings.ITEMS_PER_COLUMN * Settings.ITEMS_PER_ROW * 2;
         SPACING_X = 166 / (Settings.ITEMS_PER_ROW * 2);
         SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
+    }
+
+    private IDrawable icon;
+
+    public DungeonCategory() {
+        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16);
     }
 
     @Nonnull
@@ -49,6 +55,13 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.DUNGEON;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
     }
 
     @Override

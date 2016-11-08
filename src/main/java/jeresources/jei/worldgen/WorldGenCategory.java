@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
 {
@@ -22,6 +23,12 @@ public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
     protected static final int X_DROP_ITEM = 5;
     protected static final int Y_DROP_ITEM = 66;
     private static final int DROP_ITEM_COUNT = 8;
+
+    private IDrawable icon;
+
+    public WorldGenCategory() {
+        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 16, 16, 16);
+    }
 
     @Nonnull
     @Override
@@ -42,6 +49,13 @@ public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.WORLD_GEN;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
     }
 
     @Override

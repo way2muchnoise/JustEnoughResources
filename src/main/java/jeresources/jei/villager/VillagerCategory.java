@@ -13,6 +13,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 @SuppressWarnings("unchecked")
 public class VillagerCategory extends BlankRecipeCategory<VillagerWrapper>
@@ -21,6 +22,12 @@ public class VillagerCategory extends BlankRecipeCategory<VillagerWrapper>
     protected static final int X_ITEM_DISTANCE = 18;
     protected static final int X_ITEM_RESULT = 150;
     protected static final int Y_ITEM_DISTANCE = 22;
+
+    private IDrawable icon;
+
+    public VillagerCategory() {
+        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 0, 0, 16, 16);
+    }
 
     @Nonnull
     @Override
@@ -41,6 +48,13 @@ public class VillagerCategory extends BlankRecipeCategory<VillagerWrapper>
     public IDrawable getBackground()
     {
         return Resources.Gui.Jei.VILLAGER;
+    }
+
+    @Nullable
+    @Override
+    public IDrawable getIcon()
+    {
+        return icon;
     }
 
     @Override
