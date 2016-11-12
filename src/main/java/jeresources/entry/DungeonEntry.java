@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -52,7 +53,9 @@ public class DungeonEntry
 
     public List<ItemStack> getItemStacks(IFocus<ItemStack> focus)
     {
-        return drops.stream().map(drop -> drop.item).filter(stack -> focus == null || focus.getMode() == IFocus.Mode.NONE || ItemStack.areItemStacksEqual(stack, focus.getValue())).collect(Collectors.toList());
+        return drops.stream().map(drop -> drop.item)
+            .filter(stack -> focus == null || focus.getValue() == null || ItemStack.areItemStacksEqual(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().stackSize), focus.getValue()))
+            .collect(Collectors.toList());
     }
 
     public int getMaxStacks()
