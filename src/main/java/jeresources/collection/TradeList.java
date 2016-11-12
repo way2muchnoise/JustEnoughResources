@@ -67,6 +67,7 @@ public class TradeList extends LinkedList<TradeList.Trade>
         MerchantRecipeList tempList = new MerchantRecipeList();
         for (int itr = 0; itr < 100; itr++)
             tradeList.modifyMerchantRecipeList(tempList, r);
+        if (tempList.size() == 0) return; // Bad lists be bad
         ItemStack buy1 = tempList.get(0).getItemToBuy();
         ItemStack buy2 = tempList.get(0).getSecondItemToBuy();
         ItemStack sell = tempList.get(0).getItemToSell();
