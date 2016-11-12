@@ -59,7 +59,7 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
-        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.2F, 59.0F, 79.0F);
+        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 65.2F, 59.0F, 79.0F);
         RenderHelper.renderEntity(
                 37, 110 - offsetY, scale,
                 38 - mouseX,

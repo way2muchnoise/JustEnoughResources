@@ -16,6 +16,7 @@ import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.LootTableHelper;
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
@@ -51,6 +52,7 @@ public class MinecraftCompat extends CompatBase
         registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
         registerMobRenderHook(EntityGuardian.class, RenderHooks.ELDER_GUARDIAN);
         registerMobRenderHook(EntitySquid.class, RenderHooks.SQUID);
+        registerMobRenderHook(EntityGiantZombie.class, RenderHooks.GIANT);
     }
 
     private void registerDungeonLoot()
