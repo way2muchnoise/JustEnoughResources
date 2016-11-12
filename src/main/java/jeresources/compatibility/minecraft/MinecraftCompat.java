@@ -75,7 +75,6 @@ public class MinecraftCompat extends CompatBase
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COAL_ORE), new DistributionSquare(20, 16, 1, 128), true, new LootDrop(new ItemStack(Items.COAL))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.QUARTZ_ORE), new DistributionSquare(20, 14, 1, 126), new Restriction(BlockRestriction.NETHER, DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.QUARTZ, 4))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.CLAY), new DistributionUnderWater(0.0035F), new LootDrop(new ItemStack(Items.CLAY_BALL, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.CLAY), new DistributionSquare(20, 14, 1, 126)));
     }
 
     private void registerVanillaPlants()

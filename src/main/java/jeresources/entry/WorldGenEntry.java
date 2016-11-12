@@ -192,5 +192,6 @@ public class WorldGenEntry
     {
         entry.drops.values().forEach(this::addDrops);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
+        calcChances();
     }
 }
