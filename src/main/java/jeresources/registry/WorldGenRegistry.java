@@ -49,4 +49,8 @@ public class WorldGenRegistry
     {
         return new ArrayList<>(worldGenMap.values());
     }
+
+    public void clear() {
+        worldGenMap.clear();
+    }
 }

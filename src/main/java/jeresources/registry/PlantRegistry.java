@@ -53,4 +53,8 @@ public class PlantRegistry
             for (PlantDrop drop : drops)
                 registry.get(key).add(drop);
     }
+
+    public void clear() {
+        registry.clear();
+    }
 }

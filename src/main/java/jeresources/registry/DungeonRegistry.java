@@ -67,4 +67,8 @@ public class DungeonRegistry
         if (min == max) return String.format(TranslationHelper.translateToLocal("jer.stacks"), max);
         return String.format(TranslationHelper.translateToLocal("jer.stacks"), min + " - " + max);
     }
+
+    public void clear() {
+        registry.clear();
+    }
 }

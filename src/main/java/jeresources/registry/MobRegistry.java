@@ -33,4 +33,8 @@ public class MobRegistry
     {
         return new ArrayList<>(registry);
     }
+
+    public void clear() {
+        registry.clear();
+    }
 }

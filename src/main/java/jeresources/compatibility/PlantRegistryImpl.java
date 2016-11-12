@@ -48,9 +48,7 @@ public class PlantRegistryImpl implements IPlantRegistry
     {
         for (PlantEntry entry : registers)
             PlantRegistry.getInstance().registerPlant(entry);
-        registers.clear();
         for (Tuple<ItemStack, PlantDrop[]> tuple : addedDrops)
             PlantRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
-        addedDrops.clear();
     }
 }

@@ -158,10 +158,8 @@ public class MobRegistryImpl implements IMobRegistry
     protected static void commit()
     {
         preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
-        preppedRegisters.clear();
         rawRegisters.entrySet().forEach(entry ->
                 entry.getKey().addDrops(LootTableHelper.toDrops(CompatBase.getWorld(), entry.getValue())));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
-        rawRegisters.clear();
     }
 }

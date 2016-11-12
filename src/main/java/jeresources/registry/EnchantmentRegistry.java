@@ -63,4 +63,8 @@ public class EnchantmentRegistry
     {
         return Enchantment.REGISTRY;
     }
+
+    public void clear() {
+        enchantments.clear();
+    }
 }

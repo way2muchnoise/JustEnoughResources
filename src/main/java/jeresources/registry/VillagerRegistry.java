@@ -34,4 +34,8 @@ public class VillagerRegistry
     {
         return this.villagers;
     }
+
+    public void clear() {
+        villagers.clear();
+    }
 }
