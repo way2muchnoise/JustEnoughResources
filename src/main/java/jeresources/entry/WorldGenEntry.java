@@ -179,7 +179,7 @@ public class WorldGenEntry
 
     public void merge(WorldGenEntry entry)
     {
-        this.drops.values().forEach(this::addDrops);
+        entry.drops.values().forEach(this::addDrops);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
     }
 }
