@@ -4,6 +4,7 @@ import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
 import jeresources.entry.WorldGenEntry;
+import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
@@ -43,6 +44,7 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setInput(ItemStack.class, this.worldGenEntry.getBlock());
         ingredients.setOutputs(ItemStack.class, this.worldGenEntry.getBlockAndDrops());
     }
 
@@ -51,6 +53,12 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
     public List getOutputs()
     {
         return this.worldGenEntry.getBlockAndDrops();
+    }
+
+    @Nonnull
+    @Override
+    public List getInputs() {
+        return CollectionHelper.create(this.worldGenEntry.getBlock());
     }
 
     public ItemStack getBlock()

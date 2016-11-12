@@ -6,7 +6,9 @@ import jeresources.api.drop.LootDrop;
 import jeresources.api.render.ColourHelper;
 import jeresources.api.restrictions.Restriction;
 import jeresources.util.MapKeys;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
@@ -21,6 +23,7 @@ public class WorldGenEntry
     private Restriction restriction;
     private DistributionBase distribution;
     private Map<String, Set<LootDrop>> drops;
+    private Map<Item, Set<LootDrop>> wildcardDrops;
     private Map<String, ItemStack> dropsDisplay;
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops)
@@ -31,6 +34,7 @@ public class WorldGenEntry
         this.colour = ColourHelper.BLACK;
         this.silktouch = silktouch;
         this.drops = new HashMap<>();
+        this.wildcardDrops = new HashMap<>();
         this.dropsDisplay = new HashMap<>();
         addDrops(drops);
         calcChances();
@@ -55,11 +59,17 @@ public class WorldGenEntry
     {
         for (LootDrop drop : drops)
         {
-            Set<LootDrop> dropSet = this.drops.get(MapKeys.getKey(drop.item));
+            String mapKey = MapKeys.getKey(drop.item);
+            Set<LootDrop> dropSet = this.drops.get(mapKey);
             if (dropSet == null) dropSet = new TreeSet<>();
             dropSet.add(drop);
-            String mapKey = MapKeys.getKey(drop.item);
             this.drops.put(mapKey, dropSet);
+            if(drop.item.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                Set<LootDrop> wildcardDropSet = this.wildcardDrops.get(drop.item.getItem());
+                if (wildcardDropSet == null) wildcardDropSet = new TreeSet<>();
+                wildcardDropSet.add(drop);
+                this.wildcardDrops.put(drop.item.getItem(), wildcardDropSet);
+            }
             if (!this.dropsDisplay.containsKey(mapKey))
             {
                 ItemStack itemStack = drop.item.copy();
@@ -161,7 +171,8 @@ public class WorldGenEntry
 
     public List<LootDrop> getLootDrops(ItemStack itemStack)
     {
-        List<LootDrop> list = new ArrayList<>(this.drops.get(MapKeys.getKey(itemStack)));
+        String key = MapKeys.getKey(itemStack);
+        List<LootDrop> list = new ArrayList<>(this.drops.containsKey(key) ? this.drops.get(key) : this.wildcardDrops.get(itemStack.getItem()));
         Collections.reverse(list);
         return list;
     }
