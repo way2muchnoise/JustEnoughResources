@@ -76,16 +76,19 @@ processResources {
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+def commonManifest = {
+    attributes 'FMLAT': 'jeresources_at.cfg'
+}
+
 jar {
-    manifest {
-        attributes 'FMLAT': 'jeresources_at.cfg'
-    }
+    manifest commonManifest
     destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'deobf'
+    manifest commonManifest
     destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
 
