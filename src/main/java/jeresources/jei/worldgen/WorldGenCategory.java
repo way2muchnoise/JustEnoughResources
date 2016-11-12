@@ -9,9 +9,7 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -89,7 +87,7 @@ public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
         recipeLayout.getItemStacks().set(0, recipeWrapper.getBlock());
         for (int i = 0; i < Math.min(DROP_ITEM_COUNT, recipeWrapper.getDrops().size()); i++)
-            recipeLayout.getItemStacks().set(i + 1, ingredients.getOutputs(ItemStack.class).get(i));
+            recipeLayout.getItemStacks().set(i + 1, recipeWrapper.getDrops().get(i));
     }
 
 }
