@@ -3,6 +3,8 @@ package jeresources.compatibility;
 import jeresources.compatibility.minecraft.MinecraftCompat;
 import jeresources.config.Settings;
 import jeresources.json.WorldGenAdapter;
+import jeresources.registry.VillagerRegistry;
+import jeresources.util.VillagersHelper;
 
 public class Compatibility
 {
@@ -18,6 +20,7 @@ public class Compatibility
             }
         }
         new MinecraftCompat().init(initWorldGen);
+        VillagersHelper.initRegistry(VillagerRegistry.getInstance());
         MobRegistryImpl.commit();
         PlantRegistryImpl.commit();
         if (initWorldGen)

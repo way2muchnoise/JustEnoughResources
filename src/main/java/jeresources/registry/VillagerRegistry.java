@@ -22,7 +22,6 @@ public class VillagerRegistry
     private VillagerRegistry()
     {
         this.villagers = new LinkedList<>();
-        VillagersHelper.initRegistry(this);
     }
 
     public void addVillagerEntry(VillagerEntry entry)
