@@ -11,6 +11,7 @@ public interface IJERAPI
     IMobRegistry getMobRegistry();
     IWorldGenRegistry getWorldGenRegistry();
     IPlantRegistry getPlantRegistry();
+    IDungeonRegistry getDungeonRegistry();
 
     /**
      * Don't call this every time you need it,

@@ -9,13 +9,13 @@ import jeresources.registry.WorldGenRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class WorldGenRegistryImpl implements IWorldGenRegistry
 {
-    private static List<WorldGenEntry> registers = new ArrayList<>();
-    private static List<Tuple<ItemStack, LootDrop[]>> addedDrops = new ArrayList<>();
+    private static List<WorldGenEntry> registers = new LinkedList<>();
+    private static List<Tuple<ItemStack, LootDrop[]>> addedDrops = new LinkedList<>();
 
     protected WorldGenRegistryImpl()
     {

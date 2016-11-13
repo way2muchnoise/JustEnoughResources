@@ -20,9 +20,10 @@ public class Compatibility
             }
         }
         new MinecraftCompat().init(initWorldGen);
-        VillagersHelper.initRegistry(VillagerRegistry.getInstance());
+        DungeonRegistryImpl.commit();
         MobRegistryImpl.commit();
         PlantRegistryImpl.commit();
+        VillagersHelper.initRegistry(VillagerRegistry.getInstance());
         if (initWorldGen)
             WorldGenRegistryImpl.commit();
     }

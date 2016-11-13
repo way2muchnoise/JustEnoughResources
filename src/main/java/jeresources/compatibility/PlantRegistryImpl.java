@@ -19,6 +19,10 @@ public class PlantRegistryImpl implements IPlantRegistry
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
     private static final ItemStack grass = new ItemStack(Blocks.TALLGRASS, 1, 1);
 
+    protected PlantRegistryImpl() {
+
+    }
+
     @Override
     public void register(ItemStack itemStack, IPlantable plant, PlantDrop... drops)
     {

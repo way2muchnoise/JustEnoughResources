@@ -10,6 +10,7 @@ public class JERAPI implements IJERAPI
     private IWorldGenRegistry worldGenRegistry;
     private IMobRegistry mobRegistry;
     private IPlantRegistry plantRegistry;
+    private IDungeonRegistry dungeonRegistry;
     private static IJERAPI instance;
 
     public static IJERAPI getInstance()
@@ -24,6 +25,7 @@ public class JERAPI implements IJERAPI
         worldGenRegistry = new WorldGenRegistryImpl();
         mobRegistry = new MobRegistryImpl();
         plantRegistry = new PlantRegistryImpl();
+        dungeonRegistry = new DungeonRegistryImpl();
     }
 
     public static void init(ASMDataTable asmDataTable)
@@ -47,6 +49,11 @@ public class JERAPI implements IJERAPI
     public IPlantRegistry getPlantRegistry()
     {
         return plantRegistry;
+    }
+
+    @Override
+    public IDungeonRegistry getDungeonRegistry() {
+        return dungeonRegistry;
     }
 
     @Override
