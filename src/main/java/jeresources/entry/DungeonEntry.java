@@ -7,7 +7,9 @@ import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootEntryTable;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.*;
@@ -25,6 +27,7 @@ public class DungeonEntry
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
+        final LootTableManager manager = LootTableHelper.getManager();
         LootTableHelper.getPools(lootTable).forEach(
             pool -> {
                 tmpMinStacks[0] += pool.getRolls().getMin();
@@ -33,6 +36,10 @@ public class DungeonEntry
                 LootTableHelper.getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
                     .map(entry -> new LootDrop(LootTableHelper.getItem(entry), entry.getEffectiveWeight(0) / totalWeight, LootTableHelper.getFunctions(entry))).forEach(drops::add);
+
+                LootTableHelper.getEntries(pool).stream()
+                    .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
+                    .map(entry -> LootTableHelper.toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
             }
         );
         this.drops = new TreeSet<>(this.drops);

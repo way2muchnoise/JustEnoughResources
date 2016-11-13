@@ -3,6 +3,7 @@ package jeresources.util;
 import javax.annotation.Nullable;
 
 import jeresources.api.drop.LootDrop;
+import jeresources.compatibility.CompatBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
@@ -71,6 +72,8 @@ public class LootTableHelper
     public static List<LootDrop> toDrops(LootTable table)
     {
         List<LootDrop> drops = new ArrayList<>();
+
+        final LootTableManager manager = getManager();
 
         getPools(table).forEach(
             pool -> {
@@ -177,5 +180,9 @@ public class LootTableHelper
             return manager;
         }
         return world.getLootTableManager();
+    }
+
+    public static LootTableManager getManager() {
+        return getManager(CompatBase.getWorld());
     }
 }

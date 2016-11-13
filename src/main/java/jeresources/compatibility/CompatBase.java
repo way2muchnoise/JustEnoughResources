@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 
 public abstract class CompatBase
 {
-    protected static World getWorld()
+    public static World getWorld()
     {
         World world = Minecraft.getMinecraft().theWorld;
         if (world == null) {
