@@ -44,8 +44,8 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
         World world = CompatBase.getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
-        LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getResourcePath(), manager.getLootTableFromLocation(resourceLocation)))
+        rawRegisters.entrySet().stream()
+            .map(entry -> new DungeonEntry(entry.getKey(), manager.getLootTableFromLocation(entry.getValue())))
             .forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
     }
 }
