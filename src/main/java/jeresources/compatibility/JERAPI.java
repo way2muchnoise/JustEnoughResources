@@ -2,6 +2,7 @@ package jeresources.compatibility;
 
 import jeresources.api.*;
 import jeresources.util.ReflectionHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 public class JERAPI implements IJERAPI
@@ -46,5 +47,10 @@ public class JERAPI implements IJERAPI
     public IPlantRegistry getPlantRegistry()
     {
         return plantRegistry;
+    }
+
+    @Override
+    public World getWorld() {
+        return CompatBase.getWorld();
     }
 }

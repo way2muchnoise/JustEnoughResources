@@ -159,7 +159,7 @@ public class DummyWorld extends WorldServer
         @Override
         public Chunk getLoadedChunk(int x, int z)
         {
-            final long chunkKey = ChunkPos.chunkXZ2Int(x, z);
+            final long chunkKey = ChunkPos.asLong(x, z);
             return this.id2ChunkMap.get(chunkKey);
         }
 
@@ -178,7 +178,7 @@ public class DummyWorld extends WorldServer
         @Override
         public Chunk provideChunk(int x, int z)
         {
-            final long chunkKey = ChunkPos.chunkXZ2Int(x, z);
+            final long chunkKey = ChunkPos.asLong(x, z);
             Chunk chunk = this.id2ChunkMap.get(chunkKey);
             if (chunk != null)
             {

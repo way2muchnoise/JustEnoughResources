@@ -11,6 +11,7 @@ import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -158,8 +159,8 @@ public class MobRegistryImpl implements IMobRegistry
     protected static void commit()
     {
         preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
-        rawRegisters.entrySet().forEach(entry ->
-                entry.getKey().addDrops(LootTableHelper.toDrops(CompatBase.getWorld(), entry.getValue())));
+        World world = CompatBase.getWorld();
+        rawRegisters.entrySet().forEach(entry -> entry.getKey().addDrops(LootTableHelper.toDrops(world, entry.getValue())));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
     }
 }
