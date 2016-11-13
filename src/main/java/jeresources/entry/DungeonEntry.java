@@ -23,11 +23,17 @@ public class DungeonEntry
 
     public DungeonEntry(String name, LootTable lootTable)
     {
-        this.drops = new HashSet<>();
+        this.drops = new TreeSet<>();
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
         final LootTableManager manager = LootTableHelper.getManager();
+        handleTable(lootTable, manager, tmpMinStacks, tmpMaxStacks);
+        this.minStacks = MathHelper.floor_float(tmpMinStacks[0]);
+        this.maxStacks = MathHelper.floor_float(tmpMaxStacks[0]);
+    }
+
+    private void handleTable(LootTable lootTable, LootTableManager manager, float[] tmpMinStacks, float[] tmpMaxStacks) {
         LootTableHelper.getPools(lootTable).forEach(
             pool -> {
                 tmpMinStacks[0] += pool.getRolls().getMin();
@@ -39,12 +45,10 @@ public class DungeonEntry
 
                 LootTableHelper.getEntries(pool).stream()
                     .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
-                    .map(entry -> LootTableHelper.toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
+                    .map(entry -> manager.getLootTableFromLocation(entry.table))
+                    .forEach(table -> handleTable(table, manager, tmpMinStacks, tmpMaxStacks));
             }
         );
-        this.drops = new TreeSet<>(this.drops);
-        this.minStacks = MathHelper.floor_float(tmpMinStacks[0]);
-        this.maxStacks = MathHelper.floor_float(tmpMaxStacks[0]);
     }
 
     public boolean containsItem(ItemStack itemStack)
