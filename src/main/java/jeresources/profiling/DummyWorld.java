@@ -15,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.EmptyChunk;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
@@ -63,7 +62,7 @@ public class DummyWorld extends WorldServer
     @Override
     public boolean setBlockState(BlockPos pos, IBlockState newState, int flags)
     {
-        if (!isValid(pos))
+        if (!isValid(pos) || !isBlockLoaded(pos))
         {
             return false;
         }
@@ -108,6 +107,11 @@ public class DummyWorld extends WorldServer
     {
         this.spawnedEntities.add(entity);
         return true;
+    }
+
+    @Override
+    public void tick() {
+        
     }
 
     private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator
@@ -182,7 +186,7 @@ public class DummyWorld extends WorldServer
             }
             if (!allowLoading)
             {
-                return new EmptyChunk(dummyWorld, x, z);
+                return new EmptyChunkJER(dummyWorld, x, z);
             }
 
             try
