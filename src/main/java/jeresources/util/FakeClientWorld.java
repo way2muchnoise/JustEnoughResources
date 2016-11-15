@@ -25,6 +25,11 @@ public class FakeClientWorld extends World {
         public DimensionType getDimensionType() {
             return DimensionType.OVERWORLD;
         }
+
+        @Override
+        public long getWorldTime() {
+            return worldInfo.getWorldTime();
+        }
     };
 
     public FakeClientWorld() {
