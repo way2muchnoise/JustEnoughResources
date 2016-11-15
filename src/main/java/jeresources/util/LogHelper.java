@@ -22,6 +22,10 @@ public class LogHelper {
         log(Level.INFO, message, params);
     }
 
+    public static void warn(String message, Throwable t) {
+        log(Level.WARN, message, t);
+    }
+
     public static void warn(String message, Object... params) {
         log(Level.WARN, message, params);
     }
@@ -32,5 +36,9 @@ public class LogHelper {
 
     private static void log(Level logLevel, String message, Object... params) {
         LogManager.getLogger(Reference.ID).log(logLevel, message, params);
+    }
+
+    private static void log(Level logLevel, String message, Throwable t) {
+        LogManager.getLogger(Reference.ID).log(logLevel, message, t);
     }
 }

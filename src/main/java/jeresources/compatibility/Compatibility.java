@@ -19,13 +19,13 @@ public class Compatibility {
                 }
             }
         } catch (Exception e) {
-            LogHelper.warn("Error during loading of DIY data");
+            LogHelper.warn("Error during loading of DIY data", e);
         }
 
         try {
             new MinecraftCompat().init(initWorldGen);
         } catch (Exception e) {
-            LogHelper.warn("Error during loading of default minecraft compat");
+            LogHelper.warn("Error during loading of default minecraft compat", e);
         }
 
         // Protection is implemented at VillagerEntry creation

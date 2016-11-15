@@ -152,15 +152,10 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(EntityLivingBase entity, LootDrop... lootDrops) {
         try {
-            try {
-                preppedRegisters.add(new MobEntry(entity, lootDrops));
-            } catch (Exception e) {
-                LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
-            }
+            preppedRegisters.add(new MobEntry(entity, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
-
     }
     //endregion
 
