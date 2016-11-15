@@ -10,46 +10,39 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlantRegistry
-{
+public class PlantRegistry {
     private Map<String, PlantEntry> registry;
     private static PlantRegistry instance;
 
-    public static PlantRegistry getInstance()
-    {
+    public static PlantRegistry getInstance() {
         if (instance == null)
             return instance = new PlantRegistry();
         return instance;
     }
 
-    public PlantRegistry()
-    {
+    public PlantRegistry() {
         registry = new LinkedHashMap<>();
         registerPlant(PlantEntry.registerGrass());
     }
 
-    public boolean registerPlant(PlantEntry entry)
-    {
+    public boolean registerPlant(PlantEntry entry) {
         String key = MapKeys.getKey(entry.getPlantItemStack());
-        if (contains(key)) return false;
+        if (key == null || contains(key)) return false;
         registry.put(key, entry);
         return true;
     }
 
-    private boolean contains(String key)
-    {
+    private boolean contains(String key) {
         return registry.containsKey(key);
     }
 
-    public List<PlantEntry> getAllPlants()
-    {
+    public List<PlantEntry> getAllPlants() {
         return new ArrayList<>(registry.values());
     }
 
-    public void addDrops(ItemStack itemStack, PlantDrop[] drops)
-    {
+    public void addDrops(ItemStack itemStack, PlantDrop[] drops) {
         String key = MapKeys.getKey(itemStack);
-        if (contains(key))
+        if (key == null || contains(key))
             for (PlantDrop drop : drops)
                 registry.get(key).add(drop);
     }

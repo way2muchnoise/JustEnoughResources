@@ -5,18 +5,15 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntitySheep;
 
-public class MobHelper
-{
-    public static int getExpDrop(MobEntry entry)
-    {
+public class MobHelper {
+    public static int getExpDrop(MobEntry entry) {
         if (entry.getEntity() instanceof EntityLiving)
             return ((EntityLiving) entry.getEntity()).experienceValue;
         return 0;
     }
 
-    public static String getExpandedName(MobEntry entry)
-    {
-        String raw =  entry.getEntity().getName();
+    public static String getExpandedName(MobEntry entry) {
+        String raw = entry.getEntity().getName();
         if (entry.getEntity() instanceof EntitySheep)
             raw = ((EntitySheep) entry.getEntity()).getFleeceColor().getName().replace("_", " ") + " " + raw;
         if (entry.getEntity() instanceof EntityGuardian && ((EntityGuardian) entry.getEntity()).isElder())

@@ -8,8 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class DimensionRestriction
-{
+public class DimensionRestriction {
     public static final DimensionRestriction OVERWORLD = new DimensionRestriction(0);
     public static final DimensionRestriction NETHER = new DimensionRestriction(-1);
     public static final DimensionRestriction END = new DimensionRestriction(1);
@@ -19,69 +18,57 @@ public class DimensionRestriction
     private int max;
     private Type type;
 
-    public DimensionRestriction()
-    {
+    public DimensionRestriction() {
         this.type = Type.NONE;
     }
 
-    public DimensionRestriction(int dim)
-    {
+    public DimensionRestriction(int dim) {
         this(dim, dim);
     }
 
-    public DimensionRestriction(Type type, int dim)
-    {
+    public DimensionRestriction(Type type, int dim) {
         this(type, dim, dim);
     }
 
-    public DimensionRestriction(int minDim, int maxDim)
-    {
+    public DimensionRestriction(int minDim, int maxDim) {
         this(Type.WHITELIST, minDim, maxDim);
     }
 
-    public DimensionRestriction(Type type, int minDim, int maxDim)
-    {
+    public DimensionRestriction(Type type, int minDim, int maxDim) {
         this.type = type;
         this.min = Math.min(minDim, maxDim);
         this.max = Math.max(maxDim, minDim);
     }
 
-    public List<String> getValidDimensions(BlockRestriction blockRestriction)
-    {
+    public List<String> getValidDimensions(BlockRestriction blockRestriction) {
         Set<Integer> dimensions = DimensionRegistry.getDimensions(blockRestriction);
         if (dimensions != null) return getDimensionString(dimensions);
         return getAltDimensionString(DimensionRegistry.getAltDimensions());
     }
 
-    private Set<Integer> getValidDimensions(Set<Integer> dimensions)
-    {
+    private Set<Integer> getValidDimensions(Set<Integer> dimensions) {
         if (type == Type.NONE) return dimensions;
         return dimensions.stream().filter(dimension -> dimension >= min == (type == Type.WHITELIST) == dimension <= max).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    private List<String> getDimensionString(Set<Integer> dimensions)
-    {
+    private List<String> getDimensionString(Set<Integer> dimensions) {
         return getStringList(getValidDimensions(dimensions));
     }
 
-    private List<String> getStringList(Set<Integer> set)
-    {
+    private List<String> getStringList(Set<Integer> set) {
         List<String> result = new ArrayList<>();
-        for (Integer i : set)
-        {
+        for (Integer i : set) {
             String dimName = DimensionRegistry.getDimensionName(i);
             if (dimName != null) result.add("  " + dimName);
         }
         return result;
     }
 
-    private List<String> getAltDimensionString(Set<Integer> dimensions)
-    {
+    private List<String> getAltDimensionString(Set<Integer> dimensions) {
         Set<Integer> validDimensions = new TreeSet<>();
         int dimMin = Integer.MAX_VALUE;
         int dimMax = Integer.MIN_VALUE;
-        for (Integer dim : dimensions)
-        {
+        for (Integer dim : dimensions) {
             if (dim < dimMin) dimMin = dim;
             if (dim > dimMax) dimMax = dim;
         }
@@ -89,8 +76,7 @@ public class DimensionRestriction
             if (!dimensions.contains(i)) validDimensions.add(i);
         List<String> result = getStringList(getValidDimensions(type != Type.NONE ? validDimensions : dimensions));
         if (result.isEmpty()) result.add(I18n.translateToLocal("ner.dim.no"));
-        switch (type)
-        {
+        switch (type) {
             default:
                 break;
             case NONE:
@@ -104,18 +90,15 @@ public class DimensionRestriction
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof DimensionRestriction)
-        {
+    public boolean equals(Object obj) {
+        if (obj instanceof DimensionRestriction) {
             DimensionRestriction other = (DimensionRestriction) obj;
             return other.min == min && other.max == max && other.type == type;
         }
         return false;
     }
 
-    public boolean isMergeable(DimensionRestriction other)
-    {
+    public boolean isMergeable(DimensionRestriction other) {
         if (other.type == Type.NONE) return true;
         int dimMin = Math.min(min, other.min) - 1;
         int dimMax = Math.max(max, other.max) + 1;
@@ -128,14 +111,12 @@ public class DimensionRestriction
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Dimension: " + type + (type != Type.NONE ? " " + min + "-" + max : "");
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return type.hashCode() ^ min ^ max;
     }
 }

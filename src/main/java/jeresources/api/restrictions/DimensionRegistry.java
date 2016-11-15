@@ -5,46 +5,36 @@ import net.minecraftforge.common.DimensionManager;
 
 import java.util.*;
 
-public class DimensionRegistry
-{
+public class DimensionRegistry {
     private static Map<BlockRestriction, Set<Integer>> registry = new HashMap<>();
     private static Map<Integer, DimInfo> altDimensions = new TreeMap<>();
 
-    private static class DimInfo
-    {
+    private static class DimInfo {
         private int dimId;
         private String name;
         private boolean age;
 
-        private DimInfo(int id)
-        {
+        private DimInfo(int id) {
             this(id, false);
         }
 
-        private DimInfo(int id, boolean age)
-        {
+        private DimInfo(int id, boolean age) {
             this(id, null, age);
         }
 
-        private DimInfo(int id, String name, boolean age)
-        {
+        private DimInfo(int id, String name, boolean age) {
             this.dimId = id;
             this.name = name;
             this.age = age;
         }
 
-        private String getName()
-        {
-            if (name == null)
-            {
+        private String getName() {
+            if (name == null) {
                 WorldProvider worldProvider = getWorldProvider(dimId);
-                if (worldProvider != null)
-                {
+                if (worldProvider != null) {
                     name = worldProvider.getDimensionType().getName();
                     if (age && !name.startsWith("Age")) name += " (Age)";
-                }
-                else
-                {
+                } else {
                     name = String.valueOf("Dimension ID " + dimId);
                 }
             }
@@ -52,17 +42,12 @@ public class DimensionRegistry
             return name;
         }
 
-        private static WorldProvider getWorldProvider(int dimId)
-        {
+        private static WorldProvider getWorldProvider(int dimId) {
             WorldProvider worldProvider = null;
-            if (DimensionManager.isDimensionRegistered(dimId))
-            {
-                if (DimensionManager.getWorld(dimId) != null)
-                {
+            if (DimensionManager.isDimensionRegistered(dimId)) {
+                if (DimensionManager.getWorld(dimId) != null) {
                     worldProvider = DimensionManager.getProvider(dimId);
-                }
-                else
-                {
+                } else {
                     worldProvider = DimensionManager.createProviderFor(dimId);
                 }
             }
@@ -71,20 +56,17 @@ public class DimensionRegistry
         }
     }
 
-    static
-    {
+    static {
         registerDimension(BlockRestriction.NETHER, -1);
         registerDimension(BlockRestriction.STONE, 0);
         registerDimension(BlockRestriction.END, 1);
     }
 
-    public static void registerDimension(BlockRestriction block, int dim)
-    {
+    public static void registerDimension(BlockRestriction block, int dim) {
         registerDimension(block, dim, false);
     }
 
-    public static void registerDimension(BlockRestriction block, int dim, boolean mystAge)
-    {
+    public static void registerDimension(BlockRestriction block, int dim, boolean mystAge) {
         Set<Integer> saved = registry.get(block);
         if (saved == null)
             saved = new TreeSet<>();
@@ -93,13 +75,11 @@ public class DimensionRegistry
         registry.put(block, saved);
     }
 
-    public static void registerDimension(BlockRestriction block, Integer... dims)
-    {
+    public static void registerDimension(BlockRestriction block, Integer... dims) {
         registerDimension(block, Arrays.asList(dims));
     }
 
-    public static void registerDimension(BlockRestriction block, List<Integer> dims)
-    {
+    public static void registerDimension(BlockRestriction block, List<Integer> dims) {
         Set<Integer> saved = registry.get(block);
         if (saved == null)
             saved = new TreeSet<>();
@@ -109,24 +89,20 @@ public class DimensionRegistry
         registry.put(block, saved);
     }
 
-    public static Set<Integer> getDimensions(BlockRestriction block)
-    {
+    public static Set<Integer> getDimensions(BlockRestriction block) {
         if (registry.containsKey(block)) return registry.get(block);
         return null;
     }
 
-    public static Set<Integer> getAltDimensions()
-    {
+    public static Set<Integer> getAltDimensions() {
         return altDimensions.keySet();
     }
 
-    public static String getDimensionName(int dim)
-    {
+    public static String getDimensionName(int dim) {
         return altDimensions.get(dim).getName();
     }
 
-    public static boolean contains(int dimId)
-    {
+    public static boolean contains(int dimId) {
         return altDimensions.containsKey(dimId);
     }
 }

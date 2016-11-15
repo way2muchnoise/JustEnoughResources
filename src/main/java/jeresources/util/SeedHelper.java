@@ -8,17 +8,14 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeedHelper
-{
+public class SeedHelper {
     @SuppressWarnings("unchecked")
-    public static List<PlantDrop> getSeeds()
-    {
+    public static List<PlantDrop> getSeeds() {
         List<PlantDrop> result = new ArrayList<>();
         Class seedEntry = ReflectionHelper.findClass("net.minecraftforge.common.ForgeHooks$SeedEntry");
         if (seedEntry == null) return result;
         List seedList = ReflectionHelper.getPrivateValue(ForgeHooks.class, null, "seedList");
-        for (Object o : seedList)
-        {
+        for (Object o : seedList) {
             if (o == null) continue;
             ItemStack seed = (ItemStack) ReflectionHelper.getPrivateValue(seedEntry, o, "seed");
             if (seed == null || seed.getItem() == null) continue;

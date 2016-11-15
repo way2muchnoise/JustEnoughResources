@@ -12,8 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
-public class WorldGenEntry
-{
+public class WorldGenEntry {
     private float[] chances;
     private boolean silktouch;
     private ItemStack block;
@@ -26,8 +25,7 @@ public class WorldGenEntry
     private Map<Item, Set<LootDrop>> wildcardDrops;
     private Map<String, ItemStack> dropsDisplay;
 
-    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops)
-    {
+    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
         this.block = block;
         this.distribution = distribution;
         this.restriction = restriction;
@@ -40,38 +38,33 @@ public class WorldGenEntry
         calcChances();
     }
 
-    public WorldGenEntry(ItemStack block, DistributionBase distribution, LootDrop... drops)
-    {
+    public WorldGenEntry(ItemStack block, DistributionBase distribution, LootDrop... drops) {
         this(block, distribution, Restriction.OVERWORLD_LIKE, false, drops);
     }
 
-    public WorldGenEntry(ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops)
-    {
+    public WorldGenEntry(ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops) {
         this(block, distribution, Restriction.OVERWORLD_LIKE, silktouch, drops);
     }
 
-    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction,  LootDrop... drops)
-    {
+    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
         this(block, distribution, restriction, false, drops);
     }
 
-    public void addDrops(LootDrop... drops)
-    {
-        for (LootDrop drop : drops)
-        {
+    public void addDrops(LootDrop... drops) {
+        for (LootDrop drop : drops) {
             String mapKey = MapKeys.getKey(drop.item);
+            if (mapKey == null) continue;
             Set<LootDrop> dropSet = this.drops.get(mapKey);
             if (dropSet == null) dropSet = new TreeSet<>();
             dropSet.add(drop);
             this.drops.put(mapKey, dropSet);
-            if(drop.item.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+            if (drop.item.getMetadata() == OreDictionary.WILDCARD_VALUE) {
                 Set<LootDrop> wildcardDropSet = this.wildcardDrops.get(drop.item.getItem());
                 if (wildcardDropSet == null) wildcardDropSet = new TreeSet<>();
                 wildcardDropSet.add(drop);
                 this.wildcardDrops.put(drop.item.getItem(), wildcardDropSet);
             }
-            if (!this.dropsDisplay.containsKey(mapKey))
-            {
+            if (!this.dropsDisplay.containsKey(mapKey)) {
                 ItemStack itemStack = drop.item.copy();
                 itemStack.stackSize = Math.max(1, drop.minDrop);
                 this.dropsDisplay.put(mapKey, itemStack);
@@ -79,23 +72,19 @@ public class WorldGenEntry
         }
     }
 
-    public void addDrops(Collection<LootDrop> drops)
-    {
+    public void addDrops(Collection<LootDrop> drops) {
         addDrops(drops.toArray(new LootDrop[drops.size()]));
     }
 
-    private void calcChances()
-    {
+    private void calcChances() {
         chances = new float[256];
         minY = 256;
         maxY = 0;
         int i = -1;
-        for (float chance : this.distribution.getDistribution())
-        {
+        for (float chance : this.distribution.getDistribution()) {
             if (++i == chances.length) break;
             chances[i] += chance;
-            if (chances[i] > 0)
-            {
+            if (chances[i] > 0) {
                 if (minY > i)
                     minY = i;
                 if (i > maxY)
@@ -116,61 +105,50 @@ public class WorldGenEntry
             maxY = 255;
     }
 
-    public float[] getChances()
-    {
-        return Arrays.copyOfRange(chances, minY , maxY + 1);
+    public float[] getChances() {
+        return Arrays.copyOfRange(chances, minY, maxY + 1);
     }
 
-    public int getMinY()
-    {
+    public int getMinY() {
         return minY;
     }
 
-    public int getMaxY()
-    {
+    public int getMaxY() {
         return maxY;
     }
 
-    public boolean isSilkTouchNeeded()
-    {
+    public boolean isSilkTouchNeeded() {
         return silktouch;
     }
 
-    public int getColour()
-    {
+    public int getColour() {
         return colour;
     }
 
-    public List<ItemStack> getDrops()
-    {
+    public List<ItemStack> getDrops() {
         return new ArrayList<>(this.dropsDisplay.values());
     }
 
-    public List<ItemStack> getBlockAndDrops()
-    {
+    public List<ItemStack> getBlockAndDrops() {
         List<ItemStack> list = new LinkedList<>();
         list.add(this.block);
         list.addAll(getDrops());
         return list;
     }
 
-    public ItemStack getBlock()
-    {
+    public ItemStack getBlock() {
         return this.block;
     }
 
-    public List<String> getBiomeRestrictions()
-    {
+    public List<String> getBiomeRestrictions() {
         return this.restriction.getBiomeRestrictions();
     }
 
-    public List<String> getDimensions()
-    {
+    public List<String> getDimensions() {
         return this.restriction.getDimensionRestrictions();
     }
 
-    public List<LootDrop> getLootDrops(ItemStack itemStack)
-    {
+    public List<LootDrop> getLootDrops(ItemStack itemStack) {
         String key = MapKeys.getKey(itemStack);
         List<LootDrop> list = new ArrayList<>(this.drops.containsKey(key) ? this.drops.get(key) : this.wildcardDrops.get(itemStack.getItem()));
         Collections.reverse(list);
@@ -178,18 +156,15 @@ public class WorldGenEntry
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "WorldGenEntry: " + block.getDisplayName() + " - " + restriction.toString();
     }
 
-    public Restriction getRestriction()
-    {
+    public Restriction getRestriction() {
         return restriction;
     }
 
-    public void merge(WorldGenEntry entry)
-    {
+    public void merge(WorldGenEntry entry) {
         entry.drops.values().forEach(this::addDrops);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
         calcChances();

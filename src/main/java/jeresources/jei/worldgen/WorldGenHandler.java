@@ -7,40 +7,34 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 
-public class WorldGenHandler implements IRecipeHandler<WorldGenEntry>
-{
+public class WorldGenHandler implements IRecipeHandler<WorldGenEntry> {
     @Nonnull
     @Override
-    public Class<WorldGenEntry> getRecipeClass()
-    {
+    public Class<WorldGenEntry> getRecipeClass() {
         return WorldGenEntry.class;
     }
 
     @Deprecated
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
-    {
+    public String getRecipeCategoryUid() {
         return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull WorldGenEntry recipe)
-    {
+    public String getRecipeCategoryUid(@Nonnull WorldGenEntry recipe) {
         return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull WorldGenEntry recipe)
-    {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull WorldGenEntry recipe) {
         return new WorldGenWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull WorldGenEntry recipe)
-    {
+    public boolean isRecipeValid(@Nonnull WorldGenEntry recipe) {
         return true;
     }
 }

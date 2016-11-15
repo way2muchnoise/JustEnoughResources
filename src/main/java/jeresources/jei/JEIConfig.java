@@ -22,8 +22,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 @JEIPlugin
-public class JEIConfig extends BlankModPlugin
-{
+public class JEIConfig extends BlankModPlugin {
     public static final String MOB = Reference.ID + ".mob";
     public static final String DUNGEON = Reference.ID + ".dungeon";
     public static final String WORLD_GEN = Reference.ID + ".worldgen";
@@ -35,8 +34,7 @@ public class JEIConfig extends BlankModPlugin
     private static IJeiRuntime jeiRuntime;
 
     @Override
-    public void register(@Nonnull IModRegistry registry)
-    {
+    public void register(@Nonnull IModRegistry registry) {
         JEIConfig.jeiHelpers = registry.getJeiHelpers();
         registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler(), new VillagerHandler());
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
@@ -55,8 +53,7 @@ public class JEIConfig extends BlankModPlugin
         JEIConfig.jeiRuntime = jeiRuntime;
     }
 
-    public static IJeiHelpers getJeiHelpers()
-    {
+    public static IJeiHelpers getJeiHelpers() {
         return jeiHelpers;
     }
 

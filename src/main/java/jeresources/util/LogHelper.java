@@ -9,8 +9,7 @@ import org.apache.logging.log4j.LogManager;
  *
  * @author way2muchnoise
  */
-public class LogHelper
-{
+public class LogHelper {
     public static void trace(String message, Object... params) {
         log(Level.TRACE, message, params);
     }

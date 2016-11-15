@@ -18,10 +18,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
 
-public class RenderHelper
-{
-    public static void drawArrow(double xBegin, double yBegin, double xEnd, double yEnd, int color)
-    {
+public class RenderHelper {
+    public static void drawArrow(double xBegin, double yBegin, double xEnd, double yEnd, int color) {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
         GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
@@ -43,8 +41,7 @@ public class RenderHelper
         GlStateManager.popMatrix();
     }
 
-    public static void drawLine(double xBegin, double yBegin, double xEnd, double yEnd, int color)
-    {
+    public static void drawLine(double xBegin, double yBegin, double xEnd, double yEnd, int color) {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
         GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
@@ -55,8 +52,7 @@ public class RenderHelper
         GL11.glEnd();
     }
 
-    public static void drawPoint(double x, double y, int color)
-    {
+    public static void drawPoint(double x, double y, int color) {
         Minecraft mc = Minecraft.getMinecraft();
         int scale = new ScaledResolution(mc).getScaleFactor();
         GlStateManager.color(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
@@ -66,8 +62,7 @@ public class RenderHelper
         GL11.glEnd();
     }
 
-    public static void renderEntity(int x, int y, float scale, float yaw, float pitch, EntityLivingBase entityLivingBase)
-    {
+    public static void renderEntity(int x, int y, float scale, float yaw, float pitch, EntityLivingBase entityLivingBase) {
         if (entityLivingBase.worldObj == null) entityLivingBase.worldObj = Minecraft.getMinecraft().theWorld;
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
@@ -110,8 +105,7 @@ public class RenderHelper
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
-    public static void renderChest(float x, float y, float rotate, float scale, float lidAngle)
-    {
+    public static void renderChest(float x, float y, float rotate, float scale, float lidAngle) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(Resources.Vanilla.CHEST);
         ModelChest modelchest = new ModelChest();
 
@@ -139,8 +133,7 @@ public class RenderHelper
         GlStateManager.popMatrix();
     }
 
-    public static void renderBlock(IBlockState block, float x, float y, float z, float rotate, float scale)
-    {
+    public static void renderBlock(IBlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getMinecraft();
         GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
@@ -162,8 +155,7 @@ public class RenderHelper
         GlStateManager.disableRescaleNormal();
     }
 
-    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, float w, float h)
-    {
+    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, float w, float h) {
         int scale = new ScaledResolution(mc).getScaleFactor();
         x *= scale;
         y *= scale;
@@ -182,19 +174,16 @@ public class RenderHelper
         GL11.glScissor(scissorInfo.x, scissorInfo.y, scissorInfo.width, scissorInfo.height);
     }
 
-    public static void stopScissor()
-    {
+    public static void stopScissor() {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
-    public static void drawTexture(int x, int y, int u, int v, int width, int height, ResourceLocation resource)
-    {
+    public static void drawTexture(int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
         Minecraft.getMinecraft().getTextureManager().bindTexture(resource);
         GuiUtils.drawTexturedModalRect(x, y, u, v, width, height, 0);
     }
 
-    private static RenderManager getRenderManager()
-    {
+    private static RenderManager getRenderManager() {
         return Minecraft.getMinecraft().getRenderManager();
     }
 }

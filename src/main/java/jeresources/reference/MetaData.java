@@ -4,16 +4,14 @@ import net.minecraftforge.fml.common.ModMetadata;
 
 import java.util.Collections;
 
-public class MetaData
-{
+public class MetaData {
     /**
      * Setup mod metadata
      *
      * @param metadata the current {@link MetaData} to be updated
      * @return edited metadata object
      */
-    public static ModMetadata init(ModMetadata metadata)
-    {
+    public static ModMetadata init(ModMetadata metadata) {
         metadata.modId = Reference.ID;
         metadata.name = Reference.NAME;
         metadata.description = Reference.NAME + " is an addon for JEI that adds tons of stuff about world gen, plant drop, mob loot, chest loot, villagers and enchantments";

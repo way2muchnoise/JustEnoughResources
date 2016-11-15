@@ -5,49 +5,42 @@ import jeresources.util.ReflectionHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
-public class JERAPI implements IJERAPI
-{
+public class JERAPI implements IJERAPI {
     private IWorldGenRegistry worldGenRegistry;
     private IMobRegistry mobRegistry;
     private IPlantRegistry plantRegistry;
     private IDungeonRegistry dungeonRegistry;
     private static IJERAPI instance;
 
-    public static IJERAPI getInstance()
-    {
+    public static IJERAPI getInstance() {
         if (instance == null)
             instance = new JERAPI();
         return instance;
     }
 
-    private JERAPI()
-    {
+    private JERAPI() {
         worldGenRegistry = new WorldGenRegistryImpl();
         mobRegistry = new MobRegistryImpl();
         plantRegistry = new PlantRegistryImpl();
         dungeonRegistry = new DungeonRegistryImpl();
     }
 
-    public static void init(ASMDataTable asmDataTable)
-    {
+    public static void init(ASMDataTable asmDataTable) {
         ReflectionHelper.injectIntoFields(asmDataTable, JERPlugin.class, IJERAPI.class, JERAPI.getInstance());
     }
 
     @Override
-    public IMobRegistry getMobRegistry()
-    {
+    public IMobRegistry getMobRegistry() {
         return mobRegistry;
     }
 
     @Override
-    public IWorldGenRegistry getWorldGenRegistry()
-    {
+    public IWorldGenRegistry getWorldGenRegistry() {
         return worldGenRegistry;
     }
 
     @Override
-    public IPlantRegistry getPlantRegistry()
-    {
+    public IPlantRegistry getPlantRegistry() {
         return plantRegistry;
     }
 

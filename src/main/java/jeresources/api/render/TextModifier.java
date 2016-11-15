@@ -1,7 +1,6 @@
 package jeresources.api.render;
 
-public enum TextModifier
-{
+public enum TextModifier {
     black("\u00A70"),
     darkBlue("\u00A71"),
     darkGreen("\u00A72"),
@@ -27,14 +26,12 @@ public enum TextModifier
 
     private String prefix;
 
-    TextModifier(String prefix)
-    {
+    TextModifier(String prefix) {
         this.prefix = prefix;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return prefix;
     }
 }

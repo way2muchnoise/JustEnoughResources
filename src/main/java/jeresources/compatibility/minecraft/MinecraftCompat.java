@@ -28,11 +28,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableManager;
 
-public class MinecraftCompat extends CompatBase
-{
+public class MinecraftCompat extends CompatBase {
     @Override
-    public void init(boolean worldGen)
-    {
+    public void init(boolean worldGen) {
         registerVanillaMobs();
         registerDungeonLoot();
         if (worldGen)
@@ -40,13 +38,12 @@ public class MinecraftCompat extends CompatBase
         registerVanillaPlants();
     }
 
-    private void registerVanillaMobs()
-    {
+    private void registerVanillaMobs() {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllMobLootTables(world).entrySet().stream()
-                .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
-                .forEach(this::registerMob);
+            .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
+            .forEach(this::registerMob);
 
         registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
         registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
@@ -55,17 +52,15 @@ public class MinecraftCompat extends CompatBase
         registerMobRenderHook(EntityGiantZombie.class, RenderHooks.GIANT);
     }
 
-    private void registerDungeonLoot()
-    {
+    private void registerDungeonLoot() {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-                .map(resourceLocation -> new DungeonEntry(resourceLocation.getResourcePath(), manager.getLootTableFromLocation(resourceLocation)))
-                .forEach(this::registerDungeonEntry);
+            .map(resourceLocation -> new DungeonEntry(resourceLocation.getResourcePath(), manager.getLootTableFromLocation(resourceLocation)))
+            .forEach(this::registerDungeonEntry);
     }
 
-    private void registerOres()
-    {
+    private void registerOres() {
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.DYE, 4, 4))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(20, 8, 1, 64)));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.REDSTONE, 4))));
@@ -77,8 +72,7 @@ public class MinecraftCompat extends CompatBase
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.CLAY), new DistributionUnderWater(0.0035F), new LootDrop(new ItemStack(Items.CLAY_BALL, 4))));
     }
 
-    private void registerVanillaPlants()
-    {
+    private void registerVanillaPlants() {
         // Potato
         ItemSeedFood potatoPlant = (ItemSeedFood) Items.POTATO;
         PlantDrop potato = new PlantDrop(new ItemStack(Items.POTATO), 1, 4);

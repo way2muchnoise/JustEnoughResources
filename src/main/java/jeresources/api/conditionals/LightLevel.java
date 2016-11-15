@@ -2,8 +2,7 @@ package jeresources.api.conditionals;
 
 import net.minecraft.util.text.translation.I18n;
 
-public class LightLevel
-{
+public class LightLevel {
     public static LightLevel any = new LightLevel(-1, Relative.above);
     public static LightLevel bat = new LightLevel(4);
     public static LightLevel hostile = new LightLevel(8);
@@ -16,8 +15,7 @@ public class LightLevel
      * @param level    the level of light
      * @param relative an {@link LightLevel.Relative}
      */
-    LightLevel(int level, Relative relative)
-    {
+    LightLevel(int level, Relative relative) {
         this.lightLevel = level;
         this.relative = relative;
     }
@@ -25,14 +23,12 @@ public class LightLevel
     /**
      * @param level the maximum level light the mob can spawn (the {@link LightLevel.Relative} will be below)
      */
-    LightLevel(int level)
-    {
+    LightLevel(int level) {
         this(level, Relative.below);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String base = I18n.translateToLocal("jer.lightLevel");
         if (lightLevel < 0) return base + ": " + I18n.translateToLocal("jer.any");
         return base + ": " + relative.toString() + " " + lightLevel;
@@ -41,20 +37,17 @@ public class LightLevel
     /**
      * The {@link LightLevel.Relative} enum holding an above and below entry
      */
-    public enum Relative
-    {
+    public enum Relative {
         above("Above"),
         below("Below");
         String text;
 
-        Relative(String string)
-        {
+        Relative(String string) {
             this.text = string;
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return text;
         }
     }

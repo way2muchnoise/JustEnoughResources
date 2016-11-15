@@ -12,8 +12,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
-{
+public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper> {
     private static final int ITEM_X = 12;
     private static final int ITEM_Y = 11;
 
@@ -25,35 +24,30 @@ public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
 
     @Nonnull
     @Override
-    public String getUid()
-    {
+    public String getUid() {
         return JEIConfig.ENCHANTMENT;
     }
 
     @Nonnull
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return TranslationHelper.translateToLocal("jer.enchantments.title");
     }
 
     @Nonnull
     @Override
-    public IDrawable getBackground()
-    {
+    public IDrawable getBackground() {
         return Resources.Gui.Jei.ENCHANTMENT;
     }
 
     @Nullable
     @Override
-    public IDrawable getIcon()
-    {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper)
-    {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper) {
         recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
 
         recipeLayout.getItemStacks().setFromRecipe(0, recipeWrapper.getInputs());

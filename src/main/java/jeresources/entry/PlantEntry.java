@@ -14,76 +14,64 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PlantEntry
-{
+public class PlantEntry {
     private IPlantable plant;
     private ItemStack plantStack;
     private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
 
-    public static PlantEntry registerGrass()
-    {
+    public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
         PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALLGRASS, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
     }
 
-    public PlantEntry(ItemStack itemStack, IPlantable plant, PlantDrop... drops)
-    {
+    public PlantEntry(ItemStack itemStack, IPlantable plant, PlantDrop... drops) {
         this.plantStack = itemStack;
         this.plant = plant;
-        for (PlantDrop entry : drops)
-        {
+        for (PlantDrop entry : drops) {
             this.totalWeight += entry.getWeight();
-            this.drops.put(MapKeys.getKey(entry.getDrop()), entry);
+            String key = MapKeys.getKey(entry.getDrop());
+            if (key != null) this.drops.put(key, entry);
         }
     }
 
-    public PlantEntry(ItemStack itemStack, PlantDrop... drops)
-    {
+    public PlantEntry(ItemStack itemStack, PlantDrop... drops) {
         this(itemStack, null, drops);
     }
 
-    public <T extends Item & IPlantable> PlantEntry(T plant, PlantDrop... drops)
-    {
+    public <T extends Item & IPlantable> PlantEntry(T plant, PlantDrop... drops) {
         this(new ItemStack(plant), plant, drops);
     }
 
-    public void add(PlantDrop entry)
-    {
+    public void add(PlantDrop entry) {
         String key = MapKeys.getKey(entry.getDrop());
         if (!this.drops.containsKey(key)) return;
         this.drops.put(key, new PlantDrop(entry.getDrop(), (this.totalWeight + entry.getWeight())));
     }
 
-    public IPlantable getPlant()
-    {
+    public IPlantable getPlant() {
         return this.plant;
     }
 
-    public ItemStack getPlantItemStack()
-    {
+    public ItemStack getPlantItemStack() {
         return this.plantStack;
     }
 
-    public List<PlantDrop> getDrops()
-    {
+    public List<PlantDrop> getDrops() {
         return new ArrayList<>(this.drops.values());
     }
 
-    public List<ItemStack> getLootDropStacks()
-    {
+    public List<ItemStack> getLootDropStacks() {
         return getDrops().stream().map(PlantDrop::getDrop).collect(Collectors.toList());
     }
 
-    public PlantDrop getDrop(ItemStack itemStack)
-    {
+    public PlantDrop getDrop(ItemStack itemStack) {
         return this.drops.get(MapKeys.getKey(itemStack));
     }
 
-    public int getTotalWeight()
-    {
+    public int getTotalWeight() {
         return totalWeight;
     }
 }

@@ -29,41 +29,34 @@ import java.util.List;
  * Dummy world wraps a regular world.
  * It prevents saving new chunks, doing lighting calculations, or spawning entities.
  */
-public class DummyWorld extends WorldServer
-{
+public class DummyWorld extends WorldServer {
     public List<Entity> spawnedEntities = new ArrayList<>();
 
-    public DummyWorld(WorldServer world)
-    {
+    public DummyWorld(WorldServer world) {
         super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.theProfiler);
         this.provider.registerWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
     }
 
-    public void clearChunks()
-    {
+    public void clearChunks() {
         ((DummyChunkProvider) this.chunkProvider).unloadAllChunks();
     }
 
     @Override
-    public Entity getEntityByID(int i)
-    {
+    public Entity getEntityByID(int i) {
         return null;
     }
 
     /**
      * Check if the given BlockPos has valid coordinates
      */
-    private boolean isValid(BlockPos pos)
-    {
+    private boolean isValid(BlockPos pos) {
         return pos.getX() >= -30000000 && pos.getZ() >= -30000000 && pos.getX() < 30000000 && pos.getZ() < 30000000 && pos.getY() >= 0 && pos.getY() < 256;
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, IBlockState newState, int flags)
-    {
-        if (!isValid(pos) || !isBlockLoaded(pos))
-        {
+    public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+        if (!isValid(pos) || !isBlockLoaded(pos)) {
             return false;
         }
 
@@ -73,56 +66,48 @@ public class DummyWorld extends WorldServer
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, IBlockState state)
-    {
+    public boolean setBlockState(BlockPos pos, IBlockState state) {
         return this.setBlockState(pos, state, 3);
     }
 
     @Override
-    public void scheduleBlockUpdate(BlockPos pos, Block blockIn, int delay, int priority)
-    {
+    public void scheduleBlockUpdate(BlockPos pos, Block blockIn, int delay, int priority) {
 
     }
 
     @Override
-    public void updateBlockTick(BlockPos pos, Block blockIn, int delay, int priority)
-    {
+    public void updateBlockTick(BlockPos pos, Block blockIn, int delay, int priority) {
 
     }
 
     @Override
-    public boolean tickUpdates(boolean p_72955_1_)
-    {
+    public boolean tickUpdates(boolean p_72955_1_) {
         return false;
     }
 
     @Override
-    public List<NextTickListEntry> getPendingBlockUpdates(StructureBoundingBox structureBB, boolean p_175712_2_)
-    {
+    public List<NextTickListEntry> getPendingBlockUpdates(StructureBoundingBox structureBB, boolean p_175712_2_) {
         return Collections.emptyList();
     }
 
     @Override
-    public boolean spawnEntityInWorld(Entity entity)
-    {
+    public boolean spawnEntityInWorld(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
     }
 
     @Override
     public void tick() {
-        
+
     }
 
-    private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator
-    {
+    private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator {
         private final World dummyWorld;
         private final IChunkGenerator realChunkGenerator;
         private final IChunkProvider realChunkProvider;
         private boolean allowLoading = true;
 
-        public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer)
-        {
+        public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer) {
             super(dummyWorld, chunkProviderServer.chunkLoader, chunkProviderServer.chunkGenerator);
             this.dummyWorld = dummyWorld;
             this.realChunkGenerator = chunkProviderServer.chunkGenerator;
@@ -130,26 +115,22 @@ public class DummyWorld extends WorldServer
         }
 
         @Override
-        public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_)
-        {
+        public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_) {
             // no retrogen
         }
 
         @Override
-        public String makeString()
-        {
+        public String makeString() {
             return "Dummy";
         }
 
         @Override
-        public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
-        {
+        public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
             return null;
         }
 
         @Override
-        public void populate(int x, int z)
-        {
+        public void populate(int x, int z) {
             allowLoading = false;
             realChunkGenerator.populate(x, z);
             GameRegistry.generateWorld(x, z, dummyWorld, this, this);
@@ -157,43 +138,35 @@ public class DummyWorld extends WorldServer
         }
 
         @Override
-        public Chunk getLoadedChunk(int x, int z)
-        {
+        public Chunk getLoadedChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
             return this.id2ChunkMap.get(chunkKey);
         }
 
         @Override
-        public void unloadAllChunks()
-        {
+        public void unloadAllChunks() {
             this.id2ChunkMap.clear();
         }
 
         @Override
-        public boolean saveChunks(boolean p_186027_1_)
-        {
+        public boolean saveChunks(boolean p_186027_1_) {
             return true;
         }
 
         @Override
-        public Chunk provideChunk(int x, int z)
-        {
+        public Chunk provideChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
             Chunk chunk = this.id2ChunkMap.get(chunkKey);
-            if (chunk != null)
-            {
+            if (chunk != null) {
                 return chunk;
             }
-            if (!allowLoading)
-            {
+            if (!allowLoading) {
                 return new EmptyChunkJER(dummyWorld, x, z);
             }
 
-            try
-            {
+            try {
                 chunk = realChunkGenerator.provideChunk(x, z);
-            } catch (Throwable throwable)
-            {
+            } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
                 crashreportcategory.addCrashSection("Location", String.format("%d,%d", x, z));
@@ -212,14 +185,12 @@ public class DummyWorld extends WorldServer
         }
 
         @Override
-        public boolean generateStructures(Chunk chunkIn, int x, int z)
-        {
+        public boolean generateStructures(Chunk chunkIn, int x, int z) {
             return false;
         }
 
         @Override
-        public boolean unloadQueuedChunks()
-        {
+        public boolean unloadQueuedChunks() {
             return false;
         }
     }

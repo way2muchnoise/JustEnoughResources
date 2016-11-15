@@ -14,8 +14,7 @@ import net.minecraft.client.Minecraft;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
-{
+public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper> {
     protected static final int X_ITEM = 5;
     protected static final int Y_ITEM = 21;
     protected static final int X_DROP_ITEM = 5;
@@ -30,42 +29,36 @@ public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper>
 
     @Nonnull
     @Override
-    public String getUid()
-    {
+    public String getUid() {
         return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return TranslationHelper.translateToLocal("jer.worldgen.title");
     }
 
     @Nonnull
     @Override
-    public IDrawable getBackground()
-    {
+    public IDrawable getBackground() {
         return Resources.Gui.Jei.WORLD_GEN;
     }
 
     @Nullable
     @Override
-    public IDrawable getIcon()
-    {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void drawExtras(@Nonnull Minecraft minecraft)
-    {
+    public void drawExtras(@Nonnull Minecraft minecraft) {
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColourHelper.GRAY);
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColourHelper.GRAY);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper)
-    {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper) {
         recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
 
         for (int i = 0; i < DROP_ITEM_COUNT; i++)

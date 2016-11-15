@@ -2,16 +2,14 @@ package jeresources.api.drop;
 
 import net.minecraft.item.ItemStack;
 
-public class PlantDrop
-{
+public class PlantDrop {
     private ItemStack drop;
     private int itemWeight;
     private int minDrop, maxDrop;
     private float chance;
     private DropKind dropKind;
 
-    public enum DropKind
-    {
+    public enum DropKind {
         chance, weight, minMax
     }
 
@@ -23,8 +21,7 @@ public class PlantDrop
      * @param drop       the The drop an {@link net.minecraft.item.ItemStack}
      * @param itemWeight The Weight of the drop
      */
-    public PlantDrop(ItemStack drop, int itemWeight)
-    {
+    public PlantDrop(ItemStack drop, int itemWeight) {
         this.drop = drop;
         this.itemWeight = itemWeight;
         this.dropKind = DropKind.weight;
@@ -36,8 +33,7 @@ public class PlantDrop
      * @param drop   The drop an {@link net.minecraft.item.ItemStack}
      * @param chance the chance as float
      */
-    public PlantDrop(ItemStack drop, float chance)
-    {
+    public PlantDrop(ItemStack drop, float chance) {
         this.drop = drop;
         this.chance = chance;
         this.dropKind = DropKind.chance;
@@ -50,41 +46,34 @@ public class PlantDrop
      * @param minDrop minimum of seeds dropped
      * @param maxDrop maximum of seeds dropped
      */
-    public PlantDrop(ItemStack drop, int minDrop, int maxDrop)
-    {
+    public PlantDrop(ItemStack drop, int minDrop, int maxDrop) {
         this.drop = drop;
         this.minDrop = minDrop;
         this.maxDrop = maxDrop;
         this.dropKind = DropKind.minMax;
     }
 
-    public ItemStack getDrop()
-    {
+    public ItemStack getDrop() {
         return drop;
     }
 
-    public int getWeight()
-    {
+    public int getWeight() {
         return itemWeight;
     }
 
-    public int getMinDrop()
-    {
+    public int getMinDrop() {
         return minDrop;
     }
 
-    public int getMaxDrop()
-    {
+    public int getMaxDrop() {
         return maxDrop;
     }
 
-    public float getChance()
-    {
+    public float getChance() {
         return chance;
     }
 
-    public DropKind getDropKind()
-    {
+    public DropKind getDropKind() {
         return dropKind;
     }
 }

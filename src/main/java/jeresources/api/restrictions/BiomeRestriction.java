@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class BiomeRestriction
-{
+public class BiomeRestriction {
     public static final BiomeRestriction NONE = new BiomeRestriction();
     public static final BiomeRestriction OCEAN = new BiomeRestriction(BiomeDictionary.Type.OCEAN);
     public static final BiomeRestriction PLAINS = new BiomeRestriction(BiomeDictionary.Type.PLAINS);
@@ -31,31 +30,25 @@ public class BiomeRestriction
     private List<Biome> biomes = new ArrayList<>();
     private Type type;
 
-    public BiomeRestriction()
-    {
+    public BiomeRestriction() {
         this.type = Type.NONE;
     }
 
-    public BiomeRestriction(Biome biome)
-    {
+    public BiomeRestriction(Biome biome) {
         this(Type.WHITELIST, biome);
     }
 
-    public BiomeRestriction(Type type, Biome biome)
-    {
+    public BiomeRestriction(Type type, Biome biome) {
         this(type, biome, new Biome[0]);
     }
 
-    public BiomeRestriction(Biome biome, Biome... moreBiomes)
-    {
+    public BiomeRestriction(Biome biome, Biome... moreBiomes) {
         this(Type.WHITELIST, biome, moreBiomes);
     }
 
-    public BiomeRestriction(Type type, Biome biome, Biome... moreBiomes)
-    {
+    public BiomeRestriction(Type type, Biome biome, Biome... moreBiomes) {
         this.type = type;
-        switch (type)
-        {
+        switch (type) {
             case NONE:
                 break;
             case WHITELIST:
@@ -69,16 +62,13 @@ public class BiomeRestriction
         }
     }
 
-    public BiomeRestriction(BiomeDictionary.Type type, BiomeDictionary.Type... biomeTypes)
-    {
+    public BiomeRestriction(BiomeDictionary.Type type, BiomeDictionary.Type... biomeTypes) {
         this(Type.WHITELIST, type, biomeTypes);
     }
 
-    public BiomeRestriction(Type type, BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes)
-    {
+    public BiomeRestriction(Type type, BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes) {
         this.type = type;
-        switch (type)
-        {
+        switch (type) {
             case NONE:
                 break;
             case WHITELIST:
@@ -90,15 +80,12 @@ public class BiomeRestriction
         }
     }
 
-    private ArrayList<Biome> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes)
-    {
+    private ArrayList<Biome> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes) {
         ArrayList<Biome> biomes = new ArrayList<>();
         biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
-        for (int i = 1; i < biomeTypes.length; i++)
-        {
+        for (int i = 1; i < biomeTypes.length; i++) {
             ArrayList<Biome> newBiomes = new ArrayList<>();
-            for (Biome biome : BiomeDictionary.getBiomesForType(biomeTypes[i]))
-            {
+            for (Biome biome : BiomeDictionary.getBiomesForType(biomeTypes[i])) {
                 if (biomes.remove(biome)) newBiomes.add(biome);
             }
             biomes = newBiomes;
@@ -106,36 +93,30 @@ public class BiomeRestriction
         return biomes;
     }
 
-    public List<String> toStringList()
-    {
+    public List<String> toStringList() {
         return biomes.stream().filter(biome -> !biome.getBiomeName().equals("")).map(biome -> "  " + biome.getBiomeName()).collect(Collectors.toList());
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof BiomeRestriction)
-        {
+    public boolean equals(Object obj) {
+        if (obj instanceof BiomeRestriction) {
             BiomeRestriction other = (BiomeRestriction) obj;
             return other.biomes.size() == biomes.size() && other.biomes.containsAll(biomes);
         }
         return false;
     }
 
-    public boolean isMergeAble(BiomeRestriction other)
-    {
+    public boolean isMergeAble(BiomeRestriction other) {
         return other.type == Type.NONE || (this.type != Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Biomes: " + type + (type != Type.NONE ? " - " + biomes.size() : "");
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return type.hashCode() ^ biomes.hashCode();
     }
 }

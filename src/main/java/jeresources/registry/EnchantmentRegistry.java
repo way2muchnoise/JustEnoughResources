@@ -9,30 +9,25 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class EnchantmentRegistry
-{
+public class EnchantmentRegistry {
     private Set<EnchantmentEntry> enchantments;
     private static EnchantmentRegistry instance;
 
-    public static EnchantmentRegistry getInstance()
-    {
+    public static EnchantmentRegistry getInstance() {
         if (instance == null)
             return instance = new EnchantmentRegistry();
         return instance;
     }
 
-    public EnchantmentRegistry()
-    {
+    public EnchantmentRegistry() {
         enchantments = new HashSet<>();
         for (Enchantment enchantment : getEnchants())
             if (enchantment != null) enchantments.add(new EnchantmentEntry(enchantment));
     }
 
-    public Set<EnchantmentEntry> getEnchantments(ItemStack itemStack)
-    {
+    public Set<EnchantmentEntry> getEnchantments(ItemStack itemStack) {
         Set<EnchantmentEntry> set = new HashSet<>();
-        for (EnchantmentEntry enchantment : enchantments)
-        {
+        for (EnchantmentEntry enchantment : enchantments) {
             if (itemStack.getItem() == Items.BOOK && enchantment.getEnchantment().isAllowedOnBooks())
                 set.add(enchantment);
             else if (enchantment.getEnchantment().canApply(itemStack)) set.add(enchantment);
@@ -40,31 +35,23 @@ public class EnchantmentRegistry
         return set;
     }
 
-    private void excludeFormRegistry(Enchantment enchantment)
-    {
+    private void excludeFormRegistry(Enchantment enchantment) {
         for (Iterator<EnchantmentEntry> itr = enchantments.iterator(); itr.hasNext(); )
             if (itr.next().getEnchantment().getName().equals(enchantment.getName())) itr.remove();
     }
 
-    private void excludeFormRegistry(String sEnchantment)
-    {
+    private void excludeFormRegistry(String sEnchantment) {
         for (Enchantment enchantment : getEnchants())
             if (enchantment != null && enchantment.getName().toLowerCase().contains(sEnchantment.toLowerCase()))
                 excludeFormRegistry(enchantment);
     }
 
-    public void removeAll(String[] excludedEnchants)
-    {
+    public void removeAll(String[] excludedEnchants) {
         for (String enchant : excludedEnchants)
             excludeFormRegistry(enchant);
     }
 
-    private static Iterable<Enchantment> getEnchants()
-    {
+    private static Iterable<Enchantment> getEnchants() {
         return Enchantment.REGISTRY;
-    }
-
-    public void clear() {
-        enchantments.clear();
     }
 }

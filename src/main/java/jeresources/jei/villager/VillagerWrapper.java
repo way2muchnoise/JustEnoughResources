@@ -16,13 +16,11 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class VillagerWrapper extends BlankRecipeWrapper
-{
+public class VillagerWrapper extends BlankRecipeWrapper {
     private final VillagerEntry entry;
     private IFocus<ItemStack> focus;
 
-    public VillagerWrapper(VillagerEntry entry)
-    {
+    public VillagerWrapper(VillagerEntry entry) {
         this.entry = entry;
     }
 
@@ -34,47 +32,40 @@ public class VillagerWrapper extends BlankRecipeWrapper
 
     @Nonnull
     @Override
-    public List getInputs()
-    {
+    public List getInputs() {
         return entry.getInputs();
     }
 
     @Nonnull
     @Override
-    public List getOutputs()
-    {
+    public List getOutputs() {
         return entry.getOutputs();
     }
 
-    public TradeList getTrades(int level)
-    {
+    public TradeList getTrades(int level) {
         return entry.getVillagerTrades(level);
     }
 
-    public int getMaxLevel()
-    {
+    public int getMaxLevel() {
         return entry.getMaxLevel();
     }
 
-    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus)
-    {
+    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus) {
         return entry.getPossibleLevels(focus);
     }
 
-    public void setFocus(IFocus<ItemStack> focus)
-    {
+    public void setFocus(IFocus<ItemStack> focus) {
         this.focus = focus;
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
-    {
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.8F, 59.0F, 79.0F);
         RenderHelper.renderEntity(
-                37, 118, 36.0F,
-                38 - mouseX,
-                80 - mouseY,
-                new EntityVillager(minecraft.theWorld, entry.getProfession())
+            37, 118, 36.0F,
+            38 - mouseX,
+            80 - mouseY,
+            new EntityVillager(minecraft.theWorld, entry.getProfession())
         );
         RenderHelper.stopScissor();
 

@@ -2,8 +2,7 @@ package jeresources.api.restrictions;
 
 import java.util.List;
 
-public class Restriction
-{
+public class Restriction {
     public static final Restriction OVERWORLD_LIKE = new Restriction();
     public static final Restriction NETHER_LIKE = new Restriction(BlockRestriction.NETHER);
     public static final Restriction END_LIKE = new Restriction(BlockRestriction.END);
@@ -16,61 +15,50 @@ public class Restriction
     private BiomeRestriction biomeRestriction;
     private DimensionRestriction dimensionRestriction;
 
-    public Restriction()
-    {
+    public Restriction() {
         this(BiomeRestriction.NONE);
     }
 
-    public Restriction(BlockRestriction blockRestriction)
-    {
+    public Restriction(BlockRestriction blockRestriction) {
         this(blockRestriction, BiomeRestriction.NONE, DimensionRestriction.NONE);
     }
 
-    public Restriction(BiomeRestriction biomeRestriction)
-    {
+    public Restriction(BiomeRestriction biomeRestriction) {
         this(BlockRestriction.STONE, biomeRestriction, DimensionRestriction.NONE);
     }
 
-    public Restriction(DimensionRestriction dimensionRestriction)
-    {
+    public Restriction(DimensionRestriction dimensionRestriction) {
         this(BlockRestriction.STONE, BiomeRestriction.NONE, dimensionRestriction);
     }
 
-    public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction)
-    {
+    public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction) {
         this(blockRestriction, biomeRestriction, DimensionRestriction.NONE);
     }
 
-    public Restriction(BlockRestriction blockRestriction, DimensionRestriction dimensionRestriction)
-    {
+    public Restriction(BlockRestriction blockRestriction, DimensionRestriction dimensionRestriction) {
         this(blockRestriction, BiomeRestriction.NONE, dimensionRestriction);
     }
 
-    public Restriction(BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction)
-    {
+    public Restriction(BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction) {
         this(BlockRestriction.STONE, biomeRestriction, dimensionRestriction);
     }
 
-    public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction)
-    {
+    public Restriction(BlockRestriction blockRestriction, BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction) {
         this.blockRestriction = blockRestriction;
         this.biomeRestriction = biomeRestriction;
         this.dimensionRestriction = dimensionRestriction;
     }
 
-    public List<String> getBiomeRestrictions()
-    {
+    public List<String> getBiomeRestrictions() {
         return biomeRestriction.toStringList();
     }
 
-    public List<String> getDimensionRestrictions()
-    {
+    public List<String> getDimensionRestrictions() {
         return dimensionRestriction.getValidDimensions(blockRestriction);
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (!(obj instanceof Restriction)) return false;
         Restriction other = (Restriction) obj;
         if (!other.biomeRestriction.equals(this.biomeRestriction)) return false;
@@ -79,8 +67,7 @@ public class Restriction
         return true;
     }
 
-    public boolean isMergeable(Restriction restriction)
-    {
+    public boolean isMergeable(Restriction restriction) {
         if (!biomeRestriction.isMergeAble(restriction.biomeRestriction)) return false;
         if (!blockRestriction.equals(restriction.blockRestriction)) return false;
         if (!dimensionRestriction.isMergeable(restriction.dimensionRestriction)) return false;
@@ -88,14 +75,12 @@ public class Restriction
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return blockRestriction.toString() + ", " + dimensionRestriction.toString() + ", " + biomeRestriction.toString();
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return blockRestriction.hashCode() ^ dimensionRestriction.hashCode() ^ biomeRestriction.hashCode();
     }
 }

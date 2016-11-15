@@ -15,16 +15,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("unchecked")
-public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
-{
+public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper> {
     protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
     protected static int SPACING_Y;
     protected static int SPACING_X;
     protected static int ITEMS_PER_PAGE;
 
-    public static void reloadSettings()
-    {
+    public static void reloadSettings() {
         ITEMS_PER_PAGE = Settings.ITEMS_PER_COLUMN * Settings.ITEMS_PER_ROW * 2;
         SPACING_X = 166 / (Settings.ITEMS_PER_ROW * 2);
         SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
@@ -38,44 +36,37 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
 
     @Nonnull
     @Override
-    public String getUid()
-    {
+    public String getUid() {
         return JEIConfig.DUNGEON;
     }
 
     @Nonnull
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return TranslationHelper.translateToLocal("jer.dungeon.title");
     }
 
     @Nonnull
     @Override
-    public IDrawable getBackground()
-    {
+    public IDrawable getBackground() {
         return Resources.Gui.Jei.DUNGEON;
     }
 
     @Nullable
     @Override
-    public IDrawable getIcon()
-    {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper)
-    {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++)
-        {
+        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++) {
             recipeLayout.getItemStacks().init(i, false, x, y);
             x += SPACING_X;
 
-            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2)
-            {
+            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2) {
                 x = X_FIRST_ITEM;
                 y += SPACING_Y;
             }
@@ -93,13 +84,11 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper>
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(ItemStack.class).size()); i++)
-        {
+        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(ItemStack.class).size()); i++) {
             recipeLayout.getItemStacks().init(i, false, x, y);
             x += SPACING_X;
 
-            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2)
-            {
+            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2) {
                 x = X_FIRST_ITEM;
                 y += SPACING_Y;
             }

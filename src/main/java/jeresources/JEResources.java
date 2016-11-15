@@ -17,8 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "required-after:JEI@[3.11.0,);", clientSideOnly = true)
-public class JEResources
-{
+public class JEResources {
     @Mod.Metadata(Reference.ID)
     public static ModMetadata metadata;
 
@@ -26,8 +25,7 @@ public class JEResources
     public static CommonProxy PROXY;
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         LogHelper.info("Loading configs..");
         Settings.side = event.getSide();
         ConfigHandler.init(event.getModConfigurationDirectory());
@@ -44,14 +42,12 @@ public class JEResources
     }
 
     @Mod.EventHandler
-    public void loadComplete(FMLLoadCompleteEvent event)
-    {
+    public void loadComplete(FMLLoadCompleteEvent event) {
         Settings.gameLoaded = true;
     }
 
     @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event)
-    {
+    public void onServerStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new ProfileCommand());
     }
 }

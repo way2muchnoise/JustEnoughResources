@@ -8,8 +8,7 @@ import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 
-public class RenderHooks
-{
+public class RenderHooks {
     public static final IMobRenderHook ENDER_DRAGON = (IMobRenderHook<EntityDragon>) (renderInfo, entity) ->
     {
         GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);

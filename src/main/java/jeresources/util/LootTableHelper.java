@@ -1,10 +1,7 @@
 package jeresources.util;
 
-import javax.annotation.Nullable;
-
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -12,19 +9,18 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
-import net.minecraft.world.storage.SaveHandlerMP;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
-public class LootTableHelper
-{
+public class LootTableHelper {
     private static final Map<EnumDyeColor, ResourceLocation> sheepColors = new HashMap<>();
+
     static {
         sheepColors.put(EnumDyeColor.WHITE, LootTableList.ENTITIES_SHEEP_WHITE);
         sheepColors.put(EnumDyeColor.ORANGE, LootTableList.ENTITIES_SHEEP_ORANGE);
@@ -44,33 +40,27 @@ public class LootTableHelper
         sheepColors.put(EnumDyeColor.BLACK, LootTableList.ENTITIES_SHEEP_BLACK);
     }
 
-    public static List<LootPool> getPools(LootTable table)
-    {
+    public static List<LootPool> getPools(LootTable table) {
         return ReflectionHelper.getPrivateValue(LootTable.class, table, "pools", "field_186466_c");
     }
 
-    public static List<LootEntry> getEntries(LootPool pool)
-    {
+    public static List<LootEntry> getEntries(LootPool pool) {
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "lootEntries", "field_186453_a");
     }
 
-    public static List<LootCondition> getConditions(LootPool pool)
-    {
+    public static List<LootCondition> getConditions(LootPool pool) {
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "poolConditions", "field_186454_b");
     }
 
-    public static Item getItem(LootEntryItem lootEntry)
-    {
+    public static Item getItem(LootEntryItem lootEntry) {
         return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "item", "field_186368_a");
     }
 
-    public static LootFunction[] getFunctions(LootEntryItem lootEntry)
-    {
+    public static LootFunction[] getFunctions(LootEntryItem lootEntry) {
         return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "functions", "field_186369_b");
     }
 
-    public static List<LootDrop> toDrops(LootTable table)
-    {
+    public static List<LootDrop> toDrops(LootTable table) {
         List<LootDrop> drops = new ArrayList<>();
 
         final LootTableManager manager = getManager();
@@ -80,14 +70,14 @@ public class LootTableHelper
                 final float totalWeight = getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
                 final List<LootCondition> poolConditions = getConditions(pool);
                 getEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
+                    .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem) entry)
                     .map(entry -> new LootDrop(getItem(entry), entry.getEffectiveWeight(0) / totalWeight, entry.conditions, getFunctions(entry)))
                     .map(drop -> drop.addLootConditions(poolConditions))
                     .forEach(drops::add);
 
                 getEntries(pool).stream()
-                        .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
-                        .map(entry -> toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
+                    .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable) entry)
+                    .map(entry -> toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
             }
         );
 
@@ -95,13 +85,11 @@ public class LootTableHelper
         return drops;
     }
 
-    public static List<LootDrop> toDrops(World world, ResourceLocation lootTable)
-    {
+    public static List<LootDrop> toDrops(World world, ResourceLocation lootTable) {
         return toDrops(getManager(world).getLootTableFromLocation(lootTable));
     }
 
-    public static List<ResourceLocation> getAllChestLootTablesResourceLocations()
-    {
+    public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
         ArrayList<ResourceLocation> chestTables = new ArrayList<>();
 
         chestTables.add(LootTableList.CHESTS_END_CITY_TREASURE);
@@ -119,8 +107,7 @@ public class LootTableHelper
         return chestTables;
     }
 
-    public static Map<ResourceLocation, EntityLivingBase> getAllMobLootTables(World world)
-    {
+    public static Map<ResourceLocation, EntityLivingBase> getAllMobLootTables(World world) {
         MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
 
         mobTableBuilder.add(LootTableList.ENTITIES_WITCH, EntityWitch.class);
@@ -169,11 +156,9 @@ public class LootTableHelper
 
     private static LootTableManager manager;
 
-    public static LootTableManager getManager(@Nullable World world)
-    {
-        if (world == null || world.getLootTableManager() == null)
-        {
-            if(manager == null) {
+    public static LootTableManager getManager(@Nullable World world) {
+        if (world == null || world.getLootTableManager() == null) {
+            if (manager == null) {
                 ISaveHandler saveHandler = FakeClientWorld.saveHandler;
                 manager = new LootTableManager(new File(new File(saveHandler.getWorldDirectory(), "data"), "loot_tables"));
             }

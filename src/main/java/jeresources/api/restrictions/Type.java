@@ -1,6 +1,5 @@
 package jeresources.api.restrictions;
 
-public enum Type
-{
+public enum Type {
     NONE, BLACKLIST, WHITELIST
 }

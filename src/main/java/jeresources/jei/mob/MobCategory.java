@@ -8,13 +8,11 @@ import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MobCategory extends BlankRecipeCategory<MobWrapper>
-{
+public class MobCategory extends BlankRecipeCategory<MobWrapper> {
     protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
     protected static int SPACING_X = 72 / Settings.ITEMS_PER_ROW;
@@ -28,42 +26,35 @@ public class MobCategory extends BlankRecipeCategory<MobWrapper>
 
     @Nonnull
     @Override
-    public String getUid()
-    {
+    public String getUid() {
         return JEIConfig.MOB;
     }
 
     @Nonnull
     @Override
-    public String getTitle()
-    {
+    public String getTitle() {
         return TranslationHelper.translateToLocal("jer.mob.title");
     }
 
     @Nonnull
     @Override
-    public IDrawable getBackground()
-    {
+    public IDrawable getBackground() {
         return Resources.Gui.Jei.MOB;
     }
 
     @Nullable
     @Override
-    public IDrawable getIcon()
-    {
+    public IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper)
-    {
+    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper) {
         int xOffset = 0;
         int slot = 0;
-        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)
-        {
+        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++) {
             int yOffset = 0;
-            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++)
-            {
+            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++) {
                 recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
                 yOffset += SPACING_Y;
             }
@@ -79,11 +70,9 @@ public class MobCategory extends BlankRecipeCategory<MobWrapper>
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int xOffset = 0;
         int slot = 0;
-        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++)
-        {
+        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++) {
             int yOffset = 0;
-            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++)
-            {
+            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++) {
                 recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
                 yOffset += SPACING_Y;
             }

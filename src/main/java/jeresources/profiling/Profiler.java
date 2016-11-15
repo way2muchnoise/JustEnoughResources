@@ -12,8 +12,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class Profiler implements Runnable
-{
+public class Profiler implements Runnable {
     private final ConcurrentMap<Integer, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
@@ -21,8 +20,7 @@ public class Profiler implements Runnable
     private final boolean allWorlds;
     private ProfilingExecutor currentExecutor;
 
-    private Profiler(ICommandSender sender, int chunkCount, boolean allWorlds)
-    {
+    private Profiler(ICommandSender sender, int chunkCount, boolean allWorlds) {
         this.sender = sender;
         this.allDimensionData = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
@@ -31,14 +29,11 @@ public class Profiler implements Runnable
     }
 
     @Override
-    public void run()
-    {
-        if (!allWorlds)
-        {
+    public void run() {
+        if (!allWorlds) {
             WorldServer world = (WorldServer) this.sender.getEntityWorld();
             profileWorld(world);
-        } else
-        {
+        } else {
             for (WorldServer world : DimensionManager.getWorlds())
                 profileWorld(world);
         }
@@ -48,14 +43,12 @@ public class Profiler implements Runnable
         this.timer.complete();
 
         IJeiHelpers jeiHelpers = JEIConfig.getJeiHelpers();
-        if (jeiHelpers != null)
-        {
+        if (jeiHelpers != null) {
             jeiHelpers.reload();
         }
     }
 
-    private void profileWorld(final WorldServer worldServer)
-    {
+    private void profileWorld(final WorldServer worldServer) {
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
         int dimId = worldServer.provider.getDimensionType().getId();
@@ -80,18 +73,15 @@ public class Profiler implements Runnable
         return allDimensionData;
     }
 
-    private void writeData()
-    {
+    private void writeData() {
         Map<Integer, ProfilingAdapter.DimensionData> allData = new HashMap<>();
-        for (Integer dim : this.allDimensionData.keySet())
-        {
+        for (Integer dim : this.allDimensionData.keySet()) {
             ProfiledDimensionData profiledData = this.allDimensionData.get(dim);
             ProfilingAdapter.DimensionData data = new ProfilingAdapter.DimensionData();
             data.dropsMap = profiledData.dropsMap;
             data.silkTouchMap = profiledData.silkTouchMap;
 
-            for (Map.Entry<String, Integer[]> entry : profiledData.distributionMap.entrySet())
-            {
+            for (Map.Entry<String, Integer[]> entry : profiledData.distributionMap.entrySet()) {
                 Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
                 for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
                     array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(dim);
@@ -106,16 +96,14 @@ public class Profiler implements Runnable
 
     private static Profiler currentProfiler;
 
-    public static boolean init(ICommandSender sender, int chunks, boolean allWorlds)
-    {
+    public static boolean init(ICommandSender sender, int chunks, boolean allWorlds) {
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
         currentProfiler = new Profiler(sender, chunks, allWorlds);
         new Thread(currentProfiler).start();
         return true;
     }
 
-    public static boolean stop()
-    {
+    public static boolean stop() {
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
         if (currentProfiler.currentExecutor != null)
             currentProfiler.currentExecutor.shutdownNow();

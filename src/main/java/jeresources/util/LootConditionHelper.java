@@ -7,24 +7,17 @@ import net.minecraft.world.storage.loot.conditions.*;
 import net.minecraft.world.storage.loot.properties.EntityOnFire;
 import net.minecraft.world.storage.loot.properties.EntityProperty;
 
-public class LootConditionHelper
-{
-    public static void applyCondition(LootCondition condition, LootDrop lootDrop)
-    {
-        if (condition instanceof KilledByPlayer)
-        {
+public class LootConditionHelper {
+    public static void applyCondition(LootCondition condition, LootDrop lootDrop) {
+        if (condition instanceof KilledByPlayer) {
             lootDrop.addConditional(Conditional.playerKill);
-        } else if (condition instanceof RandomChance)
-        {
+        } else if (condition instanceof RandomChance) {
             lootDrop.chance = ((RandomChance) condition).chance;
-        } else if (condition instanceof RandomChanceWithLooting)
-        {
+        } else if (condition instanceof RandomChanceWithLooting) {
             lootDrop.chance = ((RandomChanceWithLooting) condition).chance;
             lootDrop.addConditional(Conditional.affectedByLooting);
-        } else if (condition instanceof EntityHasProperty)
-        {
-            for (EntityProperty property : ((EntityHasProperty) condition).properties)
-            {
+        } else if (condition instanceof EntityHasProperty) {
+            for (EntityProperty property : ((EntityHasProperty) condition).properties) {
                 if (property instanceof ICustomEntityProperty)
                     ((ICustomEntityProperty) property).applyProperty(lootDrop);
                 else if (property instanceof EntityOnFire)

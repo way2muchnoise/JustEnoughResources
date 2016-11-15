@@ -6,38 +6,35 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import java.util.List;
 
-public class VillagersHelper
-{
-    public static void initRegistry(jeresources.registry.VillagerRegistry reg)
-    {
+public class VillagersHelper {
+    public static void initRegistry(jeresources.registry.VillagerRegistry reg) {
         int professionId = 0;
-        for (VillagerRegistry.VillagerProfession profession : VillagerRegistry.instance().getRegistry())
-        {
-            for (VillagerRegistry.VillagerCareer career : getCareers(profession))
-            {
-                reg.addVillagerEntry(new VillagerEntry(
+        for (VillagerRegistry.VillagerProfession profession : VillagerRegistry.instance().getRegistry()) {
+            for (VillagerRegistry.VillagerCareer career : getCareers(profession)) {
+                try {
+                    reg.addVillagerEntry(new VillagerEntry(
                         career.getName(),
                         professionId,
                         getId(career),
                         getTrades(career)
-                ));
+                    ));
+                } catch (Exception e) {
+                    LogHelper.warn("Failed loading villager %s registered at %s", career.getName(), profession.getRegistryName().toString());
+                }
             }
             professionId++;
         }
     }
 
-    private static List<VillagerRegistry.VillagerCareer> getCareers(VillagerRegistry.VillagerProfession profession)
-    {
+    private static List<VillagerRegistry.VillagerCareer> getCareers(VillagerRegistry.VillagerProfession profession) {
         return ReflectionHelper.getPrivateValue(VillagerRegistry.VillagerProfession.class, profession, "careers");
     }
 
-    private static List<List<EntityVillager.ITradeList>> getTrades(VillagerRegistry.VillagerCareer career)
-    {
+    private static List<List<EntityVillager.ITradeList>> getTrades(VillagerRegistry.VillagerCareer career) {
         return ReflectionHelper.getPrivateValue(VillagerRegistry.VillagerCareer.class, career, "trades");
     }
 
-    private static int getId(VillagerRegistry.VillagerCareer career)
-    {
+    private static int getId(VillagerRegistry.VillagerCareer career) {
         return ReflectionHelper.getPrivateValue(VillagerRegistry.VillagerCareer.class, career, "id");
     }
 }

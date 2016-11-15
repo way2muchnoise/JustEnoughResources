@@ -7,40 +7,34 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
 
-public class PlantHandler implements IRecipeHandler<PlantEntry>
-{
+public class PlantHandler implements IRecipeHandler<PlantEntry> {
     @Nonnull
     @Override
-    public Class<PlantEntry> getRecipeClass()
-    {
+    public Class<PlantEntry> getRecipeClass() {
         return PlantEntry.class;
     }
 
     @Deprecated
     @Nonnull
     @Override
-    public String getRecipeCategoryUid()
-    {
+    public String getRecipeCategoryUid() {
         return JEIConfig.PLANT;
     }
 
     @Nonnull
     @Override
-    public String getRecipeCategoryUid(@Nonnull PlantEntry recipe)
-    {
+    public String getRecipeCategoryUid(@Nonnull PlantEntry recipe) {
         return JEIConfig.PLANT;
     }
 
     @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull PlantEntry recipe)
-    {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull PlantEntry recipe) {
         return new PlantWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(@Nonnull PlantEntry recipe)
-    {
+    public boolean isRecipeValid(@Nonnull PlantEntry recipe) {
         return true;
     }
 }

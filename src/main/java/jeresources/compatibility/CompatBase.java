@@ -11,14 +11,11 @@ import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
 import jeresources.util.FakeClientWorld;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 
-public abstract class CompatBase
-{
-    public static World getWorld()
-    {
+public abstract class CompatBase {
+    public static World getWorld() {
         World world = Minecraft.getMinecraft().theWorld;
         if (world == null) {
             world = new FakeClientWorld();
@@ -28,28 +25,23 @@ public abstract class CompatBase
 
     public abstract void init(boolean worldGen);
 
-    protected void registerMob(MobEntry entry)
-    {
+    protected void registerMob(MobEntry entry) {
         MobRegistry.getInstance().registerMob(entry);
     }
 
-    protected void registerDungeonEntry(DungeonEntry entry)
-    {
+    protected void registerDungeonEntry(DungeonEntry entry) {
         DungeonRegistry.getInstance().registerDungeonEntry(entry);
     }
 
-    protected void registerWorldGen(WorldGenEntry entry)
-    {
+    protected void registerWorldGen(WorldGenEntry entry) {
         WorldGenRegistry.getInstance().registerEntry(entry);
     }
 
-    protected void registerPlant(PlantEntry entry)
-    {
+    protected void registerPlant(PlantEntry entry) {
         PlantRegistry.getInstance().registerPlant(entry);
     }
 
-    protected void registerMobRenderHook(Class<? extends EntityLivingBase> clazz, IMobRenderHook renderHook)
-    {
+    protected void registerMobRenderHook(Class<? extends EntityLivingBase> clazz, IMobRenderHook renderHook) {
         JERAPI.getInstance().getMobRegistry().registerRenderHook(clazz, renderHook);
     }
 }

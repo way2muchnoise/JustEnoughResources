@@ -10,14 +10,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class VillagerEntry
-{
+public class VillagerEntry {
     private final List<TradeList> tradeList;
     private final int profession, career;
     private final String name;
 
-    public VillagerEntry(String name, int profession, int career, List<List<EntityVillager.ITradeList>> tradesLists)
-    {
+    public VillagerEntry(String name, int profession, int career, List<List<EntityVillager.ITradeList>> tradesLists) {
         this.name = name;
         this.profession = profession;
         this.career = career;
@@ -25,11 +23,9 @@ public class VillagerEntry
         addITradeLists(tradesLists);
     }
 
-    public void addITradeLists(List<List<EntityVillager.ITradeList>> tradesLists)
-    {
+    public void addITradeLists(List<List<EntityVillager.ITradeList>> tradesLists) {
         int i = 0;
-        for (List<EntityVillager.ITradeList> levelList : tradesLists)
-        {
+        for (List<EntityVillager.ITradeList> levelList : tradesLists) {
             TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(this);
             levelList.forEach(trades::addITradeList);
             this.tradeList.add(trades);
@@ -37,18 +33,14 @@ public class VillagerEntry
         }
     }
 
-    public TradeList getVillagerTrades(int level)
-    {
+    public TradeList getVillagerTrades(int level) {
         return tradeList.get(level);
     }
 
-    public List<ItemStack> getInputs()
-    {
+    public List<ItemStack> getInputs() {
         List<ItemStack> list = new LinkedList<>();
-        for (List<TradeList.Trade> trades : this.tradeList)
-        {
-            for (TradeList.Trade trade : trades)
-            {
+        for (List<TradeList.Trade> trades : this.tradeList) {
+            for (TradeList.Trade trade : trades) {
                 list.add(trade.getMinBuyStack1());
                 list.add(trade.getMinBuyStack2());
             }
@@ -56,41 +48,34 @@ public class VillagerEntry
         return list;
     }
 
-    public List<ItemStack> getOutputs()
-    {
+    public List<ItemStack> getOutputs() {
         List<ItemStack> list = new LinkedList<>();
         for (List<TradeList.Trade> trades : this.tradeList)
             list.addAll(trades.stream().map(TradeList.Trade::getMinSellStack).collect(Collectors.toList()));
         return list;
     }
 
-    public int getMaxLevel()
-    {
+    public int getMaxLevel() {
         return tradeList.size();
     }
 
-    public int getCareer()
-    {
+    public int getCareer() {
         return career;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return "entity.Villager." + this.name;
     }
 
-    public int getProfession()
-    {
+    public int getProfession() {
         return this.profession;
     }
 
-    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus)
-    {
+    public List<Integer> getPossibleLevels(IFocus<ItemStack> focus) {
         List<Integer> levels = new ArrayList<>();
         for (int i = 0; i < tradeList.size(); i++)
             if (tradeList.get(i) != null && tradeList.get(i).getFocusedList(focus).size() > 0)

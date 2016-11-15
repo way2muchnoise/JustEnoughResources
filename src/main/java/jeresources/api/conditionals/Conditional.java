@@ -6,8 +6,7 @@ import net.minecraft.util.text.translation.I18n;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Conditional
-{
+public class Conditional {
     public static final Map<Conditional, Conditional> reverse = new LinkedHashMap<>();
 
     public static final Conditional magmaCream = new Conditional("jer.magmaCream.text", TextModifier.darkRed);
@@ -61,19 +60,16 @@ public class Conditional
     protected String colour = "";
 
 
-    public Conditional()
-    {
+    public Conditional() {
     }
 
-    public Conditional(String text, TextModifier... textModifiers)
-    {
+    public Conditional(String text, TextModifier... textModifiers) {
         this.text = text;
         for (TextModifier textModifier : textModifiers)
             colour += textModifier.toString();
     }
 
-    public Conditional(String text, Conditional opposite)
-    {
+    public Conditional(String text, Conditional opposite) {
         this(text);
         this.colour = opposite.colour;
         reverse.put(opposite, this);
@@ -81,8 +77,7 @@ public class Conditional
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return colour + I18n.translateToLocal(text);
     }
 }

@@ -11,16 +11,14 @@ import net.minecraft.world.storage.loot.LootTable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MobEntry
-{
+public class MobEntry {
     private EntityLivingBase entity;
     private Set<LootDrop> drops;
     private LightLevel lightLevel;
     private List<String> biomes;
     private int minExp, maxExp;
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops) {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes = new ArrayList<>();
@@ -31,24 +29,20 @@ public class MobEntry
         this.minExp = minExp;
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, biomes, drops);
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
         this(entity, lightLevel, exp, exp, biomes, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... drops) {
         this(entity, lightLevel, exp, exp, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops) {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes = new ArrayList<>();
@@ -59,79 +53,65 @@ public class MobEntry
         this.minExp = minExp;
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, drops);
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
-    public MobEntry(EntityLivingBase entity, LootDrop... drops)
-    {
+    public MobEntry(EntityLivingBase entity, LootDrop... drops) {
         this(entity, LightLevel.any, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LootTable lootTable)
-    {
+    public MobEntry(EntityLivingBase entity, LootTable lootTable) {
         this(entity, LightLevel.any);
         this.drops.addAll(LootTableHelper.toDrops(lootTable));
     }
 
-    public MobEntry(EntityLivingBase entity)
-    {
+    public MobEntry(EntityLivingBase entity) {
         this(entity, LightLevel.any);
     }
 
-    public EntityLivingBase getEntity()
-    {
+    public EntityLivingBase getEntity() {
         return entity;
     }
 
-    public String getMobName()
-    {
+    public String getMobName() {
         return MobHelper.getExpandedName(this);
     }
 
-    public LootDrop[] getDrops()
-    {
+    public LootDrop[] getDrops() {
         return drops.toArray(new LootDrop[drops.size()]);
     }
 
-    public List<ItemStack> getDropsItemStacks()
-    {
+    public List<ItemStack> getDropsItemStacks() {
         return this.drops.stream().map(LootDrop::getDrops).flatMap(List::stream).collect(Collectors.toList());
     }
 
-    public String[] getBiomes()
-    {
+    public String[] getBiomes() {
         return biomes.toArray(new String[biomes.size()]);
     }
 
-    public boolean addDrop(LootDrop item)
-    {
+    public boolean addDrop(LootDrop item) {
         for (LootDrop drop : drops)
             if (drop.item.isItemEqual(item.item)) return false;
         drops.add(item);
         return true;
     }
 
-    public void addDrops(LootDrop... drops)
-    {
+    public void addDrops(LootDrop... drops) {
         for (LootDrop drop : drops)
             addDrop(drop);
     }
 
-    public void addDrops(Collection<LootDrop> drops)
-    {
-        drops.forEach(this::addDrop);
+    public void addDrops(Collection<LootDrop> drops) {
+        drops.stream().filter(Objects::nonNull).forEach(this::addDrop);
     }
 
-    public LightLevel getLightLevel()
-    {
+    public LightLevel getLightLevel() {
         return lightLevel;
     }
 
-    public String getExp()
-    {
+    public String getExp() {
         return this.minExp + (this.maxExp == this.minExp ? "" : " - " + this.maxExp);
     }
 }

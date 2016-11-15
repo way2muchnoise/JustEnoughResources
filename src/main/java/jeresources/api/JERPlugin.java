@@ -9,6 +9,5 @@ import java.lang.annotation.Target;
  * this field will be set to an instance of {@link IJERAPI}
  */
 @Target(ElementType.FIELD)
-public @interface JERPlugin
-{
+public @interface JERPlugin {
 }

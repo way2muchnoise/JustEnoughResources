@@ -12,17 +12,17 @@ import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-public class DungeonEntry
-{
+public class DungeonEntry {
     private Set<LootDrop> drops;
     private String name;
     private int maxStacks, minStacks;
 
-    public DungeonEntry(String name, LootTable lootTable)
-    {
+    public DungeonEntry(String name, LootTable lootTable) {
         this.drops = new TreeSet<>();
         this.name = name;
         final float[] tmpMinStacks = {0};
@@ -40,47 +40,41 @@ public class DungeonEntry
                 tmpMaxStacks[0] += pool.getRolls().getMax() + pool.getBonusRolls().getMax();
                 final float totalWeight = LootTableHelper.getEntries(pool).stream().mapToInt(entry -> entry.getEffectiveWeight(0)).sum();
                 LootTableHelper.getEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem)entry)
+                    .filter(entry -> entry instanceof LootEntryItem).map(entry -> (LootEntryItem) entry)
                     .map(entry -> new LootDrop(LootTableHelper.getItem(entry), entry.getEffectiveWeight(0) / totalWeight, LootTableHelper.getFunctions(entry))).forEach(drops::add);
 
                 LootTableHelper.getEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable)entry)
+                    .filter(entry -> entry instanceof LootEntryTable).map(entry -> (LootEntryTable) entry)
                     .map(entry -> manager.getLootTableFromLocation(entry.table))
                     .forEach(table -> handleTable(table, manager, tmpMinStacks, tmpMaxStacks));
             }
         );
     }
 
-    public boolean containsItem(ItemStack itemStack)
-    {
+    public boolean containsItem(ItemStack itemStack) {
         return drops.stream().anyMatch(drop -> drop.item.isItemEqual(itemStack));
     }
 
-    public String getName()
-    {
+    public String getName() {
         String name = DungeonRegistry.categoryToLocalKeyMap.get(this.name);
         return name == null ? this.name : name;
     }
 
-    public List<ItemStack> getItemStacks(IFocus<ItemStack> focus)
-    {
+    public List<ItemStack> getItemStacks(IFocus<ItemStack> focus) {
         return drops.stream().map(drop -> drop.item)
             .filter(stack -> focus == null || focus.getValue() == null || ItemStack.areItemStacksEqual(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().stackSize), focus.getValue()))
             .collect(Collectors.toList());
     }
 
-    public int getMaxStacks()
-    {
+    public int getMaxStacks() {
         return maxStacks;
     }
 
-    public int getMinStacks()
-    {
+    public int getMinStacks() {
         return minStacks;
     }
 
-    public LootDrop getChestDrop(ItemStack ingredient)
-    {
+    public LootDrop getChestDrop(ItemStack ingredient) {
         return drops.stream().filter(drop -> ItemStack.areItemsEqual(drop.item, ingredient)).findFirst().orElse(null);
     }
 

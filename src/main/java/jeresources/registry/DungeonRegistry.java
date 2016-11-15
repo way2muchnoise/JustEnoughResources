@@ -8,21 +8,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DungeonRegistry
-{
+public class DungeonRegistry {
     private Map<String, DungeonEntry> registry;
     public static Map<String, String> categoryToLocalKeyMap = new LinkedHashMap<>();
     private static DungeonRegistry instance;
 
-    public static DungeonRegistry getInstance()
-    {
+    public static DungeonRegistry getInstance() {
         if (instance == null)
             return instance = new DungeonRegistry();
         return instance;
     }
 
-    public DungeonRegistry()
-    {
+    public DungeonRegistry() {
         registry = new LinkedHashMap<>();
         addCategoryMapping("chests/abandoned_mineshaft", "jer.dungeon.abandonedMineshaftChest");
         addCategoryMapping("chests/desert_pyramid", "jer.dungeon.desertPyramidChest");
@@ -38,30 +35,26 @@ public class DungeonRegistry
         addCategoryMapping("chests/end_city_treasure", "jer.dungeon.endCityTreasureChest");
     }
 
-    public static boolean addCategoryMapping(String category, String name)
-    {
-        if (!categoryToLocalKeyMap.containsKey(category))
-        {
+    public static boolean addCategoryMapping(String category, String name) {
+        if (!categoryToLocalKeyMap.containsKey(category)) {
             categoryToLocalKeyMap.put(category, name);
             return true;
         }
         return false;
     }
 
-    public void registerDungeonEntry(DungeonEntry entry)
-    {
+    public void registerDungeonEntry(DungeonEntry entry) {
+        if (entry == null) return;
         String name = entry.getName();
         if (registry.containsKey(name)) return;
         registry.put(name, entry);
     }
 
-    public List<DungeonEntry> getDungeons()
-    {
+    public List<DungeonEntry> getDungeons() {
         return new ArrayList<>(registry.values());
     }
 
-    public String getNumStacks(DungeonEntry entry)
-    {
+    public String getNumStacks(DungeonEntry entry) {
         int max = entry.getMaxStacks();
         int min = entry.getMinStacks();
         if (min == max) return String.format(TranslationHelper.translateToLocal("jer.stacks"), max);
