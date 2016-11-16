@@ -13,12 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityGolem;
-import net.minecraft.entity.monster.EntityWitch;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -41,12 +39,6 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         ingredients.setOutputs(ItemStack.class, this.mob.getDropsItemStacks());
     }
 
-    @Nonnull
-    @Override
-    public List getOutputs() {
-        return this.mob.getDropsItemStacks();
-    }
-
     public LootDrop[] getDrops() {
         return this.mob.getDrops();
     }
@@ -55,8 +47,10 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
         RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 65.2F, 59.0F, 79.0F);
+        this.scale = getScale(mob.getEntity());
+        this.offsetY = getOffsetY(mob.getEntity());
         RenderHelper.renderEntity(
-            37, 110 - offsetY, scale,
+            37, 105 - offsetY, scale,
             38 - mouseX,
             70 - offsetY - mouseY,
             entityLivingBase
@@ -110,7 +104,7 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         float width = entityLivingBase.width;
         float height = entityLivingBase.height;
         if (width <= height) {
-            if (height < 0.8) return 50.0F;
+            if (height < 0.9) return 50.0F;
             else if (height < 1) return 35.0F;
             else if (height < 1.8) return 33.0F;
             else if (height < 2) return 32.0F;
@@ -135,6 +129,11 @@ public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<I
         else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
         else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
         else if (entityLivingBase instanceof EntityAnimal) offsetY = -20;
+        else if (entityLivingBase instanceof EntityVillager) offsetY = -15;
+        else if (entityLivingBase instanceof EntityVindicator) offsetY = -15;
+        else if (entityLivingBase instanceof EntityEvoker) offsetY = -10;
+        else if (entityLivingBase instanceof EntityBlaze) offsetY = -10;
+        else if (entityLivingBase instanceof EntityCreeper) offsetY = -15;
         return offsetY;
     }
 }

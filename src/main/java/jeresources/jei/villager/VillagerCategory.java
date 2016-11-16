@@ -52,27 +52,6 @@ public class VillagerCategory extends BlankRecipeCategory<VillagerWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VillagerWrapper recipeWrapper) {
-        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
-        recipeWrapper.setFocus(focus);
-        int y = Y_ITEM_DISTANCE * (6 - recipeWrapper.getPossibleLevels(focus).size()) / 2;
-        for (int i = 0; i < recipeWrapper.getPossibleLevels(focus).size(); i++) {
-            recipeLayout.getItemStacks().init(3 * i, true, X_FIRST_ITEM, y + i * Y_ITEM_DISTANCE);
-            recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
-            recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
-        }
-
-        int i = 0;
-        for (int level : recipeWrapper.getPossibleLevels(focus)) {
-            TradeList tradeList = recipeWrapper.getTrades(level).getFocusedList(focus);
-            recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
-            recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
-            recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
-            i++;
-        }
-    }
-
-    @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VillagerWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
         recipeWrapper.setFocus(focus);

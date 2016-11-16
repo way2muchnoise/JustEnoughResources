@@ -47,13 +47,6 @@ public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper>
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper) {
-        recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
-
-        recipeLayout.getItemStacks().setFromRecipe(0, recipeWrapper.getInputs());
-    }
-
-    @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
 

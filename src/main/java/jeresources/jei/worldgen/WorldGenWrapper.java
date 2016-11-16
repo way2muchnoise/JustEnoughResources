@@ -45,18 +45,6 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
         ingredients.setOutputs(ItemStack.class, this.worldGenEntry.getBlockAndDrops());
     }
 
-    @Nonnull
-    @Override
-    public List getOutputs() {
-        return this.worldGenEntry.getBlockAndDrops();
-    }
-
-    @Nonnull
-    @Override
-    public List getInputs() {
-        return CollectionHelper.create(this.worldGenEntry.getBlock());
-    }
-
     public ItemStack getBlock() {
         return this.worldGenEntry.getBlock();
     }

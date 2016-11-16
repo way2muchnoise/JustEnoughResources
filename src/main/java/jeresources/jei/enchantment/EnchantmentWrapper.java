@@ -2,7 +2,6 @@ package jeresources.jei.enchantment;
 
 import jeresources.entry.EnchantmentEntry;
 import jeresources.registry.EnchantmentRegistry;
-import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -64,12 +63,6 @@ public class EnchantmentWrapper extends BlankRecipeWrapper {
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(ItemStack.class, itemStack);
-    }
-
-    @Nonnull
-    @Override
-    public List getInputs() {
-        return CollectionHelper.create(itemStack);
     }
 
     @Override

@@ -14,13 +14,6 @@ public class MobHandler implements IRecipeHandler<MobEntry> {
         return MobEntry.class;
     }
 
-    @Deprecated
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return JEIConfig.MOB;
-    }
-
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull MobEntry recipe) {

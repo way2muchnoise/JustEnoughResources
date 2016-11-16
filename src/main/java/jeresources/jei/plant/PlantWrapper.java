@@ -30,23 +30,6 @@ public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback
         ingredients.setOutputs(ItemStack.class, plantEntry.getLootDropStacks());
     }
 
-    @Nonnull
-    @Override
-    public List getInputs() {
-        return CollectionHelper.create(plantEntry.getPlantItemStack());
-    }
-
-    @Deprecated
-    public List<ItemStack> getDrops() {
-        return plantEntry.getLootDropStacks();
-    }
-
-    @Nonnull
-    @Override
-    public List getOutputs() {
-        return plantEntry.getLootDropStacks();
-    }
-
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         RenderHelper.renderBlock(getFarmland(), 26, 50, -10, 20F, 0.4F);

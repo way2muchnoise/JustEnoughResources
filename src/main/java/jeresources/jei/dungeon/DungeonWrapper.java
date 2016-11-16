@@ -28,12 +28,6 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
         ingredients.setOutputs(ItemStack.class, this.chest.getItemStacks(null));
     }
 
-    @Nonnull
-    @Override
-    public List getOutputs() {
-        return this.chest.getItemStacks(null);
-    }
-
     public int amountOfItems(IFocus<ItemStack> focus) {
         return this.chest.getItemStacks(focus).size();
     }
@@ -48,17 +42,13 @@ public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallba
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+        RenderHelper.renderChest(15, 20, -40, 20, getLidAngle());
         Font.normal.print(TranslationHelper.translateToLocal(this.chest.getName()), 60, 7);
         Font.small.print(DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
-        RenderHelper.renderChest(15, 20, -40, 20, getLidAngle());
-    }
-
-    @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
         tooltip.add(this.chest.getChestDrop(ingredient).toString());
     }
 

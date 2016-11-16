@@ -49,24 +49,6 @@ public class MobCategory extends BlankRecipeCategory<MobWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper) {
-        int xOffset = 0;
-        int slot = 0;
-        for (int i = 0; i < Settings.ITEMS_PER_ROW; i++) {
-            int yOffset = 0;
-            for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++) {
-                recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
-                yOffset += SPACING_Y;
-            }
-            xOffset += SPACING_X;
-        }
-
-        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        for (int i = 0; i < Math.min(recipeWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
-            recipeLayout.getItemStacks().set(i, recipeWrapper.getDrops()[i].getDrops());
-    }
-
-    @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int xOffset = 0;
         int slot = 0;

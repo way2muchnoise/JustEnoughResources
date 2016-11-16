@@ -14,13 +14,6 @@ public class WorldGenHandler implements IRecipeHandler<WorldGenEntry> {
         return WorldGenEntry.class;
     }
 
-    @Deprecated
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return JEIConfig.WORLD_GEN;
-    }
-
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull WorldGenEntry recipe) {

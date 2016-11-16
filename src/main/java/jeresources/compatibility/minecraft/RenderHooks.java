@@ -3,8 +3,9 @@ package jeresources.compatibility.minecraft;
 import jeresources.api.render.IMobRenderHook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityGiantZombie;
-import net.minecraft.entity.monster.EntityGuardian;
+import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 
@@ -26,10 +27,10 @@ public class RenderHooks {
         return renderInfo;
     };
 
-    public static final IMobRenderHook ELDER_GUARDIAN = (IMobRenderHook<EntityGuardian>) (renderInfo, entity) ->
+    public static final IMobRenderHook ELDER_GUARDIAN = (IMobRenderHook<EntityElderGuardian>) (renderInfo, entity) ->
     {
-        if (entity.isElder())
-            GlStateManager.scale(0.6F, 0.6F, 0.6F);
+        GlStateManager.scale(0.6F, 0.6F, 0.6F);
+        entity.func_190767_di();
         return renderInfo;
     };
 
@@ -43,6 +44,11 @@ public class RenderHooks {
     {
         GlStateManager.translate(0.0F, -2.0F, 0.0F);
         GlStateManager.scale(0.7F, 0.7F, 0.7F);
+        return renderInfo;
+    };
+
+    public static final IMobRenderHook SHULKER = (IMobRenderHook<EntityShulker>) (renderInfo, entity) ->
+    {
         return renderInfo;
     };
 }

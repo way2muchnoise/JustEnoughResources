@@ -14,13 +14,6 @@ public class VillagerHandler implements IRecipeHandler<VillagerEntry> {
         return VillagerEntry.class;
     }
 
-    @Deprecated
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return JEIConfig.VILLAGER;
-    }
-
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull VillagerEntry recipe) {

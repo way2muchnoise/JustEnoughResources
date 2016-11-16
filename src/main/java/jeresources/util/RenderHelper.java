@@ -63,7 +63,7 @@ public class RenderHelper {
     }
 
     public static void renderEntity(int x, int y, float scale, float yaw, float pitch, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.worldObj == null) entityLivingBase.worldObj = Minecraft.getMinecraft().theWorld;
+        if (entityLivingBase.world == null) entityLivingBase.world = Minecraft.getMinecraft().world;
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F);
@@ -89,9 +89,7 @@ public class RenderHelper {
         entityLivingBase.prevRotationYawHead = entityLivingBase.rotationYaw;
         GlStateManager.translate(0.0F, entityLivingBase.getYOffset(), 0.0F);
         getRenderManager().setPlayerViewY(180.0F);
-        //String temp = BossStatus.bossName;
         getRenderManager().doRenderEntity(entityLivingBase, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-        //BossStatus.bossName = temp;
         entityLivingBase.renderYawOffset = renderYawOffset;
         entityLivingBase.rotationYaw = rotationYaw;
         entityLivingBase.rotationPitch = rotationPitch;

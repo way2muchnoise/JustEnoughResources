@@ -59,6 +59,11 @@ public class FakeClientWorld extends World {
             public String makeString() {
                 return null;
             }
+
+            @Override
+            public boolean func_191062_e(int p_191062_1_, int p_191062_2_) {
+                return false;
+            }
         };
     }
 
@@ -106,6 +111,11 @@ public class FakeClientWorld extends World {
                 @Override
                 public void saveExtraData() {
 
+                }
+
+                @Override
+                public boolean func_191063_a(int p_191063_1_, int p_191063_2_) {
+                    return false;
                 }
             };
         }

@@ -14,13 +14,6 @@ public class EnchantmentHandler implements IRecipeHandler<EnchantmentWrapper> {
         return EnchantmentWrapper.class;
     }
 
-    @Deprecated
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return JEIConfig.ENCHANTMENT;
-    }
-
     @Nonnull
     @Override
     public String getRecipeCategoryUid(@Nonnull EnchantmentWrapper recipe) {

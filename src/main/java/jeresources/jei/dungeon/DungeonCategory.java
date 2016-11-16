@@ -59,28 +59,6 @@ public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper) {
-        int x = X_FIRST_ITEM;
-        int y = Y_FIRST_ITEM;
-        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, recipeWrapper.getOutputs().size()); i++) {
-            recipeLayout.getItemStacks().init(i, false, x, y);
-            x += SPACING_X;
-
-            if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2) {
-                x = X_FIRST_ITEM;
-                y += SPACING_Y;
-            }
-        }
-
-        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
-        int slots = Math.min(recipeWrapper.amountOfItems(focus), ITEMS_PER_PAGE);
-        for (int i = 0; i < slots; i++)
-            recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(focus, i, slots));
-        recipeWrapper.resetLid();
-    }
-
-    @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;

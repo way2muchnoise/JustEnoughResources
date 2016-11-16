@@ -48,7 +48,7 @@ public class ChunkProfiler implements Runnable {
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
 
         final int maxY = chunk.getTopFilledSegment();
         for (int y = 0; y < maxY; y++)
@@ -117,8 +117,8 @@ public class ChunkProfiler implements Runnable {
                         continue;
                     String key = MapKeys.getKey(drop);
                     Integer count = dropsMap.get(key);
-                    if (count != null) count += drop.stackSize;
-                    else count = drop.stackSize;
+                    if (count != null) count += drop.func_190916_E();
+                    else count = drop.func_190916_E();
                     dropsMap.put(key, count);
                 }
             }

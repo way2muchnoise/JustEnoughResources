@@ -12,7 +12,7 @@ public class LootFunctionHelper {
         if (lootFunction instanceof SetCount) {
             lootDrop.minDrop = MathHelper.floor_float(((SetCount) lootFunction).countRange.getMin());
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
-            lootDrop.item.stackSize = lootDrop.minDrop < 1 ? 1 : lootDrop.minDrop;
+            lootDrop.item.func_190920_e(lootDrop.minDrop < 1 ? 1 : lootDrop.minDrop);
             lootDrop.maxDrop = MathHelper.floor_float(((SetCount) lootFunction).countRange.getMax());
         } else if (lootFunction instanceof SetMetadata) {
             lootDrop.item.setItemDamage(MathHelper.floor_float(((SetMetadata) lootFunction).metaRange.getMin()));

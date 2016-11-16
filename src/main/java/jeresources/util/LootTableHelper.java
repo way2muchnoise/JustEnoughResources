@@ -3,6 +3,7 @@ package jeresources.util;
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.EnumDyeColor;
@@ -103,6 +104,7 @@ public class LootTableHelper {
         chestTables.add(LootTableList.CHESTS_DESERT_PYRAMID);
         chestTables.add(LootTableList.CHESTS_JUNGLE_TEMPLE);
         chestTables.add(LootTableList.CHESTS_IGLOO_CHEST);
+        chestTables.add(LootTableList.field_191192_o);
 
         return chestTables;
     }
@@ -119,7 +121,7 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_SILVERFISH, EntitySilverfish.class);
         mobTableBuilder.add(LootTableList.ENTITIES_ENDERMAN, EntityEnderman.class);
         mobTableBuilder.add(LootTableList.ENTITIES_GUARDIAN, EntityGuardian.class);
-        mobTableBuilder.add(LootTableList.ENTITIES_ELDER_GUARDIAN, EntityGuardian.class, EntityGuardian::setElder);
+        mobTableBuilder.add(LootTableList.ENTITIES_ELDER_GUARDIAN, EntityElderGuardian.class);
         mobTableBuilder.add(LootTableList.ENTITIES_SHULKER, EntityShulker.class);
         mobTableBuilder.add(LootTableList.ENTITIES_IRON_GOLEM, EntityIronGolem.class);
         mobTableBuilder.add(LootTableList.ENTITIES_SNOWMAN, EntitySnowman.class);
@@ -127,8 +129,10 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_CHICKEN, EntityChicken.class);
         mobTableBuilder.add(LootTableList.ENTITIES_PIG, EntityPig.class);
         mobTableBuilder.add(LootTableList.ENTITIES_HORSE, EntityHorse.class);
-        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_HORSE, EntityHorse.class, entity -> entity.setType(HorseType.ZOMBIE));
-        mobTableBuilder.add(LootTableList.ENTITIES_SKELETON_HORSE, EntityHorse.class, entity -> entity.setType(HorseType.SKELETON));
+        mobTableBuilder.add(LootTableList.field_191190_H, EntityDonkey.class);
+        mobTableBuilder.add(LootTableList.field_191191_I, EntityMule.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_HORSE, EntityZombieHorse.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_SKELETON_HORSE, EntitySkeletonHorse.class);
         mobTableBuilder.add(LootTableList.ENTITIES_COW, EntityCow.class);
         mobTableBuilder.add(LootTableList.ENTITIES_MUSHROOM_COW, EntityMooshroom.class);
         mobTableBuilder.add(LootTableList.ENTITIES_WOLF, EntityWolf.class);
@@ -149,7 +153,16 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE, EntityZombie.class);
         mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_PIGMAN, EntityPigZombie.class);
         mobTableBuilder.add(LootTableList.ENTITIES_SKELETON, EntitySkeleton.class);
-        mobTableBuilder.add(LootTableList.ENTITIES_WITHER_SKELETON, EntitySkeleton.class, entity -> entity.setSkeletonType(SkeletonType.WITHER));
+        mobTableBuilder.add(LootTableList.ENTITIES_WITHER_SKELETON, EntityWitherSkeleton.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_STRAY, EntityStray.class);
+        mobTableBuilder.add(LootTableList.field_191182_ar, EntityHusk.class);
+        mobTableBuilder.add(LootTableList.field_191183_as, EntityZombieVillager.class);
+        mobTableBuilder.add(LootTableList.field_191184_at, EntityVillager.class);
+        mobTableBuilder.add(LootTableList.field_191185_au, EntityEvoker.class);
+        mobTableBuilder.add(LootTableList.field_191186_av, EntityVindicator.class);
+        mobTableBuilder.add(LootTableList.field_191187_aw, EntityLlama.class);
+        mobTableBuilder.add(LootTableList.field_191188_ax, EntityVex.class);
+        mobTableBuilder.add(LootTableList.field_191189_ay, EntityDragon.class);
 
         return mobTableBuilder.getMobTables();
     }

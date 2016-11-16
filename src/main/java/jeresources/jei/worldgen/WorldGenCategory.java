@@ -58,19 +58,6 @@ public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper> {
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper) {
-        recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
-
-        for (int i = 0; i < DROP_ITEM_COUNT; i++)
-            recipeLayout.getItemStacks().init(i + 1, false, X_DROP_ITEM + i * 18, Y_DROP_ITEM);
-
-        recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        recipeLayout.getItemStacks().set(0, recipeWrapper.getBlock());
-        for (int i = 0; i < Math.min(DROP_ITEM_COUNT, recipeWrapper.getDrops().size()); i++)
-            recipeLayout.getItemStacks().set(i + 1, recipeWrapper.getDrops().get(i));
-    }
-
-    @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull WorldGenWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getItemStacks().init(0, false, X_ITEM, Y_ITEM);
 

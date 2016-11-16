@@ -33,6 +33,7 @@ public class DungeonRegistry {
         addCategoryMapping("chests/simple_dungeon", "jer.dungeon.simpleDungeonChest");
         addCategoryMapping("chests/nether_bridge", "jer.dungeon.netherBridgeChest");
         addCategoryMapping("chests/end_city_treasure", "jer.dungeon.endCityTreasureChest");
+        addCategoryMapping("chests/woodland_mansion", "jer.dungeon.woodlandMansion");
     }
 
     public static boolean addCategoryMapping(String category, String name) {

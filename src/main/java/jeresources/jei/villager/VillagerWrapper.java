@@ -30,18 +30,6 @@ public class VillagerWrapper extends BlankRecipeWrapper {
         ingredients.setOutputs(ItemStack.class, entry.getOutputs());
     }
 
-    @Nonnull
-    @Override
-    public List getInputs() {
-        return entry.getInputs();
-    }
-
-    @Nonnull
-    @Override
-    public List getOutputs() {
-        return entry.getOutputs();
-    }
-
     public TradeList getTrades(int level) {
         return entry.getVillagerTrades(level);
     }
@@ -65,7 +53,7 @@ public class VillagerWrapper extends BlankRecipeWrapper {
             37, 118, 36.0F,
             38 - mouseX,
             80 - mouseY,
-            new EntityVillager(minecraft.theWorld, entry.getProfession())
+            new EntityVillager(minecraft.world, entry.getProfession())
         );
         RenderHelper.stopScissor();
 
