@@ -62,31 +62,31 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     public void addITradeList(EntityVillager.ITradeList tradeList) {
         MerchantRecipeList tempList = new MerchantRecipeList();
         for (int itr = 0; itr < 100; itr++)
-            tradeList.func_190888_a(m, tempList, r);
+            tradeList.addMerchantRecipe(m, tempList, r);
         if (tempList.size() == 0) return; // Bad lists be bad
         ItemStack buy1 = tempList.get(0).getItemToBuy();
         ItemStack buy2 = tempList.get(0).getSecondItemToBuy();
         ItemStack sell = tempList.get(0).getItemToSell();
         int minBuy1, minBuy2, minSell;
         int maxBuy1, maxBuy2, maxSell;
-        minBuy1 = maxBuy1 = buy1.func_190916_E();
-        if (buy2 != null) minBuy2 = maxBuy2 = buy2.func_190916_E();
+        minBuy1 = maxBuy1 = buy1.getCount();
+        if (buy2 != null) minBuy2 = maxBuy2 = buy2.getCount();
         else minBuy2 = maxBuy2 = 0;
-        minSell = maxSell = sell.func_190916_E();
+        minSell = maxSell = sell.getCount();
         for (MerchantRecipe merchantRecipe : tempList) {
-            if (minBuy1 > merchantRecipe.getItemToBuy().func_190916_E())
-                minBuy1 = merchantRecipe.getItemToBuy().func_190916_E();
-            if (buy2 != null && minBuy2 > merchantRecipe.getSecondItemToBuy().func_190916_E())
-                minBuy2 = merchantRecipe.getSecondItemToBuy().func_190916_E();
-            if (minSell > merchantRecipe.getItemToSell().func_190916_E())
-                minSell = merchantRecipe.getItemToSell().func_190916_E();
+            if (minBuy1 > merchantRecipe.getItemToBuy().getCount())
+                minBuy1 = merchantRecipe.getItemToBuy().getCount();
+            if (buy2 != null && minBuy2 > merchantRecipe.getSecondItemToBuy().getCount())
+                minBuy2 = merchantRecipe.getSecondItemToBuy().getCount();
+            if (minSell > merchantRecipe.getItemToSell().getCount())
+                minSell = merchantRecipe.getItemToSell().getCount();
 
-            if (maxBuy1 < merchantRecipe.getItemToBuy().func_190916_E())
-                maxBuy1 = merchantRecipe.getItemToBuy().func_190916_E();
-            if (buy2 != null && maxBuy2 < merchantRecipe.getSecondItemToBuy().func_190916_E())
-                maxBuy2 = merchantRecipe.getSecondItemToBuy().func_190916_E();
-            if (maxSell < merchantRecipe.getItemToSell().func_190916_E())
-                maxSell = merchantRecipe.getItemToSell().func_190916_E();
+            if (maxBuy1 < merchantRecipe.getItemToBuy().getCount())
+                maxBuy1 = merchantRecipe.getItemToBuy().getCount();
+            if (buy2 != null && maxBuy2 < merchantRecipe.getSecondItemToBuy().getCount())
+                maxBuy2 = merchantRecipe.getSecondItemToBuy().getCount();
+            if (maxSell < merchantRecipe.getItemToSell().getCount())
+                maxSell = merchantRecipe.getItemToSell().getCount();
         }
         this.add(
             new Trade(
@@ -128,39 +128,39 @@ public class TradeList extends LinkedList<TradeList.Trade> {
 
         public ItemStack getMinBuyStack1() {
             ItemStack minBuyStack = this.buy1.copy();
-            minBuyStack.func_190920_e(this.minBuy1);
+            minBuyStack.setCount(this.minBuy1);
             return minBuyStack;
         }
 
         public ItemStack getMinBuyStack2() {
             if (this.buy2 == null) return null;
             ItemStack minBuyStack = this.buy2.copy();
-            minBuyStack.func_190920_e(this.minBuy2);
+            minBuyStack.setCount(this.minBuy2);
             return minBuyStack;
         }
 
         public ItemStack getMinSellStack() {
             ItemStack minSellStack = this.sell.copy();
-            minSellStack.func_190920_e(this.minSell);
+            minSellStack.setCount(this.minSell);
             return minSellStack;
         }
 
         public ItemStack getMaxBuyStack1() {
             ItemStack maxBuyStack = this.buy1.copy();
-            maxBuyStack.func_190920_e(this.maxBuy1);
+            maxBuyStack.setCount(this.maxBuy1);
             return maxBuyStack;
         }
 
         public ItemStack getMaxBuyStack2() {
             if (this.buy2 == null) return null;
             ItemStack maxBuyStack = this.buy2.copy();
-            maxBuyStack.func_190920_e(this.maxBuy2);
+            maxBuyStack.setCount(this.maxBuy2);
             return maxBuyStack;
         }
 
         public ItemStack getMaxSellStack() {
             ItemStack maxSellStack = this.sell.copy();
-            maxSellStack.func_190920_e(this.maxSell);
+            maxSellStack.setCount(this.maxSell);
             return maxSellStack;
         }
 

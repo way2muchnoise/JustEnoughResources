@@ -34,7 +34,7 @@ public class DummyWorld extends WorldServer {
 
     public DummyWorld(WorldServer world) {
         super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.theProfiler);
-        this.provider.registerWorld(this);
+        this.provider.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
     }
 
@@ -91,7 +91,7 @@ public class DummyWorld extends WorldServer {
     }
 
     @Override
-    public boolean spawnEntityInWorld(Entity entity) {
+    public boolean spawnEntity(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
     }
@@ -186,11 +186,6 @@ public class DummyWorld extends WorldServer {
 
         @Override
         public boolean generateStructures(Chunk chunkIn, int x, int z) {
-            return false;
-        }
-
-        @Override
-        public boolean unloadQueuedChunks() {
             return false;
         }
     }

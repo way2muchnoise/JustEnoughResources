@@ -9,12 +9,12 @@ import net.minecraft.server.MinecraftServer;
 
 public class ProfileCommand extends CommandBase {
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "profile";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
+    public String getUsage(ICommandSender sender) {
         return "profile [chunks|stop] [all]";
     }
 
@@ -40,7 +40,7 @@ public class ProfileCommand extends CommandBase {
             if (!Profiler.init(sender, chunks, args.length == 2 && args[1].equals("all")))
                 throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
         } else {
-            throw new WrongUsageException(getCommandUsage(sender));
+            throw new WrongUsageException(getUsage(sender));
         }
     }
 

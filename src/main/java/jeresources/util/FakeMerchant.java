@@ -50,12 +50,12 @@ public class FakeMerchant implements IMerchant {
     }
 
     @Override
-    public World func_190670_t_() {
+    public World getWorld() {
         return CompatBase.getWorld();
     }
 
     @Override
-    public BlockPos func_190671_u_() {
+    public BlockPos getPos() {
         return BlockPos.ORIGIN;
     }
 }

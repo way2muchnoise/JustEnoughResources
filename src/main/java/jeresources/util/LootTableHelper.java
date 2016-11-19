@@ -104,7 +104,7 @@ public class LootTableHelper {
         chestTables.add(LootTableList.CHESTS_DESERT_PYRAMID);
         chestTables.add(LootTableList.CHESTS_JUNGLE_TEMPLE);
         chestTables.add(LootTableList.CHESTS_IGLOO_CHEST);
-        chestTables.add(LootTableList.field_191192_o);
+        chestTables.add(LootTableList.CHESTS_WOODLAND_MANSION);
 
         return chestTables;
     }
@@ -129,8 +129,8 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_CHICKEN, EntityChicken.class);
         mobTableBuilder.add(LootTableList.ENTITIES_PIG, EntityPig.class);
         mobTableBuilder.add(LootTableList.ENTITIES_HORSE, EntityHorse.class);
-        mobTableBuilder.add(LootTableList.field_191190_H, EntityDonkey.class);
-        mobTableBuilder.add(LootTableList.field_191191_I, EntityMule.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_DONKEY, EntityDonkey.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_MULE, EntityMule.class);
         mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_HORSE, EntityZombieHorse.class);
         mobTableBuilder.add(LootTableList.ENTITIES_SKELETON_HORSE, EntitySkeletonHorse.class);
         mobTableBuilder.add(LootTableList.ENTITIES_COW, EntityCow.class);
@@ -155,14 +155,14 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_SKELETON, EntitySkeleton.class);
         mobTableBuilder.add(LootTableList.ENTITIES_WITHER_SKELETON, EntityWitherSkeleton.class);
         mobTableBuilder.add(LootTableList.ENTITIES_STRAY, EntityStray.class);
-        mobTableBuilder.add(LootTableList.field_191182_ar, EntityHusk.class);
-        mobTableBuilder.add(LootTableList.field_191183_as, EntityZombieVillager.class);
-        mobTableBuilder.add(LootTableList.field_191184_at, EntityVillager.class);
-        mobTableBuilder.add(LootTableList.field_191185_au, EntityEvoker.class);
-        mobTableBuilder.add(LootTableList.field_191186_av, EntityVindicator.class);
-        mobTableBuilder.add(LootTableList.field_191187_aw, EntityLlama.class);
-        mobTableBuilder.add(LootTableList.field_191188_ax, EntityVex.class);
-        mobTableBuilder.add(LootTableList.field_191189_ay, EntityDragon.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_HUSK, EntityHusk.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ZOMBIE_VILLAGER, EntityZombieVillager.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_VILLAGER, EntityVillager.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_EVOCATION_ILLAGER, EntityEvoker.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_VINDICATION_ILLAGER, EntityVindicator.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_LLAMA, EntityLlama.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_VEX, EntityVex.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_ENDER_DRAGON, EntityDragon.class);
 
         return mobTableBuilder.getMobTables();
     }

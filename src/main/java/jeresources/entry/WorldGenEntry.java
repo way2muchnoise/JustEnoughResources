@@ -66,7 +66,7 @@ public class WorldGenEntry {
             }
             if (!this.dropsDisplay.containsKey(mapKey)) {
                 ItemStack itemStack = drop.item.copy();
-                itemStack.func_190920_e(Math.max(1, drop.minDrop));
+                itemStack.setCount(Math.max(1, drop.minDrop));
                 this.dropsDisplay.put(mapKey, itemStack);
             }
         }

@@ -30,7 +30,7 @@ public class RenderHooks {
     public static final IMobRenderHook ELDER_GUARDIAN = (IMobRenderHook<EntityElderGuardian>) (renderInfo, entity) ->
     {
         GlStateManager.scale(0.6F, 0.6F, 0.6F);
-        entity.func_190767_di();
+        entity.setGhost();
         return renderInfo;
     };
 

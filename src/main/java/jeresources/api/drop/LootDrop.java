@@ -22,7 +22,7 @@ public class LootDrop implements Comparable<LootDrop> {
     private float sortIndex;
 
     public LootDrop(ItemStack item) {
-        this(item, item.func_190916_E());
+        this(item, item.getCount());
     }
 
     public LootDrop(ItemStack item, float chance) {

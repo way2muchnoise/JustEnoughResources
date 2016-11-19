@@ -117,8 +117,8 @@ public class ChunkProfiler implements Runnable {
                         continue;
                     String key = MapKeys.getKey(drop);
                     Integer count = dropsMap.get(key);
-                    if (count != null) count += drop.func_190916_E();
-                    else count = drop.func_190916_E();
+                    if (count != null) count += drop.getCount();
+                    else count = drop.getCount();
                     dropsMap.put(key, count);
                 }
             }
