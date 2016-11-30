@@ -56,26 +56,14 @@ public class ChunkProfiler implements Runnable {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     blockPos.setPos(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
                     IBlockState blockState = chunk.getBlockState(x, y, z);
-                    Block block = blockState.getBlock();
-                    int meta = block.getMetaFromState(blockState);
-                    ItemStack pickBlock = null;
-                    try {
-                        pickBlock = block.getPickBlock(blockState, rayTraceResult, world, blockPos, player);
-                    } catch (Exception ignored) {
-                    }
-
-                    final String key;
-                    if (pickBlock == null || pickBlock.getItem() == null) {
-                        key = block.getRegistryName().toString() + ':' + meta;
-                    } else {
-                        key = MapKeys.getKey(pickBlock);
-                    }
+                    final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);
 
                     if (!dimensionData.dropsMap.containsKey(key)) {
-                        dimensionData.dropsMap.put(key, getDrops(block, world, blockPos, blockState));
+                        dimensionData.dropsMap.put(key, getDrops(world, blockPos, blockState));
                     }
 
                     if (!dimensionData.silkTouchMap.containsKey(key)) {
+                        Block block = blockState.getBlock();
                         boolean canSilkTouch = block.canSilkHarvest(world, blockPos, blockState, player);
                         dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
@@ -103,9 +91,10 @@ public class ChunkProfiler implements Runnable {
         this.timer.endChunk(dimId);
     }
 
-    public static Map<String, Map<Integer, Float>> getDrops(Block block, IBlockAccess world, BlockPos pos, IBlockState state) {
+    public static Map<String, Map<Integer, Float>> getDrops(IBlockAccess world, BlockPos pos, IBlockState state) {
         final int totalTries = 10000;
 
+        Block block = state.getBlock();
         final Map<String, Map<Integer, Float>> resultMap = new HashMap<>();
         for (int fortune = 0; fortune <= 3; fortune++) {
             final Map<String, Integer> dropsMap = new HashMap<>();
