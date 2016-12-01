@@ -82,10 +82,10 @@ public class BiomeRestriction {
 
     private ArrayList<Biome> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes) {
         ArrayList<Biome> biomes = new ArrayList<>();
-        biomes.addAll(Arrays.asList(BiomeDictionary.getBiomesForType(biomeType)));
+        biomes.addAll(BiomeDictionary.getBiomes(biomeType));
         for (int i = 1; i < biomeTypes.length; i++) {
             ArrayList<Biome> newBiomes = new ArrayList<>();
-            for (Biome biome : BiomeDictionary.getBiomesForType(biomeTypes[i])) {
+            for (Biome biome : BiomeDictionary.getBiomes(biomeTypes[i])) {
                 if (biomes.remove(biome)) newBiomes.add(biome);
             }
             biomes = newBiomes;
