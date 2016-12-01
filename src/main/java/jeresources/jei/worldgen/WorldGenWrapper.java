@@ -116,12 +116,9 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
 
         Font.small.print(TranslationHelper.translateToLocal("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
 
-        List<String> dimensions = worldGenEntry.getDimensions();
-        if (dimensions.size() == 1) {
-            String dimension = dimensions.get(0);
-            int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
-            Font.normal.print(dimension, x, 0);
-        }
+        String dimension = worldGenEntry.getDimension();
+        int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
+        Font.normal.print(dimension, x, 0);
     }
 
     @Nullable
@@ -148,12 +145,6 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
             if (biomes.size() > 0) {
                 tooltip.add(I18n.translateToLocal("jer.worldgen.biomes") + ":");
                 tooltip.addAll(biomes);
-            }
-
-            List<String> dimensions = worldGenEntry.getDimensions();
-            if (dimensions.size() > 1) {
-                tooltip.add(I18n.translateToLocal("jer.worldgen.dimensions") + ":");
-                tooltip.addAll(dimensions);
             }
 
         } else {

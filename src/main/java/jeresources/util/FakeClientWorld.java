@@ -51,7 +51,7 @@ public class FakeClientWorld extends World {
             }
 
             @Override
-            public boolean unloadQueuedChunks() {
+            public boolean tick() {
                 return false;
             }
 

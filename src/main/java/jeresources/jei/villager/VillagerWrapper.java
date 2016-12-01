@@ -65,7 +65,7 @@ public class VillagerWrapper extends BlankRecipeWrapper {
             37, 118, 36.0F,
             38 - mouseX,
             80 - mouseY,
-            new EntityVillager(minecraft.theWorld, entry.getProfession())
+            new EntityVillager(minecraft.world, entry.getProfession())
         );
         RenderHelper.stopScissor();
 

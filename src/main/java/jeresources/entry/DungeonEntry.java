@@ -29,8 +29,8 @@ public class DungeonEntry {
         final float[] tmpMaxStacks = {0};
         final LootTableManager manager = LootTableHelper.getManager();
         handleTable(lootTable, manager, tmpMinStacks, tmpMaxStacks);
-        this.minStacks = MathHelper.floor_float(tmpMinStacks[0]);
-        this.maxStacks = MathHelper.floor_float(tmpMaxStacks[0]);
+        this.minStacks = MathHelper.floor(tmpMinStacks[0]);
+        this.maxStacks = MathHelper.floor(tmpMaxStacks[0]);
     }
 
     private void handleTable(LootTable lootTable, LootTableManager manager, float[] tmpMinStacks, float[] tmpMaxStacks) {

@@ -63,7 +63,7 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.addChatMessage(new TextComponentTranslation(s));
+        this.sender.sendMessage(new TextComponentTranslation(s));
     }
 
     private void sendSpeed(int dim) {

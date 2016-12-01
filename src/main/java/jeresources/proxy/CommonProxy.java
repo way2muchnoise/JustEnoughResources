@@ -2,7 +2,6 @@ package jeresources.proxy;
 
 import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
-import jeresources.handler.WorldEventHandler;
 import jeresources.registry.*;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -15,9 +14,5 @@ public class CommonProxy {
         WorldGenRegistry.getInstance().clear();
         Compatibility.init();
         EnchantmentRegistry.getInstance().removeAll(Settings.excludedEnchants);
-    }
-
-    public void registerEvents() {
-        MinecraftForge.EVENT_BUS.register(new WorldEventHandler());
     }
 }

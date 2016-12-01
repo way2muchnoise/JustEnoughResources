@@ -10,12 +10,12 @@ import net.minecraft.world.storage.loot.functions.*;
 public class LootFunctionHelper {
     public static void applyFunction(LootFunction lootFunction, LootDrop lootDrop) {
         if (lootFunction instanceof SetCount) {
-            lootDrop.minDrop = MathHelper.floor_float(((SetCount) lootFunction).countRange.getMin());
+            lootDrop.minDrop = MathHelper.floor(((SetCount) lootFunction).countRange.getMin());
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
             lootDrop.item.stackSize = lootDrop.minDrop < 1 ? 1 : lootDrop.minDrop;
-            lootDrop.maxDrop = MathHelper.floor_float(((SetCount) lootFunction).countRange.getMax());
+            lootDrop.maxDrop = MathHelper.floor(((SetCount) lootFunction).countRange.getMax());
         } else if (lootFunction instanceof SetMetadata) {
-            lootDrop.item.setItemDamage(MathHelper.floor_float(((SetMetadata) lootFunction).metaRange.getMin()));
+            lootDrop.item.setItemDamage(MathHelper.floor(((SetMetadata) lootFunction).metaRange.getMin()));
         } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels) {
             lootDrop.enchanted = true;
         } else if (lootFunction instanceof Smelt) {

@@ -91,7 +91,7 @@ public class DummyWorld extends WorldServer {
     }
 
     @Override
-    public boolean spawnEntityInWorld(Entity entity) {
+    public boolean spawnEntity(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
     }
@@ -190,7 +190,7 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
-        public boolean unloadQueuedChunks() {
+        public boolean tick() {
             return false;
         }
     }
