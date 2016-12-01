@@ -8,6 +8,7 @@ import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.drop.LootDrop;
+import jeresources.api.restrictions.DimensionRestriction;
 import jeresources.api.restrictions.Restriction;
 import jeresources.config.ConfigHandler;
 import jeresources.entry.WorldGenEntry;
@@ -18,11 +19,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Loader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -115,19 +118,13 @@ public class WorldGenAdapter {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        map.clear();
         return true;
     }
 
+    private static Map<String, Restriction> map = new HashMap<>();
+
     private static Restriction getRestriction(String dim) {
-        switch (dim.toLowerCase()) {
-            case "overworld":
-                return Restriction.OVERWORLD;
-            case "nether":
-                return Restriction.NETHER;
-            case "the end":
-                return Restriction.END;
-            default:
-                return Restriction.OVERWORLD_LIKE;
-        }
+        return map.computeIfAbsent(dim, k -> new Restriction(new DimensionRestriction(dim)));
     }
 }

@@ -188,5 +188,10 @@ public class DummyWorld extends WorldServer {
         public boolean generateStructures(Chunk chunkIn, int x, int z) {
             return false;
         }
+
+        @Override
+        public boolean tick() {
+            return false;
+        }
     }
 }

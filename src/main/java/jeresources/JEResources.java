@@ -34,9 +34,6 @@ public class JEResources {
         LogHelper.info("Updating ModMetaData...");
         metadata = MetaData.init(metadata);
 
-        LogHelper.info("Registering Events...");
-        PROXY.registerEvents();
-
         LogHelper.info("Providing API...");
         JERAPI.init(event.getAsmData());
     }

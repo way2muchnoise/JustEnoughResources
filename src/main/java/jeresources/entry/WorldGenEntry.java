@@ -39,11 +39,11 @@ public class WorldGenEntry {
     }
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, LootDrop... drops) {
-        this(block, distribution, Restriction.OVERWORLD_LIKE, false, drops);
+        this(block, distribution, Restriction.OVERWORLD, false, drops);
     }
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops) {
-        this(block, distribution, Restriction.OVERWORLD_LIKE, silktouch, drops);
+        this(block, distribution, Restriction.OVERWORLD, silktouch, drops);
     }
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
@@ -144,8 +144,8 @@ public class WorldGenEntry {
         return this.restriction.getBiomeRestrictions();
     }
 
-    public List<String> getDimensions() {
-        return this.restriction.getDimensionRestrictions();
+    public String getDimension() {
+        return this.restriction.getDimensionRestriction();
     }
 
     public List<LootDrop> getLootDrops(ItemStack itemStack) {
