@@ -13,8 +13,11 @@ buildscript {
 
 plugins {
     id "com.matthewprenger.cursegradle" version "1.0.7"
+    id "com.jfrog.bintray" version "1.7"
 }
 
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'idea'
 
@@ -44,8 +47,8 @@ targetCompatibility = 1.8
 version = version_major + '.' + version_minor + '.' + version_revis
 
 //adds the build number to the end of the version string if on a build server
-if (System.getenv().DRONE_BUILD_NUMBER != null) {
-    version += ".${System.getenv().DRONE_BUILD_NUMBER}"
+if (System.getenv('TRAVIS_BUILD_NUMBER') != null) {
+    version += ".${System.getenv('TRAVIS_BUILD_NUMBER')}"
 }
 
 minecraft {
@@ -110,7 +113,7 @@ artifacts {
 }
 
 curseforge {
-    apiKey = System.getenv().CURSE_KEY == null ? '0' : System.getenv().CURSE_KEY
+    apiKey = System.getenv('CURSE_KEY') == null ? '0' : System.getenv('CURSE_KEY')
     project {
         id = curse_project_id
         changelog = "git log -n1 --pretty=format:\"[%h](https://github.com/${repo}/commit/%H) %cn: %s\"".execute().text.trim()
@@ -130,6 +133,35 @@ curseforge {
         }
         addArtifact (apiJar) {
             displayName = "${apiJar.archiveName}".replace(".jar", "")
+        }
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            groupId = project.group
+            artifactId = project.archivesBaseName
+            version = project.version
+            artifact deobfJar
+            artifact sourcesJar
+            artifact apiJar
+            artifact jar
+        }
+    }
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['MyPublication']
+    publish = true
+    pkg {
+        repo = 'dev'
+        name = 'JustEnoughResources'
+        version {
+            name = project.version
+            released = new Date()
         }
     }
 }
