@@ -33,7 +33,7 @@ public class DummyWorld extends WorldServer {
     public List<Entity> spawnedEntities = new ArrayList<>();
 
     public DummyWorld(WorldServer world) {
-        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.theProfiler);
+        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.profiler);
         this.provider.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
     }
@@ -143,13 +143,12 @@ public class DummyWorld extends WorldServer {
             return this.id2ChunkMap.get(chunkKey);
         }
 
-        @Override
         public void unloadAllChunks() {
             this.id2ChunkMap.clear();
         }
 
         @Override
-        public boolean saveChunks(boolean p_186027_1_) {
+        public boolean saveChunks(boolean all) {
             return true;
         }
 

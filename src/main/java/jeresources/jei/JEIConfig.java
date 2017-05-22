@@ -1,19 +1,20 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
+import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
-import jeresources.jei.dungeon.DungeonHandler;
+import jeresources.jei.dungeon.DungeonWrapperFactory;
 import jeresources.jei.enchantment.EnchantmentCategory;
-import jeresources.jei.enchantment.EnchantmentHandler;
 import jeresources.jei.enchantment.EnchantmentMaker;
+import jeresources.jei.enchantment.EnchantmentWrapper;
+import jeresources.jei.enchantment.EnchantmentWrapperFactory;
 import jeresources.jei.mob.MobCategory;
-import jeresources.jei.mob.MobHandler;
+import jeresources.jei.mob.MobWrapperFactory;
 import jeresources.jei.plant.PlantCategory;
-import jeresources.jei.plant.PlantHandler;
+import jeresources.jei.plant.PlantWrapperFactory;
 import jeresources.jei.villager.VillagerCategory;
-import jeresources.jei.villager.VillagerHandler;
 import jeresources.jei.worldgen.WorldGenCategory;
-import jeresources.jei.worldgen.WorldGenHandler;
+import jeresources.jei.worldgen.WorldGenWrapperFactory;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
@@ -36,16 +37,24 @@ public class JEIConfig extends BlankModPlugin {
     @Override
     public void register(@Nonnull IModRegistry registry) {
         JEIConfig.jeiHelpers = registry.getJeiHelpers();
-        registry.addRecipeHandlers(new PlantHandler(), new WorldGenHandler(), new MobHandler(), new EnchantmentHandler(), new DungeonHandler(), new VillagerHandler());
+        // Register categories
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+        // Add recipe handlers
+        registry.handleRecipes(WorldGenEntry.class, new WorldGenWrapperFactory(), WORLD_GEN);
+        registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), PLANT);
+        registry.handleRecipes(MobEntry.class, new MobWrapperFactory(), MOB);
+        registry.handleRecipes(DungeonEntry.class, new DungeonWrapperFactory(), DUNGEON);
+        registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), VILLAGER);
+        registry.handleRecipes(EnchantmentWrapper.class, new EnchantmentWrapperFactory(), ENCHANTMENT);
+        // Init internals
         JEResources.PROXY.initCompatibility();
-
-        registry.addRecipes(WorldGenRegistry.getInstance().getWorldGen());
-        registry.addRecipes(PlantRegistry.getInstance().getAllPlants());
-        registry.addRecipes(MobRegistry.getInstance().getMobs());
-        registry.addRecipes(DungeonRegistry.getInstance().getDungeons());
-        registry.addRecipes(VillagerRegistry.getInstance().getVillagers());
-        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getIngredients(ItemStack.class)));
+        // Add recipes
+        registry.addRecipes(WorldGenRegistry.getInstance().getWorldGen(), WORLD_GEN);
+        registry.addRecipes(PlantRegistry.getInstance().getAllPlants(), PLANT);
+        registry.addRecipes(MobRegistry.getInstance().getMobs(), MOB);
+        registry.addRecipes(DungeonRegistry.getInstance().getDungeons(), DUNGEON);
+        registry.addRecipes(VillagerRegistry.getInstance().getVillagers(), VILLAGER);
+        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getIngredients(ItemStack.class)), ENCHANTMENT);
     }
 
     @Override
