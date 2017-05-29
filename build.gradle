@@ -104,6 +104,7 @@ task sourcesJar(type: Jar, dependsOn: 'sourceMainJava') {
 
 task apiJar(type: Jar, dependsOn: 'sourceMainJava') {
     from "build/sources/main/java/jeresources/api"
+    from "build/classes/main/jeresources/api"
     classifier "api"
     destinationDir = file (rootProject.getRootDir().getPath() + '/output')
 }
