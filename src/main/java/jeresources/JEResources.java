@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "required-after:jei@[4.0.0,);", clientSideOnly = true)
+@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "required-after:jei@[4.6.0,);", clientSideOnly = true)
 public class JEResources {
     @Mod.Metadata(Reference.ID)
     public static ModMetadata metadata;

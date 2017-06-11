@@ -1,18 +1,18 @@
 package jeresources.jei.plant;
 
+import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class PlantCategory extends BlankRecipeCategory<PlantWrapper> {
+public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     private static final int GRASS_X = 79;
     private static final int GRASS_Y = 10;
     private static final int OUTPUT_X = 6;

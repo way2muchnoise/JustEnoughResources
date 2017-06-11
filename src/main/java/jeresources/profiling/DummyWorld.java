@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -45,13 +45,6 @@ public class DummyWorld extends WorldServer {
     @Override
     public Entity getEntityByID(int i) {
         return null;
-    }
-
-    /**
-     * Check if the given BlockPos has valid coordinates
-     */
-    private boolean isValid(BlockPos pos) {
-        return pos.getX() >= -30000000 && pos.getZ() >= -30000000 && pos.getX() < 30000000 && pos.getZ() < 30000000 && pos.getY() >= 0 && pos.getY() < 256;
     }
 
     @Override
@@ -115,8 +108,13 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
-        public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_) {
+        public void recreateStructures(Chunk chunkIn, int x, int z) {
             // no retrogen
+        }
+
+        @Override
+        public boolean func_193414_a(World p_193414_1_, String p_193414_2_, BlockPos p_193414_3_) {
+            return false;
         }
 
         @Override

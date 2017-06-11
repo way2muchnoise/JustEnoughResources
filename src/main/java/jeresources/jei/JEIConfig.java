@@ -18,6 +18,7 @@ import jeresources.jei.worldgen.WorldGenWrapperFactory;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -36,9 +37,6 @@ public class JEIConfig extends BlankModPlugin {
 
     @Override
     public void register(@Nonnull IModRegistry registry) {
-        JEIConfig.jeiHelpers = registry.getJeiHelpers();
-        // Register categories
-        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
         // Add recipe handlers
         registry.handleRecipes(WorldGenEntry.class, new WorldGenWrapperFactory(), WORLD_GEN);
         registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), PLANT);
@@ -62,11 +60,17 @@ public class JEIConfig extends BlankModPlugin {
         JEIConfig.jeiRuntime = jeiRuntime;
     }
 
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry) {
+        JEIConfig.jeiHelpers = registry.getJeiHelpers();
+        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+    }
+
     public static IJeiHelpers getJeiHelpers() {
-        return jeiHelpers;
+        return JEIConfig.jeiHelpers;
     }
 
     public static IJeiRuntime getJeiRuntime() {
-        return jeiRuntime;
+        return JEIConfig.jeiRuntime;
     }
 }

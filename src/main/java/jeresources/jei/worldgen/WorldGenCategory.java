@@ -1,6 +1,7 @@
 package jeresources.jei.worldgen;
 
 import jeresources.api.render.ColourHelper;
+import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.RenderHelper;
@@ -8,13 +9,12 @@ import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class WorldGenCategory extends BlankRecipeCategory<WorldGenWrapper> {
+public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     protected static final int X_ITEM = 5;
     protected static final int Y_ITEM = 21;
     protected static final int X_DROP_ITEM = 5;

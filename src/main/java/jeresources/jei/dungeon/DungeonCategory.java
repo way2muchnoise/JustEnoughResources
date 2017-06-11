@@ -1,13 +1,13 @@
 package jeresources.jei.dungeon;
 
 import jeresources.config.Settings;
+import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 
@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("unchecked")
-public class DungeonCategory extends BlankRecipeCategory<DungeonWrapper> {
+public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
     protected static int SPACING_Y;

@@ -1,18 +1,18 @@
 package jeresources.jei.mob;
 
 import jeresources.config.Settings;
+import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class MobCategory extends BlankRecipeCategory<MobWrapper> {
+public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
     protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
     protected static int SPACING_X = 72 / Settings.ITEMS_PER_ROW;
