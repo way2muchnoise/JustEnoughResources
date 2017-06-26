@@ -113,7 +113,7 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
-        public boolean func_193414_a(World p_193414_1_, String p_193414_2_, BlockPos p_193414_3_) {
+        public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
             return false;
         }
 
@@ -151,7 +151,7 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
-        public Chunk provideChunk(int x, int z) {
+        public Chunk generateChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
             Chunk chunk = this.id2ChunkMap.get(chunkKey);
             if (chunk != null) {
@@ -162,7 +162,7 @@ public class DummyWorld extends WorldServer {
             }
 
             try {
-                chunk = realChunkGenerator.provideChunk(x, z);
+                chunk = realChunkGenerator.generateChunk(x, z);
             } catch (Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
@@ -175,7 +175,7 @@ public class DummyWorld extends WorldServer {
 
             this.allowLoading = false;
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.ChunkEvent.Load(chunk));
-            chunk.populateChunk(this, this);
+            chunk.populate(this, this);
             this.allowLoading = true;
 
             return chunk;

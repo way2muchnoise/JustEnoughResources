@@ -13,6 +13,7 @@ import jeresources.jei.mob.MobWrapperFactory;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantWrapperFactory;
 import jeresources.jei.villager.VillagerCategory;
+import jeresources.jei.villager.VillagerWrapperFactory;
 import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenWrapperFactory;
 import jeresources.reference.Reference;
@@ -42,7 +43,7 @@ public class JEIConfig extends BlankModPlugin {
         registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), PLANT);
         registry.handleRecipes(MobEntry.class, new MobWrapperFactory(), MOB);
         registry.handleRecipes(DungeonEntry.class, new DungeonWrapperFactory(), DUNGEON);
-        registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), VILLAGER);
+        registry.handleRecipes(VillagerEntry.class, new VillagerWrapperFactory(), VILLAGER);
         registry.handleRecipes(EnchantmentWrapper.class, new EnchantmentWrapperFactory(), ENCHANTMENT);
         // Init internals
         JEResources.PROXY.initCompatibility();

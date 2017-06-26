@@ -54,7 +54,7 @@ public class ChunkProfiler implements Runnable {
         for (int y = 0; y < maxY; y++)
             for (int x = 0; x < CHUNK_SIZE; x++)
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    blockPos.setPos(x + chunk.xPosition * CHUNK_SIZE, y, z + chunk.zPosition * CHUNK_SIZE);
+                    blockPos.setPos(x + chunk.x * CHUNK_SIZE, y, z + chunk.z * CHUNK_SIZE);
                     IBlockState blockState = chunk.getBlockState(x, y, z);
                     final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);
 

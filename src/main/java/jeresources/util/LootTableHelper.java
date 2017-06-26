@@ -163,7 +163,7 @@ public class LootTableHelper {
         mobTableBuilder.add(LootTableList.ENTITIES_LLAMA, EntityLlama.class);
         mobTableBuilder.add(LootTableList.ENTITIES_VEX, EntityVex.class);
         mobTableBuilder.add(LootTableList.ENTITIES_ENDER_DRAGON, EntityDragon.class);
-        mobTableBuilder.add(LootTableList.field_192561_ax, EntityParrot.class);
+        mobTableBuilder.add(LootTableList.ENTITIES_PARROT, EntityParrot.class);
 
         return mobTableBuilder.getMobTables();
     }

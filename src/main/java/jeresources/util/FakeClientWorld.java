@@ -109,7 +109,7 @@ public class FakeClientWorld extends World {
                 }
 
                 @Override
-                public void saveExtraData() {
+                public void flush() {
 
                 }
 
