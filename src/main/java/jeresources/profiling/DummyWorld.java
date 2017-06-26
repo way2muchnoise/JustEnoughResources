@@ -50,7 +50,8 @@ public class DummyWorld extends WorldServer {
     /**
      * Check if the given BlockPos has valid coordinates
      */
-    private boolean isValid(BlockPos pos) {
+    @Override
+    public boolean isValid(BlockPos pos) {
         return pos.getX() >= -30000000 && pos.getZ() >= -30000000 && pos.getX() < 30000000 && pos.getZ() < 30000000 && pos.getY() >= 0 && pos.getY() < 256;
     }
 

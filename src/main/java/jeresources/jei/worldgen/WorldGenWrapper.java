@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
 import jeresources.entry.WorldGenEntry;
-import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;

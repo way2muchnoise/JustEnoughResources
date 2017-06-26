@@ -1,18 +1,18 @@
 package jeresources.jei.enchantment;
 
 import jeresources.jei.JEIConfig;
+import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class EnchantmentCategory extends BlankRecipeCategory<EnchantmentWrapper> {
+public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapper> {
     private static final int ITEM_X = 12;
     private static final int ITEM_Y = 11;
 

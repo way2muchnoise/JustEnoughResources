@@ -2,7 +2,6 @@ package jeresources.jei.plant;
 
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
-import jeresources.util.CollectionHelper;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;

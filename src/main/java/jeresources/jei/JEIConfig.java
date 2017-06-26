@@ -13,11 +13,13 @@ import jeresources.jei.mob.MobWrapperFactory;
 import jeresources.jei.plant.PlantCategory;
 import jeresources.jei.plant.PlantWrapperFactory;
 import jeresources.jei.villager.VillagerCategory;
+import jeresources.jei.villager.VillagerWrapperFactory;
 import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenWrapperFactory;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -36,15 +38,12 @@ public class JEIConfig extends BlankModPlugin {
 
     @Override
     public void register(@Nonnull IModRegistry registry) {
-        JEIConfig.jeiHelpers = registry.getJeiHelpers();
-        // Register categories
-        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
         // Add recipe handlers
         registry.handleRecipes(WorldGenEntry.class, new WorldGenWrapperFactory(), WORLD_GEN);
         registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), PLANT);
         registry.handleRecipes(MobEntry.class, new MobWrapperFactory(), MOB);
         registry.handleRecipes(DungeonEntry.class, new DungeonWrapperFactory(), DUNGEON);
-        registry.handleRecipes(PlantEntry.class, new PlantWrapperFactory(), VILLAGER);
+        registry.handleRecipes(VillagerEntry.class, new VillagerWrapperFactory(), VILLAGER);
         registry.handleRecipes(EnchantmentWrapper.class, new EnchantmentWrapperFactory(), ENCHANTMENT);
         // Init internals
         JEResources.PROXY.initCompatibility();
@@ -60,6 +59,13 @@ public class JEIConfig extends BlankModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIConfig.jeiRuntime = jeiRuntime;
+    }
+
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry) {
+        JEIConfig.jeiHelpers = registry.getJeiHelpers();
+        // Register categories
+        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
     }
 
     public static IJeiHelpers getJeiHelpers() {
