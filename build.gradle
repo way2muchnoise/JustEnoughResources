@@ -115,7 +115,8 @@ artifacts {
 
 def getChangelog = { ->
     def range = System.getenv('TRAVIS_COMMIT_RANGE') == null ? '-n1' : System.getenv('TRAVIS_COMMIT_RANGE')
-    return "git log $range --pretty=format:\"\\[[%h](https://github.com/${repo}/commit/%H)\\] %s (%cn) \"".execute().text.trim()
+    print "git log $range --pretty=format:\"\\[[%h](https://github.com/${repo}/commit/%H)\\] %s (%cn)\"\n"
+    return "git log $range --pretty=format:\"\\[[%h](https://github.com/${repo}/commit/%H)\\] %s (%cn)\"".execute().text.trim()
 }
 
 curseforge {
