@@ -2,7 +2,9 @@ package jeresources.profiling;
 
 import jeresources.jei.JEIConfig;
 import jeresources.json.ProfilingAdapter;
+import jeresources.util.LogHelper;
 import mezz.jei.api.IJeiHelpers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -30,12 +32,14 @@ public class Profiler implements Runnable {
 
     @Override
     public void run() {
+        LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
         if (!allWorlds) {
             WorldServer world = (WorldServer) this.sender.getEntityWorld();
             profileWorld(world);
         } else {
-            for (WorldServer world : DimensionManager.getWorlds())
+            for (WorldServer world : DimensionManager.getWorlds()) {
                 profileWorld(world);
+            }
         }
 
         writeData();
@@ -44,7 +48,7 @@ public class Profiler implements Runnable {
 
         IJeiHelpers jeiHelpers = JEIConfig.getJeiHelpers();
         if (jeiHelpers != null) {
-            jeiHelpers.reload();
+            //jeiHelpers.reload(); // TODO: change this
         }
     }
 
@@ -63,6 +67,8 @@ public class Profiler implements Runnable {
         this.currentExecutor = null;
 
         dummyWorld.clearChunks();
+        // Return the world to it's original state
+        DimensionManager.setWorld(dimId, worldServer, Minecraft.getMinecraft().getIntegratedServer());
     }
 
     public ProfilingTimer getTimer() {

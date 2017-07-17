@@ -117,7 +117,7 @@ curseforge {
     apiKey = System.getenv('CURSE_KEY') == null ? '0' : System.getenv('CURSE_KEY')
     project {
         id = curse_project_id
-        changelog = "git log -n1 --pretty=format:\"[%h](https://github.com/${repo}/commit/%H) %cn: %s\"".execute().text.trim()
+        changelog = "git log " + System.getenv('TRAVIS_COMMIT_RANGE') + " --pretty=format:\"\\\"[%h](https://github.com/${repo}/commit/%H) %cn : %s\\\"\"".execute().text.trim()
         changelogType = 'text'
         releaseType =  'alpha'
         mainArtifact (jar) {

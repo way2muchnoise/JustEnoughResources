@@ -36,6 +36,7 @@ public class DummyWorld extends WorldServer {
         super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.profiler);
         this.provider.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
+        this.functionManager = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
     }
 
     public void clearChunks() {
