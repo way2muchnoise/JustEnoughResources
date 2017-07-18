@@ -19,10 +19,14 @@ import jeresources.jei.worldgen.WorldGenWrapperFactory;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 @JEIPlugin
 public class JEIConfig extends BlankModPlugin {
@@ -73,5 +77,18 @@ public class JEIConfig extends BlankModPlugin {
 
     public static IJeiRuntime getJeiRuntime() {
         return JEIConfig.jeiRuntime;
+    }
+
+    public static void purgeCategories(String... categories) {
+        if (jeiRuntime != null) {
+            IRecipeRegistry recipeRegistry = jeiRuntime.getRecipeRegistry();
+            List<IRecipeCategory> recipeCategories = recipeRegistry.getRecipeCategories(Arrays.asList(categories));
+            for (IRecipeCategory<?> recipeCategory : recipeCategories) {
+                List<? extends IRecipeWrapper> recipeWrappers = recipeRegistry.getRecipeWrappers(recipeCategory);
+                for (IRecipeWrapper wrapper : recipeWrappers) {
+                    recipeRegistry.removeRecipe(wrapper, recipeCategory.getUid());
+                }
+            }
+        }
     }
 }

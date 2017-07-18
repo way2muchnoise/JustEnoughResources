@@ -1,9 +1,8 @@
 package jeresources.profiling;
 
-import jeresources.jei.JEIConfig;
+import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
-import mezz.jei.api.IJeiHelpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.world.WorldServer;
@@ -46,10 +45,7 @@ public class Profiler implements Runnable {
 
         this.timer.complete();
 
-        IJeiHelpers jeiHelpers = JEIConfig.getJeiHelpers();
-        if (jeiHelpers != null) {
-            //jeiHelpers.reload(); // TODO: change this
-        }
+        WorldGenCategory.reload();
     }
 
     private void profileWorld(final WorldServer worldServer) {
