@@ -67,6 +67,18 @@ public class ProfilingAdapter {
                     }
 
                     Map<String, Map<Integer, Float>> drops = dimensionData.dropsMap.get(blockKey);
+
+                    Boolean canSilkTouch = dimensionData.silkTouchMap.get(blockKey);
+                    if (canSilkTouch != null) {
+                        if (drops != null && !drops.isEmpty()) {
+                            if (canSilkTouch && drops.containsKey(blockKey)) {
+                                drops.remove(blockKey);
+                                canSilkTouch = false;
+                            }
+                        }
+                        writer.name("silktouch").value(canSilkTouch);
+                    }
+
                     if (drops != null && !drops.isEmpty()) {
                         writer.name("dropsList");
                         writer.beginArray();
@@ -88,11 +100,6 @@ public class ProfilingAdapter {
                             }
                         }
                         writer.endArray();
-                    }
-
-                    Boolean canSilkTouch = dimensionData.silkTouchMap.get(blockKey);
-                    if (canSilkTouch != null) {
-                        writer.name("silktouch").value(canSilkTouch);
                     }
 
                     writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionType().getName());
