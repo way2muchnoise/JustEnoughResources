@@ -113,17 +113,11 @@ artifacts {
     archives deobfJar, sourcesJar, apiJar
 }
 
-def getChangelog = { ->
-    def range = System.getenv('TRAVIS_COMMIT_RANGE') == null ? '-n1' : System.getenv('TRAVIS_COMMIT_RANGE')
-    print "git log $range --pretty=format:\"\\[[%h](https://github.com/${repo}/commit/%H)\\] %s (%cn)\"\n"
-    return "git log $range --pretty=format:\"\\[[%h](https://github.com/${repo}/commit/%H)\\] %s (%cn)\"".execute().text.trim()
-}
-
 curseforge {
     apiKey = System.getenv('CURSE_KEY') == null ? '0' : System.getenv('CURSE_KEY')
     project {
         id = curse_project_id
-        changelog = getChangelog()
+        changelog = System.getenv('CHANGELOG')
         changelogType = 'markdown'
         releaseType =  'alpha'
         mainArtifact (jar) {

@@ -4,6 +4,7 @@ before_install:
   - chmod a+x gradlew  
   - ./gradlew clean
 install: ./gradlew setupCIWorkSpace
+before_script: export CHANGELOG="$(git log $COMMIT_RANGE --pretty=format:"\[[%h](https://github.com/${repo}/commit/%H)\] %s (%cn)\n")"
 script: ./gradlew build
 after_success: 
   - ./gradlew curseforge
