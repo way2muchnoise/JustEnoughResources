@@ -2,11 +2,10 @@ package jeresources.jei.plant;
 
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
-import jeresources.util.CollectionHelper;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
@@ -17,8 +16,8 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class PlantWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack> {
-    private PlantEntry plantEntry;
+public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+    private final PlantEntry plantEntry;
 
     public PlantWrapper(PlantEntry entry) {
         plantEntry = entry;

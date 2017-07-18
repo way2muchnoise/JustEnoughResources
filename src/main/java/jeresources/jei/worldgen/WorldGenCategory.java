@@ -18,7 +18,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     protected static final int X_ITEM = 5;
@@ -27,10 +26,8 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     protected static final int Y_DROP_ITEM = 66;
     private static final int DROP_ITEM_COUNT = 8;
 
-    private IDrawable icon;
-
     public WorldGenCategory() {
-        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 16, 16, 16);
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 16, 16, 16));
     }
 
     @Nonnull
@@ -49,12 +46,6 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.WORLD_GEN;
-    }
-
-    @Nullable
-    @Override
-    public IDrawable getIcon() {
-        return icon;
     }
 
     @Override
@@ -90,9 +81,8 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
         }
         IJeiRuntime jeiRuntime = JEIConfig.getJeiRuntime();
         if (jeiRuntime != null) {
-            WorldGenWrapperFactory factory = new WorldGenWrapperFactory();
             for (WorldGenEntry entry : WorldGenRegistry.getInstance().getWorldGen()) {
-                jeiRuntime.getRecipeRegistry().addRecipe(factory.getRecipeWrapper(entry), JEIConfig.WORLD_GEN);
+                jeiRuntime.getRecipeRegistry().addRecipe(new WorldGenWrapper(entry), JEIConfig.WORLD_GEN);
             }
         }
     }

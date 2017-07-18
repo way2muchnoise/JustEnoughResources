@@ -8,7 +8,7 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class MobWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack> {
-    private MobEntry mob;
+public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+    private final MobEntry mob;
     private float scale;
     private int offsetY;
 

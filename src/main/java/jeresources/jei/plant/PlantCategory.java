@@ -10,7 +10,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     private static final int GRASS_X = 79;
@@ -19,10 +18,8 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     private static final int OUTPUT_SCALE = 20;
     private static final int OUTPUT_Y = 60;
 
-    private IDrawable icon;
-
     public PlantCategory() {
-        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 0, 16, 16, 16);
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 0, 16, 16, 16));
     }
 
     @Nonnull
@@ -41,12 +38,6 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.PLANT;
-    }
-
-    @Nullable
-    @Override
-    public IDrawable getIcon() {
-        return icon;
     }
 
     @Override

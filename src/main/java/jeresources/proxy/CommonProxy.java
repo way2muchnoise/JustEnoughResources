@@ -3,7 +3,6 @@ package jeresources.proxy;
 import jeresources.compatibility.Compatibility;
 import jeresources.config.Settings;
 import jeresources.registry.*;
-import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
     public void initCompatibility() {

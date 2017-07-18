@@ -7,8 +7,8 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 
-public class DungeonWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack> {
-    public DungeonEntry chest;
+public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+    public final DungeonEntry chest;
 
     public DungeonWrapper(DungeonEntry chest) {
         this.chest = chest;

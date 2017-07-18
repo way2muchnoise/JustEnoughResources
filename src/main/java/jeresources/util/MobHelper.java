@@ -2,7 +2,6 @@ package jeresources.util;
 
 import jeresources.entry.MobEntry;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.EntitySheep;
 
 public class MobHelper {

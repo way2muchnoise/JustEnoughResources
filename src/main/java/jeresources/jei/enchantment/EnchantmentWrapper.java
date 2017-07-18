@@ -5,7 +5,7 @@ import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EnchantmentWrapper extends BlankRecipeWrapper {
+public class EnchantmentWrapper implements IRecipeWrapper {
     private static final int ENTRIES_PER_PAGE = 11;
     private static final int ENCHANT_X = 35;
     private static final int FIRST_ENCHANT_Y = 7;
@@ -24,10 +24,10 @@ public class EnchantmentWrapper extends BlankRecipeWrapper {
     private static final int PAGE_Y = 120;
     private static final int CYCLE_TIME = 2;
 
-    private ItemStack itemStack;
-    private List<EnchantmentEntry> enchantments;
-    private int set, lastSet;
-    private int nextCycle;
+    private final ItemStack itemStack;
+    private final List<EnchantmentEntry> enchantments;
+    private final int lastSet;
+    private int set, nextCycle;
 
     @Nullable
     public static EnchantmentWrapper create(@Nonnull ItemStack itemStack) {

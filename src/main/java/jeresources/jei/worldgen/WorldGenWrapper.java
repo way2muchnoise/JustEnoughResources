@@ -4,18 +4,16 @@ import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
 import jeresources.entry.WorldGenEntry;
-import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.input.Mouse;
 
 import javax.annotation.Nonnull;
@@ -23,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallback<ItemStack> {
+public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
     protected static final int X_OFFSET = 49 - 20;
     protected static final int Y_OFFSET = 52;
     protected static final int X_AXIS_SIZE = 100 + 20 + 8;
@@ -131,7 +129,7 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
 
             List<String> biomes = worldGenEntry.getBiomeRestrictions();
             if (biomes.size() > 0) {
-                tooltip.add(I18n.translateToLocal("jer.worldgen.biomes") + ":");
+                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.biomes") + ":");
                 tooltip.addAll(biomes);
             }
 

@@ -10,18 +10,13 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
     protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
-    protected static int SPACING_X = 72 / Settings.ITEMS_PER_ROW;
-    protected static int SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
-
-    private IDrawable icon;
 
     public MobCategory() {
-        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16);
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16));
     }
 
     @Nonnull
@@ -42,12 +37,6 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
         return Resources.Gui.Jei.MOB;
     }
 
-    @Nullable
-    @Override
-    public IDrawable getIcon() {
-        return icon;
-    }
-
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull MobWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int xOffset = 0;
@@ -56,9 +45,9 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
             int yOffset = 0;
             for (int ii = 0; ii < Settings.ITEMS_PER_COLUMN; ii++) {
                 recipeLayout.getItemStacks().init(slot++, false, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset);
-                yOffset += SPACING_Y;
+                yOffset += 80 / Settings.ITEMS_PER_COLUMN;
             }
-            xOffset += SPACING_X;
+            xOffset += 72 / Settings.ITEMS_PER_ROW;
         }
 
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);

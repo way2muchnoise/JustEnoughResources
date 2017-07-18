@@ -12,7 +12,6 @@ import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 @SuppressWarnings("unchecked")
 public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
@@ -28,10 +27,8 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
         SPACING_Y = 80 / Settings.ITEMS_PER_COLUMN;
     }
 
-    private IDrawable icon;
-
     public DungeonCategory() {
-        icon = JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16);
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16));
     }
 
     @Nonnull
@@ -50,12 +47,6 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.DUNGEON;
-    }
-
-    @Nullable
-    @Override
-    public IDrawable getIcon() {
-        return icon;
     }
 
     @Override
