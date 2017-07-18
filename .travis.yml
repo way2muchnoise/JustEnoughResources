@@ -4,11 +4,11 @@ before_install:
   - chmod a+x gradlew  
   - ./gradlew clean
 install: ./gradlew setupCIWorkSpace
-before_script: export CHANGELOG="$(git log $TRAVIS_COMMIT_RANGE --pretty=format:"\[[%h](https://github.com/${repo}/commit/%H)\] %s (%cn)  ")"
+before_script: export CHANGELOG="$(git log $TRAVIS_COMMIT_RANGE --pretty=format:"\[[%h](https://github.com/$TRAVIS_REPO_SLUG/commit/%H)\] %s (%cn)  ")"
 script: ./gradlew build
 after_success:
-  - ./gradlew curseforge
-  - ./gradlew bintrayUpload
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew curseforge; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew bintrayUpload; fi'
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
