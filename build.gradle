@@ -117,7 +117,7 @@ curseforge {
     apiKey = System.getenv('CURSE_KEY') == null ? '0' : System.getenv('CURSE_KEY')
     project {
         id = curse_project_id
-        changelog = System.getenv('CHANGELOG')
+        changelog = System.getenv('CHANGELOG') == null ? '' : System.getenv('CHANGELOG')
         changelogType = 'markdown'
         releaseType =  'alpha'
         mainArtifact (jar) {
