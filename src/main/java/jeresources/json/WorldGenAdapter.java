@@ -14,20 +14,17 @@ import jeresources.config.ConfigHandler;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Loader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorldGenAdapter {
     public static boolean hasWorldGenDIYData() {
@@ -75,7 +72,7 @@ public class WorldGenAdapter {
                 DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
 
                 JsonElement dropsListElement = obj.get("dropsList");
-                List<LootDrop> dropList = new ArrayList<>();
+                List<LootDrop> dropList = new LinkedList<>();
                 if (dropsListElement != null) {
                     JsonArray drops = dropsListElement.getAsJsonArray();
                     for (JsonElement dropElement : drops) {
@@ -111,6 +108,12 @@ public class WorldGenAdapter {
                             }
                         }
                     }
+                }
+
+                if ((blockStack.isEmpty() || blockStack.getItem() == Items.AIR) && dropList.size() > 0) {
+                    // Some blocks don't have an item equivalent so we use the first drop
+                    blockStack = dropList.get(0).item.copy();
+                    blockStack.setCount(1);
                 }
 
                 WorldGenRegistry.getInstance().registerEntry(new WorldGenEntry(blockStack, distribution, getRestriction(dim), silktouch, dropList.toArray(new LootDrop[dropList.size()])));

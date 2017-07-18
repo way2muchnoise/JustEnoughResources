@@ -104,7 +104,7 @@ public class WorldGenWrapper extends BlankRecipeWrapper implements ITooltipCallb
 
         Font.small.print(TranslationHelper.translateToLocal("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
 
-        String dimension = worldGenEntry.getDimension();
+        String dimension = TranslationHelper.tryDimensionTranslate(worldGenEntry.getDimension());
         int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
         Font.normal.print(dimension, x, 0);
     }

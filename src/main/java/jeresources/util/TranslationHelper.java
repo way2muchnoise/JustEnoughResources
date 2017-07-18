@@ -14,4 +14,11 @@ public class TranslationHelper {
     public static boolean canTranslate(String key) {
         return I18n.canTranslate(key);
     }
+
+    public static String tryDimensionTranslate(String dimension) {
+        if (TranslationHelper.canTranslate("jer.dim." + dimension)) {
+            dimension = "jer.dim." + dimension;
+        }
+        return TranslationHelper.translateToLocal(dimension);
+    }
 }
