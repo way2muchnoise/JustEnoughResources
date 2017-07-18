@@ -1,6 +1,7 @@
 package jeresources.profiling;
 
 import jeresources.config.ConfigHandler;
+import jeresources.util.TranslationHelper;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.DimensionManager;
@@ -30,7 +31,7 @@ public class ProfilingTimer {
         if (counters == null) {
             counters = new DimensionCounters();
             this.dimensionsMap.put(dim, counters);
-            send("[" + DimensionManager.getProvider(dim).getDimensionType().getName() + "] Started profiling");
+            send("[" + getDimensionName(dim) + "] Started profiling");
         }
         counters.threadCounter++;
     }
@@ -48,7 +49,7 @@ public class ProfilingTimer {
         for (int dim : this.dimensionsMap.keySet()) {
             DimensionCounters counters = dimensionsMap.get(dim);
             counters.completed = true;
-            send("[" + DimensionManager.getProvider(dim).getDimensionType().getName() + "] Completed profiling of " +
+            send("[" + getDimensionName(dim) + "] Completed profiling of " +
                 (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
                 (System.currentTimeMillis() - counters.start) + " ms saved to " + ConfigHandler.getWorldGenFile());
         }
@@ -69,7 +70,7 @@ public class ProfilingTimer {
     private void sendSpeed(int dim) {
         DimensionCounters counters = dimensionsMap.get(dim);
         float time = (System.currentTimeMillis() - counters.start) * 1.0F / counters.chunkCounter;
-        String message = "[" + DimensionManager.getProvider(dim).getDimensionType().getName() + "] Scanned " +
+        String message = "[" + getDimensionName(dim) + "] Scanned " +
             counters.chunkCounter + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
         send(message);
     }
@@ -77,5 +78,9 @@ public class ProfilingTimer {
     public long getBlocksPerLayer(int dim) {
         DimensionCounters counters = dimensionsMap.get(dim);
         return counters.chunkCounter * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
+    }
+
+    private static String getDimensionName(int dim) {
+        return TranslationHelper.tryDimensionTranslate(DimensionManager.getProvider(dim).getDimensionType().getName());
     }
 }
