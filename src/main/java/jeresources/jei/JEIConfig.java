@@ -18,14 +18,10 @@ import jeresources.jei.worldgen.WorldGenWrapper;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
-import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
 
 @JEIPlugin
 public class JEIConfig implements IModPlugin {
@@ -56,7 +52,7 @@ public class JEIConfig implements IModPlugin {
         registry.addRecipes(MobRegistry.getInstance().getMobs(), MOB);
         registry.addRecipes(DungeonRegistry.getInstance().getDungeons(), DUNGEON);
         registry.addRecipes(VillagerRegistry.getInstance().getVillagers(), VILLAGER);
-        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getIngredients(ItemStack.class)), ENCHANTMENT);
+        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getAllIngredients(ItemStack.class)), ENCHANTMENT);
     }
 
     @Override
@@ -76,18 +72,5 @@ public class JEIConfig implements IModPlugin {
 
     public static IJeiRuntime getJeiRuntime() {
         return JEIConfig.jeiRuntime;
-    }
-
-    public static void purgeCategories(String... categories) {
-        if (jeiRuntime != null) {
-            IRecipeRegistry recipeRegistry = jeiRuntime.getRecipeRegistry();
-            List<IRecipeCategory> recipeCategories = recipeRegistry.getRecipeCategories(Arrays.asList(categories));
-            for (IRecipeCategory<?> recipeCategory : recipeCategories) {
-                List<? extends IRecipeWrapper> recipeWrappers = recipeRegistry.getRecipeWrappers(recipeCategory);
-                for (IRecipeWrapper wrapper : recipeWrappers) {
-                    recipeRegistry.removeRecipe(wrapper, recipeCategory.getUid());
-                }
-            }
-        }
     }
 }

@@ -1,6 +1,5 @@
 package jeresources.profiling;
 
-import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
@@ -44,8 +43,6 @@ public class Profiler implements Runnable {
         writeData();
 
         this.timer.complete();
-
-        WorldGenCategory.reload();
     }
 
     private void profileWorld(final WorldServer worldServer) {
