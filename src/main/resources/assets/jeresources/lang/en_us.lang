@@ -6,6 +6,8 @@ jer.config.enchantsBlacklist.title=Enchants Blacklist
 jer.config.enchantsBlacklist.description=Blacklist enchants from the JEI Enchants View
 jer.config.diyData.title=Use DIY data in the views
 jer.config.diyData.description=The build in compat code will not load and jsons will be loaded (requires MC restart)
+jer.config.dimensionsBlacklist.title=Dimension Blacklist
+jer.config.dimensionsBlacklist.description=Blacklist dimensions from the JEI profiling scan
 
 #Default dimensions
 jer.dim.overworld=Overworld

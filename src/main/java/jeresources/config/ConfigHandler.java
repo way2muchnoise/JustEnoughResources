@@ -11,7 +11,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ConfigHandler {
     public static Configuration config;
@@ -69,6 +72,12 @@ public class ConfigHandler {
         prop.setLanguageKey("jer.config.enchantsBlacklist.title");
         prop.requiresMcRestart();
         Settings.excludedEnchants = prop.getStringList();
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "dimensionsBlacklist", new int[]{-11});
+        prop.setComment(TranslationHelper.translateToLocal("jer.config.dimensionsBlacklist.description"));
+        prop.setLanguageKey("jer.config.dimensionsBlacklist.title");
+        prop.requiresMcRestart();
+        Settings.excludedDimensions = IntStream.of(prop.getIntList()).boxed().collect(Collectors.toList());
 
         if (config.hasChanged())
             config.save();

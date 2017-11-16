@@ -1,9 +1,11 @@
 package jeresources.profiling;
 
+import jeresources.config.Settings;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
 
@@ -46,9 +48,16 @@ public class Profiler implements Runnable {
     }
 
     private void profileWorld(final WorldServer worldServer) {
+        int dimId = worldServer.provider.getDimensionType().getId();
+        if (Settings.excludedDimensions.contains(dimId)) {
+            String msg = "Skipped dimension " + dimId + " during profiling";
+            LogHelper.info(msg);
+            sender.sendMessage(new TextComponentString(msg));
+            return;
+        }
+
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
-        int dimId = worldServer.provider.getDimensionType().getId();
         this.allDimensionData.put(dimId, new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);

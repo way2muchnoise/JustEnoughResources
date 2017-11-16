@@ -4,6 +4,8 @@ import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.registry.EnchantmentRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.List;
+
 public final class Settings {
     public static int ITEMS_PER_ROW;
     public static int ITEMS_PER_COLUMN;
@@ -13,6 +15,8 @@ public final class Settings {
 
     public static String[] excludedEnchants;
     public static boolean gameLoaded = false;
+
+    public static List<Integer> excludedDimensions;
 
     public static void reload() {
         if (side == Side.CLIENT)
