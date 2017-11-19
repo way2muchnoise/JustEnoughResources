@@ -2,10 +2,17 @@ jer.config.itemsPerColumn.title=Кол-во предметов в столбце
 jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и мобов
 jer.config.itemsPerRow.title=Кол-во предметов в ряду
 jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
-jer.config.enchantsBlacklist.title=Чёрный список для зачарований
+jer.config.enchantsBlacklist.title=Чёрный список зачарований
 jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
-jer.config.diyData.title=Использовать DIY-данные при просмотрах
-jer.config.diyData.description=Сборка с компактным кодом не будет загружаться, а json-ы будут загружены (требуется перезагрузка MC)
+jer.config.diyData.title=Использовать данные из модов
+jer.config.diyData.description=Встроенный код совместимости не будет загружаться, и json-ы будут загружены (требуется перезапуск)
+jer.config.dimensionsBlacklist.title=Черный список измерений
+jer.config.dimensionsBlacklist.description=Убирает измерения из профилирующего сканирования JEI
+
+#Default dimensions
+jer.dim.overworld=Верхний мир
+jer.dim.the_nether=Незер
+jer.dim.the_end=Эндер
 
 #Usage: jer.page pageNumber jer.of lastPage
 jer.page=Страница
@@ -26,13 +33,14 @@ jer.dungeon.desertPyramidChest=Храм в пустыне
 jer.dungeon.pyramidJungleChest=Храм в джунглях
 jer.dungeon.strongholdCorridorChest=Коридор крепости
 jer.dungeon.strongholdLibraryChest=Библиотека крепости
-jer.dungeon.strongholdCrossingChest=Пересечение крепости
+jer.dungeon.strongholdCrossingChest=Перекрёсток крепости
 jer.dungeon.villageBlacksmithChest=Деревенская кузница
 jer.dungeon.spawnBonusChest=Бонусный сундук
 jer.dungeon.simpleDungeonChest=Подземелье
 jer.dungeon.netherBridgeChest=Крепость Незера
 jer.dungeon.endCityTreasureChest=Город Эндера
 jer.dungeon.iglooChest=Иглу
+jer.dungeon.woodlandMansion=Лесной Особняк
 
 #Enchantments View
 jer.enchantments.title=Зачарования
@@ -45,30 +53,30 @@ jer.worldgen.title=Генерация руд
 jer.worldgen.silkTouch=Необходимо шёлковое касание
 jer.worldgen.biomes=Появляется в биомах
 jer.worldgen.dimensions=Допустимые измерения
-jer.worldgen.drops=Выпадение
+jer.worldgen.drops=Выпадает
 jer.worldgen.average=Сред. выпадение
 jer.worldgen.base=Обычное
 
 #Mob View
-jer.mob.title=Добыча мобов
+jer.mob.title=Выпадение из мобов
 jer.mob.spawn=Появляется в биоме:
 jer.mob.biome=Появляется в биомах: наведите курсор сюда
 jer.mob.exp=Даёт опыта
 
 #Villager View
-jer.villager.title=Торговля с деревенщиной
+jer.villager.title=Торговля с крестьянином
 
 #Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string
-jer.magmaCream.text=Из маленьких и больших лавовых кубов
+jer.magmaCream.text=Из маленьких и больших Магмовых кубов
 jer.slimeBall.text=Только из маленьких слизней
 jer.rareDrop.text=Редкий предмет
 
 jer.slimeScale.text=Зависит от размера слизня
 jer.kingSlime.text=Только из королевских слизней
-jer.beheading.text=Усекновение увеличивает шанс
+jer.beheading.text=Обезглавливание увеличивает шанс
 jer.randomAspect.text=Случайный аспект
-jer.equipmentDrop.text=Брошенное снаряжение
-jer.affectedByLooting.text=Affected by Looting
+jer.equipmentDrop.text=Выпавшее снаряжение
+jer.affectedByLooting.text=Зависит от Добычи
 jer.powered.text=Когда заряжен
 jer.burning.text=Когда горит
 jer.notBurning.text=Когда не горит
@@ -104,8 +112,8 @@ jer.playerOnline.text=Когда игрок %s в сети
 jer.playerOffline.text=Когда игрок %s не в сети
 jer.playerKill.text=Если убит игроком
 jer.notPlayerKill.text=Если убит не игроком
-jer.aboveLooting.text=Мародёрство выше %s
-jer.belowLooting.text=Мародёрство ниже %s
+jer.aboveLooting.text=Добыча выше %s
+jer.belowLooting.text=Добыча ниже %s
 jer.killedBy.text=Когда убит %s
 jer.notKilledBy.text=Когда убит не %s
 
