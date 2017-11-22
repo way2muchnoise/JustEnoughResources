@@ -11,7 +11,7 @@ jer.config.dimensionsBlacklist.description=来自于JEI分析扫描的黑名单�
 
 
 jer.dim.overworld=主世界
-jer.dim.the_nether=下届
+jer.dim.the_nether=下界
 jer.dim.the_end=末地
 
 
@@ -37,7 +37,7 @@ jer.dungeon.strongholdCrossingChest=要塞交叉走廊
 jer.dungeon.villageBlacksmithChest=铁匠铺
 jer.dungeon.spawnBonusChest=奖励箱子
 jer.dungeon.simpleDungeonChest=小型地牢
-jer.dungeon.netherBridgeChest=地狱要塞
+jer.dungeon.netherBridgeChest=下界要塞
 jer.dungeon.endCityTreasureChest=末地城
 jer.dungeon.iglooChest=雪屋
 jer.dungeon.woodlandMansion=林地豪宅
