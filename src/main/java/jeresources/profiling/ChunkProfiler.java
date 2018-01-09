@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import jeresources.util.LogHelper;
 import jeresources.util.MapKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -24,18 +25,16 @@ public class ChunkProfiler implements Runnable {
     private final World world;
     private final ProfilingTimer timer;
     private final List<Chunk> chunks;
-    private final int dimensionId;
     @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, int dimId) {
+    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer) {
         this.world = world;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
         this.timer = timer;
-        this.dimensionId = dimId;
     }
 
     @Override
@@ -44,9 +43,9 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        int dimId = dimensionId; //world.provider.getDimension();
+        final int dimId = world.provider.getDimension();
         this.timer.startChunk(dimId);
-        Map<String, Integer[]> temp = new HashMap<>();
+        Map<String, Integer[]> temp = new HashMap<>();                
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);

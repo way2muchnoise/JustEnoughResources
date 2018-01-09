@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
 import jeresources.config.ConfigHandler;
 import jeresources.util.LogHelper;
+import jeresources.util.TranslationHelper;
 import net.minecraftforge.common.DimensionManager;
 
 import java.io.File;
@@ -102,7 +103,12 @@ public class ProfilingAdapter {
                         writer.endArray();
                     }
 
-                    writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionType().getName());
+                    String name = DimensionManager.getProvider(dim).getDimensionType().getName();
+                	if (name == TranslationHelper.tryDimensionTranslate(name)) {
+                		name += " (" + dim + ")";
+                	}
+                    
+                    writer.name("dim").value(name);
                     writer.endObject();
                 }
             }

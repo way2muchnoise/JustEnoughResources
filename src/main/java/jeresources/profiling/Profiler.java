@@ -36,24 +36,20 @@ public class Profiler implements Runnable {
     public void run() {
         LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
         if (!allWorlds) {
-            WorldServer world = (WorldServer) this.sender.getEntityWorld();
+        	
+        	//What does this do if the profile command is run from the console?        	
             Entity sendEnt = sender.getCommandSenderEntity();
     		int dimId = sendEnt.dimension;
-    		if(world == null) {
-				DimensionManager.initDimension(dimId);
-				world = DimensionManager.getWorld(dimId);
-    		}				
-    		profileWorld(world, dimId);
+    		profileWorld(dimId);
+    		
         } else {		
+
+        	//getStaticDimensionIDs gets ALL of the dimensions.
+        	//Forge says it is internal, but there are not other options for
+        	//all dimensions that exist.
         	Integer[] dimIds = DimensionManager.getStaticDimensionIDs();
         	for (int i = 0; i < dimIds.length; i++) {
-        		int dimId = dimIds[i];
-        		WorldServer world = DimensionManager.getWorld(dimId);
-        		if(world == null) {
-					DimensionManager.initDimension(dimId);
-					world = DimensionManager.getWorld(dimId);
-        		}				
-        		profileWorld(world, dimId);
+        		profileWorld(dimIds[i]);
         	}
         }
 
@@ -62,21 +58,38 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(final WorldServer worldServer, int dimId) {
-    	String msg2 = "Inspecting dimension ";
-    	try { 
-    			msg2 += worldServer.provider.getDimensionType().getName() + ": "; 
-    	}
-    	catch (Exception x)
-    	{
-    		msg2 += " 'Dim Name Error' ";
-    	}
-    	msg2 += dimId + ".";
-        LogHelper.info(msg2);
-        sender.sendMessage(new TextComponentString(msg2));
+    private void profileWorld(int dimId) {
+    	String msg;
+    	//Get the world we want to process.
+		WorldServer world = DimensionManager.getWorld(dimId);
+		
+		//If it isn't loaded, make it loaded and get it again.
+		if(world == null) {
+			DimensionManager.initDimension(dimId);
+			world = DimensionManager.getWorld(dimId);
+		}
+		
+		if (world == null) {
+			msg = "Unable to profile dimension ID " + dimId + ".  There is no world for it.";
+            LogHelper.error(msg);
+            sender.sendMessage(new TextComponentString(msg));
+            return;
+		}
+		
+		//Make this stick for recovery after profiling.
+		final WorldServer worldServer = world;
+		
+    	msg = "Inspecting dimension "
+			+ worldServer.provider.getDimensionType().getName() + ": " 
+			+ dimId + ". ";
+        sender.sendMessage(new TextComponentString(msg));
+		
+        msg += "The world thinks it is dimension ID " + worldServer.provider.getDimension() + ".";			       
+    	LogHelper.info(msg);
 
+        
         if (Settings.excludedDimensions.contains(dimId)) {
-            String msg = "Skipped dimension " + dimId + " during profiling";
+            msg = "Skipped dimension " + dimId + " during profiling";
             LogHelper.info(msg);
             sender.sendMessage(new TextComponentString(msg));
             return;
@@ -86,9 +99,9 @@ public class Profiler implements Runnable {
         this.currentExecutor = executor;
         this.allDimensionData.put(dimId, new ProfiledDimensionData());
 
-        DummyWorld dummyWorld = new DummyWorld(worldServer, dimId);
+        DummyWorld dummyWorld = new DummyWorld(worldServer);
         dummyWorld.init();
-        ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor, dimId);
+        ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
         worldServer.addScheduledTask(chunkGetter);
 
         executor.awaitTermination();

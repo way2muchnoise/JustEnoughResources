@@ -1,5 +1,6 @@
 package jeresources.profiling;
 
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import jeresources.util.LogHelper;
 
 public class ProfilingExecutor {
     private final ExecutorService executor;
@@ -18,11 +21,12 @@ public class ProfilingExecutor {
         this.executor = Executors.newFixedThreadPool(processors * 2);
     }
 
-    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks, int dimId) {
-        //final int dimId = dummyWorld.provider.getDimension();
+    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks) {
+    	final int dimId = dummyWorld.provider.getDimension();
+
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimId);
 
-        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer(), dimId));
+        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer()));
     }
 
     public void execute(Runnable runnable) {
