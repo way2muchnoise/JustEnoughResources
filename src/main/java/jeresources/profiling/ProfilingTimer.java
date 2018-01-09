@@ -81,15 +81,15 @@ public class ProfilingTimer {
     }
 
     private static String getDimensionName(int dim) {
-    	String name = DimensionManager.getProvider(dim).getDimensionType().getName();
-    	String localName = TranslationHelper.tryDimensionTranslate(name);
-    	//If the name doesn't change, append the dimension number.
-    	//All of Advanced Rocketry's planet names are "planet" and are otherwise indistinguishable.
-    	//I suspect the same is true of RF Tools Dimensions.
-    	//The assumption is that if the name does not get localized, it is not unique.
-    	if (name == localName) {
-    		localName += " (" + dim + ")";
-    	}
-    	return localName;
+        String name = DimensionManager.getProvider(dim).getDimensionType().getName();
+        String localName = TranslationHelper.tryDimensionTranslate(name);
+        //If the name doesn't change, append the dimension number.
+        //All of Advanced Rocketry's planet names are "planet" and are otherwise indistinguishable.
+        //I suspect the same is true of RF Tools Dimensions.
+        //The assumption is that if the name does not get localized, it is not unique.
+        if (name == localName) {
+            localName += " (" + dim + ")";
+        }
+        return localName;
     }
 }
