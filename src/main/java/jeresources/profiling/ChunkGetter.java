@@ -12,13 +12,15 @@ public class ChunkGetter implements Runnable {
 
     private final int maxRunCount;
     private final DummyWorld world;
+    private final int dimensionId;
     private final Runnable runnable;
     private IChunkGetterStrategy strategy;
     private int runCount;
 
-    public ChunkGetter(final int chunkCount, DummyWorld world, final ProfilingExecutor executor) {
+    public ChunkGetter(final int chunkCount, DummyWorld world, final ProfilingExecutor executor, final int dimId) {
         this.maxRunCount = (int) Math.ceil(chunkCount / (float) CHUNKS_PER_RUN);
         this.world = world;
+        this.dimensionId = dimId;
 
         this.strategy = new ChunkGetterRandom(world);
 
@@ -37,7 +39,7 @@ public class ChunkGetter implements Runnable {
                     }
 
                     runCount++;
-                    executor.addChunkProfiler(dummyWorld, chunks);
+                    executor.addChunkProfiler(dummyWorld, chunks, dimensionId);
 
                     // add the next task to executor thread first so that the world's scheduledTasks
                     // has a chance to process other things like chat input

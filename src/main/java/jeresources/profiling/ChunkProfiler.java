@@ -24,16 +24,18 @@ public class ChunkProfiler implements Runnable {
     private final World world;
     private final ProfilingTimer timer;
     private final List<Chunk> chunks;
+    private final int dimensionId;
     @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer) {
+    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, int dimId) {
         this.world = world;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
         this.timer = timer;
+        this.dimensionId = dimId;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        int dimId = world.provider.getDimensionType().getId();
+        int dimId = dimensionId; //world.provider.getDimension();
         this.timer.startChunk(dimId);
         Map<String, Integer[]> temp = new HashMap<>();
 

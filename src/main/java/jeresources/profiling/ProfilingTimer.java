@@ -81,6 +81,6 @@ public class ProfilingTimer {
     }
 
     private static String getDimensionName(int dim) {
-        return TranslationHelper.tryDimensionTranslate(DimensionManager.getProvider(dim).getDimensionType().getName());
+        return TranslationHelper.tryDimensionTranslate(DimensionManager.getWorld(dim).provider.getDimensionType().getName()) + " (" + dim + ")";
     }
 }

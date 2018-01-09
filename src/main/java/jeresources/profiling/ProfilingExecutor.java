@@ -18,11 +18,11 @@ public class ProfilingExecutor {
         this.executor = Executors.newFixedThreadPool(processors * 2);
     }
 
-    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks) {
-        final int dimId = dummyWorld.provider.getDimensionType().getId();
+    public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks, int dimId) {
+        //final int dimId = dummyWorld.provider.getDimension();
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimId);
 
-        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer()));
+        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer(), dimId));
     }
 
     public void execute(Runnable runnable) {
