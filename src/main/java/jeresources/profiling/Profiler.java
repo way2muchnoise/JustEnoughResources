@@ -36,7 +36,6 @@ public class Profiler implements Runnable {
         LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
         if (!allWorlds) {
             
-            //What does this do if the profile command is run from the console?            
             Entity sendEnt = sender.getCommandSenderEntity();
             int dimId = sendEnt.dimension;
             profileWorld(dimId);

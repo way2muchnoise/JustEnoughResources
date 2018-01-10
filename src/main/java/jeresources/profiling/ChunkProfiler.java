@@ -44,7 +44,7 @@ public class ChunkProfiler implements Runnable {
     private void profileChunk(Chunk chunk) {
         final int dimId = world.provider.getDimension();
         this.timer.startChunk(dimId);
-        Map<String, Integer[]> temp = new HashMap<>();                
+        Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);
