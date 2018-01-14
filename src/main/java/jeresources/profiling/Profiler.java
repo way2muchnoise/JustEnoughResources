@@ -35,7 +35,8 @@ public class Profiler implements Runnable {
     public void run() {
         LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
         if (!allWorlds) {
-            
+
+            // Will never be null as the mod is client side only
             Entity sendEnt = sender.getCommandSenderEntity();
             int dimId = sendEnt.dimension;
             profileWorld(dimId);
@@ -45,9 +46,8 @@ public class Profiler implements Runnable {
             //getStaticDimensionIDs gets ALL of the dimensions.
             //Forge says it is internal, but there are not other options for
             //all dimensions that exist.
-            Integer[] dimIds = DimensionManager.getStaticDimensionIDs();
-            for (int i = 0; i < dimIds.length; i++) {
-                profileWorld(dimIds[i]);
+            for (Integer dimId : DimensionManager.getStaticDimensionIDs()) {
+                profileWorld(dimId);
             }
         }
 
@@ -68,7 +68,7 @@ public class Profiler implements Runnable {
         }
         
         if (world == null) {
-            msg = "Unable to profile dimension ID " + dimId + ".  There is no world for it.";
+            msg = "Unable to profile dimension " + dimId + ".  There is no world for it.";
             LogHelper.error(msg);
             sender.sendMessage(new TextComponentString(msg));
             return;
@@ -77,12 +77,10 @@ public class Profiler implements Runnable {
         //Make this stick for recovery after profiling.
         final WorldServer worldServer = world;
         
-        msg = "Inspecting dimension "
-            + worldServer.provider.getDimensionType().getName() + ": " 
-            + dimId + ". ";
+        msg = "Inspecting dimension " + dimId + ": " + worldServer.provider.getDimensionType().getName() + ". ";
         sender.sendMessage(new TextComponentString(msg));
         
-        msg += "The world thinks it is dimension ID " + worldServer.provider.getDimension() + ".";                   
+        msg += "The world thinks it is dimension " + worldServer.provider.getDimension() + ".";
         LogHelper.info(msg);
 
         
