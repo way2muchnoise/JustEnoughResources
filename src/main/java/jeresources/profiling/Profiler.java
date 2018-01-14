@@ -5,6 +5,7 @@ import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
@@ -34,11 +35,19 @@ public class Profiler implements Runnable {
     public void run() {
         LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
         if (!allWorlds) {
-            WorldServer world = (WorldServer) this.sender.getEntityWorld();
-            profileWorld(world);
-        } else {
-            for (WorldServer world : DimensionManager.getWorlds()) {
-                profileWorld(world);
+            
+            Entity sendEnt = sender.getCommandSenderEntity();
+            int dimId = sendEnt.dimension;
+            profileWorld(dimId);
+            
+        } else {        
+
+            //getStaticDimensionIDs gets ALL of the dimensions.
+            //Forge says it is internal, but there are not other options for
+            //all dimensions that exist.
+            Integer[] dimIds = DimensionManager.getStaticDimensionIDs();
+            for (int i = 0; i < dimIds.length; i++) {
+                profileWorld(dimIds[i]);
             }
         }
 
@@ -47,10 +56,38 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(final WorldServer worldServer) {
-        int dimId = worldServer.provider.getDimensionType().getId();
+    private void profileWorld(int dimId) {
+        String msg;
+        //Get the world we want to process.
+        WorldServer world = DimensionManager.getWorld(dimId);
+        
+        //If it isn't loaded, make it loaded and get it again.
+        if(world == null) {
+            DimensionManager.initDimension(dimId);
+            world = DimensionManager.getWorld(dimId);
+        }
+        
+        if (world == null) {
+            msg = "Unable to profile dimension ID " + dimId + ".  There is no world for it.";
+            LogHelper.error(msg);
+            sender.sendMessage(new TextComponentString(msg));
+            return;
+        }
+        
+        //Make this stick for recovery after profiling.
+        final WorldServer worldServer = world;
+        
+        msg = "Inspecting dimension "
+            + worldServer.provider.getDimensionType().getName() + ": " 
+            + dimId + ". ";
+        sender.sendMessage(new TextComponentString(msg));
+        
+        msg += "The world thinks it is dimension ID " + worldServer.provider.getDimension() + ".";                   
+        LogHelper.info(msg);
+
+        
         if (Settings.excludedDimensions.contains(dimId)) {
-            String msg = "Skipped dimension " + dimId + " during profiling";
+            msg = "Skipped dimension " + dimId + " during profiling";
             LogHelper.info(msg);
             sender.sendMessage(new TextComponentString(msg));
             return;

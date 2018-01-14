@@ -42,7 +42,7 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        int dimId = world.provider.getDimensionType().getId();
+        final int dimId = world.provider.getDimension();
         this.timer.startChunk(dimId);
         Map<String, Integer[]> temp = new HashMap<>();
 

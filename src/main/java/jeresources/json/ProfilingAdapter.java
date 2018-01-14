@@ -101,8 +101,8 @@ public class ProfilingAdapter {
                         }
                         writer.endArray();
                     }
-
-                    writer.name("dim").value(DimensionManager.getProvider(dim).getDimensionType().getName());
+                    
+                    writer.name("dim").value("Dim " + dim + ": " + DimensionManager.getProvider(dim).getDimensionType().getName());
                     writer.endObject();
                 }
             }

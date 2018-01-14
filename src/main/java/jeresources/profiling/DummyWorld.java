@@ -33,7 +33,7 @@ public class DummyWorld extends WorldServer {
     public List<Entity> spawnedEntities = new ArrayList<>();
 
     public DummyWorld(WorldServer world) {
-        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimensionType().getId(), world.profiler);
+        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimension(), world.profiler);
         this.provider.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
         this.functionManager = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
