@@ -4,6 +4,7 @@ import jeresources.config.ConfigHandler;
 import jeresources.util.TranslationHelper;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
@@ -81,6 +82,11 @@ public class ProfilingTimer {
     }
 
     private static String getDimensionName(int dim) {
-        return "Dim " + dim + ": " + TranslationHelper.tryDimensionTranslate(DimensionManager.getProvider(dim).getDimensionType().getName());
+        World world = DimensionManager.getWorld(dim);
+        if (world == null || world.provider == null) {
+            return "Dim " + dim;
+        } else {
+            return "Dim " + dim + ": " + TranslationHelper.tryDimensionTranslate(DimensionManager.getProvider(dim).getDimensionType().getName());
+        }
     }
 }

@@ -1,5 +1,7 @@
 package jeresources.profiling;
 
+import jeresources.util.LogHelper;
+import net.minecraft.util.ReportedException;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
@@ -25,25 +27,30 @@ public class ChunkGetter implements Runnable {
         this.runnable = new Runnable() {
             @Override
             public void run() {
-                if (getRunCount() < getMaxRunCount()) {
-                    final DummyWorld dummyWorld = getWorld();
+                try {
+                    if (getRunCount() < getMaxRunCount()) {
+                        final DummyWorld dummyWorld = getWorld();
 
-                    List<Chunk> chunks = strategy.generateChunks(dummyWorld);
+                        List<Chunk> chunks = strategy.generateChunks(dummyWorld);
 
-                    // check if we should switch strategies for dimensions like the end
-                    if (strategy instanceof ChunkGetterRandom && areAllChunksEmpty(chunks)) {
-                        strategy = new ChunkGetterOrigin(dummyWorld, chunkCount);
-                        chunks = strategy.generateChunks(dummyWorld);
-                    }
+                        // check if we should switch strategies for dimensions like the end
+                        if (strategy instanceof ChunkGetterRandom && areAllChunksEmpty(chunks)) {
+                            strategy = new ChunkGetterOrigin(dummyWorld, chunkCount);
+                            chunks = strategy.generateChunks(dummyWorld);
+                        }
 
-                    runCount++;
-                    executor.addChunkProfiler(dummyWorld, chunks);
+                        runCount++;
+                        executor.addChunkProfiler(dummyWorld, chunks);
 
-                    // add the next task to executor thread first so that the world's scheduledTasks
-                    // has a chance to process other things like chat input
-                    executor.execute(() -> dummyWorld.addScheduledTask(runnable));
-                } else
+                        // add the next task to executor thread first so that the world's scheduledTasks
+                        // has a chance to process other things like chat input
+                        executor.execute(() -> dummyWorld.addScheduledTask(runnable));
+                    } else
+                        executor.shutdown();
+                } catch (ReportedException re) {
+                    LogHelper.info("Chunk getting failed: " + re.getMessage());
                     executor.shutdown();
+                }
             }
         };
     }
