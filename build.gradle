@@ -123,7 +123,7 @@ curseforge {
         mainArtifact (jar) {
             displayName = "${jar.archiveName}".replace(".jar", "")
             relations {
-                requiredLibrary 'just-enough-items-jei'
+                requiredLibrary 'jei'
             }
         }
         addArtifact (deobfJar) {
