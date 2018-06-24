@@ -7,7 +7,11 @@ import com.google.gson.JsonParser;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
+import jeresources.api.distributions.DistributionSquare;
+import jeresources.api.distributions.DistributionTriangular;
+import jeresources.api.distributions.DistributionUnderWater;
 import jeresources.api.drop.LootDrop;
+import jeresources.api.restrictions.BiomeRestriction;
 import jeresources.api.restrictions.DimensionRestriction;
 import jeresources.api.restrictions.Restriction;
 import jeresources.config.ConfigHandler;
@@ -20,11 +24,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 public class WorldGenAdapter {
     public static boolean hasWorldGenDIYData() {
@@ -46,16 +53,29 @@ public class WorldGenAdapter {
                         continue;
 
                 String block = obj.get("block").getAsString();
-                JsonElement distribElement = obj.get("distrib");
-                if (distribElement == null)
+                JsonObject distribObject = obj.get("distrib").getAsJsonObject();
+                if (distribObject == null)
                     continue;
 
-                String distrib = distribElement.getAsString();
+                String distribType = distribObject.get("type").getAsString();
+                String distrib = distribObject.get("value").getAsString();
                 JsonElement silk = obj.get("silktouch");
                 boolean silktouch = silk != null && silk.getAsBoolean();
 
                 JsonElement dimElement = obj.get("dim");
                 String dim = dimElement != null ? dimElement.getAsString() : "";
+
+                JsonArray biomesArray = obj.get("biomes").getAsJsonArray();
+                Biome[] biomes = {};
+                for (JsonElement biomeElement : biomesArray) {
+                	int biomeId;
+                	try {
+                		biomeId = biomeElement.getAsInt();
+                	} catch (Exception e) {
+                		break;
+                	}
+                	biomes = ArrayUtils.add(biomes, Biome.getBiome(biomeId));
+                }
 
                 String[] blockParts = block.split(":");
 
@@ -63,13 +83,69 @@ public class WorldGenAdapter {
                 if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
                 int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
                 ItemStack blockStack = new ItemStack(blockBlock, 1, oreMeta);
-                List<DistributionHelpers.OrePoint> points = new ArrayList<>();
-                for (String point : distrib.split(";")) {
-                    String[] split = point.split(",");
-                    if (split.length == 2)
-                        points.add(new DistributionHelpers.OrePoint(Integer.parseInt(split[0]), Float.parseFloat(split[1])));
+
+                DistributionBase distribution = new DistributionSquare(0, 0, 0, 255);
+                switch (distribType.toLowerCase()) {
+	                case "points":
+		                List<DistributionHelpers.OrePoint> points = new ArrayList<>();
+		                for (String point : distrib.split(";")) {
+		                    String[] split = point.split(",");
+		                    if (split.length == 2)
+		                        points.add(new DistributionHelpers.OrePoint(Integer.parseInt(split[0]), Float.parseFloat(split[1])));
+		                }
+		                distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
+		                break;
+	                case "square":
+		                String[] squareVals = distrib.split(",");
+		                switch (squareVals.length) {
+		                	case 3:
+		                		try {
+			                		distribution = new DistributionSquare(Integer.parseInt(squareVals[0]), Integer.parseInt(squareVals[1]), Float.parseFloat(squareVals[2]));
+		                		} catch (NumberFormatException e) {
+		                			continue;
+		                		}
+		                		break;
+		                	case 4:
+		                		try {
+			                		distribution = new DistributionSquare(Integer.parseInt(squareVals[0]), Integer.parseInt(squareVals[1]), Integer.parseInt(squareVals[2]), Integer.parseInt(squareVals[3]));
+		                		} catch (NumberFormatException e) {
+		                			continue;
+		                		}
+		                		break;
+		                	case 5:
+		                		try {
+			                		distribution = new DistributionSquare(Integer.parseInt(squareVals[0]), Integer.parseInt(squareVals[1]), Integer.parseInt(squareVals[2]), Integer.parseInt(squareVals[3]), Float.parseFloat(squareVals[4]));
+		                		} catch (NumberFormatException e) {
+		                			continue;
+		                		}
+		                		break;
+		                	default:
+		                		continue;
+		                }
+		                break;
+	                case "triangular":
+	                	String[] triangularVals = distrib.split(",");
+	                	if (triangularVals.length != 3)
+	                		continue;
+	                	try {
+	                		distribution = new DistributionTriangular(Integer.parseInt(triangularVals[0]), Integer.parseInt(triangularVals[1]), Float.parseFloat((triangularVals[2])));
+	                	} catch (NumberFormatException e) {
+	                		continue;
+	                	}
+	                	break;
+	                case "underwater":
+	                	String[] underwaterVals = distrib.split(",");
+	                	if (underwaterVals.length != 1)
+	                		continue;
+	                	try {
+	                		distribution = new DistributionUnderWater(Float.parseFloat((underwaterVals[0])));
+	                	} catch (NumberFormatException e) {
+	                		continue;
+	                	}
+	                	break;
+		            default:
+		            	continue;
                 }
-                DistributionBase distribution = new DistributionCustom(DistributionHelpers.getDistributionFromPoints(points.toArray(new DistributionHelpers.OrePoint[points.size()])));
 
                 JsonElement dropsListElement = obj.get("dropsList");
                 List<LootDrop> dropList = new LinkedList<>();
@@ -116,7 +192,7 @@ public class WorldGenAdapter {
                     blockStack.setCount(1);
                 }
 
-                WorldGenRegistry.getInstance().registerEntry(new WorldGenEntry(blockStack, distribution, getRestriction(dim), silktouch, dropList.toArray(new LootDrop[dropList.size()])));
+                WorldGenRegistry.getInstance().registerEntry(new WorldGenEntry(blockStack, distribution, getRestriction(biomes, dim), silktouch, dropList.toArray(new LootDrop[dropList.size()])));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -127,7 +203,9 @@ public class WorldGenAdapter {
 
     private static Map<String, Restriction> map = new HashMap<>();
 
-    private static Restriction getRestriction(String dim) {
-        return map.computeIfAbsent(dim, k -> new Restriction(new DimensionRestriction(dim)));
+    private static Restriction getRestriction(Biome[] biomes, String dim) {
+    	if (biomes.length > 0)
+    		return new Restriction(new BiomeRestriction(biomes), new DimensionRestriction(dim));
+		return map.computeIfAbsent(dim, k -> new Restriction(new DimensionRestriction(dim)));
     }
 }
