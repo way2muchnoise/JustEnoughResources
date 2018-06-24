@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 
 public class BiomeRestriction {
     public static final BiomeRestriction NONE = new BiomeRestriction();
@@ -38,8 +40,16 @@ public class BiomeRestriction {
         this(Type.WHITELIST, biome);
     }
 
+    public BiomeRestriction(Biome[] biomes) {
+        this(Type.WHITELIST, biomes);
+    }
+
     public BiomeRestriction(Type type, Biome biome) {
         this(type, biome, new Biome[0]);
+    }
+    
+    public BiomeRestriction(Type type, Biome[] biomes) {
+        this(type, biomes[0], ArrayUtils.remove(biomes, 0));
     }
 
     public BiomeRestriction(Biome biome, Biome... moreBiomes) {

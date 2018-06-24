@@ -64,7 +64,11 @@ public class ProfilingAdapter {
                                 lastPrint = i;
                             }
                         }
-                        writer.name("distrib").value(sb.toString());
+                        writer.name("distrib");
+                        writer.beginObject();
+                        writer.name("type").value("points");
+                        writer.name("value").value(sb.toString());
+                        writer.endObject();
                     }
 
                     Map<String, Map<Integer, Float>> drops = dimensionData.dropsMap.get(blockKey);
@@ -109,6 +113,11 @@ public class ProfilingAdapter {
                     } else {
                         writer.name("dim").value("Dim " + dim + ": " + DimensionManager.getProvider(dim).getDimensionType().getName());
                     }
+                    
+                    writer.name("biomes");
+                    writer.beginArray();
+                    writer.endArray();
+                    
                     writer.endObject();
                 }
             }
