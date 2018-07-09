@@ -10,6 +10,7 @@ jer.config.dimensionsBlacklist.title=Dimension Blacklist
 jer.config.dimensionsBlacklist.description=Blacklist dimensions from the JEI profiling scan
 
 #Default dimensions
+jer.dim.all=All
 jer.dim.overworld=Overworld
 jer.dim.the_nether=The Nether
 jer.dim.the_end=The End

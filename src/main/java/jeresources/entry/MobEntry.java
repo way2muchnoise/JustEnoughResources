@@ -4,6 +4,7 @@ import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
 import jeresources.util.LootTableHelper;
 import jeresources.util.MobHelper;
+import jeresources.util.TranslationHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootTable;
@@ -46,7 +47,7 @@ public class MobEntry {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes = new ArrayList<>();
-        this.biomes.add("Any");
+        this.biomes.add("jer.any");
         this.drops = new TreeSet<>();
         this.drops.addAll(Arrays.asList(drops));
         this.maxExp = maxExp;
@@ -88,7 +89,11 @@ public class MobEntry {
     }
 
     public String[] getBiomes() {
-        return biomes.toArray(new String[biomes.size()]);
+        String[] translatedBiomes = new String[biomes.size()];
+        for (int i = 0; i < biomes.size(); i++) {
+            translatedBiomes[i] = TranslationHelper.translateToLocal(biomes.get(i));
+        }
+        return translatedBiomes;
     }
 
     public boolean addDrop(LootDrop item) {

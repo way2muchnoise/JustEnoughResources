@@ -61,6 +61,6 @@ public class DimensionRestriction {
     }
 
     public String getDimensionName() {
-        return type == Type.NONE ? "All" : name;
+        return type == Type.NONE ? "all" : name;
     }
 }
