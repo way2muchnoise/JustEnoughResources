@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class WorldGenEntry {
     private float[] chances;
@@ -153,6 +154,14 @@ public class WorldGenEntry {
         List<LootDrop> list = new ArrayList<>(this.drops.containsKey(key) ? this.drops.get(key) : this.wildcardDrops.get(itemStack.getItem()));
         Collections.reverse(list);
         return list;
+    }
+
+    public float getAverageBlockCountPerChunk() {
+        float sum = 0;
+        for (float chance : this.chances) {
+            sum += chance;
+        }
+        return Math.round(sum * chances.length * 100) / 100F;
     }
 
     @Override

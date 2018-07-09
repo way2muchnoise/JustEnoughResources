@@ -67,6 +67,12 @@ public class ConfigHandler {
         prop.requiresMcRestart();
         Settings.useDIYdata = prop.getBoolean();
 
+        prop = config.get(Configuration.CATEGORY_GENERAL, "perChunkCount", false);
+        prop.setComment(TranslationHelper.translateToLocal("jer.config.perChunkCount.description"));
+        prop.setLanguageKey("jer.config.perChunkCount.title");
+        prop.requiresMcRestart();
+        Settings.perChunkCount = prop.getBoolean();
+
         prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam", "soulBound"});
         prop.setComment(TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description"));
         prop.setLanguageKey("jer.config.enchantsBlacklist.title");

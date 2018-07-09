@@ -3,6 +3,7 @@ package jeresources.jei.worldgen;
 import com.google.common.base.Objects;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
+import jeresources.config.Settings;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
@@ -127,10 +128,15 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             if (this.worldGenEntry.isSilkTouchNeeded())
                 tooltip.add(Conditional.silkTouch.toString());
 
-            List<String> biomes = worldGenEntry.getBiomeRestrictions();
+            List<String> biomes = this.worldGenEntry.getBiomeRestrictions();
             if (biomes.size() > 0) {
                 tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.biomes") + ":");
                 tooltip.addAll(biomes);
+            }
+
+            if (Settings.perChunkCount) {
+                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + ":");
+                tooltip.add("" + this.worldGenEntry.getAverageBlockCountPerChunk());
             }
 
         } else {
