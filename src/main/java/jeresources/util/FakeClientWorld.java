@@ -3,6 +3,7 @@ package jeresources.util;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -11,6 +12,9 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityDispatcher;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -32,8 +36,22 @@ public class FakeClientWorld extends World {
         }
     };
 
+    private CapabilityDispatcher capabilities;
+
     public FakeClientWorld() {
         super(saveHandler, worldInfo, worldProvider, new Profiler(), true);
+        this.capabilities = ForgeEventFactory.gatherCapabilities(this, null);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        return capabilities == null ? null : capabilities.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
 
     @Override

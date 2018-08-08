@@ -7,6 +7,7 @@ import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -19,8 +20,12 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityDispatcher;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,12 +36,14 @@ import java.util.List;
  */
 public class DummyWorld extends WorldServer {
     public List<Entity> spawnedEntities = new ArrayList<>();
+    private CapabilityDispatcher capabilities;
 
     public DummyWorld(WorldServer world) {
         super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimension(), world.profiler);
         this.provider.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
         this.functionManager = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
+        this.capabilities = ForgeEventFactory.gatherCapabilities(world, provider.initCapabilities());
     }
 
     public void clearChunks() {
@@ -93,6 +100,17 @@ public class DummyWorld extends WorldServer {
     @Override
     public void tick() {
 
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        return capabilities == null ? null : capabilities.getCapability(capability, facing);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
 
     private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator {
