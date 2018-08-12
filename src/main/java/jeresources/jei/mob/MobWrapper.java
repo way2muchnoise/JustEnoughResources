@@ -1,6 +1,7 @@
 package jeresources.jei.mob;
 
 import jeresources.api.drop.LootDrop;
+import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
 import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
@@ -47,8 +48,8 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
         RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 65.2F, 59.0F, 79.0F);
-        this.scale = getScale(mob.getEntity());
-        this.offsetY = getOffsetY(mob.getEntity());
+        this.scale = getScale(this.mob.getEntity());
+        this.offsetY = getOffsetY(this.mob.getEntity());
         RenderHelper.renderEntity(
             37, 105 - offsetY, scale,
             38 - mouseX,
@@ -57,7 +58,14 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
         );
         RenderHelper.stopScissor();
 
-        Font.normal.print(this.mob.getMobName(), 7, 2);
+        String mobName = this.mob.getMobName();
+        if (Settings.showDevData) {
+            String entityString = entityLivingBase.getEntityString();
+            if (entityString != null) {
+                mobName += " (" + entityString + ")";
+            }
+        }
+        Font.normal.print(mobName, 7, 2);
         Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateToLocal("jer.mob.biome") : TranslationHelper.translateToLocal("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
         Font.normal.print(this.mob.getLightLevel(), 7, 22);
         Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
@@ -84,7 +92,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
     }
 
     public List<String> getToolTip(ItemStack stack) {
-        for (LootDrop item : mob.getDrops()) {
+        for (LootDrop item : this.mob.getDrops()) {
             if (stack.isItemEqual(item.item))
                 return item.getTooltipText();
             if (item.canBeCooked() && stack.isItemEqual(item.smeltedItem))

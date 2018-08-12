@@ -15,7 +15,7 @@ public final class Settings {
 
     public static String[] excludedEnchants;
     public static boolean gameLoaded = false;
-    public static boolean perChunkCount;
+    public static boolean showDevData;
     public static List<Integer> excludedDimensions;
 
     public static void reload() {

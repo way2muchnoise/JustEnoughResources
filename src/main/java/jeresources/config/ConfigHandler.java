@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -67,11 +66,11 @@ public class ConfigHandler {
         prop.requiresMcRestart();
         Settings.useDIYdata = prop.getBoolean();
 
-        prop = config.get(Configuration.CATEGORY_GENERAL, "perChunkCount", false);
-        prop.setComment(TranslationHelper.translateToLocal("jer.config.perChunkCount.description"));
-        prop.setLanguageKey("jer.config.perChunkCount.title");
+        prop = config.get(Configuration.CATEGORY_GENERAL, "showDevData", false);
+        prop.setComment(TranslationHelper.translateToLocal("jer.config.showDevData.description"));
+        prop.setLanguageKey("jer.config.showDevData.title");
         prop.requiresMcRestart();
-        Settings.perChunkCount = prop.getBoolean();
+        Settings.showDevData = prop.getBoolean();
 
         prop = config.get(Configuration.CATEGORY_GENERAL, "enchantsBlacklist", new String[]{"flimflam", "soulBound"});
         prop.setComment(TranslationHelper.translateToLocal("jer.config.enchantsBlacklist.description"));

@@ -134,7 +134,7 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
                 tooltip.addAll(biomes);
             }
 
-            if (Settings.perChunkCount) {
+            if (Settings.showDevData) {
                 tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + ":");
                 tooltip.add("" + this.worldGenEntry.getAverageBlockCountPerChunk());
             }
