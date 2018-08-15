@@ -48,7 +48,7 @@ public class VillagerWrapper implements IRecipeWrapper {
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        RenderHelper.scissor(minecraft, recipeWidth, recipeHeight, 7.2F, 57.8F, 59.0F, 79.0F);
+        RenderHelper.scissor(minecraft, 7, 43, 59, 79);
         EntityVillager entityVillager;
         try {
             entityVillager = new EntityVillager(minecraft.world, entry.getProfession());

@@ -16,7 +16,11 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
+
+import java.nio.FloatBuffer;
 
 public class RenderHelper {
     public static void drawArrow(double xBegin, double yBegin, double xEnd, double yEnd, int color) {
@@ -153,18 +157,15 @@ public class RenderHelper {
         GlStateManager.disableRescaleNormal();
     }
 
-    public static void scissor(Minecraft mc, int guiWidth, int guiHeight, float x, float y, float w, float h) {
+    public static void scissor(Minecraft mc, int x, int y, int w, int h) {
         int scale = new ScaledResolution(mc).getScaleFactor();
+        float[] xyzTranslation = getGLTranslation(scale);
         x *= scale;
         y *= scale;
         w *= scale;
         h *= scale;
-        float guiScaledWidth = (guiWidth * scale);
-        float guiScaledHeight = (guiHeight * scale);
-        long guiLeft = Math.round((mc.displayWidth - guiScaledWidth) / 2.0F);
-        long guiTop = Math.round((mc.displayHeight + guiScaledHeight) / 2.0F);
-        int scissorX = Math.round(guiLeft + x - scale);
-        int scissorY = Math.round(guiTop - h - y);
+        int scissorX = Math.round(xyzTranslation[0] + x);
+        int scissorY = Math.round(mc.displayHeight - y - h - xyzTranslation[1]);
         int scissorW = Math.round(w);
         int scissorH = Math.round(h);
         IScissorHook.ScissorInfo scissorInfo = MobRegistryImpl.applyScissorHooks(new IScissorHook.ScissorInfo(scissorX, scissorY, scissorW, scissorH));
@@ -183,5 +184,15 @@ public class RenderHelper {
 
     private static RenderManager getRenderManager() {
         return Minecraft.getMinecraft().getRenderManager();
+    }
+
+    public static float[] getGLTranslation(int scale) {
+        FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, buf);
+        buf.rewind();
+        Matrix4f mat = new Matrix4f();
+        mat.load(buf);
+        // { x, y, z }
+        return new float[] { mat.m30 * scale, mat.m31 * scale, mat.m32 * scale };
     }
 }
