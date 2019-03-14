@@ -20,7 +20,7 @@ public class VillagersHelper {
                         getTrades(career)
                     ));
                 } catch (Exception e) {
-                    LogHelper.warn("Failed loading villager %s registered at %s", career.getName(), profession.getRegistryName().toString());
+                    LogHelper.warn("Failed loading villager {} registered at {}", career.getName(), profession.getRegistryName().toString());
                 }
             }
             professionId++;
