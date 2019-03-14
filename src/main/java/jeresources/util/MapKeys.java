@@ -72,7 +72,7 @@ public class MapKeys {
     }
 
     public static String getKey(IPlantable plant) {
-        return plant.getPlant(null, null).getBlock().getUnlocalizedName();
+        return plant.getPlant(null, null).getBlock().getTranslationKey();
     }
 
     public static String getKey(LootDrop dropItem) {

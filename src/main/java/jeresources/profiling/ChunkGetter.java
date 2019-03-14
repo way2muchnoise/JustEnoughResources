@@ -145,7 +145,7 @@ public class ChunkGetter implements Runnable {
         final List<Chunk> centerChunks = new ArrayList<>();
         for (int i = 0; i < generate_size; i++) {
             for (int j = 0; j < generate_size; j++) {
-                Chunk chunk = dummyWorld.getChunkFromChunkCoords(chunkX + i, chunkZ + j);
+                Chunk chunk = dummyWorld.getChunk(chunkX + i, chunkZ + j);
                 if (i > 0 && i < (generate_size - 1) && j > 0 && j < (generate_size - 1)) {
                     centerChunks.add(chunk);
                 }

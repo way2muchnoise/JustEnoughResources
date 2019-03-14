@@ -61,7 +61,7 @@ public class DummyWorld extends WorldServer {
             return false;
         }
 
-        Chunk chunk = getChunkFromBlockCoords(pos);
+        Chunk chunk = getChunk(pos);
         IBlockState blockState = chunk.setBlockState(pos, newState);
         return blockState != null;
     }
@@ -157,11 +157,11 @@ public class DummyWorld extends WorldServer {
         @Override
         public Chunk getLoadedChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
-            return this.id2ChunkMap.get(chunkKey);
+            return this.loadedChunks.get(chunkKey);
         }
 
         public void unloadAllChunks() {
-            this.id2ChunkMap.clear();
+            this.loadedChunks.clear();
         }
 
         @Override
@@ -172,7 +172,7 @@ public class DummyWorld extends WorldServer {
         @Override
         public Chunk generateChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
-            Chunk chunk = this.id2ChunkMap.get(chunkKey);
+            Chunk chunk = this.loadedChunks.get(chunkKey);
             if (chunk != null) {
                 return chunk;
             }
@@ -190,7 +190,7 @@ public class DummyWorld extends WorldServer {
                 throw new ReportedException(crashreport);
             }
 
-            this.id2ChunkMap.put(chunkKey, chunk);
+            this.loadedChunks.put(chunkKey, chunk);
 
             this.allowLoading = false;
             net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.ChunkEvent.Load(chunk));

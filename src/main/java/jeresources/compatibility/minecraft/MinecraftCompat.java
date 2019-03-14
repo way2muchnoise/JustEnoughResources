@@ -57,7 +57,7 @@ public class MinecraftCompat extends CompatBase {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getResourcePath(), manager.getLootTableFromLocation(resourceLocation)))
+            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), manager.getLootTableFromLocation(resourceLocation)))
             .forEach(this::registerDungeonEntry);
     }
 
