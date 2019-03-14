@@ -10,12 +10,12 @@ import net.minecraft.server.MinecraftServer;
 public class ProfileCommand extends CommandBase {
     @Override
     public String getName() {
-        return "profile";
+        return "jer_profile";
     }
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return "profile [chunks|stop] [all]";
+        return "jer_profile [chunks|stop] [all]";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ProfileCommand extends CommandBase {
 
             if ("stop".equals(args[0])) {
                 if (!Profiler.stop())
-                    throw new WrongUsageException("Not profiling, run \"/profile [chunks]\" to start");
+                    throw new WrongUsageException("Not profiling, run \"/jer_profile [chunks]\" to start");
                 else return;
             }
 
@@ -38,7 +38,7 @@ public class ProfileCommand extends CommandBase {
             }
             if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
             if (!Profiler.init(sender, chunks, args.length == 2 && args[1].equals("all")))
-                throw new WrongUsageException("Already profiling run \"/profile stop\" to stop");
+                throw new WrongUsageException("Already profiling run \"/jer_profile stop\" to stop");
         } else {
             throw new WrongUsageException(getUsage(sender));
         }
