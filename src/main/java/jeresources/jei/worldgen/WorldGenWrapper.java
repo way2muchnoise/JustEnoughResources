@@ -171,7 +171,7 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
         final int yValue = index + this.worldGenEntry.getMinY();
         if (index >= 0 && index < chances.length) {
             float chance = chances[index] * 100;
-            String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2G%%)", chance) : " <0.01%";
+            String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2f%%)", chance) : " <0.01%";
             tooltip.add("Y: " + yValue + percent);
         }
 
@@ -194,4 +194,4 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             && mouseY < Y_OFFSET;
     }
 
-}
+}g
