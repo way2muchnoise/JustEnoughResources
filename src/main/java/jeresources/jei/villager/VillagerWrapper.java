@@ -7,6 +7,7 @@ import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -26,8 +27,8 @@ public class VillagerWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInputs(ItemStack.class, entry.getInputs());
-        ingredients.setOutputs(ItemStack.class, entry.getOutputs());
+        ingredients.setInputs(VanillaTypes.ITEM, entry.getInputs());
+        ingredients.setOutputs(VanillaTypes.ITEM, entry.getOutputs());
     }
 
     public TradeList getTrades(int level) {

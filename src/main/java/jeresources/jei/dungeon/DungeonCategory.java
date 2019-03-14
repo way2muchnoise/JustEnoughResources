@@ -8,6 +8,7 @@ import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 
@@ -53,7 +54,7 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull DungeonWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(ItemStack.class).size()); i++) {
+        for (int i = 0; i < Math.min(ITEMS_PER_PAGE, ingredients.getOutputs(VanillaTypes.ITEM).size()); i++) {
             recipeLayout.getItemStacks().init(i, false, x, y);
             x += SPACING_X;
 

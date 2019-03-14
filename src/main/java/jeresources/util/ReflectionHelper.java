@@ -1,5 +1,6 @@
 package jeresources.util;
 
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 import java.lang.reflect.Constructor;
@@ -7,7 +8,7 @@ import java.lang.reflect.Field;
 import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class ReflectionHelper extends net.minecraftforge.fml.relauncher.ReflectionHelper {
+public class ReflectionHelper extends ObfuscationReflectionHelper {
     public static Class findClass(String name) {
         try {
             return Class.forName(name);

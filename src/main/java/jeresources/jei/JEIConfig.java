@@ -18,8 +18,8 @@ import jeresources.jei.worldgen.WorldGenWrapper;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -52,7 +52,7 @@ public class JEIConfig implements IModPlugin {
         registry.addRecipes(MobRegistry.getInstance().getMobs(), MOB);
         registry.addRecipes(DungeonRegistry.getInstance().getDungeons(), DUNGEON);
         registry.addRecipes(VillagerRegistry.getInstance().getVillagers(), VILLAGER);
-        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getAllIngredients(ItemStack.class)), ENCHANTMENT);
+        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getAllIngredients(VanillaTypes.ITEM)), ENCHANTMENT);
     }
 
     @Override

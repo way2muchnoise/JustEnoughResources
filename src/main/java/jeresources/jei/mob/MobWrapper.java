@@ -9,6 +9,7 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,7 +38,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setOutputs(ItemStack.class, this.mob.getDropsItemStacks());
+        ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
     }
 
     public LootDrop[] getDrops() {

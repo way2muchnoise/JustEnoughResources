@@ -7,6 +7,7 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,7 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setOutputs(ItemStack.class, this.chest.getItemStacks(null));
+        ingredients.setOutputs(VanillaTypes.ITEM, this.chest.getItemStacks(null));
     }
 
     public int amountOfItems(IFocus<ItemStack> focus) {

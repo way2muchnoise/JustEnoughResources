@@ -5,6 +5,7 @@ import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -62,7 +63,7 @@ public class EnchantmentWrapper implements IRecipeWrapper {
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, itemStack);
+        ingredients.setInput(VanillaTypes.ITEM, itemStack);
     }
 
     @Override

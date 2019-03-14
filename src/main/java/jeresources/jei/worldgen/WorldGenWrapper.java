@@ -10,6 +10,7 @@ import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -40,8 +41,8 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInput(ItemStack.class, this.worldGenEntry.getBlock());
-        ingredients.setOutputs(ItemStack.class, this.worldGenEntry.getBlockAndDrops());
+        ingredients.setInput(VanillaTypes.ITEM, this.worldGenEntry.getBlock());
+        ingredients.setOutputs(VanillaTypes.ITEM, this.worldGenEntry.getBlockAndDrops());
     }
 
     public ItemStack getBlock() {
@@ -194,4 +195,4 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             && mouseY < Y_OFFSET;
     }
 
-}g
+}

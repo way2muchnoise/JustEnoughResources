@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class WorldGenEntry {
     private float[] chances;

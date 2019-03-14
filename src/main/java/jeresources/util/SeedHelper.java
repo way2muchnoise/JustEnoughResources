@@ -19,7 +19,7 @@ public class SeedHelper {
             if (o == null) continue;
             ItemStack seed = (ItemStack) ReflectionHelper.getPrivateValue(seedEntry, o, "seed");
             if (seed == null || seed.getItem() == null) continue;
-            int weight = ReflectionHelper.getPrivateValue(WeightedRandom.Item.class, (WeightedRandom.Item) o, "field_76292_a", "itemWeight");
+            int weight = ReflectionHelper.getPrivateValue(WeightedRandom.Item.class, (WeightedRandom.Item) o, "itemWeight");
             result.add(new PlantDrop(seed, weight));
         }
         return result;
