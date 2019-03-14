@@ -1,6 +1,7 @@
 package jeresources.jei;
 
 import jeresources.JEResources;
+import jeresources.config.Settings;
 import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonWrapper;
@@ -31,6 +32,7 @@ public class JEIConfig implements IModPlugin {
     public static final String PLANT = Reference.ID + ".plant";
     public static final String ENCHANTMENT = Reference.ID + ".enchantment";
     public static final String VILLAGER = Reference.ID + ".villager";
+    public static final String[] CATEGORIES = {MOB, DUNGEON, WORLD_GEN, PLANT, ENCHANTMENT, VILLAGER};
 
     private static IJeiHelpers jeiHelpers;
     private static IJeiRuntime jeiRuntime;
@@ -64,13 +66,21 @@ public class JEIConfig implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registry) {
         JEIConfig.jeiHelpers = registry.getJeiHelpers();
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+        hideCategories(Settings.hiddenCategories);
+    }
+
+    public static void resetCategories() {
+        for (String category : CATEGORIES)
+            jeiRuntime.getRecipeRegistry().unhideRecipeCategory(category);
+    }
+
+    public static void hideCategories(String[] categories) {
+        for (String category : categories)
+            jeiRuntime.getRecipeRegistry().hideRecipeCategory(Reference.ID + "." + category);
     }
 
     public static IJeiHelpers getJeiHelpers() {
         return JEIConfig.jeiHelpers;
     }
 
-    public static IJeiRuntime getJeiRuntime() {
-        return JEIConfig.jeiRuntime;
-    }
 }

@@ -83,6 +83,12 @@ public class ConfigHandler {
         prop.requiresMcRestart();
         Settings.excludedEnchants = prop.getStringList();
 
+        prop = config.get(Configuration.CATEGORY_GENERAL, "hiddenTabs", new String[]{});
+        prop.setComment(TranslationHelper.translateToLocal("jer.config.hiddenTabs.description"));
+        prop.setLanguageKey("jer.config.hiddenTabs.title");
+        prop.requiresMcRestart();
+        Settings.hiddenCategories = prop.getStringList();
+
         prop = config.get(Configuration.CATEGORY_GENERAL, "dimensionsBlacklist", new int[]{-11});
         prop.setComment(TranslationHelper.translateToLocal("jer.config.dimensionsBlacklist.description"));
         prop.setLanguageKey("jer.config.dimensionsBlacklist.title");
