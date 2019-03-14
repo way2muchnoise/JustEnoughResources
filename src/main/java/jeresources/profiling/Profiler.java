@@ -19,6 +19,7 @@ public class Profiler implements Runnable {
     private final ConcurrentMap<Integer, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
     private final ICommandSender sender;
+    private final ProfilingBlacklist blacklist;
     private final int chunkCount;
     private final boolean allWorlds;
     private ProfilingExecutor currentExecutor;
@@ -29,6 +30,7 @@ public class Profiler implements Runnable {
         this.chunkCount = chunkCount;
         this.timer = new ProfilingTimer(sender, chunkCount);
         this.allWorlds = allWorlds;
+        this.blacklist = new ProfilingBlacklist();
     }
 
     @Override
@@ -110,6 +112,10 @@ public class Profiler implements Runnable {
 
     public ProfilingTimer getTimer() {
         return timer;
+    }
+
+    public ProfilingBlacklist getBlacklist() {
+        return blacklist;
     }
 
     public ConcurrentMap<Integer, ProfiledDimensionData> getAllDimensionData() {

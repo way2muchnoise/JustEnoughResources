@@ -23,17 +23,19 @@ import java.util.Map;
 public class ChunkProfiler implements Runnable {
     private final World world;
     private final ProfilingTimer timer;
+    private final ProfilingBlacklist blacklist;
     private final List<Chunk> chunks;
     @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer) {
+    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
         this.world = world;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
         this.timer = timer;
+        this.blacklist = blacklist;
     }
 
     @Override
@@ -56,6 +58,7 @@ public class ChunkProfiler implements Runnable {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
                     blockPos.setPos(x + chunk.x * CHUNK_SIZE, y, z + chunk.z * CHUNK_SIZE);
                     IBlockState blockState = chunk.getBlockState(x, y, z);
+                    if (blacklist.contains(blockState)) continue;
                     final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);
 
                     if (!dimensionData.dropsMap.containsKey(key)) {

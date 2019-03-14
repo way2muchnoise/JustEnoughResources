@@ -18,7 +18,8 @@ import java.util.stream.IntStream;
 public class ConfigHandler {
     public static Configuration config;
     private static File configDir;
-    private static String worldGenFileName = "world-gen.json";
+    private static final String worldGenFileName = "world-gen.json";
+    private static final String scanBlacklistName = "scan-blacklist.txt";
 
     public static void init(File configDir) {
         if (config == null) {
@@ -36,6 +37,10 @@ public class ConfigHandler {
 
     public static File getWorldGenFile() {
         return new File(configDir, worldGenFileName);
+    }
+
+    public static File getScanBlacklistFile() {
+        return new File(configDir, scanBlacklistName);
     }
 
     @SubscribeEvent

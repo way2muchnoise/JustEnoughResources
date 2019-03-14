@@ -22,7 +22,7 @@ public class ProfilingExecutor {
 
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimId);
 
-        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer()));
+        this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer(), profiler.getBlacklist()));
     }
 
     public void execute(Runnable runnable) {
