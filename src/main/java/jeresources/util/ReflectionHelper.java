@@ -3,11 +3,9 @@ package jeresources.util;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Set;
 
-@SuppressWarnings("unchecked")
 public class ReflectionHelper extends ObfuscationReflectionHelper {
     public static Class findClass(String name) {
         try {
@@ -15,28 +13,6 @@ public class ReflectionHelper extends ObfuscationReflectionHelper {
         } catch (ClassNotFoundException e) {
             return null;
         }
-    }
-
-    public static Object initialize(Class clazz, Class argClass, Object arg) {
-        try {
-            return clazz.getConstructor(argClass).newInstance(arg);
-        } catch (Exception e) {
-            for (Constructor constructor : clazz.getConstructors()) {
-                System.out.println(constructor);
-            }
-        }
-        return null;
-    }
-
-    public static Object initialize(Class clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (Exception e) {
-            for (Constructor constructor : clazz.getConstructors()) {
-                System.out.println(constructor);
-            }
-        }
-        return null;
     }
 
     public static boolean isInstanceOf(Class clazz, Class checkClass) {

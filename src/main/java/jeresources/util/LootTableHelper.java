@@ -42,23 +42,23 @@ public class LootTableHelper {
     }
 
     public static List<LootPool> getPools(LootTable table) {
-        return ReflectionHelper.getPrivateValue(LootTable.class, table, "pools");
+        return ReflectionHelper.getPrivateValue(LootTable.class, table, "field_186466_c");
     }
 
     public static List<LootEntry> getEntries(LootPool pool) {
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "lootEntries");
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186453_a");
     }
 
     public static List<LootCondition> getConditions(LootPool pool) {
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "poolConditions");
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186454_b");
     }
 
     public static Item getItem(LootEntryItem lootEntry) {
-        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "item");
+        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "field_186368_a");
     }
 
     public static LootFunction[] getFunctions(LootEntryItem lootEntry) {
-        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "functions");
+        return ReflectionHelper.getPrivateValue(LootEntryItem.class, lootEntry, "field_186369_b");
     }
 
     public static List<LootDrop> toDrops(LootTable table) {
