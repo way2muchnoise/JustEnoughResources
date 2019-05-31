@@ -91,6 +91,10 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     private IBlockState getFarmland() {
+        if (plantEntry.getSoil() != null) {
+            return plantEntry.getSoil();
+        }
+
         return Blocks.FARMLAND.getDefaultState();
     }
 }

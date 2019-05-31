@@ -3,6 +3,7 @@ package jeresources.entry;
 import jeresources.api.drop.PlantDrop;
 import jeresources.util.MapKeys;
 import jeresources.util.SeedHelper;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,12 +20,21 @@ public class PlantEntry {
     private ItemStack plantStack;
     private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
+    private IBlockState soil = null;
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
         PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALLGRASS, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
+    }
+
+    public IBlockState getSoil() {
+        return soil;
+    }
+
+    public void setSoil(IBlockState soil) {
+        this.soil = soil;
     }
 
     public PlantEntry(ItemStack itemStack, IPlantable plant, PlantDrop... drops) {
