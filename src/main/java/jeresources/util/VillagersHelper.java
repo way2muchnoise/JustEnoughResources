@@ -21,6 +21,7 @@ public class VillagersHelper {
                     ));
                 } catch (Exception e) {
                     LogHelper.warn("Failed loading villager {} registered at {}", career.getName(), profession.getRegistryName().toString());
+                    LogHelper.warn("Exception caught when registering villager", e);
                 }
             }
             professionId++;
