@@ -136,7 +136,7 @@ public class WorldGenWrapper implements IRecipeWrapper, ITooltipCallback<ItemSta
             }
 
             if (Settings.showDevData) {
-                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.average") + ":");
+                tooltip.add(TranslationHelper.translateToLocal("jer.worldgen.averageChunk") + ":");
                 tooltip.add("" + this.worldGenEntry.getAverageBlockCountPerChunk());
             }
 
