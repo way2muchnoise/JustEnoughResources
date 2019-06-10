@@ -79,7 +79,7 @@ public class VillagerEntry {
         List<Integer> levels = new ArrayList<>();
         for (int i = 0; i < tradeList.size(); i++)
             if (tradeList.get(i) != null && tradeList.get(i).getFocusedList(focus).size() > 0)
-                levels.add(i);
+                levels.add(i + 1);
         return levels;
     }
 
