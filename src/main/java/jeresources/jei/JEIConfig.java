@@ -60,23 +60,27 @@ public class JEIConfig implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIConfig.jeiRuntime = jeiRuntime;
+        hideCategories(Settings.hiddenCategories);
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry) {
         JEIConfig.jeiHelpers = registry.getJeiHelpers();
         registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
-        hideCategories(Settings.hiddenCategories);
     }
 
     public static void resetCategories() {
-        for (String category : CATEGORIES)
-            jeiRuntime.getRecipeRegistry().unhideRecipeCategory(category);
+        if (jeiRuntime != null) {
+            for (String category : CATEGORIES)
+                jeiRuntime.getRecipeRegistry().unhideRecipeCategory(category);
+        }
     }
 
     public static void hideCategories(String[] categories) {
-        for (String category : categories)
-            jeiRuntime.getRecipeRegistry().hideRecipeCategory(Reference.ID + "." + category);
+        if (jeiRuntime != null) {
+            for (String category : categories)
+                jeiRuntime.getRecipeRegistry().hideRecipeCategory(Reference.ID + "." + category);
+        }
     }
 
     public static IJeiHelpers getJeiHelpers() {
