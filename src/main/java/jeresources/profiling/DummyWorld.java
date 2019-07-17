@@ -1,33 +1,32 @@
 package jeresources.profiling;
 
-import net.minecraft.block.Block;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ReportedException;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.NextTickListEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,11 +38,11 @@ public class DummyWorld extends WorldServer {
     private CapabilityDispatcher capabilities;
 
     public DummyWorld(WorldServer world) {
-        super(Minecraft.getMinecraft().getIntegratedServer(), world.getSaveHandler(), world.getWorldInfo(), world.provider.getDimension(), world.profiler);
-        this.provider.setWorld(this);
+        super(world.getServer(), world.getSaveHandler(), world.getMapStorage(), world.getWorldInfo(), world.getDimension().getType(), world.profiler);
+        this.dimension.setWorld(this);
         this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
-        this.functionManager = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
-        this.capabilities = ForgeEventFactory.gatherCapabilities(world, provider.initCapabilities());
+        // this.function = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
+        this.capabilities = ForgeEventFactory.gatherCapabilities(DummyWorld.class, this);
     }
 
     public void clearChunks() {
@@ -62,7 +61,7 @@ public class DummyWorld extends WorldServer {
         }
 
         Chunk chunk = getChunk(pos);
-        IBlockState blockState = chunk.setBlockState(pos, newState);
+        IBlockState blockState = chunk.setBlockState(pos, newState, false);
         return blockState != null;
     }
 
@@ -71,25 +70,6 @@ public class DummyWorld extends WorldServer {
         return this.setBlockState(pos, state, 3);
     }
 
-    @Override
-    public void scheduleBlockUpdate(BlockPos pos, Block blockIn, int delay, int priority) {
-
-    }
-
-    @Override
-    public void updateBlockTick(BlockPos pos, Block blockIn, int delay, int priority) {
-
-    }
-
-    @Override
-    public boolean tickUpdates(boolean p_72955_1_) {
-        return false;
-    }
-
-    @Override
-    public List<NextTickListEntry> getPendingBlockUpdates(StructureBoundingBox structureBB, boolean p_175712_2_) {
-        return Collections.emptyList();
-    }
 
     @Override
     public boolean spawnEntity(Entity entity) {
@@ -97,20 +77,10 @@ public class DummyWorld extends WorldServer {
         return true;
     }
 
-    @Override
-    public void tick() {
-
-    }
-
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         return capabilities == null ? null : capabilities.getCapability(capability, facing);
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return capabilities != null && capabilities.hasCapability(capability, facing);
     }
 
     private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator {
@@ -120,20 +90,10 @@ public class DummyWorld extends WorldServer {
         private boolean allowLoading = true;
 
         public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer) {
-            super(dummyWorld, chunkProviderServer.chunkLoader, chunkProviderServer.chunkGenerator);
+            super(dummyWorld, chunkProviderServer.chunkLoader, chunkProviderServer.chunkGenerator, dummyWorld.getServer());
             this.dummyWorld = dummyWorld;
             this.realChunkGenerator = chunkProviderServer.chunkGenerator;
             this.realChunkProvider = chunkProviderServer;
-        }
-
-        @Override
-        public void recreateStructures(Chunk chunkIn, int x, int z) {
-            // no retrogen
-        }
-
-        @Override
-        public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
-            return false;
         }
 
         @Override
@@ -142,10 +102,77 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
+        public void makeBase(IChunk chunk) {
+
+        }
+
+        @Override
+        public void carve(WorldGenRegion worldGenRegion, GenerationStage.Carving carving) {
+
+        }
+
+        @Override
+        public void decorate(WorldGenRegion worldGenRegion) {
+
+        }
+
+        @Override
+        public void spawnMobs(WorldGenRegion worldGenRegion) {
+
+        }
+
+        @Override
         public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
             return null;
         }
 
+        @Override
+        public IChunkGenSettings getSettings() {
+            return null;
+        }
+
+        @Override
+        public BiomeProvider getBiomeProvider() {
+            return null;
+        }
+
+        @Override
+        public long getSeed() {
+            return 0;
+        }
+
+        @Override
+        public int getGroundHeight() {
+            return 0;
+        }
+
+        @Override
+        public int getMaxHeight() {
+            return 0;
+        }
+
+        @Override
+        public Long2ObjectMap<LongSet> getStructurePositionToReferenceMap(Structure structure) {
+            return null;
+        }
+
+        @Override
+        public Long2ObjectMap<StructureStart> getStructureReferenceToStartMap(Structure structure) {
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public IFeatureConfig getStructureConfig(Biome biome, Structure structure) {
+            return null;
+        }
+
+        @Override
+        public boolean hasStructure(Biome biome, Structure structure) {
+            return false;
+        }
+
+        /*
         @Override
         public void populate(int x, int z) {
             allowLoading = false;
@@ -159,6 +186,7 @@ public class DummyWorld extends WorldServer {
             final long chunkKey = ChunkPos.asLong(x, z);
             return this.loadedChunks.get(chunkKey);
         }
+        */
 
         public void unloadAllChunks() {
             this.loadedChunks.clear();
@@ -169,6 +197,7 @@ public class DummyWorld extends WorldServer {
             return true;
         }
 
+        /*
         @Override
         public Chunk generateChunk(int x, int z) {
             final long chunkKey = ChunkPos.asLong(x, z);
@@ -200,6 +229,7 @@ public class DummyWorld extends WorldServer {
             return chunk;
         }
 
+
         @Override
         public boolean generateStructures(Chunk chunkIn, int x, int z) {
             return false;
@@ -209,5 +239,7 @@ public class DummyWorld extends WorldServer {
         public boolean tick() {
             return false;
         }
+
+        */
     }
 }

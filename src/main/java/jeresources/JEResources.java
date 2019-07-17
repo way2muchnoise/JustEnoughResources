@@ -1,50 +1,28 @@
 package jeresources;
 
-import jeresources.compatibility.JERAPI;
-import jeresources.config.ConfigHandler;
-import jeresources.config.Settings;
-import jeresources.profiling.ProfileCommand;
+import jeresources.config.Config;
+import jeresources.proxy.ClientProxy;
 import jeresources.proxy.CommonProxy;
-import jeresources.reference.MetaData;
-import jeresources.reference.Reference;
-import jeresources.util.LogHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.loading.FMLPaths;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, guiFactory = "jeresources.gui.ModGuiFactory", dependencies = "required-after:jei@[4.7.0,);required-after:forge@[14.23.5.2779,);", clientSideOnly = true)
+@Mod(JEResources.ID)
 public class JEResources {
-    @Mod.Metadata(Reference.ID)
-    public static ModMetadata metadata;
+    public static final String ID = "jeresources";
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
-    @SidedProxy(clientSide = "jeresources.proxy.ClientProxy", serverSide = "jeresources.proxy.CommonProxy")
-    public static CommonProxy PROXY;
+    public JEResources() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON);
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        LogHelper.info("Loading configs..");
-        Settings.side = event.getSide();
-        ConfigHandler.init(event.getModConfigurationDirectory());
-        MinecraftForge.EVENT_BUS.register(new ConfigHandler());
-
-        LogHelper.info("Updating ModMetaData...");
-        metadata = MetaData.init(metadata);
-
-        LogHelper.info("Providing API...");
-        JERAPI.init(event.getAsmData());
-    }
-
-    @Mod.EventHandler
-    public void loadComplete(FMLLoadCompleteEvent event) {
-        Settings.gameLoaded = true;
-    }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new ProfileCommand());
+        // TODO create config folder
+        Config.instance.loadConfig(Config.COMMON, FMLPaths.CONFIGDIR.get().resolve(ID + ".toml"));
+        MinecraftForge.EVENT_BUS.register(Config.COMMON);
     }
 }

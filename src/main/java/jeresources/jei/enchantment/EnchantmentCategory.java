@@ -4,10 +4,11 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -21,20 +22,25 @@ public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapp
 
     @Nonnull
     @Override
-    public String getUid() {
+    public ResourceLocation getUid() {
         return JEIConfig.ENCHANTMENT;
     }
 
     @Nonnull
     @Override
     public String getTitle() {
-        return TranslationHelper.translateToLocal("jer.enchantments.title");
+        return TranslationHelper.translateAndFormat("jer.enchantments.title");
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.ENCHANTMENT;
+    }
+
+    @Override
+    public Class<? extends EnchantmentWrapper> getRecipeClass() {
+        return EnchantmentWrapper.class;
     }
 
     @Override

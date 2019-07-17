@@ -6,10 +6,10 @@ import jeresources.reference.Resources;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class VillagerWrapper implements IRecipeWrapper {
+public class VillagerWrapper implements IRecipeCategoryExtension {
     private final VillagerEntry entry;
     private IFocus<ItemStack> focus;
 
@@ -26,7 +26,7 @@ public class VillagerWrapper implements IRecipeWrapper {
     }
 
     @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
+    public void setIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInputs(VanillaTypes.ITEM, entry.getInputs());
         ingredients.setOutputs(VanillaTypes.ITEM, entry.getOutputs());
     }
@@ -48,13 +48,13 @@ public class VillagerWrapper implements IRecipeWrapper {
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-        RenderHelper.scissor(minecraft, 7, 43, 59, 79);
+    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
+        RenderHelper.scissor(7, 43, 59, 79);
         EntityVillager entityVillager;
         try {
-            entityVillager = new EntityVillager(minecraft.world, entry.getProfession());
+            entityVillager = new EntityVillager(Minecraft.getInstance().world, entry.getProfession());
         } catch (RuntimeException e) { // thrown when profession doesn't exist, this shouldn't happen
-            entityVillager = new EntityVillager(minecraft.world);
+            entityVillager = new EntityVillager(Minecraft.getInstance().world);
         }
         RenderHelper.renderEntity(
             37, 118, 36.0F,
@@ -72,6 +72,6 @@ public class VillagerWrapper implements IRecipeWrapper {
         for (int level : getPossibleLevels(focus))
             Font.normal.print("lv. " + (level + 1), 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
 
-        Font.normal.print(TranslationHelper.translateToLocal(entry.getDisplayName()), 10, 25);
+        Font.normal.print(TranslationHelper.translateAndFormat(entry.getDisplayName()), 10, 25);
     }
 }

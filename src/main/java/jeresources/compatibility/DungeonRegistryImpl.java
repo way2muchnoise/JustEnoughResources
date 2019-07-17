@@ -46,7 +46,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     }
 
     protected static void commit() {
-        categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getFirst(), t.getSecond()));
+        categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getA(), t.getB()));
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
         World world = CompatBase.getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);

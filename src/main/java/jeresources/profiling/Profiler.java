@@ -4,10 +4,12 @@ import jeresources.config.Settings;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
@@ -18,13 +20,13 @@ import java.util.concurrent.ConcurrentMap;
 public class Profiler implements Runnable {
     private final ConcurrentMap<Integer, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
-    private final ICommandSender sender;
+    private final Entity sender;
     private final ProfilingBlacklist blacklist;
     private final int chunkCount;
     private final boolean allWorlds;
     private ProfilingExecutor currentExecutor;
 
-    private Profiler(ICommandSender sender, int chunkCount, boolean allWorlds) {
+    private Profiler(Entity sender, int chunkCount, boolean allWorlds) {
         this.sender = sender;
         this.allDimensionData = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
@@ -39,17 +41,16 @@ public class Profiler implements Runnable {
         if (!allWorlds) {
 
             // Will never be null as the mod is client side only
-            Entity sendEnt = sender.getCommandSenderEntity();
-            int dimId = sendEnt.dimension;
-            profileWorld(dimId);
+            DimensionType dimensionType = sender.dimension;
+            profileWorld(dimensionType);
             
         } else {        
 
-            //getStaticDimensionIDs gets ALL of the dimensions.
+            //getRegistry gets ALL of the dimensions.
             //Forge says it is internal, but there are not other options for
             //all dimensions that exist.
-            for (Integer dimId : DimensionManager.getStaticDimensionIDs()) {
-                profileWorld(dimId);
+            for (Object o : DimensionManager.getRegistry()) {
+                profileWorld((DimensionType) o);
             }
         }
 
@@ -58,19 +59,14 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(int dimId) {
+    private void profileWorld(DimensionType dimensionType) {
         String msg;
+        MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
         //Get the world we want to process.
-        WorldServer world = DimensionManager.getWorld(dimId);
-        
-        //If it isn't loaded, make it loaded and get it again.
-        if(world == null) {
-            DimensionManager.initDimension(dimId);
-            world = DimensionManager.getWorld(dimId);
-        }
-        
+        WorldServer world = DimensionManager.getWorld(server, dimensionType, true, true);
+
         if (world == null) {
-            msg = "Unable to profile dimension " + dimId + ".  There is no world for it.";
+            msg = "Unable to profile dimension " + dimensionType + ".  There is no world for it.";
             LogHelper.error(msg);
             sender.sendMessage(new TextComponentString(msg));
             return;
@@ -79,15 +75,15 @@ public class Profiler implements Runnable {
         //Make this stick for recovery after profiling.
         final WorldServer worldServer = world;
         
-        msg = "Inspecting dimension " + dimId + ": " + worldServer.provider.getDimensionType().getName() + ". ";
+        msg = "Inspecting dimension " + dimensionType + ": " + worldServer.getDimension().getType().getRegistryName() + ". ";
         sender.sendMessage(new TextComponentString(msg));
         
-        msg += "The world thinks it is dimension " + worldServer.provider.getDimension() + ".";
+        msg += "The world thinks it is dimension " + worldServer.getDimension().getType().getRegistryName() + ".";
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(dimId)) {
-            msg = "Skipped dimension " + dimId + " during profiling";
+        if (Settings.excludedDimensions.contains(dimensionType.getId())) {
+            msg = "Skipped dimension " + dimensionType + " during profiling";
             LogHelper.info(msg);
             sender.sendMessage(new TextComponentString(msg));
             return;
@@ -95,10 +91,10 @@ public class Profiler implements Runnable {
 
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
-        this.allDimensionData.put(dimId, new ProfiledDimensionData());
+        this.allDimensionData.put(dimensionType.getId(), new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);
-        dummyWorld.init();
+        dummyWorld.initialize(null);
         ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
         worldServer.addScheduledTask(chunkGetter);
 
@@ -107,7 +103,7 @@ public class Profiler implements Runnable {
 
         dummyWorld.clearChunks();
         // Return the world to it's original state
-        DimensionManager.setWorld(dimId, worldServer, Minecraft.getMinecraft().getIntegratedServer());
+        // DimensionManager.setWorld(dimensionType, worldServer, server);
     }
 
     public ProfilingTimer getTimer() {
@@ -145,7 +141,7 @@ public class Profiler implements Runnable {
 
     private static Profiler currentProfiler;
 
-    public static boolean init(ICommandSender sender, int chunks, boolean allWorlds) {
+    public static boolean init(Entity sender, int chunks, boolean allWorlds) {
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
         currentProfiler = new Profiler(sender, chunks, allWorlds);
         new Thread(currentProfiler).start();

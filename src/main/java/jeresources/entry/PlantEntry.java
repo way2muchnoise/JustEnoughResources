@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class PlantEntry {
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
-        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALLGRASS, 1, 1), seeds.toArray(new PlantDrop[seeds.size()]));
+        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALL_GRASS, 1, new NBTTagCompound()), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
     }

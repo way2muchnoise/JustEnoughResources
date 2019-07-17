@@ -1,7 +1,7 @@
 package jeresources.profiling;
 
-import jeresources.config.ConfigHandler;
 import net.minecraft.block.state.IBlockState;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +10,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ProfilingBlacklist {
+    private static final String scanBlacklistName = "scan-blacklist.txt";
+
+    public static File getScanBlacklistFile() {
+        return FMLPaths.CONFIGDIR.get().resolve(scanBlacklistName).toFile();
+    }
 
     private List<String> blacklist;
 
     public ProfilingBlacklist() {
         blacklist = new LinkedList<>();
-        File scanBlacklistFile = ConfigHandler.getScanBlacklistFile();
+        File scanBlacklistFile = getScanBlacklistFile();
         if (scanBlacklistFile.exists()) {
             try {
                 blacklist = Files.readAllLines(scanBlacklistFile.toPath());

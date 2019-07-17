@@ -1,6 +1,7 @@
 package jeresources.api.conditionals;
 
-import net.minecraft.util.text.translation.I18n;
+
+import net.minecraft.client.resources.I18n;
 
 public class LightLevel {
     public static LightLevel any = new LightLevel(-1, Relative.above);
@@ -29,8 +30,8 @@ public class LightLevel {
 
     @Override
     public String toString() {
-        String base = I18n.translateToLocal("jer.lightLevel");
-        if (lightLevel < 0) return base + ": " + I18n.translateToLocal("jer.any");
+        String base = I18n.format("jer.lightLevel");
+        if (lightLevel < 0) return base + ": " + I18n.format("jer.any");
         return base + ": " + relative.toString() + " " + lightLevel;
     }
 

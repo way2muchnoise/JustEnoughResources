@@ -1,8 +1,10 @@
 package jeresources.api.restrictions;
 
 import jeresources.util.BiomeHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +26,7 @@ public class BiomeRestriction {
     public static final BiomeRestriction COLD = new BiomeRestriction(BiomeDictionary.Type.COLD);
     public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT, BiomeDictionary.Type.COLD);
 
-    private static final int extremeHillsBiomeId = 3, extremeHillsEdgeBiomeId = 20;
-    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, Biome.getBiome(extremeHillsBiomeId), Biome.getBiome(extremeHillsEdgeBiomeId));
+    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, ForgeRegistries.BIOMES.getValue(new ResourceLocation("minecraft:mountains")), ForgeRegistries.BIOMES.getValue(new ResourceLocation("minecraft:mountain_edge")));
 
     private List<Biome> biomes = new ArrayList<>();
     private Type type;
@@ -94,7 +95,7 @@ public class BiomeRestriction {
     }
 
     public List<String> toStringList() {
-        return biomes.stream().filter(biome -> !biome.getBiomeName().equals("")).map(biome -> "  " + biome.getBiomeName()).collect(Collectors.toList());
+        return biomes.stream().filter(biome -> !biome.getDisplayName().getString().equals("")).map(biome -> "  " + biome.getDisplayName().getString()).collect(Collectors.toList());
     }
 
     @Override

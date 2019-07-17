@@ -5,11 +5,12 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -26,20 +27,25 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
 
     @Nonnull
     @Override
-    public String getUid() {
+    public ResourceLocation getUid() {
         return JEIConfig.VILLAGER;
     }
 
     @Nonnull
     @Override
     public String getTitle() {
-        return TranslationHelper.translateToLocal("jer.villager.title");
+        return TranslationHelper.translateAndFormat("jer.villager.title");
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.VILLAGER;
+    }
+
+    @Override
+    public Class<? extends VillagerWrapper> getRecipeClass() {
+        return VillagerWrapper.class;
     }
 
     @Override

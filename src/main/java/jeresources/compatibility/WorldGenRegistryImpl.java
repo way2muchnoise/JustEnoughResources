@@ -67,6 +67,6 @@ public class WorldGenRegistryImpl implements IWorldGenRegistry {
         for (WorldGenEntry entry : registers)
             WorldGenRegistry.getInstance().registerEntry(entry);
         for (Tuple<ItemStack, LootDrop[]> tuple : addedDrops)
-            WorldGenRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
+            WorldGenRegistry.getInstance().addDrops(tuple.getA(), tuple.getB());
     }
 }

@@ -5,12 +5,13 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -34,20 +35,25 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
 
     @Nonnull
     @Override
-    public String getUid() {
+    public ResourceLocation getUid() {
         return JEIConfig.DUNGEON;
     }
 
     @Nonnull
     @Override
     public String getTitle() {
-        return TranslationHelper.translateToLocal("jer.dungeon.title");
+        return TranslationHelper.translateAndFormat("jer.dungeon.title");
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.DUNGEON;
+    }
+
+    @Override
+    public Class<? extends DungeonWrapper> getRecipeClass() {
+        return DungeonWrapper.class;
     }
 
     @Override

@@ -1,24 +1,25 @@
 package jeresources.util;
 
-import net.minecraft.util.text.translation.I18n;
+
+import net.minecraft.client.resources.I18n;
 
 public class TranslationHelper {
-    public static String translateToLocal(String key) {
-        return I18n.translateToLocal(key);
+    public static String translateAndFormat(String key, Object... params) {
+        return I18n.format(key, params);
     }
 
     public static String getLocalPageInfo(int page, int lastPage) {
-        return translateToLocal("jer.page") + " " + (page + 1) + " " + translateToLocal("jer.of") + " " + (lastPage + 1);
+        return translateAndFormat("jer.page") + " " + (page + 1) + " " + translateAndFormat("jer.of") + " " + (lastPage + 1);
     }
 
     public static boolean canTranslate(String key) {
-        return I18n.canTranslate(key);
+        return I18n.hasKey(key);
     }
 
     public static String tryDimensionTranslate(String dimension) {
         if (TranslationHelper.canTranslate("jer.dim." + dimension)) {
             dimension = "jer.dim." + dimension;
         }
-        return TranslationHelper.translateToLocal(dimension);
+        return TranslationHelper.translateAndFormat(dimension);
     }
 }

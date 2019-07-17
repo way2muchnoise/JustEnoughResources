@@ -14,7 +14,7 @@ public class EmptyChunkJER extends EmptyChunk {
 
     @Nullable
     @Override
-    public IBlockState setBlockState(BlockPos pos, IBlockState state) {
+    public IBlockState setBlockState(BlockPos pos, IBlockState state, boolean isMoving) {
         return null;
     }
 }

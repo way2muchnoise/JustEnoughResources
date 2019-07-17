@@ -12,7 +12,7 @@ public class MobHelper {
     }
 
     public static String getExpandedName(MobEntry entry) {
-        String raw = entry.getEntity().getName();
+        String raw = entry.getEntity().getName().getFormattedText();
         if (entry.getEntity() instanceof EntitySheep)
             raw = ((EntitySheep) entry.getEntity()).getFleeceColor().getName().replace("_", " ") + " " + raw;
         StringBuilder sb = new StringBuilder();

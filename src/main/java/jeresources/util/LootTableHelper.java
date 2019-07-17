@@ -2,18 +2,27 @@ package jeresources.util;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.resources.FolderPack;
+import net.minecraft.resources.ResourcePackType;
+import net.minecraft.resources.SimpleReloadableResourceManager;
+import net.minecraft.resources.VanillaPack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
+import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import net.minecraftforge.fml.packs.ModFileResourcePack;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -31,7 +40,7 @@ public class LootTableHelper {
         sheepColors.put(EnumDyeColor.LIME, LootTableList.ENTITIES_SHEEP_LIME);
         sheepColors.put(EnumDyeColor.PINK, LootTableList.ENTITIES_SHEEP_PINK);
         sheepColors.put(EnumDyeColor.GRAY, LootTableList.ENTITIES_SHEEP_GRAY);
-        sheepColors.put(EnumDyeColor.SILVER, LootTableList.ENTITIES_SHEEP_SILVER);
+        sheepColors.put(EnumDyeColor.LIGHT_GRAY, LootTableList.ENTITIES_SHEEP_LIGHT_GRAY);
         sheepColors.put(EnumDyeColor.CYAN, LootTableList.ENTITIES_SHEEP_CYAN);
         sheepColors.put(EnumDyeColor.PURPLE, LootTableList.ENTITIES_SHEEP_PURPLE);
         sheepColors.put(EnumDyeColor.BLUE, LootTableList.ENTITIES_SHEEP_BLUE);
@@ -171,14 +180,20 @@ public class LootTableHelper {
     private static LootTableManager manager;
 
     public static LootTableManager getManager(@Nullable World world) {
-        if (world == null || world.getLootTableManager() == null) {
+        if (world == null || world.getServer() == null) {
             if (manager == null) {
-                ISaveHandler saveHandler = FakeClientWorld.saveHandler;
-                manager = new LootTableManager(new File(new File(saveHandler.getWorldDirectory(), "data"), "loot_tables"));
+                manager = new LootTableManager();
+                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
+                serverResourceManger.addResourcePack(new VanillaPack("minecraft"));
+                for (ModFileInfo mod : ModList.get().getModFiles()) {
+                    serverResourceManger.addResourcePack(new ModFileResourcePack(mod.getFile()));
+                }
+                // TODO loading of customised loot tables
+                manager.onResourceManagerReload(serverResourceManger);
             }
             return manager;
         }
-        return world.getLootTableManager();
+        return world.getServer().getLootTableManager();
     }
 
     public static LootTableManager getManager() {

@@ -4,13 +4,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.DimensionRestriction;
 import jeresources.api.restrictions.Restriction;
-import jeresources.config.ConfigHandler;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import net.minecraft.block.Block;
@@ -18,23 +18,32 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 
 public class WorldGenAdapter {
+    private static final String worldGenFileName = "world-gen.json";
+
+    public static File getWorldGenFile() {
+        return FMLPaths.CONFIGDIR.get().resolve(worldGenFileName).toFile();
+    }
+
     public static boolean hasWorldGenDIYData() {
-        return ConfigHandler.getWorldGenFile().exists();
+        return getWorldGenFile().exists();
     }
 
     public static boolean readDIYData() {
         JsonParser parser = new JsonParser();
         try {
-            JsonElement base = parser.parse(new FileReader(ConfigHandler.getWorldGenFile()));
+            JsonElement base = parser.parse(new FileReader(getWorldGenFile()));
             if (!base.isJsonArray() || base.getAsJsonArray().size() == 0) return false;
             JsonArray array = base.getAsJsonArray();
             for (int i = 0; i < array.size(); i++) {
@@ -42,7 +51,7 @@ public class WorldGenAdapter {
 
                 JsonElement element = obj.get("mod"); // use of "mod": "modID"
                 if (element != null)
-                    if (!Loader.isModLoaded(element.getAsString())) // when modID is not loaded skip item
+                    if (!ModList.get().isLoaded(element.getAsString())) // when modID is not loaded skip item
                         continue;
 
                 String block = obj.get("block").getAsString();
@@ -59,10 +68,10 @@ public class WorldGenAdapter {
 
                 String[] blockParts = block.split(":");
 
-                Block blockBlock = Block.REGISTRY.getObject(new ResourceLocation(blockParts[0], blockParts[1]));
+                Block blockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
                 if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
-                int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
-                ItemStack blockStack = new ItemStack(blockBlock, 1, oreMeta);
+                //int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
+                ItemStack blockStack = new ItemStack(blockBlock, 1, new NBTTagCompound());
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";")) {
                     String[] split = point.split(",");
@@ -81,19 +90,19 @@ public class WorldGenAdapter {
                         if (itemStackElement.isJsonNull()) continue;
                         String itemStackString = itemStackElement.getAsString();
                         String[] stackStrings = itemStackString.split(":", 4);
-                        Item item = Item.REGISTRY.getObject(new ResourceLocation(stackStrings[0], stackStrings[1]));
+                        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(stackStrings[0], stackStrings[1]));
                         if (item == null)
                             continue;
 
                         ItemStack itemStack = new ItemStack(item);
                         if (stackStrings.length >= 3) {
-                            itemStack.setItemDamage(Integer.valueOf(stackStrings[2]));
+                            itemStack.setDamage(Integer.valueOf(stackStrings[2]));
                         }
 
                         if (stackStrings.length == 4) {
                             try {
-                                itemStack.setTagCompound(JsonToNBT.getTagFromJson(stackStrings[3]));
-                            } catch (NBTException e) {
+                                itemStack.setTag(JsonToNBT.getTagFromJson(stackStrings[3]));
+                            } catch (CommandSyntaxException e) {
                                 e.printStackTrace();
                             }
                         }

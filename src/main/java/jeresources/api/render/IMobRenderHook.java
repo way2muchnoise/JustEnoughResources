@@ -5,9 +5,9 @@ import net.minecraft.entity.EntityLivingBase;
 public interface IMobRenderHook<T extends EntityLivingBase> {
     class RenderInfo {
         public int x, y;
-        public float scale, yaw, pitch;
+        public double scale, yaw, pitch;
 
-        public RenderInfo(int x, int y, float scale, float yaw, float pitch) {
+        public RenderInfo(int x, int y, double scale, double yaw, double pitch) {
             this.x = x;
             this.y = y;
             this.scale = scale;

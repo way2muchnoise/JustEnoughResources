@@ -6,10 +6,10 @@ import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -26,14 +26,14 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
 
     @Nonnull
     @Override
-    public String getUid() {
+    public ResourceLocation getUid() {
         return JEIConfig.WORLD_GEN;
     }
 
     @Nonnull
     @Override
     public String getTitle() {
-        return TranslationHelper.translateToLocal("jer.worldgen.title");
+        return TranslationHelper.translateAndFormat("jer.worldgen.title");
     }
 
     @Nonnull
@@ -43,9 +43,15 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     }
 
     @Override
-    public void drawExtras(@Nonnull Minecraft minecraft) {
+    public Class<? extends WorldGenWrapper> getRecipeClass() {
+        return WorldGenWrapper.class;
+    }
+
+    @Override
+    public void draw(WorldGenWrapper recipe, double mouseX, double mouseY) {
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColourHelper.GRAY);
         RenderHelper.drawLine(WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColourHelper.GRAY);
+        super.draw(recipe, mouseX, mouseY);
     }
 
     @Override

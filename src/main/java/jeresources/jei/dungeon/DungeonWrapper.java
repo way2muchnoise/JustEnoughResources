@@ -5,19 +5,18 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 
-public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+public class DungeonWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
     public final DungeonEntry chest;
 
     public DungeonWrapper(DungeonEntry chest) {
@@ -25,8 +24,8 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     }
 
     @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setOutputs(VanillaTypes.ITEM, this.chest.getItemStacks(null));
+    public void setIngredients(@Nonnull IIngredients ingredients) {
+        ingredients.setOutputs(VanillaTypes.ITEM, this.chest.getItemStacks());
     }
 
     public int amountOfItems(IFocus<ItemStack> focus) {
@@ -42,9 +41,9 @@ public class DungeonWrapper implements IRecipeWrapper, ITooltipCallback<ItemStac
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
         RenderHelper.renderChest(15, 20, -40, 20, getLidAngle());
-        Font.normal.print(TranslationHelper.translateToLocal(this.chest.getName()), 60, 7);
+        Font.normal.print(TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
         Font.small.print(DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
     }
 

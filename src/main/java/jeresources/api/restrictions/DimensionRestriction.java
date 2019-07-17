@@ -1,6 +1,6 @@
 package jeresources.api.restrictions;
 
-import net.minecraft.world.DimensionType;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 public class DimensionRestriction {
@@ -17,19 +17,19 @@ public class DimensionRestriction {
     }
 
     public DimensionRestriction(DimensionType type) {
-        this(Type.WHITELIST, type.getName());
+        this(Type.WHITELIST, DimensionType.func_212678_a(type).toString());
     }
 
     public DimensionRestriction(Type type, DimensionType dimensionType) {
-        this(type, dimensionType.getName());
+        this(type, DimensionType.func_212678_a(dimensionType).toString());
     }
 
     public DimensionRestriction(int dim) {
-        this(DimensionManager.getProviderType(dim));
+        this(DimensionType.getById(dim));
     }
 
     public DimensionRestriction(Type type, int dim) {
-        this(type, DimensionManager.getProviderType(dim));
+        this(type, DimensionType.getById(dim));
     }
 
     public DimensionRestriction(String name) {

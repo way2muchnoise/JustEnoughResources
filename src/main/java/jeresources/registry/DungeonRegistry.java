@@ -58,8 +58,8 @@ public class DungeonRegistry {
     public String getNumStacks(DungeonEntry entry) {
         int max = entry.getMaxStacks();
         int min = entry.getMinStacks();
-        if (min == max) return String.format(TranslationHelper.translateToLocal("jer.stacks"), max);
-        return String.format(TranslationHelper.translateToLocal("jer.stacks"), min + " - " + max);
+        if (min == max) return TranslationHelper.translateAndFormat("jer.stacks", max);
+        return TranslationHelper.translateAndFormat("jer.stacks", min + " - " + max);
     }
 
     public void clear() {

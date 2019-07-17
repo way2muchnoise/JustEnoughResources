@@ -5,6 +5,7 @@ import jeresources.util.LootConditionHelper;
 import jeresources.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 
@@ -79,13 +80,13 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link net.minecraft.item.Item} (chance for drop will be 100%)
-     * @param itemDamage   the damage on the item
+     * @param tag          {@link NBTTagCompound} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, int itemDamage, int minDrop, int maxDrop, Conditional... conditionals) {
-        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, 1F, 0, conditionals);
+    public LootDrop(Item item, NBTTagCompound tag, int minDrop, int maxDrop, Conditional... conditionals) {
+        this(new ItemStack(item, 1, tag), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
@@ -101,14 +102,14 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link net.minecraft.item.Item}
-     * @param itemDamage   the damage on the item
+     * @param tag          {@link NBTTagCompound} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the {@param item} gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, int itemDamage, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
-        this(new ItemStack(item, 1, itemDamage), minDrop, maxDrop, chance, 0, conditionals);
+    public LootDrop(Item item,NBTTagCompound tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
+        this(new ItemStack(item, 1, tag), minDrop, maxDrop, chance, 0, conditionals);
     }
 
     /**
@@ -220,6 +221,6 @@ public class LootDrop implements Comparable<LootDrop> {
         if (ItemStack.areItemStacksEqual(item, o.item))
             return Integer.compare(o.fortuneLevel, fortuneLevel);
         int cmp = Float.compare(o.getSortIndex(), getSortIndex());
-        return cmp != 0 ? cmp : item.getDisplayName().compareTo(o.item.getDisplayName());
+        return cmp != 0 ? cmp : item.getDisplayName().toString().compareTo(o.item.getDisplayName().toString());
     }
 }

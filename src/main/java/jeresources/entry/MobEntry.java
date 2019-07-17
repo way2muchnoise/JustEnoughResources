@@ -91,7 +91,7 @@ public class MobEntry {
     public String[] getBiomes() {
         String[] translatedBiomes = new String[biomes.size()];
         for (int i = 0; i < biomes.size(); i++) {
-            translatedBiomes[i] = TranslationHelper.translateToLocal(biomes.get(i));
+            translatedBiomes[i] = TranslationHelper.translateAndFormat(biomes.get(i));
         }
         return translatedBiomes;
     }

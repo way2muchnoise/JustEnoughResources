@@ -7,11 +7,10 @@ import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -22,10 +21,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
-public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
     private final MobEntry mob;
     private float scale;
     private int offsetY;
@@ -37,7 +36,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
     }
 
     @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
+    public void setIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
     }
 
@@ -46,9 +45,9 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
         EntityLivingBase entityLivingBase = this.mob.getEntity();
-        RenderHelper.scissor(minecraft, 7, 43, 59, 79);
+        RenderHelper.scissor(7, 43, 59, 79);
         this.scale = getScale(this.mob.getEntity());
         this.offsetY = getOffsetY(this.mob.getEntity());
         RenderHelper.renderEntity(
@@ -67,17 +66,16 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
             }
         }
         Font.normal.print(mobName, 7, 2);
-        Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateToLocal("jer.mob.biome") : TranslationHelper.translateToLocal("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
+        Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateAndFormat("jer.mob.biome") : TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
         Font.normal.print(this.mob.getLightLevel(), 7, 22);
-        Font.normal.print(TranslationHelper.translateToLocal("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
+        Font.normal.print(TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
-    @Nullable
     @Override
-    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+    public List<String> getTooltipStrings(double mouseX, double mouseY) {
         if (this.mob.getBiomes().length > 1 && isOnBiome(mouseX, mouseY))
             return CollectionHelper.create(this.mob.getBiomes());
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
@@ -102,7 +100,7 @@ public class MobWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
         return null;
     }
 
-    private boolean isOnBiome(int mouseX, int mouseY) {
+    private boolean isOnBiome(double mouseX, double mouseY) {
         return 2 <= mouseX
             && mouseX < 165
             && 12 <= mouseY

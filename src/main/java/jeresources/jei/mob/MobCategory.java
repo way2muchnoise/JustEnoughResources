@@ -5,9 +5,10 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
+import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -21,20 +22,25 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
 
     @Nonnull
     @Override
-    public String getUid() {
+    public ResourceLocation getUid() {
         return JEIConfig.MOB;
     }
 
     @Nonnull
     @Override
     public String getTitle() {
-        return TranslationHelper.translateToLocal("jer.mob.title");
+        return TranslationHelper.translateAndFormat("jer.mob.title");
     }
 
     @Nonnull
     @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.MOB;
+    }
+
+    @Override
+    public Class<? extends MobWrapper> getRecipeClass() {
+        return MobWrapper.class;
     }
 
     @Override

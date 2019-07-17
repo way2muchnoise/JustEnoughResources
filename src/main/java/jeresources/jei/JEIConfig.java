@@ -2,12 +2,10 @@ package jeresources.jei;
 
 import jeresources.JEResources;
 import jeresources.config.Settings;
-import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
 import jeresources.jei.dungeon.DungeonWrapper;
 import jeresources.jei.enchantment.EnchantmentCategory;
 import jeresources.jei.enchantment.EnchantmentMaker;
-import jeresources.jei.enchantment.EnchantmentWrapper;
 import jeresources.jei.mob.MobCategory;
 import jeresources.jei.mob.MobWrapper;
 import jeresources.jei.plant.PlantCategory;
@@ -18,43 +16,46 @@ import jeresources.jei.worldgen.WorldGenCategory;
 import jeresources.jei.worldgen.WorldGenWrapper;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
-import mezz.jei.api.*;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-@JEIPlugin
+
+@JeiPlugin
 public class JEIConfig implements IModPlugin {
-    public static final String MOB = Reference.ID + ".mob";
-    public static final String DUNGEON = Reference.ID + ".dungeon";
-    public static final String WORLD_GEN = Reference.ID + ".worldgen";
-    public static final String PLANT = Reference.ID + ".plant";
-    public static final String ENCHANTMENT = Reference.ID + ".enchantment";
-    public static final String VILLAGER = Reference.ID + ".villager";
-    public static final String[] CATEGORIES = {MOB, DUNGEON, WORLD_GEN, PLANT, ENCHANTMENT, VILLAGER};
+    public static final ResourceLocation MOB = new ResourceLocation(Reference.ID, "mob");
+    public static final ResourceLocation DUNGEON = new ResourceLocation(Reference.ID , "dungeon");
+    public static final ResourceLocation WORLD_GEN = new ResourceLocation(Reference.ID , "worldgen");
+    public static final ResourceLocation PLANT = new ResourceLocation(Reference.ID , "plant");
+    public static final ResourceLocation ENCHANTMENT = new ResourceLocation(Reference.ID , "enchantment");
+    public static final ResourceLocation VILLAGER = new ResourceLocation(Reference.ID , "villager");
+    public static final ResourceLocation[] CATEGORIES = {MOB, DUNGEON, WORLD_GEN, PLANT, ENCHANTMENT, VILLAGER};
 
     private static IJeiHelpers jeiHelpers;
     private static IJeiRuntime jeiRuntime;
 
     @Override
-    public void register(@Nonnull IModRegistry registry) {
-        // Add recipe handlers
-        registry.handleRecipes(WorldGenEntry.class, WorldGenWrapper::new, WORLD_GEN);
-        registry.handleRecipes(PlantEntry.class, PlantWrapper::new, PLANT);
-        registry.handleRecipes(MobEntry.class, MobWrapper::new, MOB);
-        registry.handleRecipes(DungeonEntry.class, DungeonWrapper::new, DUNGEON);
-        registry.handleRecipes(VillagerEntry.class, VillagerWrapper::new, VILLAGER);
-        registry.handleRecipes(EnchantmentWrapper.class, recipe -> recipe, ENCHANTMENT);
-        // Init internals
-        JEResources.PROXY.initCompatibility();
-        // Add recipes
-        registry.addRecipes(WorldGenRegistry.getInstance().getWorldGen(), WORLD_GEN);
-        registry.addRecipes(PlantRegistry.getInstance().getAllPlants(), PLANT);
-        registry.addRecipes(MobRegistry.getInstance().getMobs(), MOB);
-        registry.addRecipes(DungeonRegistry.getInstance().getDungeons(), DUNGEON);
-        registry.addRecipes(VillagerRegistry.getInstance().getVillagers(), VILLAGER);
-        registry.addRecipes(EnchantmentMaker.createRecipes(registry.getIngredientRegistry().getAllIngredients(VanillaTypes.ITEM)), ENCHANTMENT);
+    public ResourceLocation getPluginUid() {
+        return new ResourceLocation(JEResources.ID);
+    }
+
+    @Override
+    public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(asRecipes(WorldGenRegistry.getInstance().getWorldGen(), WorldGenWrapper::new), WORLD_GEN);
+        registration.addRecipes(asRecipes(PlantRegistry.getInstance().getAllPlants(), PlantWrapper::new), PLANT);
+        registration.addRecipes(asRecipes(MobRegistry.getInstance().getMobs(), MobWrapper::new), MOB);
+        registration.addRecipes(asRecipes(DungeonRegistry.getInstance().getDungeons(), DungeonWrapper::new), DUNGEON);
+        registration.addRecipes(asRecipes(VillagerRegistry.getInstance().getVillagers(), VillagerWrapper::new), VILLAGER);
+        registration.addRecipes(EnchantmentMaker.createRecipes(registration.getIngredientManager().getAllIngredients(VanillaTypes.ITEM)), ENCHANTMENT);
     }
 
     @Override
@@ -64,22 +65,23 @@ public class JEIConfig implements IModPlugin {
     }
 
     @Override
-    public void registerCategories(IRecipeCategoryRegistration registry) {
-        JEIConfig.jeiHelpers = registry.getJeiHelpers();
-        registry.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+    public void registerCategories(IRecipeCategoryRegistration registration) {
+        JEIConfig.jeiHelpers = registration.getJeiHelpers();
+        registration.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+        JEResources.PROXY.initCompatibility();
     }
 
     public static void resetCategories() {
         if (jeiRuntime != null) {
-            for (String category : CATEGORIES)
-                jeiRuntime.getRecipeRegistry().unhideRecipeCategory(category);
+            for (ResourceLocation category : CATEGORIES)
+                jeiRuntime.getRecipeManager().unhideRecipeCategory(category);
         }
     }
 
     public static void hideCategories(String[] categories) {
         if (jeiRuntime != null) {
             for (String category : categories)
-                jeiRuntime.getRecipeRegistry().hideRecipeCategory(Reference.ID + "." + category);
+                jeiRuntime.getRecipeManager().hideRecipeCategory(new ResourceLocation(Reference.ID, category));
         }
     }
 
@@ -87,4 +89,7 @@ public class JEIConfig implements IModPlugin {
         return JEIConfig.jeiHelpers;
     }
 
+    private static <T, R> Collection<R> asRecipes(Collection<T> collection, Function<T, R> transformer) {
+        return collection.stream().map(transformer).collect(Collectors.toList());
+    }
 }

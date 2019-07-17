@@ -10,7 +10,8 @@ import java.util.List;
 public class VillagersHelper {
     public static void initRegistry(jeresources.registry.VillagerRegistry reg) {
         int professionId = 0;
-        for (VillagerRegistry.VillagerProfession profession : GameData.getWrapper(VillagerRegistry.VillagerProfession.class)) {
+        for (Object o : GameData.getWrapper(VillagerRegistry.VillagerProfession.class)) {
+            VillagerRegistry.VillagerProfession profession = (VillagerRegistry.VillagerProfession) o;
             for (VillagerRegistry.VillagerCareer career : getCareers(profession)) {
                 try {
                     reg.addVillagerEntry(new VillagerEntry(

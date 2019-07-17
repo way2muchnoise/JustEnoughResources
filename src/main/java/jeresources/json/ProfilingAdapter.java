@@ -2,10 +2,11 @@ package jeresources.json;
 
 import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
-import jeresources.config.ConfigHandler;
 import jeresources.util.LogHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -26,24 +27,26 @@ public class ProfilingAdapter {
 
     public static void write(final Map<Integer, DimensionData> allDimensionData) {
 
-        File oldWorldGenFile = ConfigHandler.getWorldGenFile();
+        File oldWorldGenFile = WorldGenAdapter.getWorldGenFile();
         if (oldWorldGenFile.exists()) {
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-            boolean renamed = oldWorldGenFile.renameTo(new File(ConfigHandler.getConfigDir(), "world-gen-old-" + dateFormat.format(date) + ".json"));
+            boolean renamed = oldWorldGenFile.renameTo(FMLPaths.CONFIGDIR.get().resolve("world-gen-old-" + dateFormat.format(date) + ".json").toFile());
             if (!renamed) {
                 LogHelper.warn("Could not rename old world-gen file. Aborting.");
                 return;
             }
         }
 
+        MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
+
         try {
-            JsonWriter writer = new JsonWriter(new FileWriter(ConfigHandler.getWorldGenFile()));
+            JsonWriter writer = new JsonWriter(new FileWriter(WorldGenAdapter.getWorldGenFile()));
             writer.setIndent("\t");
             writer.beginArray();
 
-            for (int dim : allDimensionData.keySet()) {
-                DimensionData dimensionData = allDimensionData.get(dim);
+            for (int dimId : allDimensionData.keySet()) {
+                DimensionData dimensionData = allDimensionData.get(dimId);
 
                 Set<String> blockKeys = Sets.union(dimensionData.distribution.keySet(), dimensionData.dropsMap.keySet());
 
@@ -103,11 +106,11 @@ public class ProfilingAdapter {
                         writer.endArray();
                     }
 
-                    World world = DimensionManager.getWorld(dim);
-                    if (world == null || world.provider == null) {
-                        writer.name("dim").value("Dim " + dim + ": " + dim);
+                    DimensionType dimensionType = DimensionType.getById(dimId);
+                    if (dimensionType == null) {
+                        writer.name("dim").value("Dim " + dimId + ": " + dimId);
                     } else {
-                        writer.name("dim").value("Dim " + dim + ": " + DimensionManager.getProvider(dim).getDimensionType().getName());
+                        writer.name("dim").value("Dim " + dimId + ": " + dimensionType.getRegistryName());
                     }
                     writer.endObject();
                 }

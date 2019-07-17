@@ -1,35 +1,51 @@
 package jeresources.util;
 
-import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.renderer.GlStateManager;
 
 public class Font {
     public final static Font small = new Font(true);
     public final static Font normal = new Font(false);
 
-    private FontRenderer fontRenderer;
+    private boolean isSmall;
+    private static final float SCALING = 0.75F;
 
     private Font(boolean small) {
-        Minecraft mc = Minecraft.getMinecraft();
-        fontRenderer = new FontRenderer(mc.gameSettings, Resources.Vanilla.FONT, mc.getTextureManager(), small);
-        ((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(fontRenderer);
+        this.isSmall = small;
     }
 
     public void print(Object o, int x, int y) {
-        fontRenderer.drawString(String.valueOf(o), x, y, 8, false);
+        doTransform(x, y);
+        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, 8);
+        GlStateManager.popMatrix();
     }
 
     public void print(Object o, int x, int y, int color) {
-        fontRenderer.drawString(String.valueOf(o), x, y, color, false);
+        doTransform(x, y);
+        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
+        GlStateManager.popMatrix();
     }
 
     public void print(Object o, int x, int y, int color, boolean shadow) {
-        fontRenderer.drawString(String.valueOf(o), x, y, color, shadow);
+        doTransform(x, y);
+        if (shadow) {
+            Minecraft.getInstance().fontRenderer.drawStringWithShadow(String.valueOf(o), 0, 0, color);
+        } else {
+            Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
+        }
+        GlStateManager.popMatrix();
     }
 
     public int getStringWidth(String string) {
-        return fontRenderer.getStringWidth(string);
+        int width = Minecraft.getInstance().fontRenderer.getStringWidth(string);
+        return (int)(isSmall ? width * SCALING : width);
+    }
+
+    private void doTransform(int x, int y) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translatef(x, y, 0);
+        if (isSmall) {
+            GlStateManager.scalef(SCALING, SCALING, 1);
+        }
     }
 }

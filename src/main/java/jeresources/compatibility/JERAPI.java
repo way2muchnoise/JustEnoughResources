@@ -3,7 +3,6 @@ package jeresources.compatibility;
 import jeresources.api.*;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.discovery.ASMDataTable;
 
 public class JERAPI implements IJERAPI {
     private IWorldGenRegistry worldGenRegistry;
@@ -25,8 +24,8 @@ public class JERAPI implements IJERAPI {
         dungeonRegistry = new DungeonRegistryImpl();
     }
 
-    public static void init(ASMDataTable asmDataTable) {
-        ReflectionHelper.injectIntoFields(asmDataTable, JERPlugin.class, IJERAPI.class, JERAPI.getInstance());
+    public static void init() {
+        ReflectionHelper.injectIntoFields(JERPlugin.class, IJERAPI.class, JERAPI.getInstance());
     }
 
     @Override

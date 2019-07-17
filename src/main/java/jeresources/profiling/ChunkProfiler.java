@@ -7,10 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -44,13 +44,13 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        final int dimId = world.provider.getDimension();
+        final int dimId = world.getDimension().getType().getId();
         this.timer.startChunk(dimId);
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);
-        EntityPlayer player = Minecraft.getMinecraft().player;
+        EntityPlayer player = Minecraft.getInstance().player;
 
         final int maxY = chunk.getTopFilledSegment();
         for (int y = 0; y < maxY; y++)
@@ -67,7 +67,7 @@ public class ChunkProfiler implements Runnable {
 
                     if (!dimensionData.silkTouchMap.containsKey(key)) {
                         Block block = blockState.getBlock();
-                        boolean canSilkTouch = block.canSilkHarvest(world, blockPos, blockState, player);
+                        boolean canSilkTouch = block.canSilkHarvest(blockState, world, blockPos, player);
                         dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
 
@@ -94,7 +94,7 @@ public class ChunkProfiler implements Runnable {
         this.timer.endChunk(dimId);
     }
 
-    public static Map<String, Map<Integer, Float>> getDrops(IBlockAccess world, BlockPos pos, IBlockState state) {
+    public static Map<String, Map<Integer, Float>> getDrops(World world, BlockPos pos, IBlockState state) {
         final int totalTries = 10000;
 
         Block block = state.getBlock();
@@ -102,7 +102,8 @@ public class ChunkProfiler implements Runnable {
         for (int fortune = 0; fortune <= 3; fortune++) {
             final Map<String, Integer> dropsMap = new HashMap<>();
             for (int i = 0; i < totalTries; i++) {
-                List<ItemStack> drops = block.getDrops(world, pos, state, fortune);
+                NonNullList<ItemStack> drops = NonNullList.create();
+                block.getDrops(state, drops, world, pos, fortune);
                 //TODO: Add handling for tile entities (not chests)
                 for (ItemStack drop : drops) {
                     if (drop == null)

@@ -4,19 +4,20 @@ import jeresources.entry.EnchantmentEntry;
 import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EnchantmentWrapper implements IRecipeWrapper {
+public class EnchantmentWrapper implements IRecipeCategoryExtension {
     private static final int ENTRIES_PER_PAGE = 11;
     private static final int ENCHANT_X = 35;
     private static final int FIRST_ENCHANT_Y = 7;
@@ -62,12 +63,7 @@ public class EnchantmentWrapper implements IRecipeWrapper {
     }
 
     @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInput(VanillaTypes.ITEM, itemStack);
-    }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments()) {
             Font.normal.print(enchantment.getTranslatedWithLevels(), ENCHANT_X, y);
@@ -77,5 +73,10 @@ public class EnchantmentWrapper implements IRecipeWrapper {
             String toPrint = TranslationHelper.getLocalPageInfo(this.set, this.lastSet);
             Font.normal.print(toPrint, PAGE_X, PAGE_Y);
         }
+    }
+
+    @Override
+    public void setIngredients(IIngredients ingredients) {
+        ingredients.setInputs(VanillaTypes.ITEM, Collections.singletonList(itemStack));
     }
 }

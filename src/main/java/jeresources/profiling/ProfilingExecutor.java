@@ -18,7 +18,7 @@ public class ProfilingExecutor {
     }
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks) {
-        final int dimId = dummyWorld.provider.getDimension();
+        final int dimId = dummyWorld.getDimension().getType().getId();
 
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimId);
 

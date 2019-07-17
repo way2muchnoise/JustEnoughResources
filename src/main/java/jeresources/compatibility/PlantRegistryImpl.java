@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.IPlantable;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class PlantRegistryImpl implements IPlantRegistry {
     private static List<PlantEntry> registers = new ArrayList<>();
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
-    private static final ItemStack grass = new ItemStack(Blocks.TALLGRASS, 1, 1);
+    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1, new NBTTagCompound());
 
     protected PlantRegistryImpl() {
 
@@ -99,6 +100,6 @@ public class PlantRegistryImpl implements IPlantRegistry {
         for (PlantEntry entry : registers)
             PlantRegistry.getInstance().registerPlant(entry);
         for (Tuple<ItemStack, PlantDrop[]> tuple : addedDrops)
-            PlantRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
+            PlantRegistry.getInstance().addDrops(tuple.getA(), tuple.getB());
     }
 }

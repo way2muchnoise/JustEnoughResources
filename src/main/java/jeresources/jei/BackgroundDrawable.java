@@ -1,13 +1,11 @@
 package jeresources.jei;
 
 import jeresources.reference.Reference;
-import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
-
-import javax.annotation.Nonnull;
 
 public class BackgroundDrawable implements IDrawable {
     private final int width, height;
@@ -31,14 +29,9 @@ public class BackgroundDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(@Nonnull Minecraft minecraft) {
-        draw(minecraft, 0, 0);
-    }
-
-    @Override
-    public void draw(@Nonnull Minecraft minecraft, int xOffset, int yOffset) {
+    public void draw(int xOffset, int yOffset) {
         GlStateManager.resetColor();
-        minecraft.getTextureManager().bindTexture(this.resource);
+        Minecraft.getInstance().getTextureManager().bindTexture(this.resource);
         GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
     }
 

@@ -42,7 +42,8 @@ public class VillagerEntry {
         for (List<TradeList.Trade> trades : this.tradeList) {
             for (TradeList.Trade trade : trades) {
                 list.add(trade.getMinBuyStack1());
-                list.add(trade.getMinBuyStack2());
+                if (!trade.getMinBuyStack2().isEmpty())
+                    list.add(trade.getMinBuyStack2());
             }
         }
         return list;
@@ -68,7 +69,7 @@ public class VillagerEntry {
     }
 
     public String getDisplayName() {
-        return "entity.Villager." + this.name;
+        return "entity.minecraft.villager." + this.name;
     }
 
     public int getProfession() {

@@ -1,27 +1,32 @@
 package jeresources.jei;
 
-import jeresources.reference.Reference;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.recipe.IRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 
 import javax.annotation.Nullable;
 
-public abstract class BlankJEIRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T> {
+public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension> implements IRecipeCategory<T> {
     private final IDrawable icon;
 
     protected BlankJEIRecipeCategory(IDrawable icon) {
         this.icon = icon;
     }
 
-    @Override
-    public String getModName() {
-        return Reference.NAME;
-    }
-
     @Nullable
     @Override
     public IDrawable getIcon() {
         return icon;
+    }
+
+    @Override
+    public void setIngredients(T recipe, IIngredients ingredients) {
+        recipe.setIngredients(ingredients);
+    }
+
+    @Override
+    public void draw(T recipe, double mouseX, double mouseY) {
+        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), mouseX, mouseY);
     }
 }

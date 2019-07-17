@@ -42,7 +42,6 @@ public class MapKeys {
 
     @Nullable
     private static String getKeyUncached(Block block, IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        int meta = block.getMetaFromState(state);
         ItemStack pickBlock = null;
         try {
             pickBlock = block.getPickBlock(state, target, world, pos, player);
@@ -50,7 +49,7 @@ public class MapKeys {
         }
 
         if (pickBlock == null || pickBlock.getItem() == null) {
-            return block.getRegistryName().toString() + ':' + meta;
+            return block.getRegistryName().toString();
         } else {
             return getKey(pickBlock);
         }
@@ -65,9 +64,8 @@ public class MapKeys {
             return null;
         String registryName = item.getRegistryName().toString();
         StringBuilder key = new StringBuilder(registryName);
-        key.append(":").append(drop.getMetadata());
-        if (drop.getTagCompound() != null)
-            key.append(":").append(drop.getTagCompound());
+        if (drop.getTag() != null)
+            key.append(":").append(drop.getTag());
         return key.toString();
     }
 

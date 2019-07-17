@@ -8,7 +8,6 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.util.MapKeys;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
@@ -58,12 +57,12 @@ public class WorldGenEntry {
             if (dropSet == null) dropSet = new TreeSet<>();
             dropSet.add(drop);
             this.drops.put(mapKey, dropSet);
-            if (drop.item.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+            /*if (drop.item.getMetadata() == OreDictionary.WILDCARD_VALUE) {
                 Set<LootDrop> wildcardDropSet = this.wildcardDrops.get(drop.item.getItem());
                 if (wildcardDropSet == null) wildcardDropSet = new TreeSet<>();
                 wildcardDropSet.add(drop);
                 this.wildcardDrops.put(drop.item.getItem(), wildcardDropSet);
-            }
+            }*/
             if (!this.dropsDisplay.containsKey(mapKey)) {
                 ItemStack itemStack = drop.item.copy();
                 itemStack.setCount(Math.max(1, drop.minDrop));

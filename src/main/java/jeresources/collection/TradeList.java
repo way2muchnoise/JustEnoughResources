@@ -12,6 +12,7 @@ import net.minecraft.village.MerchantRecipeList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class TradeList extends LinkedList<TradeList.Trade> {
@@ -29,7 +30,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     public List<ItemStack> getSecondBuyStacks() {
-        return this.stream().map(Trade::getMinBuyStack2).collect(Collectors.toList());
+        return this.stream().map(Trade::getMinBuyStack2).filter(itemStack -> !itemStack.isEmpty()).collect(Collectors.toList());
     }
 
     public List<ItemStack> getSellStacks() {
@@ -70,20 +71,20 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         int minBuy1, minBuy2, minSell;
         int maxBuy1, maxBuy2, maxSell;
         minBuy1 = maxBuy1 = buy1.getCount();
-        if (buy2 != null) minBuy2 = maxBuy2 = buy2.getCount();
-        else minBuy2 = maxBuy2 = 0;
+        if (!buy2.isEmpty()) minBuy2 = maxBuy2 = buy2.getCount();
+        else minBuy2 = maxBuy2 = 1; // Needs to be one with the new ItemStack.EMPTY implementation
         minSell = maxSell = sell.getCount();
         for (MerchantRecipe merchantRecipe : tempList) {
             if (minBuy1 > merchantRecipe.getItemToBuy().getCount())
                 minBuy1 = merchantRecipe.getItemToBuy().getCount();
-            if (buy2 != null && minBuy2 > merchantRecipe.getSecondItemToBuy().getCount())
+            if (!buy2.isEmpty() && minBuy2 > merchantRecipe.getSecondItemToBuy().getCount())
                 minBuy2 = merchantRecipe.getSecondItemToBuy().getCount();
             if (minSell > merchantRecipe.getItemToSell().getCount())
                 minSell = merchantRecipe.getItemToSell().getCount();
 
             if (maxBuy1 < merchantRecipe.getItemToBuy().getCount())
                 maxBuy1 = merchantRecipe.getItemToBuy().getCount();
-            if (buy2 != null && maxBuy2 < merchantRecipe.getSecondItemToBuy().getCount())
+            if (!buy2.isEmpty() && maxBuy2 < merchantRecipe.getSecondItemToBuy().getCount())
                 maxBuy2 = merchantRecipe.getSecondItemToBuy().getCount();
             if (maxSell < merchantRecipe.getItemToSell().getCount())
                 maxSell = merchantRecipe.getItemToSell().getCount();
@@ -123,7 +124,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
 
         public boolean buysItem(ItemStack itemStack) {
-            return this.buy1.isItemEqual(itemStack) || (this.buy2 != null && this.buy2.isItemEqual(itemStack));
+            return this.buy1.isItemEqual(itemStack) || (!this.buy2.isEmpty() && this.buy2.isItemEqual(itemStack));
         }
 
         public ItemStack getMinBuyStack1() {
@@ -133,7 +134,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
 
         public ItemStack getMinBuyStack2() {
-            if (this.buy2 == null) return null;
+            if (this.buy2 == null) return ItemStack.EMPTY;
             ItemStack minBuyStack = this.buy2.copy();
             minBuyStack.setCount(this.minBuy2);
             return minBuyStack;
@@ -152,7 +153,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
 
         public ItemStack getMaxBuyStack2() {
-            if (this.buy2 == null) return null;
+            if (this.buy2 == null) return ItemStack.EMPTY;
             ItemStack maxBuyStack = this.buy2.copy();
             maxBuyStack.setCount(this.maxBuy2);
             return maxBuyStack;

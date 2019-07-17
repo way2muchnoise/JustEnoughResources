@@ -1,51 +1,35 @@
 package jeresources.profiling;
 
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.LiteralMessage;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.server.MinecraftServer;
 
-public class ProfileCommand extends CommandBase {
-    @Override
-    public String getName() {
-        return "jer_profile";
+public class ProfileCommand {
+
+    public static void register(CommandDispatcher<CommandSource> dispatcher) {
+        dispatcher.register(
+            Commands.literal("jer_profile")
+            .requires(source -> source.hasPermissionLevel(4) && Minecraft.getInstance().isSingleplayer())
+            .then(Commands.argument("chunk count", IntegerArgumentType.integer(1))
+                .executes((context -> Profiler.stop() ? Command.SINGLE_SUCCESS : 0)))
+            .then(Commands.literal("stop")
+                .executes(context -> Profiler.stop() ? Command.SINGLE_SUCCESS : 0))
+        );
     }
 
+    /*
     @Override
     public String getUsage(ICommandSender sender) {
         return "jer_profile [chunks|stop] [all]";
     }
-
-    @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length > 0 && args.length < 3) {
-            if (!Minecraft.getMinecraft().isSingleplayer())
-                throw new WrongUsageException("can't use command in multiplayer");
-
-            if ("stop".equals(args[0])) {
-                if (!Profiler.stop())
-                    throw new WrongUsageException("Not profiling, run \"/jer_profile [chunks]\" to start");
-                else return;
-            }
-
-            int chunks;
-            try {
-                chunks = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                throw new WrongUsageException("[chunks] has to be a positive integer");
-            }
-            if (chunks <= 0) throw new WrongUsageException("[chunks] has to be a positive integer");
-            if (!Profiler.init(sender, chunks, args.length == 2 && args[1].equals("all")))
-                throw new WrongUsageException("Already profiling run \"/jer_profile stop\" to stop");
-        } else {
-            throw new WrongUsageException(getUsage(sender));
-        }
-    }
-
-    @Override
-    public int getRequiredPermissionLevel() {
-        return 4;
-    }
+    */
 }

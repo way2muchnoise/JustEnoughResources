@@ -1,17 +1,18 @@
 package jeresources.profiling;
 
-import jeresources.config.ConfigHandler;
+import jeresources.json.WorldGenAdapter;
 import jeresources.util.TranslationHelper;
-import net.minecraft.command.ICommandSender;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProfilingTimer {
-    private final ICommandSender sender;
+    private final ICommandSource sender;
     private int totalChunks;
     private final Map<Integer, DimensionCounters> dimensionsMap = new HashMap<>();
 
@@ -22,7 +23,7 @@ public class ProfilingTimer {
         public boolean completed;
     }
 
-    public ProfilingTimer(ICommandSender sender, int chunkCount) {
+    public ProfilingTimer(ICommandSource sender, int chunkCount) {
         this.sender = sender;
         this.totalChunks = chunkCount;
     }
@@ -52,7 +53,7 @@ public class ProfilingTimer {
             counters.completed = true;
             send("[" + getDimensionName(dim) + "] Completed profiling of " +
                 (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
-                (System.currentTimeMillis() - counters.start) + " ms saved to " + ConfigHandler.getWorldGenFile());
+                (System.currentTimeMillis() - counters.start) + " ms saved to " + WorldGenAdapter.getWorldGenFile());
         }
     }
 
@@ -82,11 +83,11 @@ public class ProfilingTimer {
     }
 
     private static String getDimensionName(int dim) {
-        World world = DimensionManager.getWorld(dim);
-        if (world == null || world.provider == null) {
+        DimensionType dimensionType = DimensionType.getById(dim);
+        if (dimensionType == null) {
             return "Dim " + dim;
         } else {
-            return "Dim " + dim + ": " + TranslationHelper.tryDimensionTranslate(DimensionManager.getProvider(dim).getDimensionType().getName());
+            return "Dim " + dim + ": " + dimensionType.getRegistryName();
         }
     }
 }

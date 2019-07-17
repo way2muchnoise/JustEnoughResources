@@ -4,9 +4,9 @@ import jeresources.entry.EnchantmentEntry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class EnchantmentRegistry {
@@ -51,6 +51,6 @@ public class EnchantmentRegistry {
     }
 
     private static Iterable<Enchantment> getEnchants() {
-        return Enchantment.REGISTRY;
+        return ForgeRegistries.ENCHANTMENTS;
     }
 }

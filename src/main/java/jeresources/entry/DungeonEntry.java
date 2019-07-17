@@ -60,6 +60,10 @@ public class DungeonEntry {
         return name == null ? this.name : name;
     }
 
+    public List<ItemStack> getItemStacks() {
+        return getItemStacks(null);
+    }
+
     public List<ItemStack> getItemStacks(IFocus<ItemStack> focus) {
         return drops.stream().map(drop -> drop.item)
             .filter(stack -> focus == null || ItemStack.areItemStacksEqual(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().getCount()), focus.getValue()))

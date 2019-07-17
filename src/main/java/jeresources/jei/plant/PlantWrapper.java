@@ -3,21 +3,20 @@ package jeresources.jei.plant;
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
 import jeresources.util.RenderHelper;
-import mezz.jei.api.gui.ITooltipCallback;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.ingredients.VanillaTypes;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack> {
+public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
     private final PlantEntry plantEntry;
 
     public PlantWrapper(PlantEntry entry) {
@@ -25,13 +24,13 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
     }
 
     @Override
-    public void getIngredients(@Nonnull IIngredients ingredients) {
+    public void setIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setInput(VanillaTypes.ITEM, plantEntry.getPlantItemStack());
         ingredients.setOutputs(VanillaTypes.ITEM, plantEntry.getLootDropStacks());
     }
 
     @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
         RenderHelper.renderBlock(getFarmland(), 26, 50, -10, 20F, 0.4F);
         RenderHelper.renderBlock(getBlockState(), 26, 32, 10, 20F, 0.4F);
     }
@@ -82,12 +81,14 @@ public class PlantWrapper implements IRecipeWrapper, ITooltipCallback<ItemStack>
             if (this.state == null)
                 this.state = this.plantEntry.getPlant().getPlant(null, null);
             if (System.currentTimeMillis() > timer) {
-                this.state = this.state.cycleProperty(BlockCrops.AGE);
+                this.state = this.state.cycle(BlockCrops.AGE);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
             return this.state;
-        } else
-            return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
+        } else {
+            // return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
+            return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
+        }
     }
 
     private IBlockState getFarmland() {
