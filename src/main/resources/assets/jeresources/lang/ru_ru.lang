@@ -1,15 +1,21 @@
 jer.config.itemsPerColumn.title=Кол-во предметов в столбце
-jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и мобов
-jer.config.itemsPerRow.title=Кол-во предметов в ряду
-jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряду JEI-просмотра подземелий
+jer.config.itemsPerColumn.description=Изменяет кол-во предметов в столбце JEI-просмотров подземелий и существ
+jer.config.itemsPerRow.title=Кол-во предметов в ряде
+jer.config.itemsPerRow.description=Изменяет кол-во предметов в ряде JEI-просмотра подземелий
 jer.config.enchantsBlacklist.title=Чёрный список зачарований
 jer.config.enchantsBlacklist.description=Убирает зачарования из JEI-просмотра зачарований
 jer.config.diyData.title=Использовать данные из модов
 jer.config.diyData.description=Встроенный код совместимости не будет загружаться, и json-ы будут загружены (требуется перезапуск)
-jer.config.dimensionsBlacklist.title=Черный список измерений
+jer.config.dimensionsBlacklist.title=Чёрный список измерений
 jer.config.dimensionsBlacklist.description=Убирает измерения из профилирующего сканирования JEI
+jer.config.showDevData.title=Дополнительная информация
+jer.config.showDevData.description=Для разработчиков паков. Включает, но не ограничивается, среднее кол-во блоков на чанк, ID существ, ...
+jer.config.hiddenTabs.title=Спрятать вкладки, добавленные JER
+# do not translate strings between quotes as they are used in code
+jer.config.hiddenTabs.description=Вкладки, добавленные JER: 'dungeon', 'enchantment', 'mob', 'villager', worldgen' и 'plant'
 
 #Default dimensions
+jer.dim.all=Все
 jer.dim.overworld=Верхний мир
 jer.dim.the_nether=Незер
 jer.dim.the_end=Эндер
@@ -24,7 +30,7 @@ jer.stacks=Стаков: %s
 jer.lightLevel=Уровень освещения
 jer.any=Любой
 jer.dim.no=Нет доступных измерений для появления
-jer.not=Нет
+jer.not=Не
 
 #Dungeon View
 jer.dungeon.title=Сундуки подземелий
@@ -49,16 +55,17 @@ jer.enchantments.title=Зачарования
 jer.plant.title=Плоды растений
 
 #Ore View
-jer.worldgen.title=Генерация руд
+jer.worldgen.title=Нахождение
 jer.worldgen.silkTouch=Необходимо шёлковое касание
 jer.worldgen.biomes=Появляется в биомах
 jer.worldgen.dimensions=Допустимые измерения
 jer.worldgen.drops=Выпадает
 jer.worldgen.average=Сред. выпадение
 jer.worldgen.base=Обычное
+jer.worldgen.averageChunk=Прим. кол-во блоков на чанк
 
 #Mob View
-jer.mob.title=Выпадение из мобов
+jer.mob.title=Добыча с существ
 jer.mob.spawn=Появляется в биоме:
 jer.mob.biome=Появляется в биомах: наведите курсор сюда
 jer.mob.exp=Даёт опыта
