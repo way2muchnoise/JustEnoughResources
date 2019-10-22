@@ -1,9 +1,8 @@
 language: java
 jdk: openjdk8
 before_install:
-  - chmod a+x gradlew  
+  - chmod a+x gradlew
   - ./gradlew clean
-install: ./gradlew setupCIWorkSpace
 before_script: export CHANGELOG="$(git log $TRAVIS_COMMIT_RANGE --pretty=format:"\[[%h](https://github.com/$TRAVIS_REPO_SLUG/commit/%H)\] %s (%cn)  ")"
 script: ./gradlew build
 after_success:
