@@ -1,25 +1,24 @@
 package jeresources.profiling;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import it.unimi.dsi.fastutil.longs.LongSet;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.profiler.EmptyProfiler;
+import net.minecraft.tags.NetworkTagManager;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.AbstractChunkProvider;
+import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.*;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureStart;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.lighting.WorldLightManager;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.MapData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.util.LazyOptional;
@@ -28,25 +27,26 @@ import net.minecraftforge.event.ForgeEventFactory;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /**
  * Dummy world wraps a regular world.
  * It prevents saving new chunks, doing lighting calculations, or spawning entities.
  */
-public class DummyWorld extends WorldServer {
+public class DummyWorld extends ServerWorld {
     public List<Entity> spawnedEntities = new ArrayList<>();
     private CapabilityDispatcher capabilities;
 
-    public DummyWorld(WorldServer world) {
-        super(world.getServer(), world.getSaveHandler(), world.getMapStorage(), world.getWorldInfo(), world.getDimension().getType(), world.profiler);
-        this.dimension.setWorld(this);
-        this.chunkProvider = new DummyChunkProvider(this, this.getChunkProvider());
+    public DummyWorld(ServerWorld world) {
+        // MinecraftServer, Executor, SaveHandler, WorldInfo, DimensionType, IProfiler, IChunkStatusListener) {
+        super(world.getServer(), null, world.getSaveHandler(), world.getWorldInfo(), world.dimension.getType(), EmptyProfiler.INSTANCE, null);
+        // this.dimension.setWorld(this);
         // this.function = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
         this.capabilities = ForgeEventFactory.gatherCapabilities(DummyWorld.class, this);
     }
 
     public void clearChunks() {
-        ((DummyChunkProvider) this.chunkProvider).unloadAllChunks();
+        // ((DummyChunkProvider) this.chunkProvider).unloadAllChunks();
     }
 
     @Override
@@ -54,46 +54,107 @@ public class DummyWorld extends WorldServer {
         return null;
     }
 
+    @Nullable
     @Override
-    public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+    public MapData getMapData(String mapName) {
+        return null;
+    }
+
+    @Override
+    public void registerMapData(MapData mapDataIn) {
+
+    }
+
+    @Override
+    public int getNextMapId() {
+        return 0;
+    }
+
+    @Override
+    public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+
+    }
+
+    @Override
+    public RecipeManager getRecipeManager() {
+        return null;
+    }
+
+    @Override
+    public NetworkTagManager getTags() {
+        return null;
+    }
+
+    @Override
+    public boolean setBlockState(BlockPos pos, BlockState newState, int flags) {
         if (!isValid(pos) || !isBlockLoaded(pos)) {
             return false;
         }
 
-        Chunk chunk = getChunk(pos);
-        IBlockState blockState = chunk.setBlockState(pos, newState, false);
+        IChunk chunk = getChunk(pos);
+        BlockState blockState = chunk.setBlockState(pos, newState, false);
         return blockState != null;
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, IBlockState state) {
+    public boolean setBlockState(BlockPos pos, BlockState state) {
         return this.setBlockState(pos, state, 3);
     }
 
+    @Override
+    public void notifyBlockUpdate(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
+
+    }
 
     @Override
-    public boolean spawnEntity(Entity entity) {
+    public void playSound(@Nullable PlayerEntity player, double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
+
+    }
+
+    @Override
+    public void playMovingSound(@Nullable PlayerEntity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundCategory p_217384_4_, float p_217384_5_, float p_217384_6_) {
+
+    }
+
+    @Override
+    public boolean addEntity(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
     }
 
     @Nullable
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        return capabilities == null ? null : capabilities.getCapability(capability, facing);
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction direction) {
+        return capabilities == null ? null : capabilities.getCapability(capability, direction);
     }
 
-    private static class DummyChunkProvider extends ChunkProviderServer implements IChunkProvider, IChunkGenerator {
-        private final World dummyWorld;
-        private final IChunkGenerator realChunkGenerator;
-        private final IChunkProvider realChunkProvider;
+    @Override
+    public void playEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
+
+    }
+
+    private static class DummyChunkProvider extends AbstractChunkProvider {
+        private final World realWorld;
+        private final AbstractChunkProvider realChunkProvider;
+        private final ChunkGenerator<?> realChunkGenerator;
         private boolean allowLoading = true;
 
-        public DummyChunkProvider(DummyWorld dummyWorld, ChunkProviderServer chunkProviderServer) {
-            super(dummyWorld, chunkProviderServer.chunkLoader, chunkProviderServer.chunkGenerator, dummyWorld.getServer());
-            this.dummyWorld = dummyWorld;
-            this.realChunkGenerator = chunkProviderServer.chunkGenerator;
+        public DummyChunkProvider(World realWorld, AbstractChunkProvider chunkProviderServer) {
+            super();
+            this.realWorld = realWorld;
+            this.realChunkGenerator = chunkProviderServer.getChunkGenerator();
             this.realChunkProvider = chunkProviderServer;
+        }
+
+        @Nullable
+        @Override
+        public IChunk getChunk(int i, int i1, ChunkStatus chunkStatus, boolean b) {
+            return null;
+        }
+
+        @Override
+        public void tick(BooleanSupplier booleanSupplier) {
+
         }
 
         @Override
@@ -102,75 +163,21 @@ public class DummyWorld extends WorldServer {
         }
 
         @Override
-        public void makeBase(IChunk chunk) {
-
-        }
-
-        @Override
-        public void carve(WorldGenRegion worldGenRegion, GenerationStage.Carving carving) {
-
-        }
-
-        @Override
-        public void decorate(WorldGenRegion worldGenRegion) {
-
-        }
-
-        @Override
-        public void spawnMobs(WorldGenRegion worldGenRegion) {
-
-        }
-
-        @Override
-        public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+        public ChunkGenerator<?> getChunkGenerator() {
             return null;
         }
 
         @Override
-        public IChunkGenSettings getSettings() {
+        public WorldLightManager getLightManager() {
             return null;
         }
 
         @Override
-        public BiomeProvider getBiomeProvider() {
+        public IBlockReader getWorld() {
             return null;
         }
 
-        @Override
-        public long getSeed() {
-            return 0;
-        }
 
-        @Override
-        public int getGroundHeight() {
-            return 0;
-        }
-
-        @Override
-        public int getMaxHeight() {
-            return 0;
-        }
-
-        @Override
-        public Long2ObjectMap<LongSet> getStructurePositionToReferenceMap(Structure structure) {
-            return null;
-        }
-
-        @Override
-        public Long2ObjectMap<StructureStart> getStructureReferenceToStartMap(Structure structure) {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public IFeatureConfig getStructureConfig(Biome biome, Structure structure) {
-            return null;
-        }
-
-        @Override
-        public boolean hasStructure(Biome biome, Structure structure) {
-            return false;
-        }
 
         /*
         @Override
@@ -187,15 +194,6 @@ public class DummyWorld extends WorldServer {
             return this.loadedChunks.get(chunkKey);
         }
         */
-
-        public void unloadAllChunks() {
-            this.loadedChunks.clear();
-        }
-
-        @Override
-        public boolean saveChunks(boolean all) {
-            return true;
-        }
 
         /*
         @Override

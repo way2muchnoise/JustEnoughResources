@@ -1,7 +1,7 @@
 package jeresources.util;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 
 public class Font {
     public final static Font small = new Font(true);

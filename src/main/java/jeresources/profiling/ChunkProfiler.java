@@ -2,17 +2,18 @@ package jeresources.profiling;
 
 import jeresources.util.MapKeys;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ChunkProfiler implements Runnable {
-    private final World world;
+    private final ServerWorld world;
     private final ProfilingTimer timer;
     private final ProfilingBlacklist blacklist;
     private final List<Chunk> chunks;
@@ -30,7 +31,7 @@ public class ChunkProfiler implements Runnable {
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(World world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
+    public ChunkProfiler(ServerWorld world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
         this.world = world;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
@@ -49,15 +50,15 @@ public class ChunkProfiler implements Runnable {
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
-        RayTraceResult rayTraceResult = new RayTraceResult(new Vec3d(0, 0, 0), EnumFacing.DOWN, blockPos);
-        EntityPlayer player = Minecraft.getInstance().player;
+        RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vec3d(0, 0, 0), Direction.DOWN, blockPos, true);
+        PlayerEntity player = Minecraft.getInstance().player;
 
         final int maxY = chunk.getTopFilledSegment();
         for (int y = 0; y < maxY; y++)
             for (int x = 0; x < CHUNK_SIZE; x++)
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    blockPos.setPos(x + chunk.x * CHUNK_SIZE, y, z + chunk.z * CHUNK_SIZE);
-                    IBlockState blockState = chunk.getBlockState(x, y, z);
+                    blockPos.setPos(x + chunk.getPos().x * CHUNK_SIZE, y, z + chunk.getPos().z * CHUNK_SIZE);
+                    BlockState blockState = chunk.getBlockState(new BlockPos(x, y, z));
                     if (blacklist.contains(blockState)) continue;
                     final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);
 
@@ -67,7 +68,7 @@ public class ChunkProfiler implements Runnable {
 
                     if (!dimensionData.silkTouchMap.containsKey(key)) {
                         Block block = blockState.getBlock();
-                        boolean canSilkTouch = block.canSilkHarvest(blockState, world, blockPos, player);
+                        boolean canSilkTouch = block.canHarvestBlock(blockState, world, blockPos, player);
                         dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
 
@@ -94,16 +95,17 @@ public class ChunkProfiler implements Runnable {
         this.timer.endChunk(dimId);
     }
 
-    public static Map<String, Map<Integer, Float>> getDrops(World world, BlockPos pos, IBlockState state) {
+    public static Map<String, Map<Integer, Float>> getDrops(ServerWorld world, BlockPos pos, BlockState state) {
         final int totalTries = 10000;
 
-        Block block = state.getBlock();
         final Map<String, Map<Integer, Float>> resultMap = new HashMap<>();
         for (int fortune = 0; fortune <= 3; fortune++) {
             final Map<String, Integer> dropsMap = new HashMap<>();
             for (int i = 0; i < totalTries; i++) {
                 NonNullList<ItemStack> drops = NonNullList.create();
-                block.getDrops(state, drops, world, pos, fortune);
+                // TODO reintroduce fortune
+                // block.getDrops(state, drops, world, pos, fortune);
+                Block.getDrops(state, world, pos, null);
                 //TODO: Add handling for tile entities (not chests)
                 for (ItemStack drop : drops) {
                     if (drop == null)

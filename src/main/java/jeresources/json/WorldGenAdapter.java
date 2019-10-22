@@ -14,11 +14,11 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
@@ -71,7 +71,7 @@ public class WorldGenAdapter {
                 Block blockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
                 if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
                 //int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
-                ItemStack blockStack = new ItemStack(blockBlock, 1, new NBTTagCompound());
+                ItemStack blockStack = new ItemStack(blockBlock, 1, new CompoundNBT());
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";")) {
                     String[] split = point.split(",");

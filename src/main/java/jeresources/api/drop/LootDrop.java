@@ -5,9 +5,9 @@ import jeresources.util.LootConditionHelper;
 import jeresources.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
-import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.functions.ILootFunction;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -80,12 +80,12 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link net.minecraft.item.Item} (chance for drop will be 100%)
-     * @param tag          {@link NBTTagCompound} of the Item
+     * @param tag          {@link CompoundNBT} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, NBTTagCompound tag, int minDrop, int maxDrop, Conditional... conditionals) {
+    public LootDrop(Item item, CompoundNBT tag, int minDrop, int maxDrop, Conditional... conditionals) {
         this(new ItemStack(item, 1, tag), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
@@ -102,13 +102,13 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link net.minecraft.item.Item}
-     * @param tag          {@link NBTTagCompound} of the Item
+     * @param tag          {@link CompoundNBT} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the {@param item} gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item,NBTTagCompound tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
+    public LootDrop(Item item,CompoundNBT tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
         this(new ItemStack(item, 1, tag), minDrop, maxDrop, chance, 0, conditionals);
     }
 
@@ -123,41 +123,41 @@ public class LootDrop implements Comparable<LootDrop> {
         this(item, minDrop, maxDrop, chance, 0, conditionals);
     }
 
-    public LootDrop(Item item, float chance, LootFunction... lootFunctions) {
+    public LootDrop(Item item, float chance, ILootFunction... lootFunctions) {
         this(new ItemStack(item), chance);
         this.enchanted = false;
         addLootFunctions(lootFunctions);
     }
 
-    public LootDrop(Item item, float chance, LootCondition[] lootConditions, LootFunction... lootFunctions) {
+    public LootDrop(Item item, float chance, ILootCondition[] lootConditions, ILootFunction... lootFunctions) {
         this(item, chance, lootFunctions);
         addLootConditions(lootConditions);
     }
 
-    public LootDrop addLootConditions(LootCondition[] lootFunctions) {
+    public LootDrop addLootConditions(ILootCondition[] lootFunctions) {
         return addLootConditions(Arrays.asList(lootFunctions));
     }
 
-    public LootDrop addLootConditions(Collection<LootCondition> lootFunctions) {
+    public LootDrop addLootConditions(Collection<ILootCondition> lootFunctions) {
         lootFunctions.forEach(this::addLootCondition);
         return this;
     }
 
-    public LootDrop addLootCondition(LootCondition condition) {
+    public LootDrop addLootCondition(ILootCondition condition) {
         LootConditionHelper.applyCondition(condition, this);
         return this;
     }
 
-    public LootDrop addLootFunctions(LootFunction[] lootFunctions) {
+    public LootDrop addLootFunctions(ILootFunction[] lootFunctions) {
         return addLootFunctions(Arrays.asList(lootFunctions));
     }
 
-    public LootDrop addLootFunctions(Collection<LootFunction> lootFunctions) {
+    public LootDrop addLootFunctions(Collection<ILootFunction> lootFunctions) {
         lootFunctions.forEach(this::addLootFunction);
         return this;
     }
 
-    public LootDrop addLootFunction(LootFunction lootFunction) {
+    public LootDrop addLootFunction(ILootFunction lootFunction) {
         LootFunctionHelper.applyFunction(lootFunction, this);
         return this;
     }

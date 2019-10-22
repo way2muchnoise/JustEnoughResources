@@ -11,8 +11,8 @@ import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -22,12 +22,12 @@ import net.minecraftforge.common.IPlantable;
 
 public class MapKeys {
 
-    private static final Cache<IBlockState, String> keyCache = CacheBuilder.newBuilder()
+    private static final Cache<BlockState, String> keyCache = CacheBuilder.newBuilder()
             .expireAfterAccess(30, TimeUnit.SECONDS)
             .build();
 
     @Nullable
-    public static String getKey(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public static String getKey(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
         Block block = state.getBlock();
         if (!block.hasTileEntity(state)) {
             try {
@@ -41,7 +41,7 @@ public class MapKeys {
     }
 
     @Nullable
-    private static String getKeyUncached(Block block, IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    private static String getKeyUncached(Block block, BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
         ItemStack pickBlock = null;
         try {
             pickBlock = block.getPickBlock(state, target, world, pos, player);

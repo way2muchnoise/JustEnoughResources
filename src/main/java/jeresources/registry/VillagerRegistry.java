@@ -11,8 +11,9 @@ public class VillagerRegistry {
     private List<VillagerEntry> villagers;
 
     public static VillagerRegistry getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new VillagerRegistry();
+        }
         return instance;
     }
 
@@ -21,7 +22,9 @@ public class VillagerRegistry {
     }
 
     public void addVillagerEntry(VillagerEntry entry) {
-        this.villagers.add(entry);
+        if (entry.getVillagerTrades(0).size() > 0) {
+            this.villagers.add(entry);
+        }
     }
 
     public List<VillagerEntry> getVillagers() {

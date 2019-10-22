@@ -1,12 +1,9 @@
 package jeresources.profiling;
 
 import jeresources.json.WorldGenAdapter;
-import jeresources.util.TranslationHelper;
 import net.minecraft.command.ICommandSource;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +63,7 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.sendMessage(new TextComponentTranslation(s));
+        this.sender.sendMessage(new TranslationTextComponent(s));
     }
 
     private void sendSpeed(int dim) {

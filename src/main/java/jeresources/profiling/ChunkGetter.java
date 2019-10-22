@@ -2,9 +2,9 @@ package jeresources.profiling;
 
 import jeresources.util.LogHelper;
 import net.minecraft.crash.ReportedException;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.border.WorldBorder;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class ChunkGetter implements Runnable {
 
                         // add the next task to executor thread first so that the world's scheduledTasks
                         // has a chance to process other things like chat input
-                        executor.execute(() -> dummyWorld.addScheduledTask(runnable));
+                        executor.execute(() -> dummyWorld.getServer().deferTask(runnable));
                     } else
                         executor.shutdown();
                 } catch (ReportedException re) {
@@ -88,7 +88,7 @@ public class ChunkGetter implements Runnable {
         private static final int GENERATE_SIZE = (int) Math.ceil(Math.sqrt(CHUNKS_PER_RUN)) + 2;
         private final WorldBorder worldBorder;
 
-        public ChunkGetterRandom(WorldServer world) {
+        public ChunkGetterRandom(ServerWorld world) {
             this.worldBorder = world.getWorldBorder();
 
         }
@@ -115,7 +115,7 @@ public class ChunkGetter implements Runnable {
         private int posX;
         private int posZ;
 
-        public ChunkGetterOrigin(WorldServer worldServer, int chunkCount) {
+        public ChunkGetterOrigin(ServerWorld worldServer, int chunkCount) {
             this.sideLength = (int) Math.ceil(Math.sqrt(chunkCount));
 
             WorldBorder worldBorder = worldServer.getWorldBorder();

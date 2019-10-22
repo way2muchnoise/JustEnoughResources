@@ -11,7 +11,7 @@ import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
 import jeresources.util.FakeClientWorld;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 
 public abstract class CompatBase {
@@ -41,7 +41,7 @@ public abstract class CompatBase {
         PlantRegistry.getInstance().registerPlant(entry);
     }
 
-    protected void registerMobRenderHook(Class<? extends EntityLivingBase> clazz, IMobRenderHook renderHook) {
+    protected void registerMobRenderHook(Class<? extends LivingEntity> clazz, IMobRenderHook renderHook) {
         JERAPI.getInstance().getMobRegistry().registerRenderHook(clazz, renderHook);
     }
 }

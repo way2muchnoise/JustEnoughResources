@@ -4,12 +4,11 @@ import jeresources.config.Settings;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.WorldServer;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
@@ -63,20 +62,20 @@ public class Profiler implements Runnable {
         String msg;
         MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
         //Get the world we want to process.
-        WorldServer world = DimensionManager.getWorld(server, dimensionType, true, true);
+        ServerWorld world = DimensionManager.getWorld(server, dimensionType, true, true);
 
         if (world == null) {
             msg = "Unable to profile dimension " + dimensionType + ".  There is no world for it.";
             LogHelper.error(msg);
-            sender.sendMessage(new TextComponentString(msg));
+            sender.sendMessage(new StringTextComponent(msg));
             return;
         }
         
         //Make this stick for recovery after profiling.
-        final WorldServer worldServer = world;
+        final ServerWorld worldServer = world;
         
         msg = "Inspecting dimension " + dimensionType + ": " + worldServer.getDimension().getType().getRegistryName() + ". ";
-        sender.sendMessage(new TextComponentString(msg));
+        sender.sendMessage(new StringTextComponent(msg));
         
         msg += "The world thinks it is dimension " + worldServer.getDimension().getType().getRegistryName() + ".";
         LogHelper.info(msg);
@@ -85,7 +84,7 @@ public class Profiler implements Runnable {
         if (Settings.excludedDimensions.contains(dimensionType.getId())) {
             msg = "Skipped dimension " + dimensionType + " during profiling";
             LogHelper.info(msg);
-            sender.sendMessage(new TextComponentString(msg));
+            sender.sendMessage(new StringTextComponent(msg));
             return;
         }
 
@@ -94,9 +93,9 @@ public class Profiler implements Runnable {
         this.allDimensionData.put(dimensionType.getId(), new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);
-        dummyWorld.initialize(null);
+        // dummyWorld.initialize(null);
         ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
-        worldServer.addScheduledTask(chunkGetter);
+        worldServer.getServer().deferTask(chunkGetter);
 
         executor.awaitTermination();
         this.currentExecutor = null;

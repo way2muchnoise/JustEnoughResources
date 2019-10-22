@@ -69,23 +69,45 @@ minecraft {
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
-		client = {
+		client {
 			// recommended logging data for a userdev environment
-			properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 			// recommended logging level for the console
-			properties 'forge.logging.console.level': 'debug'
-			workingDirectory project.file('run').canonicalPath
-			source sourceSets.main
-			source sourceSets.api
+			property 'forge.logging.console.level', 'debug'
+			workingDirectory project.file('run')
+			mods {
+				jer {
+					source sourceSets.main
+					source sourceSets.api
+				}
+			}
 		}
-		server = {
+		server {
 			// recommended logging data for a userdev environment
-			properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
 			// recommended logging level for the console
-			properties 'forge.logging.console.level': 'debug'
-			workingDirectory project.file('run').canonicalPath
-			source sourceSets.main
-			source sourceSets.api
+			property 'forge.logging.console.level', 'debug'
+			workingDirectory project.file('run')
+			mods {
+				jer {
+					source sourceSets.main
+					source sourceSets.api
+				}
+			}
+		}
+		data {
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+			workingDirectory project.file('run')
+			args '--mod', 'jer', '--all', '--output', file('src/generated/resources/')
+			mods {
+				jer {
+					source sourceSets.main
+					source sourceSets.api
+				}
+			}
 		}
 	}
 }

@@ -11,7 +11,9 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.villager.IVillagerType;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -50,12 +52,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
         RenderHelper.scissor(7, 43, 59, 79);
-        EntityVillager entityVillager;
-        try {
-            entityVillager = new EntityVillager(Minecraft.getInstance().world, entry.getProfession());
-        } catch (RuntimeException e) { // thrown when profession doesn't exist, this shouldn't happen
-            entityVillager = new EntityVillager(Minecraft.getInstance().world);
-        }
+        VillagerEntity entityVillager = entry.getVillagerEntity();
         RenderHelper.renderEntity(
             37, 118, 36.0F,
             38 - mouseX,

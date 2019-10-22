@@ -17,11 +17,11 @@ public class DimensionRestriction {
     }
 
     public DimensionRestriction(DimensionType type) {
-        this(Type.WHITELIST, DimensionType.func_212678_a(type).toString());
+        this(Type.WHITELIST, DimensionType.getKey(type).toString());
     }
 
     public DimensionRestriction(Type type, DimensionType dimensionType) {
-        this(type, DimensionType.func_212678_a(dimensionType).toString());
+        this(type, DimensionType.getKey(dimensionType).toString());
     }
 
     public DimensionRestriction(int dim) {

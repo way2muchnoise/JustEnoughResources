@@ -14,18 +14,16 @@ import jeresources.entry.MobEntry;
 import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.LootTableHelper;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.monster.EntityElderGuardian;
-import net.minecraft.entity.monster.EntityGiantZombie;
-import net.minecraft.entity.monster.EntityShulker;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemSeedFood;
-import net.minecraft.item.ItemSeeds;
+import net.minecraft.block.*;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.monster.ElderGuardianEntity;
+import net.minecraft.entity.monster.GiantEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
+import net.minecraft.entity.passive.BatEntity;
+import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableManager;
 
@@ -46,12 +44,12 @@ public class MinecraftCompat extends CompatBase {
             .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
             .forEach(this::registerMob);
 
-        registerMobRenderHook(EntityBat.class, RenderHooks.BAT);
-        registerMobRenderHook(EntityDragon.class, RenderHooks.ENDER_DRAGON);
-        registerMobRenderHook(EntityElderGuardian.class, RenderHooks.ELDER_GUARDIAN);
-        registerMobRenderHook(EntitySquid.class, RenderHooks.SQUID);
-        registerMobRenderHook(EntityGiantZombie.class, RenderHooks.GIANT);
-        registerMobRenderHook(EntityShulker.class, RenderHooks.SHULKER);
+        registerMobRenderHook(BatEntity.class, RenderHooks.BAT);
+        registerMobRenderHook(EnderDragonEntity.class, RenderHooks.ENDER_DRAGON);
+        registerMobRenderHook(ElderGuardianEntity.class, RenderHooks.ELDER_GUARDIAN);
+        registerMobRenderHook(SquidEntity.class, RenderHooks.SQUID);
+        registerMobRenderHook(GiantEntity.class, RenderHooks.GIANT);
+        registerMobRenderHook(ShulkerEntity.class, RenderHooks.SHULKER);
     }
 
     private void registerDungeonLoot() {
@@ -63,7 +61,7 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerOres() {
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI, 4, new NBTTagCompound()))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI, 4, new CompoundNBT()))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(20, 8, 1, 64)));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.REDSTONE, 4))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new DistributionSquare(1, 7, 1, 16), true, new LootDrop(new ItemStack(Items.DIAMOND))));
@@ -76,30 +74,25 @@ public class MinecraftCompat extends CompatBase {
 
     private void registerVanillaPlants() {
         // Potato
-        ItemSeedFood potatoPlant = (ItemSeedFood) Items.POTATO;
         PlantDrop potato = new PlantDrop(new ItemStack(Items.POTATO), 1, 4);
         PlantDrop poisonous = new PlantDrop(new ItemStack(Items.POISONOUS_POTATO), 0.02F);
-        registerPlant(new PlantEntry(potatoPlant, potato, poisonous));
+        registerPlant(new PlantEntry((PotatoBlock) Blocks.POTATOES, potato, poisonous));
 
         //Carrot
-        ItemSeedFood carrotPlant = (ItemSeedFood) Items.CARROT;
         PlantDrop carrot = new PlantDrop(new ItemStack(Items.CARROT), 1, 4);
-        registerPlant(new PlantEntry(carrotPlant, carrot));
+        registerPlant(new PlantEntry((CarrotBlock) Blocks.CARROTS, carrot));
 
         //Wheat
-        ItemSeeds wheatPlant = (ItemSeeds) Items.WHEAT_SEEDS;
         PlantDrop wheat = new PlantDrop(new ItemStack(Items.WHEAT), 1, 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.WHEAT_SEEDS), 0, 3);
-        registerPlant(new PlantEntry(wheatPlant, wheat, seeds));
+        registerPlant(new PlantEntry((CropsBlock) Blocks.WHEAT, wheat, seeds));
 
         //Melon
-        ItemSeeds melonStem = (ItemSeeds) Items.MELON_SEEDS;
         PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.MELON_SLICE), 3, 7);
-        registerPlant(new PlantEntry(melonStem, melonSlice));
+        registerPlant(new PlantEntry((StemBlock) Blocks.MELON_STEM, melonSlice));
 
         //Pumpkin
-        ItemSeeds pumpkinStem = (ItemSeeds) Items.PUMPKIN_SEEDS;
         PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.PUMPKIN), 1, 1);
-        registerPlant(new PlantEntry(pumpkinStem, pumpkin));
+        registerPlant(new PlantEntry((StemBlock) Blocks.PUMPKIN_STEM, pumpkin));
     }
 }

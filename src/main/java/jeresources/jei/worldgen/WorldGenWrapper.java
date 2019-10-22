@@ -151,7 +151,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
                 String line = "  ";
                 if (dropItem.fortuneLevel > 0) {
                     // line += Enchantment.getEnchantmentByLocation("fortune").getTranslatedName(dropItem.fortuneLevel)
-                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).func_200305_d(dropItem.fortuneLevel).toString();
+                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).getDisplayName(dropItem.fortuneLevel).toString();
                 } else {
                     line += TranslationHelper.translateAndFormat("jer.worldgen.base");
                 }

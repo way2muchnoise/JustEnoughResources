@@ -1,8 +1,8 @@
 package jeresources.api.render;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 
-public interface IMobRenderHook<T extends EntityLivingBase> {
+public interface IMobRenderHook<T extends LivingEntity> {
     class RenderInfo {
         public int x, y;
         public double scale, yaw, pitch;

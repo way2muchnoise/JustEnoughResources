@@ -11,13 +11,16 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.GolemEntity;
+import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -46,7 +49,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
 
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
-        EntityLivingBase entityLivingBase = this.mob.getEntity();
+        LivingEntity LivingEntity = this.mob.getEntity();
         RenderHelper.scissor(7, 43, 59, 79);
         this.scale = getScale(this.mob.getEntity());
         this.offsetY = getOffsetY(this.mob.getEntity());
@@ -54,13 +57,13 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
             37, 105 - offsetY, scale,
             38 - mouseX,
             70 - offsetY - mouseY,
-            entityLivingBase
+            LivingEntity
         );
         RenderHelper.stopScissor();
 
         String mobName = this.mob.getMobName();
         if (Settings.showDevData) {
-            String entityString = entityLivingBase.getEntityString();
+            String entityString = LivingEntity.getEntityString();
             if (entityString != null) {
                 mobName += " (" + entityString + ")";
             }
@@ -86,7 +89,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
             tooltip.addAll(list);
     }
 
-    public EntityLivingBase getMob() {
+    public LivingEntity getMob() {
         return this.mob.getEntity();
     }
 
@@ -107,9 +110,9 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
             && mouseY < 12 + 10;
     }
 
-    private float getScale(EntityLivingBase entityLivingBase) {
-        float width = entityLivingBase.width;
-        float height = entityLivingBase.height;
+    private float getScale(LivingEntity LivingEntity) {
+        float width = LivingEntity.getWidth();
+        float height = LivingEntity.getHeight();
         if (width <= height) {
             if (height < 0.9) return 50.0F;
             else if (height < 1) return 35.0F;
@@ -126,21 +129,21 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
         }
     }
 
-    private int getOffsetY(EntityLivingBase entityLivingBase) {
+    private int getOffsetY(LivingEntity livingEntity) {
         int offsetY = 0;
-        if (entityLivingBase instanceof EntitySquid) offsetY = 20;
-        else if (entityLivingBase instanceof EntityWitch) offsetY = -10;
-        else if (entityLivingBase instanceof EntityGhast) offsetY = 15;
-        else if (entityLivingBase instanceof EntityWither) offsetY = -15;
-        else if (entityLivingBase instanceof EntityDragon) offsetY = 15;
-        else if (entityLivingBase instanceof EntityEnderman) offsetY = -10;
-        else if (entityLivingBase instanceof EntityGolem) offsetY = -10;
-        else if (entityLivingBase instanceof EntityAnimal) offsetY = -20;
-        else if (entityLivingBase instanceof EntityVillager) offsetY = -15;
-        else if (entityLivingBase instanceof EntityVindicator) offsetY = -15;
-        else if (entityLivingBase instanceof EntityEvoker) offsetY = -10;
-        else if (entityLivingBase instanceof EntityBlaze) offsetY = -10;
-        else if (entityLivingBase instanceof EntityCreeper) offsetY = -15;
+        if (livingEntity instanceof SquidEntity) offsetY = 20;
+        else if (livingEntity instanceof TurtleEntity) offsetY = 10;
+        else if (livingEntity instanceof WitchEntity) offsetY = -5;
+        else if (livingEntity instanceof GhastEntity) offsetY = 15;
+        else if (livingEntity instanceof WitherEntity) offsetY = -15;
+        else if (livingEntity instanceof EnderDragonEntity) offsetY = 15;
+        else if (livingEntity instanceof EndermanEntity) offsetY = -10;
+        else if (livingEntity instanceof GolemEntity) offsetY = -10;
+        else if (livingEntity instanceof AnimalEntity) offsetY = -20;
+        else if (livingEntity instanceof VillagerEntity) offsetY = -15;
+        else if (livingEntity instanceof WanderingTraderEntity) offsetY = -15;
+        else if (livingEntity instanceof BlazeEntity) offsetY = -10;
+        else if (livingEntity instanceof CreeperEntity) offsetY = -15;
         return offsetY;
     }
 }

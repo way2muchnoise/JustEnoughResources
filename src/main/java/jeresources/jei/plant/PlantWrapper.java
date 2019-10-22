@@ -1,6 +1,7 @@
 package jeresources.jei.plant;
 
 import jeresources.api.drop.PlantDrop;
+import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.constants.VanillaTypes;
@@ -8,10 +9,12 @@ import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCrops;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -66,22 +69,24 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         if (Float.isNaN(chance)) {
             int[] minMax = this.getMinMax(itemStack);
             toPrint = minMax[0] + (minMax[0] == minMax[1] ? "" : " - " + minMax[1]);
-        } else
+        } else {
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
+        }
         return toPrint;
     }
 
-    private IBlockState state;
+    private BlockState state;
     private long timer = -1;
-    private static final int TICKS = 1000; // 1s
+    private static final int TICKS = 500; // .5s
 
-    private IBlockState getBlockState() {
+    private BlockState getBlockState() {
         if (this.plantEntry.getPlant() != null) {
             if (timer == -1) timer = System.currentTimeMillis() + TICKS;
-            if (this.state == null)
-                this.state = this.plantEntry.getPlant().getPlant(null, null);
+            if (this.state == null) {
+                this.state = this.plantEntry.getPlant().getPlant(CompatBase.getWorld(), BlockPos.ZERO);
+            }
             if (System.currentTimeMillis() > timer) {
-                this.state = this.state.cycle(BlockCrops.AGE);
+                this.state = this.state.cycle(CropsBlock.AGE);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
             return this.state;
@@ -91,7 +96,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         }
     }
 
-    private IBlockState getFarmland() {
+    private BlockState getFarmland() {
         if (plantEntry.getSoil() != null) {
             return plantEntry.getSoil();
         }

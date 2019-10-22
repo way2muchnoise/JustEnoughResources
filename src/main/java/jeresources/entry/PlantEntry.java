@@ -3,11 +3,12 @@ package jeresources.entry;
 import jeresources.api.drop.PlantDrop;
 import jeresources.util.MapKeys;
 import jeresources.util.SeedHelper;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -21,20 +22,20 @@ public class PlantEntry {
     private ItemStack plantStack;
     private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
-    private IBlockState soil = null;
+    private BlockState soil = null;
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
-        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALL_GRASS, 1, new NBTTagCompound()), seeds.toArray(new PlantDrop[seeds.size()]));
+        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALL_GRASS, 1, new CompoundNBT()), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
     }
 
-    public IBlockState getSoil() {
+    public BlockState getSoil() {
         return soil;
     }
 
-    public void setSoil(IBlockState soil) {
+    public void setSoil(BlockState soil) {
         this.soil = soil;
     }
 
@@ -52,7 +53,7 @@ public class PlantEntry {
         this(itemStack, null, drops);
     }
 
-    public <T extends Item & IPlantable> PlantEntry(T plant, PlantDrop... drops) {
+    public <T extends Block & IPlantable> PlantEntry(T plant, PlantDrop... drops) {
         this(new ItemStack(plant), plant, drops);
     }
 

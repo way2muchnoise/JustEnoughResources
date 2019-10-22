@@ -5,7 +5,7 @@ import jeresources.api.drop.LootDrop;
 import jeresources.util.LootTableHelper;
 import jeresources.util.MobHelper;
 import jeresources.util.TranslationHelper;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -13,13 +13,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MobEntry {
-    private EntityLivingBase entity;
+    private LivingEntity entity;
     private Set<LootDrop> drops;
     private LightLevel lightLevel;
     private List<String> biomes;
     private int minExp, maxExp;
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops) {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes = new ArrayList<>();
@@ -30,20 +30,20 @@ public class MobEntry {
         this.minExp = minExp;
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, biomes, drops);
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
         this(entity, lightLevel, exp, exp, biomes, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, int exp, LootDrop... drops) {
         this(entity, lightLevel, exp, exp, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops) {
         this.entity = entity;
         this.lightLevel = lightLevel;
         this.biomes = new ArrayList<>();
@@ -54,25 +54,25 @@ public class MobEntry {
         this.minExp = minExp;
     }
 
-    public MobEntry(EntityLivingBase entity, LightLevel lightLevel, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LightLevel lightLevel, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, drops);
         this.maxExp = this.minExp = MobHelper.getExpDrop(this);
     }
 
-    public MobEntry(EntityLivingBase entity, LootDrop... drops) {
+    public MobEntry(LivingEntity entity, LootDrop... drops) {
         this(entity, LightLevel.any, drops);
     }
 
-    public MobEntry(EntityLivingBase entity, LootTable lootTable) {
+    public MobEntry(LivingEntity entity, LootTable lootTable) {
         this(entity, LightLevel.any);
         this.drops.addAll(LootTableHelper.toDrops(lootTable));
     }
 
-    public MobEntry(EntityLivingBase entity) {
+    public MobEntry(LivingEntity entity) {
         this(entity, LightLevel.any);
     }
 
-    public EntityLivingBase getEntity() {
+    public LivingEntity getEntity() {
         return entity;
     }
 

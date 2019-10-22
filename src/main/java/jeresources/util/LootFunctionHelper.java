@@ -3,37 +3,20 @@ package jeresources.util;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
-import jeresources.compatibility.CompatBase;
-import jeresources.profiling.DummyWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.profiler.Profiler;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.storage.ISaveHandler;
-import net.minecraft.world.storage.WorldInfo;
-import net.minecraft.world.storage.WorldSavedDataStorage;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootTableManager;
+import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.functions.*;
 
-import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class LootFunctionHelper {
-    public static void applyFunction(LootFunction lootFunction, LootDrop lootDrop) {
+    public static void applyFunction(ILootFunction lootFunction, LootDrop lootDrop) {
         if (lootFunction instanceof SetCount) {
-            lootDrop.minDrop = MathHelper.floor(((SetCount) lootFunction).countRange.getMin());
+            lootDrop.minDrop = getMin(((SetCount) lootFunction).countRange);
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
-            lootDrop.item.setCount(lootDrop.minDrop < 1 ? 1 : lootDrop.minDrop);
-            lootDrop.maxDrop = MathHelper.floor(((SetCount) lootFunction).countRange.getMax());
+            lootDrop.item.setCount(Math.max(lootDrop.minDrop, 1));
+            lootDrop.maxDrop = getMax(((SetCount) lootFunction).countRange);
         } else if (lootFunction instanceof SetDamage) {
             lootDrop.item.setDamage(MathHelper.floor(((SetDamage) lootFunction).damageRange.getMin()));
         } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels) {
@@ -49,9 +32,39 @@ public class LootFunctionHelper {
             ((ICustomLootFunction) lootFunction).apply(lootDrop);
         } else {
             try {
-                lootDrop.item = lootFunction.apply(lootDrop.item, new Random(), null);
+                // TODO figure out how to create a client side LootContext
+                lootDrop.item = lootFunction.apply(lootDrop.item, null);
             } catch (NullPointerException ignored) {
             }
+        }
+    }
+
+    private static final Random rand = new Random();
+    private static final int STATISTICAL_TEST = 100; // Values tested to determine min and max
+
+    public static int getMin(IRandomRange randomRange) {
+        if (randomRange instanceof ConstantRange) {
+            return randomRange.generateInt(rand);
+        } else if (randomRange instanceof RandomValueRange) {
+            return MathHelper.floor(((RandomValueRange) randomRange).getMin());
+        } else if (randomRange instanceof BinomialRange) {
+            return 0;
+        } else {
+            // Test a 100 values
+            return IntStream.iterate(0, i -> randomRange.generateInt(rand)).limit(STATISTICAL_TEST).min().orElse(0);
+        }
+    }
+
+    public static int getMax(IRandomRange randomRange) {
+        if (randomRange instanceof ConstantRange) {
+            return randomRange.generateInt(rand);
+        } else if (randomRange instanceof RandomValueRange) {
+            return MathHelper.floor(((RandomValueRange) randomRange).getMax());
+        } else if (randomRange instanceof BinomialRange) {
+            return ((BinomialRange) randomRange).n;
+        } else {
+            // Test a 100 values
+            return IntStream.iterate(0, i -> randomRange.generateInt(rand)).limit(STATISTICAL_TEST).max().orElse(0);
         }
     }
 }

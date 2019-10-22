@@ -7,8 +7,7 @@ import jeresources.util.TranslationHelper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -56,7 +55,7 @@ public class EnchantmentWrapper implements IRecipeCategoryExtension {
 
     private void doCycle() {
         if (((int) System.currentTimeMillis() / 1000) > nextCycle) {
-            if (!GuiScreen.isShiftKeyDown()) // Don't cycle when holding shift
+            if (!Screen.hasShiftDown()) // Don't cycle when holding shift
                 this.set = this.set == lastSet ? 0 : this.set + 1;
             this.nextCycle = ((int) System.currentTimeMillis() / 1000) + CYCLE_TIME;
         }

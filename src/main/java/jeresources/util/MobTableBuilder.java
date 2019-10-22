@@ -1,6 +1,7 @@
 package jeresources.util;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -10,56 +11,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MobTableBuilder {
-    private final Map<ResourceLocation, EntityLivingBase> mobTables = new HashMap<>();
+    private final Map<ResourceLocation, LivingEntity> mobTables = new HashMap<>();
     private final World world;
 
     public MobTableBuilder(World world) {
         this.world = world;
     }
 
-    public <T extends EntityLivingBase> void add(ResourceLocation resourceLocation, Class<T> entityClass) {
-        add(resourceLocation, entityClass, null);
+    public <T extends LivingEntity> void add(ResourceLocation resourceLocation, EntityType<T> entityType) {
+        add(resourceLocation, entityType, null);
     }
 
-    public <T extends EntityLivingBase> void add(ResourceLocation resourceLocation, Class<T> entityClass, @Nullable EntityPropertySetter<T> entityPropertySetter) {
-        T entityLivingBase = construct(world, entityClass);
-        if (entityLivingBase != null) {
+    public <T extends LivingEntity> void add(ResourceLocation resourceLocation, EntityType<T> entityType, @Nullable EntityPropertySetter<T> entityPropertySetter) {
+        T LivingEntity = entityType.create(world);
+        if (LivingEntity != null) {
             if (entityPropertySetter != null) {
-                entityPropertySetter.setProperties(entityLivingBase);
+                entityPropertySetter.setProperties(LivingEntity);
             }
-            mobTables.put(resourceLocation, entityLivingBase);
+            mobTables.put(resourceLocation, LivingEntity);
         }
     }
 
-    @Nullable
-    private static <T extends EntityLivingBase> T construct(World world, Class<T> entityClass) {
-        Constructor<T> constructor = getConstructor(entityClass);
-        if (constructor != null) {
-            try {
-                return constructor.newInstance(world);
-            } catch (ReflectiveOperationException | RuntimeException e) {
-                LogHelper.warn("Could not create entity " + entityClass, e);
-                return null;
-            }
-        }
-        return null;
-    }
-
-    @Nullable
-    private static <T extends EntityLivingBase> Constructor<T> getConstructor(Class<T> entityClass) {
-        try {
-            return entityClass.getConstructor(World.class);
-        } catch (NoSuchMethodException e) {
-            LogHelper.warn("Could not find constructor for entity " + entityClass);
-            return null;
-        }
-    }
-
-    public Map<ResourceLocation, EntityLivingBase> getMobTables() {
+    public Map<ResourceLocation, LivingEntity> getMobTables() {
         return mobTables;
     }
 
-    public interface EntityPropertySetter<T extends EntityLivingBase> {
+    public interface EntityPropertySetter<T extends LivingEntity> {
         void setProperties(T entity);
     }
 }

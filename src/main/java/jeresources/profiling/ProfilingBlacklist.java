@@ -1,6 +1,6 @@
 package jeresources.profiling;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
@@ -30,7 +30,7 @@ public class ProfilingBlacklist {
         }
     }
 
-    public boolean contains(IBlockState blockState) {
+    public boolean contains(BlockState blockState) {
         final String blockString = blockState.toString();
         return blacklist.stream().anyMatch((blockString::startsWith));
     }

@@ -1,8 +1,14 @@
 package jeresources.entry;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
+import jeresources.compatibility.CompatBase;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.merchant.villager.VillagerProfession;
+import net.minecraft.entity.merchant.villager.VillagerTrades;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -12,22 +18,19 @@ import java.util.stream.Collectors;
 
 public class VillagerEntry {
     private final List<TradeList> tradeList;
-    private final int profession, career;
-    private final String name;
+    private final VillagerProfession profession;
 
-    public VillagerEntry(String name, int profession, int career, List<List<EntityVillager.ITradeList>> tradesLists) {
-        this.name = name;
+    public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ITrade[]> tradesLists) {
         this.profession = profession;
-        this.career = career;
         this.tradeList = new LinkedList<>();
         addITradeLists(tradesLists);
     }
 
-    public void addITradeLists(List<List<EntityVillager.ITradeList>> tradesLists) {
+    public void addITradeLists(Int2ObjectMap<VillagerTrades.ITrade[]> tradesLists) {
         int i = 0;
-        for (List<EntityVillager.ITradeList> levelList : tradesLists) {
+        for (VillagerTrades.ITrade[] levelList : tradesLists.values()) {
             TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(this);
-            levelList.forEach(trades::addITradeList);
+            trades.addITradeList(levelList);
             this.tradeList.add(trades);
             i++;
         }
@@ -60,19 +63,15 @@ public class VillagerEntry {
         return tradeList.size();
     }
 
-    public int getCareer() {
-        return career;
-    }
-
     public String getName() {
-        return this.name;
+        return this.profession.toString();
     }
 
     public String getDisplayName() {
-        return "entity.minecraft.villager." + this.name;
+        return "entity.minecraft.villager." + this.profession.toString();
     }
 
-    public int getProfession() {
+    public VillagerProfession getProfession() {
         return this.profession;
     }
 
@@ -84,4 +83,9 @@ public class VillagerEntry {
         return levels;
     }
 
+    public VillagerEntity getVillagerEntity() {
+        VillagerEntity villagerEntity = EntityType.VILLAGER.create(CompatBase.getWorld());
+        villagerEntity.setVillagerData(villagerEntity.getVillagerData().withProfession(this.profession));
+        return villagerEntity;
+    }
 }

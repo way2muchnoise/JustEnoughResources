@@ -5,11 +5,12 @@ import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
 import jeresources.registry.PlantRegistry;
 import jeresources.util.LogHelper;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.IPlantable;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class PlantRegistryImpl implements IPlantRegistry {
     private static List<PlantEntry> registers = new ArrayList<>();
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
-    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1, new NBTTagCompound());
+    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1, new CompoundNBT());
 
     protected PlantRegistryImpl() {
 
@@ -45,7 +46,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public <T extends Item & IPlantable> void register(T plant, PlantDrop... drops) {
+    public <T extends Block & IPlantable> void register(T plant, PlantDrop... drops) {
         try {
             registers.add(new PlantEntry(plant, drops));
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerWithSoil(ItemStack stack, IPlantable plant, IBlockState soil, PlantDrop... drops) {
+    public void registerWithSoil(ItemStack stack, IPlantable plant, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(stack, plant, drops);
             entry.setSoil(soil);
@@ -65,7 +66,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerWithSoil(ItemStack stack, IBlockState soil, PlantDrop... drops) {
+    public void registerWithSoil(ItemStack stack, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(stack, drops);
             entry.setSoil(soil);
@@ -76,7 +77,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public <T extends Item & IPlantable> void registerWithSoil(T plant, IBlockState soil, PlantDrop... drops) {
+    public <T extends Block & IPlantable> void registerWithSoil(T plant, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(plant, drops);
             entry.setSoil(soil);

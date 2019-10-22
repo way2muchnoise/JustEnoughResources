@@ -4,51 +4,51 @@ import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Use to register new {@link EntityLivingBase}s, {@link IMobRenderHook}s and {@link IScissorHook}s
+ * Use to register new {@link LivingEntity}s, {@link IMobRenderHook}s and {@link IScissorHook}s
  */
 public interface IMobRegistry {
     /**
-     * Register a custom {@link EntityLivingBase} with given parameters
+     * Register a custom {@link LivingEntity} with given parameters
      * Implement {@link jeresources.api.conditionals.ICustomEntityProperty} and {@link jeresources.api.conditionals.ICustomLootFunction}
      * to gain more control over the information added to the tooltips when using custom
      * {@link net.minecraft.world.storage.loot.properties.EntityProperty}s and {@link net.minecraft.world.storage.loot.functions.LootFunction}s
      *
-     * @param entity     the {@link EntityLivingBase} instance
-     * @param lightLevel the {@link LightLevel} the {@link EntityLivingBase} spawns at
-     * @param minExp     minimum exp gained by killing the {@link EntityLivingBase}
-     * @param maxExp     maximum exp gained by killing the {@link EntityLivingBase}
+     * @param entity     the {@link LivingEntity} instance
+     * @param lightLevel the {@link LightLevel} the {@link LivingEntity} spawns at
+     * @param minExp     minimum exp gained by killing the {@link LivingEntity}
+     * @param maxExp     maximum exp gained by killing the {@link LivingEntity}
      * @param biomes     {@link java.util.List} of {@link String} names of the biomes
      * @param lootTable  the {@link ResourceLocation} of the loot table
      */
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, LightLevel lightLevel, ResourceLocation lootTable);
-    void register(EntityLivingBase entity, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, ResourceLocation lootTable);
+    void register(LivingEntity entity, ResourceLocation lootTable);
 
     /**
-     * Register a custom {@link EntityLivingBase} with given parameters
+     * Register a custom {@link LivingEntity} with given parameters
      *
-     * @param entity     the {@link EntityLivingBase} instance
-     * @param lightLevel the {@link LightLevel} the {@link EntityLivingBase} spawns at
-     * @param minExp     minimum exp gained by killing the {@link EntityLivingBase}
-     * @param maxExp     maximum exp gained by killing the {@link EntityLivingBase}
+     * @param entity     the {@link LivingEntity} instance
+     * @param lightLevel the {@link LightLevel} the {@link LivingEntity} spawns at
+     * @param minExp     minimum exp gained by killing the {@link LivingEntity}
+     * @param maxExp     maximum exp gained by killing the {@link LivingEntity}
      * @param biomes     {@link java.util.List} of {@link String} names of the biomes
      * @param lootDrops  the {@link LootDrop}s to add
      */
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LightLevel lightLevel, int exp, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LightLevel lightLevel, String[] biomes, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LightLevel lightLevel, LootDrop... lootDrops);
-    void register(EntityLivingBase entity, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, LootDrop... lootDrops);
+    void register(LivingEntity entity, LightLevel lightLevel, LootDrop... lootDrops);
+    void register(LivingEntity entity, LootDrop... lootDrops);
 
     /**
      * Add a hook for scissoring in the mob view
@@ -63,8 +63,8 @@ public interface IMobRegistry {
      * Add a {@link IMobRenderHook} for the given mob type
      * The render hook will be called when rendering in the mob view of JER
      *
-     * @param entity     the  {@link Class} of the {@link EntityLivingBase}
+     * @param entity     the  {@link Class} of the {@link LivingEntity}
      * @param renderHook the {@link IMobRenderHook} to be applied
      */
-    void registerRenderHook(Class<? extends EntityLivingBase> entity, IMobRenderHook renderHook);
+    void registerRenderHook(Class<? extends LivingEntity> entity, IMobRenderHook renderHook);
 }

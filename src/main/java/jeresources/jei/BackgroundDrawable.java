@@ -1,9 +1,9 @@
 package jeresources.jei;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import jeresources.reference.Reference;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
@@ -30,7 +30,7 @@ public class BackgroundDrawable implements IDrawable {
 
     @Override
     public void draw(int xOffset, int yOffset) {
-        GlStateManager.resetColor();
+        GlStateManager.clearCurrentColor();
         Minecraft.getInstance().getTextureManager().bindTexture(this.resource);
         GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
     }

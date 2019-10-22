@@ -1,7 +1,8 @@
 package jeresources.api;
 
 import jeresources.api.drop.PlantDrop;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.IPlantable;
@@ -17,12 +18,12 @@ public interface IPlantRegistry {
     void register(ItemStack itemStack, IPlantable plant, PlantDrop... drops);
     void register(ItemStack itemStack, PlantDrop... drops);
 
-    <T extends Item & IPlantable> void register(T plant, PlantDrop... drops);
+    <T extends Block & IPlantable> void register(T plant, PlantDrop... drops);
 
-    void registerWithSoil (ItemStack stack, IPlantable plant, IBlockState soil, PlantDrop... drops);
-    void registerWithSoil (ItemStack stack, IBlockState soil, PlantDrop... drops);
+    void registerWithSoil (ItemStack stack, IPlantable plant, BlockState soil, PlantDrop... drops);
+    void registerWithSoil (ItemStack stack, BlockState soil, PlantDrop... drops);
 
-    <T extends Item & IPlantable> void registerWithSoil (T plant, IBlockState soil, PlantDrop ... drops);
+    <T extends Block & IPlantable> void registerWithSoil (T plant, BlockState soil, PlantDrop ... drops);
 
     void registerDrops(@Nonnull ItemStack itemStack, PlantDrop... drops);
 }

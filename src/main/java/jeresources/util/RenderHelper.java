@@ -1,19 +1,19 @@
 package jeresources.util;
 
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import jeresources.api.render.ColourHelper;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.MobRegistryImpl;
 import jeresources.reference.Resources;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Matrix4f;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.model.ModelChest;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.tileentity.model.ChestModel;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.BufferUtils;
@@ -24,9 +24,9 @@ import java.nio.FloatBuffer;
 public class RenderHelper {
     public static void drawArrow(double xBegin, double yBegin, double xEnd, double yEnd, int color) {
         Minecraft mc = Minecraft.getInstance();
-        int scale = mc.mainWindow.getScaleFactor(0);
+        double scale = mc.mainWindow.getGuiScaleFactor();
         GlStateManager.color3f(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
-        GL11.glLineWidth(scale * 1.3F);
+        GL11.glLineWidth((float)(scale * 1.3F));
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2d(xBegin, yBegin);
         GL11.glVertex2d(xEnd, yEnd);
@@ -57,60 +57,60 @@ public class RenderHelper {
 
     public static void drawPoint(double x, double y, int color) {
         Minecraft mc = Minecraft.getInstance();
-        int scale = mc.mainWindow.getScaleFactor(0);
+        double scale = mc.mainWindow.getGuiScaleFactor();
         GlStateManager.color3f(ColourHelper.getRed(color), ColourHelper.getGreen(color), ColourHelper.getBlue(color));
-        GL11.glPointSize(scale * 1.3F);
+        GL11.glPointSize((float)(scale * 1.3F));
         GL11.glBegin(GL11.GL_POINTS);
         GL11.glVertex2d(x, y);
         GL11.glEnd();
     }
 
-    public static void renderEntity(int x, int y, double scale, double yaw, double pitch, EntityLivingBase entityLivingBase) {
-        if (entityLivingBase.world == null) entityLivingBase.world = Minecraft.getInstance().world;
+    public static void renderEntity(int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
+        if (livingEntity.world == null) livingEntity.world = Minecraft.getInstance().world;
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translatef(x, y, 50.0F);
         GlStateManager.scaled(-scale, scale, scale);
         GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
-        float renderYawOffset = entityLivingBase.renderYawOffset;
-        float rotationYaw = entityLivingBase.rotationYaw;
-        float rotationPitch = entityLivingBase.rotationPitch;
-        float prevRotationYawHead = entityLivingBase.prevRotationYawHead;
-        float rotationYawHead = entityLivingBase.rotationYawHead;
+        float renderYawOffset = livingEntity.renderYawOffset;
+        float rotationYaw = livingEntity.rotationYaw;
+        float rotationPitch = livingEntity.rotationPitch;
+        float prevRotationYawHead = livingEntity.prevRotationYawHead;
+        float rotationYawHead = livingEntity.rotationYawHead;
         net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
-        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(entityLivingBase, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
+        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
         x = renderInfo.x;
         y = renderInfo.y;
         scale = renderInfo.scale;
         yaw = renderInfo.yaw;
         pitch = renderInfo.pitch;
         GlStateManager.rotatef(-((float) Math.atan((pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-        entityLivingBase.renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
-        entityLivingBase.rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
-        entityLivingBase.rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
-        entityLivingBase.rotationYawHead = entityLivingBase.rotationYaw;
-        entityLivingBase.prevRotationYawHead = entityLivingBase.rotationYaw;
-        GlStateManager.translated(0.0F, entityLivingBase.getYOffset(), 0.0F);
+        livingEntity.renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
+        livingEntity.rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
+        livingEntity.rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
+        livingEntity.rotationYawHead = livingEntity.rotationYaw;
+        livingEntity.prevRotationYawHead = livingEntity.rotationYaw;
+        GlStateManager.translated(0.0F, livingEntity.getYOffset(), 0.0F);
         getRenderManager().setPlayerViewY(180.0F);
-        getRenderManager().renderEntity(entityLivingBase, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
-        entityLivingBase.renderYawOffset = renderYawOffset;
-        entityLivingBase.rotationYaw = rotationYaw;
-        entityLivingBase.rotationPitch = rotationPitch;
-        entityLivingBase.prevRotationYawHead = prevRotationYawHead;
-        entityLivingBase.rotationYawHead = rotationYawHead;
+        getRenderManager().renderEntity(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        livingEntity.renderYawOffset = renderYawOffset;
+        livingEntity.rotationYaw = rotationYaw;
+        livingEntity.rotationPitch = rotationPitch;
+        livingEntity.prevRotationYawHead = prevRotationYawHead;
+        livingEntity.rotationYawHead = rotationYawHead;
         GlStateManager.popMatrix();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
         // GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.activeTexture(OpenGlHelper.GL_TEXTURE1);
-        GlStateManager.disableTexture2D();
+        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
+        GlStateManager.disableTexture();
         // GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-        GlStateManager.activeTexture(OpenGlHelper.GL_TEXTURE0);
+        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
     }
 
     public static void renderChest(float x, float y, float rotate, float scale, float lidAngle) {
         Minecraft.getInstance().getTextureManager().bindTexture(Resources.Vanilla.CHEST);
-        ModelChest modelchest = new ModelChest();
+        ChestModel modelchest = new ChestModel();
 
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
@@ -126,17 +126,17 @@ public class RenderHelper {
         lidAngleF = 1.0F - lidAngleF;
         lidAngleF = 1.0F - lidAngleF * lidAngleF * lidAngleF;
         modelchest.getLid().rotateAngleX = -(lidAngleF * (float) Math.PI / 2.0F);
-        modelchest.chestKnob.offsetX += 0.1F;
-        modelchest.chestKnob.offsetZ += 0.12F;
-        modelchest.chestBelow.offsetX -= 0.755F;
-        modelchest.chestBelow.offsetY -= 0.4F;
-        modelchest.chestBelow.offsetZ -= 0.9F;
+        modelchest.field_78233_c.offsetX += 0.1F;
+        modelchest.field_78233_c.offsetZ += 0.12F; // chestKnob
+        modelchest.field_78232_b.offsetX -= 0.755F; // chestBelow
+        modelchest.field_78232_b.offsetY -= 0.4F; // chestBelow
+        modelchest.field_78232_b.offsetZ -= 0.9F; // chestBelow
         modelchest.renderAll();
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
     }
 
-    public static void renderBlock(IBlockState block, float x, float y, float z, float rotate, float scale) {
+    public static void renderBlock(BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
         GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
@@ -151,7 +151,7 @@ public class RenderHelper {
         GlStateManager.translatef(0.5F, 0.5F, 0.5F);
         GlStateManager.rotatef(rotate, 0.0F, 1.0F, 0.0F);
         GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
-        mc.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        mc.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         mc.getBlockRendererDispatcher().renderBlockBrightness(block, 1.0F);
         GlStateManager.popMatrix();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
@@ -183,7 +183,7 @@ public class RenderHelper {
         GuiUtils.drawTexturedModalRect(x, y, u, v, width, height, 0);
     }
 
-    private static RenderManager getRenderManager() {
+    private static EntityRendererManager getRenderManager() {
         return Minecraft.getInstance().getRenderManager();
     }
 
