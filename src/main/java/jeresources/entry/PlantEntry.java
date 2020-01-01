@@ -6,9 +6,9 @@ import jeresources.util.SeedHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.IProperty;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -23,6 +23,8 @@ public class PlantEntry {
     private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
     private BlockState soil = null;
+    private BlockState plantState = null;
+    private IProperty<?> ageProperty = null;
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
@@ -35,8 +37,24 @@ public class PlantEntry {
         return soil;
     }
 
+    public BlockState getPlantState() {
+        return plantState;
+    }
+
+    public IProperty<?> getAgeProperty() {
+        return ageProperty;
+    }
+
     public void setSoil(BlockState soil) {
         this.soil = soil;
+    }
+
+    public void setPlantState(BlockState plantState) {
+        this.plantState = plantState;
+    }
+
+    public void setAgeProperty(IProperty<?> ageProperty) {
+        this.ageProperty = ageProperty;
     }
 
     public PlantEntry(ItemStack itemStack, IPlantable plant, PlantDrop... drops) {
