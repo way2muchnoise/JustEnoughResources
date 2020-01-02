@@ -45,7 +45,7 @@ public class DungeonRegistry {
         addCategoryMapping("chests/village/village_fisher", "jer.dungeon.village_fisher");
         addCategoryMapping("chests/village/village_tannery", "jer.dungeon.village_tannery");
         addCategoryMapping("chests/village/village_temple", "jer.dungeon.village_temple");
-        addCategoryMapping("chests/village/village_dessert_house", "jer.dungeon.village_dessert_house");
+        addCategoryMapping("chests/village/village_desert_house", "jer.dungeon.village_desert_house");
         addCategoryMapping("chests/village/village_plains_house", "jer.dungeon.village_plains_house");
         addCategoryMapping("chests/village/village_taiga_house", "jer.dungeon.village_taiga_house");
         addCategoryMapping("chests/village/village_snowy_house", "jer.dungeon.village_snowy_house");
