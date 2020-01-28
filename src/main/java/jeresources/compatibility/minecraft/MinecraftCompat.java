@@ -105,5 +105,11 @@ public class MinecraftCompat extends CompatBase {
         PlantEntry netherWartEntry = new PlantEntry((NetherWartBlock) Blocks.NETHER_WART, netherWartDrop);
         netherWartEntry.setSoil(Blocks.SOUL_SAND.getDefaultState());
         registerPlant(netherWartEntry);
+
+        // Sweet berries
+        PlantDrop sweetBerriesDrop = new PlantDrop(new ItemStack(Items.SWEET_BERRIES), 1, 3); // Drops 1-2 at age 2, 2-3 at age 3
+        PlantEntry sweetBerriesEntry = new PlantEntry((SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH, sweetBerriesDrop);
+        sweetBerriesEntry.setSoil(Blocks.GRASS_BLOCK.getDefaultState());
+        registerPlant(sweetBerriesEntry);
     }
 }
