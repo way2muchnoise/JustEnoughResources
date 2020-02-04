@@ -1,12 +1,13 @@
 package jeresources.util;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,25 +19,26 @@ public class MobTableBuilder {
         this.world = world;
     }
 
-    public <T extends LivingEntity> void add(ResourceLocation resourceLocation, EntityType<T> entityType) {
-        add(resourceLocation, entityType, null);
+    public void add(ResourceLocation resourceLocation, EntityType<?> entityType) {
+        Entity entity = entityType.create(world);
+        if (entity instanceof LivingEntity) {
+            mobTables.put(resourceLocation, (LivingEntity) entity);
+        } else {
+            if (entity != null) {
+                entity.remove();
+            }
+        }
     }
 
-    public <T extends LivingEntity> void add(ResourceLocation resourceLocation, EntityType<T> entityType, @Nullable EntityPropertySetter<T> entityPropertySetter) {
-        T LivingEntity = entityType.create(world);
-        if (LivingEntity != null) {
-            if (entityPropertySetter != null) {
-                entityPropertySetter.setProperties(LivingEntity);
-            }
-            mobTables.put(resourceLocation, LivingEntity);
+    public void addSheep(ResourceLocation resourceLocation, EntityType<SheepEntity> entityType, DyeColor dye) {
+        SheepEntity entity = entityType.create(world);
+        if (entity != null) {
+            entity.setFleeceColor(dye);
+            mobTables.put(resourceLocation, entity);
         }
     }
 
     public Map<ResourceLocation, LivingEntity> getMobTables() {
         return mobTables;
-    }
-
-    public interface EntityPropertySetter<T extends LivingEntity> {
-        void setProperties(T entity);
     }
 }

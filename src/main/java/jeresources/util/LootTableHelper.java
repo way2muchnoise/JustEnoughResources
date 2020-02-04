@@ -139,7 +139,7 @@ public class LootTableHelper {
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
             ResourceLocation lootTableList = entry.getValue();
             DyeColor dyeColor = entry.getKey();
-            mobTableBuilder.add(lootTableList, EntityType.SHEEP, entity -> entity.setFleeceColor(dyeColor));
+            mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
 
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
