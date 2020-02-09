@@ -94,5 +94,22 @@ public class MinecraftCompat extends CompatBase {
         //Pumpkin
         PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.PUMPKIN), 1, 1);
         registerPlant(new PlantEntry((StemBlock) Blocks.PUMPKIN_STEM, pumpkin));
+
+        // Beetroot
+        PlantDrop beetroot = new PlantDrop(new ItemStack(Items.BEETROOT), 1, 1);
+        PlantDrop beetrootSeeds = new PlantDrop(new ItemStack(Items.BEETROOT_SEEDS), 0, 3);
+        registerPlant(new PlantEntry((BeetrootBlock) Blocks.BEETROOTS, beetroot, beetrootSeeds));
+
+        //Nether Wart
+        PlantDrop netherWartDrop = new PlantDrop(new ItemStack(Items.NETHER_WART), 2, 4);
+        PlantEntry netherWartEntry = new PlantEntry((NetherWartBlock) Blocks.NETHER_WART, netherWartDrop);
+        netherWartEntry.setSoil(Blocks.SOUL_SAND.getDefaultState());
+        registerPlant(netherWartEntry);
+
+        // Sweet berries
+        PlantDrop sweetBerriesDrop = new PlantDrop(new ItemStack(Items.SWEET_BERRIES), 1, 3); // Drops 1-2 at age 2, 2-3 at age 3
+        PlantEntry sweetBerriesEntry = new PlantEntry((SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH, sweetBerriesDrop);
+        sweetBerriesEntry.setSoil(Blocks.GRASS_BLOCK.getDefaultState());
+        registerPlant(sweetBerriesEntry);
     }
 }

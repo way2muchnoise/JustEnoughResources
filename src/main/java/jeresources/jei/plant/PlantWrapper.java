@@ -11,10 +11,9 @@ import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CropsBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.IProperty;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -76,24 +75,29 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
     }
 
     private BlockState state;
+    private IProperty<?> ageProperty;
     private long timer = -1;
     private static final int TICKS = 500; // .5s
 
     private BlockState getBlockState() {
-        if (this.plantEntry.getPlant() != null) {
+        if (this.state == null) {
+            if (this.plantEntry.getPlantState() != null) this.state = this.plantEntry.getPlantState();
+            else if (this.plantEntry.getPlant() != null) this.state = this.plantEntry.getPlant().getPlant(CompatBase.getWorld(), BlockPos.ZERO);
+            else this.state = Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
+
+            if (this.plantEntry.getAgeProperty() != null) this.ageProperty = this.plantEntry.getAgeProperty();
+            else this.state.getProperties().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
+        }
+
+        if (ageProperty != null) {
             if (timer == -1) timer = System.currentTimeMillis() + TICKS;
-            if (this.state == null) {
-                this.state = this.plantEntry.getPlant().getPlant(CompatBase.getWorld(), BlockPos.ZERO);
-            }
-            if (System.currentTimeMillis() > timer) {
-                this.state = this.state.cycle(CropsBlock.AGE);
+            else if (System.currentTimeMillis() > timer) {
+                this.state = this.state.cycle(ageProperty);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
-            return this.state;
-        } else {
-            // return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getStateFromMeta(this.plantEntry.getPlantItemStack().getItemDamage());
-            return Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
         }
+
+        return state;
     }
 
     private BlockState getFarmland() {
