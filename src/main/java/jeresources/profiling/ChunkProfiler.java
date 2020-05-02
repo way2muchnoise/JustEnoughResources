@@ -49,7 +49,7 @@ public class ChunkProfiler implements Runnable {
         this.timer.startChunk(dimId);
         Map<String, Integer[]> temp = new HashMap<>();
 
-        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
+        BlockPos.Mutable blockPos = new BlockPos.Mutable();
         RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vec3d(0, 0, 0), Direction.DOWN, blockPos, true);
         PlayerEntity player = Minecraft.getInstance().player;
 

@@ -1,6 +1,8 @@
 package jeresources.api.render;
 
-public class ColourHelper {
+import com.mojang.blaze3d.systems.RenderSystem;
+
+public class ColorHelper {
     public static final int BLACK = -16777216;
     public static final int BLUE = -16776961;
     public static final int CYAN = -16711681;
@@ -26,7 +28,15 @@ public class ColourHelper {
         return ((color >> 16) & 255) / 255.0F;
     }
 
-    public static float getAlpa(int color) {
+    public static float getAlpha(int color) {
         return ((color >> 24) & 255) / 255.0F;
+    }
+
+    public static void setColor3f(int color) {
+        RenderSystem.color3f(getRed(color), getGreen(color), getBlue(color));
+    }
+
+    public static void setColor4f(int color) {
+        RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 }

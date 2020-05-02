@@ -21,6 +21,7 @@ public class BiomeRestriction {
     public static final BiomeRestriction SNOWY = new BiomeRestriction(BiomeDictionary.Type.FOREST);
     public static final BiomeRestriction HILLS = new BiomeRestriction(BiomeDictionary.Type.HILLS);
     public static final BiomeRestriction MUSHROOM = new BiomeRestriction(BiomeDictionary.Type.MUSHROOM);
+    public static final BiomeRestriction BADLANDS = new BiomeRestriction(BiomeDictionary.Type.MESA);
 
     public static final BiomeRestriction HOT = new BiomeRestriction(BiomeDictionary.Type.HOT);
     public static final BiomeRestriction COLD = new BiomeRestriction(BiomeDictionary.Type.COLD);

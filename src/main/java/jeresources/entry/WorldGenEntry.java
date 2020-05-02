@@ -3,7 +3,7 @@ package jeresources.entry;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionHelpers;
 import jeresources.api.drop.LootDrop;
-import jeresources.api.render.ColourHelper;
+import jeresources.api.render.ColorHelper;
 import jeresources.api.restrictions.Restriction;
 import jeresources.util.MapKeys;
 import net.minecraft.item.Item;
@@ -28,7 +28,7 @@ public class WorldGenEntry {
         this.block = block;
         this.distribution = distribution;
         this.restriction = restriction;
-        this.colour = ColourHelper.BLACK;
+        this.colour = ColorHelper.BLACK;
         this.silktouch = silktouch;
         this.drops = new HashMap<>();
         this.wildcardDrops = new HashMap<>();

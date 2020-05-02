@@ -1,6 +1,6 @@
 package jeresources.util;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 
 public class Font {
@@ -17,13 +17,13 @@ public class Font {
     public void print(Object o, int x, int y) {
         doTransform(x, y);
         Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, 8);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     public void print(Object o, int x, int y, int color) {
         doTransform(x, y);
         Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     public void print(Object o, int x, int y, int color, boolean shadow) {
@@ -33,7 +33,7 @@ public class Font {
         } else {
             Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
         }
-        GlStateManager.popMatrix();
+        RenderSystem.popMatrix();
     }
 
     public int getStringWidth(String string) {
@@ -42,10 +42,10 @@ public class Font {
     }
 
     private void doTransform(int x, int y) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translatef(x, y, 0);
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef(x, y, 0);
         if (isSmall) {
-            GlStateManager.scalef(SCALING, SCALING, 1);
+            RenderSystem.scalef(SCALING, SCALING, 1);
         }
     }
 }

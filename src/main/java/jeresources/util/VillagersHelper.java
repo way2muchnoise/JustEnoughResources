@@ -19,6 +19,6 @@ public class VillagersHelper {
     }
 
     private static Int2ObjectMap<VillagerTrades.ITrade[]> getTrades(VillagerProfession profession) {
-        return VillagerTrades.field_221239_a.get(profession);
+        return VillagerTrades.VILLAGER_DEFAULT_TRADES.get(profession);
     }
 }

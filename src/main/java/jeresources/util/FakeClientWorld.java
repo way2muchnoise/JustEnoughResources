@@ -90,11 +90,6 @@ public class FakeClientWorld extends ClientWorld {
             }
 
             @Override
-            public ChunkGenerator<?> getChunkGenerator() {
-                return null;
-            }
-
-            @Override
             public WorldLightManager getLightManager() {
                 return null;
             }

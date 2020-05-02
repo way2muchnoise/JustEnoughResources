@@ -180,8 +180,8 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
     private static double getExactMouseX(final double mouseX) {
         Minecraft mc = Minecraft.getInstance();
-        final int scaledWidth = mc.mainWindow.getScaledWidth();
-        final double mouseXExact = mc.mouseHelper.getMouseX() * scaledWidth / (double) mc.mainWindow.getWidth();
+        final int scaledWidth = mc.getMainWindow().getScaledWidth();
+        final double mouseXExact = mc.mouseHelper.getMouseX() * scaledWidth / (double) mc.getMainWindow().getWidth();
         final double mouseXFraction = mouseXExact - Math.floor(mouseXExact);
         return mouseX + mouseXFraction;
     }

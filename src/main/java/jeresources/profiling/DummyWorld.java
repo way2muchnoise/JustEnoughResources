@@ -136,13 +136,13 @@ public class DummyWorld extends ServerWorld {
     private static class DummyChunkProvider extends AbstractChunkProvider {
         private final World realWorld;
         private final AbstractChunkProvider realChunkProvider;
-        private final ChunkGenerator<?> realChunkGenerator;
+        // private final ChunkGenerator<?> realChunkGenerator;
         private boolean allowLoading = true;
 
         public DummyChunkProvider(World realWorld, AbstractChunkProvider chunkProviderServer) {
             super();
             this.realWorld = realWorld;
-            this.realChunkGenerator = chunkProviderServer.getChunkGenerator();
+            // this.realChunkGenerator = chunkProviderServer.getChunkGenerator();
             this.realChunkProvider = chunkProviderServer;
         }
 
@@ -160,11 +160,6 @@ public class DummyWorld extends ServerWorld {
         @Override
         public String makeString() {
             return "Dummy";
-        }
-
-        @Override
-        public ChunkGenerator<?> getChunkGenerator() {
-            return null;
         }
 
         @Override

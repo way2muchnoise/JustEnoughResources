@@ -41,7 +41,7 @@ public class Config {
     }
 
     @SubscribeEvent
-    public void onFileChange(final ModConfig.ConfigReloading configEvent) {
+    public void onFileChange(final ModConfig.Reloading configEvent) {
         JEResources.LOGGER.debug("Reloaded {} config file {}", JEResources.ID, configEvent.getConfig().getFileName());
         ConfigValues.pushChanges();
     }

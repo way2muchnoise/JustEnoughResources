@@ -3,16 +3,11 @@ package jeresources.util;
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.*;
 import net.minecraft.item.DyeColor;
-import net.minecraft.resources.IAsyncReloader;
-import net.minecraft.resources.ResourcePackType;
-import net.minecraft.resources.SimpleReloadableResourceManager;
-import net.minecraft.resources.VanillaPack;
+import net.minecraft.resources.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.util.Util;
@@ -25,7 +20,6 @@ import net.minecraftforge.fml.packs.ModFileResourcePack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -61,6 +55,11 @@ public class LootTableHelper {
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186453_a");
     }
 
+    public static List<ILootCondition> getLootConditions(LootPool pool) {
+        // public net.minecraft.world.storage.loot.LootPool field_186454_b # conditions
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186454_b");
+    }
+
     public static List<LootDrop> toDrops(LootTable table) {
         List<LootDrop> drops = new ArrayList<>();
 
@@ -71,7 +70,7 @@ public class LootTableHelper {
                 final float totalWeight = getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof StandaloneLootEntry).map(entry -> (StandaloneLootEntry) entry)
                     .mapToInt(entry -> entry.weight).sum();
-                final List<ILootCondition> poolConditions = pool.conditions;
+                final List<ILootCondition> poolConditions = getLootConditions(pool);
                 getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof ItemLootEntry).map(entry -> (ItemLootEntry) entry)
                     .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.conditions, entry.functions))
@@ -156,14 +155,16 @@ public class LootTableHelper {
     public static LootTableManager getManager(@Nullable World world) {
         if (world == null || world.getServer() == null) {
             if (manager == null) {
-                manager = new LootTableManager();
+                manager = new LootTableManager(new LootPredicateManager());
                 SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA, Minecraft.getInstance().getExecutionThread());
-                serverResourceManger.addResourcePack(new VanillaPack("minecraft"));
+                List<IResourcePack> packs = new LinkedList<>();
+                packs.add(new VanillaPack("minecraft"));
                 for (ModFileInfo mod : ModList.get().getModFiles()) {
-                    serverResourceManger.addResourcePack(new ModFileResourcePack(mod.getFile()));
+                    packs.add(new ModFileResourcePack(mod.getFile()));
                 }
+                packs.forEach(serverResourceManger::addResourcePack);
                 serverResourceManger.addReloadListener(manager);
-                CompletableFuture<Unit> completableFuture = serverResourceManger.initialReload(Util.getServerExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE)).onceDone();
+                CompletableFuture<Unit> completableFuture = serverResourceManger.reloadResourcesAndThen(Util.getServerExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
                 Minecraft.getInstance().driveUntil(completableFuture::isDone);
             }
             return manager;
