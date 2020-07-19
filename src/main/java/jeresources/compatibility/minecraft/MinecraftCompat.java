@@ -23,9 +23,9 @@ import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTableManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableManager;
 
 public class MinecraftCompat extends CompatBase {
     @Override

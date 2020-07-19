@@ -5,9 +5,11 @@ import jeresources.util.LootConditionHelper;
 import jeresources.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.loot.functions.ILootFunction;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.functions.ILootFunction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -193,14 +195,14 @@ public class LootDrop implements Comparable<LootDrop> {
         else return String.format("%.2G%%", chance * 100f);
     }
 
-    public List<String> getTooltipText() {
+    public List<ITextComponent> getTooltipText() {
         return getTooltipText(false);
     }
 
-    public List<String> getTooltipText(boolean smelted) {
-        List<String> list = conditionals.stream().map(Conditional::toString).collect(Collectors.toList());
+    public List<ITextComponent> getTooltipText(boolean smelted) {
+        List<ITextComponent> list = conditionals.stream().map(Conditional::toStringTextComponent).collect(Collectors.toList());
         if (smelted)
-            list.add(Conditional.burning.toString());
+            list.add(Conditional.burning.toStringTextComponent());
         return list;
     }
 
@@ -214,6 +216,10 @@ public class LootDrop implements Comparable<LootDrop> {
 
     public float getSortIndex() {
         return sortIndex;
+    }
+
+    public StringTextComponent toStringTextComponent() {
+        return new StringTextComponent(toString());
     }
 
     @Override

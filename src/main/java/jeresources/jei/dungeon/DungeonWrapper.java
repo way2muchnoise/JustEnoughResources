@@ -1,5 +1,6 @@
 package jeresources.jei.dungeon;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.util.Font;
@@ -11,6 +12,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -41,15 +43,15 @@ public class DungeonWrapper implements IRecipeCategoryExtension, ITooltipCallbac
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
-        RenderHelper.renderChest(15, 20, -40, 20, getLidAngle());
-        Font.normal.print(TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
-        Font.small.print(DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
+    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
+        RenderHelper.renderChest(matrixStack, 15, 20, -40, 20, getLidAngle());
+        Font.normal.print(matrixStack, TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
+        Font.small.print(matrixStack, DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
-        tooltip.add(this.chest.getChestDrop(ingredient).toString());
+    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<ITextComponent> tooltip) {
+        tooltip.add(this.chest.getChestDrop(ingredient).toStringTextComponent());
     }
 
     private boolean done;

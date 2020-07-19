@@ -8,10 +8,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.server.ServerWorld;
 
@@ -45,12 +47,12 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        final int dimId = world.getDimension().getType().getId();
-        this.timer.startChunk(dimId);
+        final RegistryKey<World> worldRegistryKey = world.func_234923_W_();
+        this.timer.startChunk(worldRegistryKey);
         Map<String, Integer[]> temp = new HashMap<>();
 
         BlockPos.Mutable blockPos = new BlockPos.Mutable();
-        RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vec3d(0, 0, 0), Direction.DOWN, blockPos, true);
+        RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vector3d(0, 0, 0), Direction.DOWN, blockPos, true);
         PlayerEntity player = Minecraft.getInstance().player;
 
         final int maxY = chunk.getTopFilledSegment();
@@ -92,7 +94,7 @@ public class ChunkProfiler implements Runnable {
             dimensionData.distributionMap.put(entry.getKey(), array);
         }
 
-        this.timer.endChunk(dimId);
+        this.timer.endChunk(worldRegistryKey);
     }
 
     public static Map<String, Map<Integer, Float>> getDrops(ServerWorld world, BlockPos pos, BlockState state) {

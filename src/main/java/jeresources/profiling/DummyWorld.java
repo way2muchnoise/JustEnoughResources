@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.profiler.EmptyProfiler;
 import net.minecraft.tags.NetworkTagManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -15,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.lighting.WorldLightManager;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
@@ -26,8 +24,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 /**
  * Dummy world wraps a regular world.
@@ -38,8 +36,9 @@ public class DummyWorld extends ServerWorld {
     private CapabilityDispatcher capabilities;
 
     public DummyWorld(ServerWorld world) {
-        // MinecraftServer, Executor, SaveHandler, WorldInfo, DimensionType, IProfiler, IChunkStatusListener) {
-        super(world.getServer(), null, world.getSaveHandler(), world.getWorldInfo(), world.dimension.getType(), EmptyProfiler.INSTANCE, null);
+        // TODO: implement
+        //MinecraftServer, Executor, SaveFormat.LevelSave, IServerWorldInfo, RegistryKey<World>, RegistryKey<DimensionType>, DimensionType, IChunkStatusListener, ChunkGenerator, boolean, long, List<ISpecialSpawner>, boolean) {
+        super(null, null, null, null, null, null, null, null, null, false,0, null, false);
         // this.dimension.setWorld(this);
         // this.function = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
         this.capabilities = ForgeEventFactory.gatherCapabilities(DummyWorld.class, this);
@@ -136,25 +135,52 @@ public class DummyWorld extends ServerWorld {
     private static class DummyChunkProvider extends AbstractChunkProvider {
         private final World realWorld;
         private final AbstractChunkProvider realChunkProvider;
-        // private final ChunkGenerator<?> realChunkGenerator;
         private boolean allowLoading = true;
 
         public DummyChunkProvider(World realWorld, AbstractChunkProvider chunkProviderServer) {
             super();
             this.realWorld = realWorld;
-            // this.realChunkGenerator = chunkProviderServer.getChunkGenerator();
+
             this.realChunkProvider = chunkProviderServer;
         }
 
         @Nullable
         @Override
-        public IChunk getChunk(int i, int i1, ChunkStatus chunkStatus, boolean b) {
+        public IChunk getChunk(int x, int z, ChunkStatus requiredStatus, boolean load) {
+            /*
+            final long chunkKey = ChunkPos.asLong(x, z);
+            Chunk chunk = this.loadedChunks.get(chunkKey);
+            if (chunk != null) {
+                return chunk;
+            }
+            if (!allowLoading) {
+                return new EmptyChunkJER(dummyWorld, x, z);
+            }
+
+            try {
+                chunk = realChunkProvider.generateChunk(x, z);
+            } catch (Throwable throwable) {
+                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
+                CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
+                crashreportcategory.addDetail("Location", String.format("%d,%d", x, z));
+                crashreportcategory.addDetail("Generator", realChunkProvider.makeString());
+                throw new ReportedException(crashreport);
+            }
+
+            this.loadedChunks.put(chunkKey, chunk);
+
+            this.allowLoading = false;
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.ChunkEvent.Load(chunk));
+            chunk.populate(this, this);
+            this.allowLoading = true;
+
+            return chunk;*/
             return null;
         }
 
         @Override
-        public void tick(BooleanSupplier booleanSupplier) {
-
+        public boolean canTick(BlockPos pos) {
+            return false;
         }
 
         @Override
@@ -171,68 +197,5 @@ public class DummyWorld extends ServerWorld {
         public IBlockReader getWorld() {
             return null;
         }
-
-
-
-        /*
-        @Override
-        public void populate(int x, int z) {
-            allowLoading = false;
-            realChunkGenerator.populate(x, z);
-            GameRegistry.generateWorld(x, z, dummyWorld, this, this);
-            allowLoading = true;
-        }
-
-        @Override
-        public Chunk getLoadedChunk(int x, int z) {
-            final long chunkKey = ChunkPos.asLong(x, z);
-            return this.loadedChunks.get(chunkKey);
-        }
-        */
-
-        /*
-        @Override
-        public Chunk generateChunk(int x, int z) {
-            final long chunkKey = ChunkPos.asLong(x, z);
-            Chunk chunk = this.loadedChunks.get(chunkKey);
-            if (chunk != null) {
-                return chunk;
-            }
-            if (!allowLoading) {
-                return new EmptyChunkJER(dummyWorld, x, z);
-            }
-
-            try {
-                chunk = realChunkGenerator.generateChunk(x, z);
-            } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
-                crashreportcategory.addCrashSection("Location", String.format("%d,%d", x, z));
-                crashreportcategory.addCrashSection("Generator", realChunkProvider.makeString());
-                throw new ReportedException(crashreport);
-            }
-
-            this.loadedChunks.put(chunkKey, chunk);
-
-            this.allowLoading = false;
-            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.world.ChunkEvent.Load(chunk));
-            chunk.populate(this, this);
-            this.allowLoading = true;
-
-            return chunk;
-        }
-
-
-        @Override
-        public boolean generateStructures(Chunk chunkIn, int x, int z) {
-            return false;
-        }
-
-        @Override
-        public boolean tick() {
-            return false;
-        }
-
-        */
     }
 }

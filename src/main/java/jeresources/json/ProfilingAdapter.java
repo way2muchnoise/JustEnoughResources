@@ -2,10 +2,13 @@ package jeresources.json;
 
 import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
+import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
@@ -25,7 +28,7 @@ public class ProfilingAdapter {
         public Map<String, Map<String, Map<Integer, Float>>> dropsMap = new HashMap<>();
     }
 
-    public static void write(final Map<Integer, DimensionData> allDimensionData) {
+    public static void write(final Map<RegistryKey<World>, DimensionData> allDimensionData) {
 
         File oldWorldGenFile = WorldGenAdapter.getWorldGenFile();
         if (oldWorldGenFile.exists()) {
@@ -38,15 +41,13 @@ public class ProfilingAdapter {
             }
         }
 
-        MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
-
         try {
             JsonWriter writer = new JsonWriter(new FileWriter(WorldGenAdapter.getWorldGenFile()));
             writer.setIndent("\t");
             writer.beginArray();
 
-            for (int dimId : allDimensionData.keySet()) {
-                DimensionData dimensionData = allDimensionData.get(dimId);
+            for (RegistryKey<World> worldRegistryKey : allDimensionData.keySet()) {
+                DimensionData dimensionData = allDimensionData.get(worldRegistryKey);
 
                 Set<String> blockKeys = Sets.union(dimensionData.distribution.keySet(), dimensionData.dropsMap.keySet());
 
@@ -106,12 +107,7 @@ public class ProfilingAdapter {
                         writer.endArray();
                     }
 
-                    DimensionType dimensionType = DimensionType.getById(dimId);
-                    if (dimensionType == null) {
-                        writer.name("dim").value("Dim " + dimId + ": " + dimId);
-                    } else {
-                        writer.name("dim").value("Dim " + dimId + ": " + dimensionType.getRegistryName());
-                    }
+                    writer.name("dim").value(worldRegistryKey.func_240901_a_().toString());
                     writer.endObject();
                 }
             }

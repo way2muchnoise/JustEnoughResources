@@ -1,9 +1,12 @@
 package jeresources.profiling;
 
 import jeresources.json.WorldGenAdapter;
+import jeresources.util.DimensionHelper;
 import net.minecraft.command.ICommandSource;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +14,7 @@ import java.util.Map;
 public class ProfilingTimer {
     private final ICommandSource sender;
     private int totalChunks;
-    private final Map<Integer, DimensionCounters> dimensionsMap = new HashMap<>();
+    private final Map<RegistryKey<World>, DimensionCounters> dimensionsMap = new HashMap<>();
 
     private static class DimensionCounters {
         public final long start = System.currentTimeMillis();
@@ -25,31 +28,31 @@ public class ProfilingTimer {
         this.totalChunks = chunkCount;
     }
 
-    public void startChunk(int dim) {
-        DimensionCounters counters = this.dimensionsMap.get(dim);
+    public void startChunk(RegistryKey<World> worldRegistryKey) {
+        DimensionCounters counters = this.dimensionsMap.get(worldRegistryKey);
         if (counters == null) {
             counters = new DimensionCounters();
-            this.dimensionsMap.put(dim, counters);
-            send("[" + getDimensionName(dim) + "] Started profiling");
+            this.dimensionsMap.put(worldRegistryKey, counters);
+            send("[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Started profiling");
         }
         counters.threadCounter++;
     }
 
-    public void endChunk(int dim) {
-        DimensionCounters counters = dimensionsMap.get(dim);
+    public void endChunk(RegistryKey<World> worldRegistryKey) {
+        DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         counters.threadCounter--;
         if (++counters.chunkCounter % 100 == 0)
-            sendSpeed(dim);
+            sendSpeed(worldRegistryKey);
         if (this.totalChunks == counters.chunkCounter)
             counters.completed = true;
     }
 
     public void complete() {
-        for (int dim : this.dimensionsMap.keySet()) {
-            DimensionCounters counters = dimensionsMap.get(dim);
+        for (RegistryKey<World> worldRegistryKey : this.dimensionsMap.keySet()) {
+            DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
             counters.completed = true;
-            send("[" + getDimensionName(dim) + "] Completed profiling of " +
-                (getBlocksPerLayer(dim) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
+            send("[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Completed profiling of " +
+                (getBlocksPerLayer(worldRegistryKey) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
                 (System.currentTimeMillis() - counters.start) + " ms saved to " + WorldGenAdapter.getWorldGenFile());
         }
     }
@@ -63,28 +66,19 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.sendMessage(new TranslationTextComponent(s));
+        this.sender.sendMessage(new TranslationTextComponent(s), Util.DUMMY_UUID);
     }
 
-    private void sendSpeed(int dim) {
-        DimensionCounters counters = dimensionsMap.get(dim);
+    private void sendSpeed(RegistryKey<World> worldRegistryKey) {
+        DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         float time = (System.currentTimeMillis() - counters.start) * 1.0F / counters.chunkCounter;
-        String message = "[" + getDimensionName(dim) + "] Scanned " +
+        String message = "[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Scanned " +
             counters.chunkCounter + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
         send(message);
     }
 
-    public long getBlocksPerLayer(int dim) {
-        DimensionCounters counters = dimensionsMap.get(dim);
+    public long getBlocksPerLayer(RegistryKey<World> worldRegistryKey) {
+        DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         return counters.chunkCounter * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
-    }
-
-    private static String getDimensionName(int dim) {
-        DimensionType dimensionType = DimensionType.getById(dim);
-        if (dimensionType == null) {
-            return "Dim " + dim;
-        } else {
-            return "Dim " + dim + ": " + dimensionType.getRegistryName();
-        }
     }
 }

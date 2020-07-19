@@ -10,13 +10,13 @@ import jeresources.reference.Resources;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Quaternion;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 import org.lwjgl.BufferUtils;
@@ -47,13 +47,16 @@ public class RenderHelper {
         RenderSystem.popMatrix();
     }
 
-    public static void drawLine(double xBegin, double yBegin, double xEnd, double yEnd, int color) {
+    public static void drawLine(MatrixStack matrixStack, double xBegin, double yBegin, double xEnd, double yEnd, int color) {
         ColorHelper.setColor3f(color);
+        RenderSystem.pushMatrix();
+        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
         GL11.glLineWidth((float)(getGuiScaleFactor() * 1.3F));
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2d(xBegin, yBegin);
         GL11.glVertex2d(xEnd, yEnd);
         GL11.glEnd();
+        RenderSystem.popMatrix();
     }
 
     public static void drawPoint(double x, double y, int color) {
@@ -64,13 +67,13 @@ public class RenderHelper {
         GL11.glEnd();
     }
 
-    public static void renderEntity(int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
+    public static void renderEntity(MatrixStack matrixStack, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
         if (livingEntity.world == null) livingEntity.world = Minecraft.getInstance().world;
         RenderSystem.enableColorMaterial();
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(x, y, 50.0F);
-        RenderSystem.scaled(-scale, scale, scale);
-        RenderSystem.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        matrixStack.push();
+        matrixStack.translate(x, y, 50.0F);
+        matrixStack.scale((float) -scale, (float) scale, (float) scale);
+        matrixStack.rotate(new Quaternion(180.0F, 0.0F, 0.0F, 1.0F));
         float renderYawOffset = livingEntity.renderYawOffset;
         float rotationYaw = livingEntity.rotationYaw;
         float rotationPitch = livingEntity.rotationPitch;
@@ -83,13 +86,13 @@ public class RenderHelper {
         scale = renderInfo.scale;
         yaw = renderInfo.yaw;
         pitch = renderInfo.pitch;
-        RenderSystem.rotatef(-((float) Math.atan((pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
+        matrixStack.rotate(new Quaternion(-((float) Math.atan((pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F));
         livingEntity.renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
         livingEntity.rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
         livingEntity.rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
         livingEntity.rotationYawHead = livingEntity.rotationYaw;
         livingEntity.prevRotationYawHead = livingEntity.rotationYaw;
-        RenderSystem.translated(0.0F, livingEntity.getYOffset(), 0.0F);
+        matrixStack.translate(0.0F, livingEntity.getYOffset(), 0.0F);
         // TODO: Reimplement
         // getRenderManager().setPlayerViewY(180.0F);
         // getRenderManager().renderEntity(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
@@ -98,7 +101,7 @@ public class RenderHelper {
         livingEntity.rotationPitch = rotationPitch;
         livingEntity.prevRotationYawHead = prevRotationYawHead;
         livingEntity.rotationYawHead = rotationYawHead;
-        RenderSystem.popMatrix();
+        matrixStack.pop();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         RenderSystem.disableRescaleNormal();
         RenderSystem.activeTexture(GL13.GL_TEXTURE1); // Used to be OpenGlHelper.lightmapTexUnit
@@ -106,20 +109,20 @@ public class RenderHelper {
         RenderSystem.activeTexture(GL13.GL_TEXTURE0); // Used to be OpenGlHelper.defaultTexUnit
     }
 
-    public static void renderChest(float x, float y, float rotate, float scale, float lidAngle) {
+    public static void renderChest(MatrixStack matrixStack, float x, float y, float rotate, float scale, float lidAngle) {
         Minecraft.getInstance().getTextureManager().bindTexture(Resources.Vanilla.CHEST);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
 
-        RenderSystem.pushMatrix();
+        matrixStack.push();
         RenderSystem.enableRescaleNormal();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.translatef(x, y, 50.0F);
-        RenderSystem.rotatef(-160.0F, 1.0F, 0.0F, 0.0F);
-        RenderSystem.scalef(scale, -scale, -scale);
-        RenderSystem.translatef(0.5F, 0.5F, 0.5F);
-        RenderSystem.rotatef(rotate, 0.0F, 1.0F, 0.0F);
-        RenderSystem.translatef(-0.5F, -0.5F, -0.5F);
+        matrixStack.translate(x, y, 50.0F);
+        matrixStack.rotate(new Quaternion(-160.0F, 1.0F, 0.0F, 0.0F));
+        matrixStack.scale(scale, -scale, -scale);
+        matrixStack.translate(0.5F, 0.5F, 0.5F);
+        matrixStack.rotate(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
+        matrixStack.translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
         lidAngleF = 1.0F - lidAngleF;
@@ -132,13 +135,12 @@ public class RenderHelper {
         // modelchest.field_78232_b.offsetZ -= 0.9F; // chestBelow
         // modelchest.renderAll();
         RenderSystem.disableRescaleNormal();
-        RenderSystem.popMatrix();
+        matrixStack.pop();
     }
 
-    public static void renderBlock(BlockState block, float x, float y, float z, float rotate, float scale) {
+    public static void renderBlock(MatrixStack matrixStack, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
         RenderSystem.enableRescaleNormal();
-        MatrixStack matrixStack = new MatrixStack();
         matrixStack.push();
         matrixStack.rotate(new Quaternion(-30.0F, 0.0F, 1.0F, 0.0F));
         net.minecraft.client.renderer.RenderHelper.setupGuiFlatDiffuseLighting();
@@ -152,7 +154,7 @@ public class RenderHelper {
         matrixStack.rotate(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
         matrixStack.translate(-0.5F, -0.5F, -0.5F);
         mc.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-        // mc.getBlockRendererDispatcher().renderBlock(block, matrixStack, IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()), 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+        mc.getBlockRendererDispatcher().renderBlock(block, matrixStack, IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()), 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
         matrixStack.pop();
         net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
         RenderSystem.disableRescaleNormal();
@@ -178,9 +180,12 @@ public class RenderHelper {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
     }
 
-    public static void drawTexture(int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
+    public static void drawTexture(MatrixStack matrixStack, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
         Minecraft.getInstance().getTextureManager().bindTexture(resource);
+        RenderSystem.pushMatrix();
+        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
         GuiUtils.drawTexturedModalRect(x, y, u, v, width, height, 0);
+        RenderSystem.popMatrix();
     }
 
     private static EntityRendererManager getRenderManager() {

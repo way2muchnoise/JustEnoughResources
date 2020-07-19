@@ -5,11 +5,11 @@ import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.util.LogHelper;
 import jeresources.util.LootTableHelper;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTableManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableManager;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;

@@ -1,5 +1,6 @@
 package jeresources.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 
@@ -14,26 +15,26 @@ public class Font {
         this.isSmall = small;
     }
 
-    public void print(Object o, int x, int y) {
-        doTransform(x, y);
-        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, 8);
-        RenderSystem.popMatrix();
+    public void print(MatrixStack matrixStack, Object o, int x, int y) {
+        doTransform(matrixStack, x, y);
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, 8);
+        matrixStack.pop();
     }
 
-    public void print(Object o, int x, int y, int color) {
-        doTransform(x, y);
-        Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
-        RenderSystem.popMatrix();
+    public void print(MatrixStack matrixStack, Object o, int x, int y, int color) {
+        doTransform(matrixStack, x, y);
+        Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, color);
+        matrixStack.pop();
     }
 
-    public void print(Object o, int x, int y, int color, boolean shadow) {
-        doTransform(x, y);
+    public void print(MatrixStack matrixStack, Object o, int x, int y, int color, boolean shadow) {
+        doTransform(matrixStack, x, y);
         if (shadow) {
-            Minecraft.getInstance().fontRenderer.drawStringWithShadow(String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().fontRenderer.drawStringWithShadow(matrixStack, String.valueOf(o), 0, 0, color);
         } else {
-            Minecraft.getInstance().fontRenderer.drawString(String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, color);
         }
-        RenderSystem.popMatrix();
+        matrixStack.pop();
     }
 
     public int getStringWidth(String string) {
@@ -41,11 +42,11 @@ public class Font {
         return (int)(isSmall ? width * SCALING : width);
     }
 
-    private void doTransform(int x, int y) {
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef(x, y, 0);
+    private void doTransform(MatrixStack matrixStack, int x, int y) {
+        matrixStack.push();
+        matrixStack.translate(x, y, 0);
         if (isSmall) {
-            RenderSystem.scalef(SCALING, SCALING, 1);
+            matrixStack.scale(SCALING, SCALING, 1);
         }
     }
 }

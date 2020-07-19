@@ -1,7 +1,7 @@
 package jeresources.api;
 
+import net.minecraft.loot.LootTable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTable;
 
 import javax.annotation.Nonnull;
 

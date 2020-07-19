@@ -7,7 +7,7 @@ import jeresources.util.MobHelper;
 import jeresources.util.TranslationHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.loot.LootTable;
 
 import java.util.*;
 import java.util.stream.Collectors;

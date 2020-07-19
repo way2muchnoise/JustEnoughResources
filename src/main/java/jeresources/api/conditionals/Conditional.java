@@ -2,6 +2,7 @@ package jeresources.api.conditionals;
 
 import jeresources.api.render.TextModifier;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -74,6 +75,10 @@ public class Conditional {
         this.colour = opposite.colour;
         reverse.put(opposite, this);
         reverse.put(this, opposite);
+    }
+
+    public StringTextComponent toStringTextComponent() {
+        return new StringTextComponent(toString());
     }
 
     @Override

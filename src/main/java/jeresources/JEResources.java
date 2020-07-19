@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 public class JEResources {
     public static final String ID = "jeresources";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
     public JEResources() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON);

@@ -19,7 +19,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -134,9 +139,10 @@ public class WorldGenAdapter {
         return true;
     }
 
-    private static Map<String, Restriction> map = new HashMap<>();
+    private static Map<RegistryKey<World>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        return map.computeIfAbsent(dim, k -> new Restriction(new DimensionRestriction(dim)));
+        RegistryKey<World> worldRegistryKey = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation(dim));
+        return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }

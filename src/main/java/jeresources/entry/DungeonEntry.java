@@ -6,8 +6,8 @@ import jeresources.util.LootFunctionHelper;
 import jeresources.util.LootTableHelper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.storage.loot.*;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.List;

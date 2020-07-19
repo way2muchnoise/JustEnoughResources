@@ -3,9 +3,12 @@ package jeresources.util;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
+import net.minecraft.loot.BinomialRange;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.IRandomRange;
+import net.minecraft.loot.RandomValueRange;
+import net.minecraft.loot.functions.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.functions.*;
 
 import java.util.Random;
 import java.util.stream.IntStream;

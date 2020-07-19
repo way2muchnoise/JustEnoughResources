@@ -1,5 +1,6 @@
 package jeresources.jei;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import jeresources.reference.Reference;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -29,10 +30,13 @@ public class BackgroundDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(int xOffset, int yOffset) {
+    public void draw(MatrixStack matrixStack, int xOffset, int yOffset) {
         RenderSystem.clearCurrentColor();
         Minecraft.getInstance().getTextureManager().bindTexture(this.resource);
+        RenderSystem.pushMatrix();
+        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
         GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
+        RenderSystem.popMatrix();
     }
 
     public ResourceLocation getResource() {

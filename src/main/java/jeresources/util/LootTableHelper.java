@@ -7,13 +7,13 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.DyeColor;
+import net.minecraft.loot.*;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.resources.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.*;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 import net.minecraftforge.fml.packs.ModFileResourcePack;
@@ -156,7 +156,7 @@ public class LootTableHelper {
         if (world == null || world.getServer() == null) {
             if (manager == null) {
                 manager = new LootTableManager(new LootPredicateManager());
-                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA, Minecraft.getInstance().getExecutionThread());
+                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
                 List<IResourcePack> packs = new LinkedList<>();
                 packs.add(new VanillaPack("minecraft"));
                 for (ModFileInfo mod : ModList.get().getModFiles()) {

@@ -1,5 +1,6 @@
 package jeresources.jei.plant;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import jeresources.api.drop.PlantDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
@@ -12,8 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -32,13 +35,13 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
-        RenderHelper.renderBlock(getFarmland(), 26, 50, -10, 20F, 0.4F);
-        RenderHelper.renderBlock(getBlockState(), 26, 32, 10, 20F, 0.4F);
+    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
+        // RenderHelper.renderBlock(matrixStack, getFarmland(), 26, 50, -10, 20F, 0.4F);
+        // RenderHelper.renderBlock(matrixStack, getBlockState(), 26, 32, 10, 20F, 0.4F);
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
+    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<ITextComponent> tooltip) {
         if (!input)
             tooltip.add(getChanceString(ingredient));
     }
@@ -62,7 +65,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         return new int[]{drop.getMinDrop(), drop.getMaxDrop()};
     }
 
-    private String getChanceString(ItemStack itemStack) {
+    private StringTextComponent getChanceString(ItemStack itemStack) {
         float chance = getChance(itemStack);
         String toPrint;
         if (Float.isNaN(chance)) {
@@ -71,11 +74,11 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         } else {
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
         }
-        return toPrint;
+        return new StringTextComponent(toPrint);
     }
 
     private BlockState state;
-    private IProperty<?> ageProperty;
+    private Property<?> ageProperty;
     private long timer = -1;
     private static final int TICKS = 500; // .5s
 
@@ -86,13 +89,13 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
             else this.state = Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
 
             if (this.plantEntry.getAgeProperty() != null) this.ageProperty = this.plantEntry.getAgeProperty();
-            else this.state.getProperties().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
+            else this.state.func_235904_r_().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
         }
 
         if (ageProperty != null) {
             if (timer == -1) timer = System.currentTimeMillis() + TICKS;
             else if (System.currentTimeMillis() > timer) {
-                this.state = this.state.cycle(ageProperty);
+                this.state = this.state.func_235896_a_(ageProperty);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
         }

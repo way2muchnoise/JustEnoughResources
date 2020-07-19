@@ -8,7 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PlantEntry {
     private int totalWeight = 0;
     private BlockState soil = null;
     private BlockState plantState = null;
-    private IProperty<?> ageProperty = null;
+    private Property<?> ageProperty = null;
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
@@ -41,7 +41,7 @@ public class PlantEntry {
         return plantState;
     }
 
-    public IProperty<?> getAgeProperty() {
+    public Property<?> getAgeProperty() {
         return ageProperty;
     }
 
@@ -53,7 +53,7 @@ public class PlantEntry {
         this.plantState = plantState;
     }
 
-    public void setAgeProperty(IProperty<?> ageProperty) {
+    public void setAgeProperty(Property<?> ageProperty) {
         this.ageProperty = ageProperty;
     }
 

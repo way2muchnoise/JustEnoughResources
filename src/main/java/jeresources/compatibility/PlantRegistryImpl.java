@@ -10,7 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.common.IPlantable;
 
@@ -28,7 +28,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void register(ItemStack itemStack, IPlantable plant, IProperty<?> ageProperty, PlantDrop... drops) {
+    public void register(ItemStack itemStack, IPlantable plant, Property<?> ageProperty, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(itemStack, plant, drops);
             entry.setAgeProperty(ageProperty);
@@ -39,7 +39,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void register(ItemStack itemStack, BlockState plantState, IProperty<?> ageProperty, PlantDrop... drops) {
+    public void register(ItemStack itemStack, BlockState plantState, Property<?> ageProperty, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(itemStack, drops);
             entry.setPlantState(plantState);
@@ -71,7 +71,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void register(ItemStack itemStack, IProperty<?> ageProperty, PlantDrop... drops) {
+    public void register(ItemStack itemStack, Property<?> ageProperty, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(itemStack, drops);
             entry.setAgeProperty(ageProperty);
@@ -91,7 +91,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public <T extends Block & IPlantable> void register(T plant, IProperty<?> ageProperty, PlantDrop... drops) {
+    public <T extends Block & IPlantable> void register(T plant, Property<?> ageProperty, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(plant, drops);
             entry.setAgeProperty(ageProperty);
@@ -111,7 +111,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerWithSoil(ItemStack stack, IPlantable plant, IProperty<?> ageProperty, BlockState soil, PlantDrop... drops) {
+    public void registerWithSoil(ItemStack stack, IPlantable plant, Property<?> ageProperty, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(stack, plant, drops);
             entry.setAgeProperty(ageProperty);
@@ -123,7 +123,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerWithSoil(ItemStack stack, BlockState plantState, IProperty<?> ageProperty, BlockState soil, PlantDrop... drops) {
+    public void registerWithSoil(ItemStack stack, BlockState plantState, Property<?> ageProperty, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(stack, drops);
             entry.setPlantState(plantState);
@@ -159,7 +159,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerWithSoil(ItemStack stack, IProperty<?> ageProperty, BlockState soil, PlantDrop... drops) {
+    public void registerWithSoil(ItemStack stack, Property<?> ageProperty, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(stack, drops);
             entry.setAgeProperty(ageProperty);
@@ -182,7 +182,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public <T extends Block & IPlantable> void registerWithSoil(T plant, IProperty<?> ageProperty, BlockState soil, PlantDrop... drops) {
+    public <T extends Block & IPlantable> void registerWithSoil(T plant, Property<?> ageProperty, BlockState soil, PlantDrop... drops) {
         try {
             PlantEntry entry = new PlantEntry(plant, drops);
             entry.setAgeProperty(ageProperty);

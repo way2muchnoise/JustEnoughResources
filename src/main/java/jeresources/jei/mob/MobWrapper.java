@@ -1,5 +1,6 @@
 package jeresources.jei.mob;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
@@ -22,6 +23,8 @@ import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
@@ -48,12 +51,13 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
         LivingEntity LivingEntity = this.mob.getEntity();
         RenderHelper.scissor(7, 43, 59, 79);
         this.scale = getScale(this.mob.getEntity());
         this.offsetY = getOffsetY(this.mob.getEntity());
         RenderHelper.renderEntity(
+            matrixStack,
             37, 105 - offsetY, scale,
             38 - mouseX,
             70 - offsetY - mouseY,
@@ -68,23 +72,23 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
                 mobName += " (" + entityString + ")";
             }
         }
-        Font.normal.print(mobName, 7, 2);
-        Font.normal.print(this.mob.getBiomes().length > 1 ? TranslationHelper.translateAndFormat("jer.mob.biome") : TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
-        Font.normal.print(this.mob.getLightLevel(), 7, 22);
-        Font.normal.print(TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
+        Font.normal.print(matrixStack, mobName, 7, 2);
+        Font.normal.print(matrixStack, this.mob.getBiomes().length > 1 ? TranslationHelper.translateAndFormat("jer.mob.biome") : TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
+        Font.normal.print(matrixStack, this.mob.getLightLevel(), 7, 22);
+        Font.normal.print(matrixStack, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
     @Override
-    public List<String> getTooltipStrings(double mouseX, double mouseY) {
+    public List<ITextComponent> getTooltipStrings(double mouseX, double mouseY) {
         if (this.mob.getBiomes().length > 1 && isOnBiome(mouseX, mouseY))
-            return CollectionHelper.create(this.mob.getBiomes());
+            return CollectionHelper.create(StringTextComponent::new, this.mob.getBiomes());
         return Collections.emptyList();
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-        tooltip.add(this.mob.getDrops()[slotIndex].toString());
-        List<String> list = getToolTip(ingredient);
+    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<ITextComponent> tooltip) {
+        tooltip.add(this.mob.getDrops()[slotIndex].toStringTextComponent());
+        List<ITextComponent> list = getToolTip(ingredient);
         if (list != null)
             tooltip.addAll(list);
     }
@@ -93,7 +97,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
         return this.mob.getEntity();
     }
 
-    public List<String> getToolTip(ItemStack stack) {
+    public List<ITextComponent> getToolTip(ItemStack stack) {
         for (LootDrop item : this.mob.getDrops()) {
             if (stack.isItemEqual(item.item))
                 return item.getTooltipText();

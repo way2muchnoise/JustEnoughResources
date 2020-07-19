@@ -2,7 +2,7 @@ package jeresources.util;
 
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
-import net.minecraft.world.storage.loot.conditions.*;
+import net.minecraft.loot.conditions.*;
 
 public class LootConditionHelper {
     public static void applyCondition(ILootCondition condition, LootDrop lootDrop) {

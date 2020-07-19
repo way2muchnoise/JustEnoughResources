@@ -1,5 +1,6 @@
 package jeresources.jei;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -26,7 +27,7 @@ public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension>
     }
 
     @Override
-    public void draw(T recipe, double mouseX, double mouseY) {
-        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), mouseX, mouseY);
+    public void draw(T recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), matrixStack, mouseX, mouseY);
     }
 }

@@ -2,8 +2,6 @@ package jeresources.api.conditionals;
 
 import jeresources.api.drop.LootDrop;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootFunction;
 
 import java.util.Random;
 

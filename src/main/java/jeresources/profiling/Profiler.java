@@ -2,14 +2,16 @@ package jeresources.profiling;
 
 import jeresources.config.Settings;
 import jeresources.json.ProfilingAdapter;
+import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.DimensionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class Profiler implements Runnable {
-    private final ConcurrentMap<Integer, ProfiledDimensionData> allDimensionData;
+    private final ConcurrentMap<RegistryKey<World>, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
     private final Entity sender;
     private final ProfilingBlacklist blacklist;
@@ -40,16 +42,12 @@ public class Profiler implements Runnable {
         if (!allWorlds) {
 
             // Will never be null as the mod is client side only
-            DimensionType dimensionType = sender.dimension;
-            profileWorld(dimensionType);
+            RegistryKey<World> worldKey = sender.world.func_234923_W_();
+            profileWorld(worldKey);
             
-        } else {        
-
-            //getRegistry gets ALL of the dimensions.
-            //Forge says it is internal, but there are not other options for
-            //all dimensions that exist.
-            for (Object o : DimensionManager.getRegistry()) {
-                profileWorld((DimensionType) o);
+        } else {
+            for (RegistryKey<World> worldKey : sender.getServer().func_240770_D_()) {
+                profileWorld(worldKey);
             }
         }
 
@@ -58,39 +56,37 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(DimensionType dimensionType) {
+    private void profileWorld(RegistryKey<World> worldKey) {
         String msg;
         MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
         //Get the world we want to process.
-        ServerWorld world = DimensionManager.getWorld(server, dimensionType, true, true);
+        ServerWorld world = server.getWorld(worldKey);
 
         if (world == null) {
-            msg = "Unable to profile dimension " + dimensionType + ".  There is no world for it.";
+            msg = "Unable to profile dimension " + DimensionHelper.getWorldName(worldKey) + ".  There is no world for it.";
             LogHelper.error(msg);
-            sender.sendMessage(new StringTextComponent(msg));
+            sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
             return;
         }
         
         //Make this stick for recovery after profiling.
         final ServerWorld worldServer = world;
         
-        msg = "Inspecting dimension " + dimensionType + ": " + worldServer.getDimension().getType().getRegistryName() + ". ";
-        sender.sendMessage(new StringTextComponent(msg));
-        
-        msg += "The world thinks it is dimension " + worldServer.getDimension().getType().getRegistryName() + ".";
+        msg = "Inspecting dimension " + DimensionHelper.getWorldName(worldKey) + ". ";
+        sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(dimensionType.getId())) {
-            msg = "Skipped dimension " + dimensionType + " during profiling";
+        if (Settings.excludedDimensions.contains(worldKey.func_240901_a_().toString())) {
+            msg = "Skipped dimension " + DimensionHelper.getWorldName(worldKey) + " during profiling";
             LogHelper.info(msg);
-            sender.sendMessage(new StringTextComponent(msg));
+            sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
             return;
         }
 
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
-        this.allDimensionData.put(dimensionType.getId(), new ProfiledDimensionData());
+        this.allDimensionData.put(worldKey, new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);
         // dummyWorld.initialize(null);
@@ -113,14 +109,14 @@ public class Profiler implements Runnable {
         return blacklist;
     }
 
-    public ConcurrentMap<Integer, ProfiledDimensionData> getAllDimensionData() {
+    public ConcurrentMap<RegistryKey<World>, ProfiledDimensionData> getAllDimensionData() {
         return allDimensionData;
     }
 
     private void writeData() {
-        Map<Integer, ProfilingAdapter.DimensionData> allData = new HashMap<>();
-        for (Integer dim : this.allDimensionData.keySet()) {
-            ProfiledDimensionData profiledData = this.allDimensionData.get(dim);
+        Map<RegistryKey<World>, ProfilingAdapter.DimensionData> allData = new HashMap<>();
+        for (RegistryKey<World> worldRegistryKey : this.allDimensionData.keySet()) {
+            ProfiledDimensionData profiledData = this.allDimensionData.get(worldRegistryKey);
             ProfilingAdapter.DimensionData data = new ProfilingAdapter.DimensionData();
             data.dropsMap = profiledData.dropsMap;
             data.silkTouchMap = profiledData.silkTouchMap;
@@ -128,11 +124,11 @@ public class Profiler implements Runnable {
             for (Map.Entry<String, Integer[]> entry : profiledData.distributionMap.entrySet()) {
                 Float[] array = new Float[ChunkProfiler.CHUNK_HEIGHT];
                 for (int i = 0; i < ChunkProfiler.CHUNK_HEIGHT; i++)
-                    array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(dim);
+                    array[i] = entry.getValue()[i] * 1.0F / this.timer.getBlocksPerLayer(worldRegistryKey);
                 data.distribution.put(entry.getKey(), array);
             }
 
-            allData.put(dim, data);
+            allData.put(worldRegistryKey, data);
         }
 
         ProfilingAdapter.write(allData);

@@ -1,5 +1,7 @@
 package jeresources.profiling;
 
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -18,9 +20,9 @@ public class ProfilingExecutor {
     }
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks) {
-        final int dimId = dummyWorld.getDimension().getType().getId();
+        final RegistryKey<World> worldRegistryKey = dummyWorld.func_234923_W_();
 
-        final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimId);
+        final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(worldRegistryKey);
 
         this.execute(new ChunkProfiler(dummyWorld, chunks, dimensionData, profiler.getTimer(), profiler.getBlacklist()));
     }

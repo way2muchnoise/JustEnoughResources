@@ -1,66 +1,50 @@
 package jeresources.api.restrictions;
 
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
 
 public class DimensionRestriction {
-    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(0);
-    public static final DimensionRestriction NETHER = new DimensionRestriction(-1);
-    public static final DimensionRestriction END = new DimensionRestriction(1);
+    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(World.field_234918_g_);
+    public static final DimensionRestriction NETHER = new DimensionRestriction(World.field_234919_h_);
+    public static final DimensionRestriction END = new DimensionRestriction(World.field_234920_i_);
     public static final DimensionRestriction NONE = new DimensionRestriction();
 
     private Type type;
-    private String name;
+    private RegistryKey<World> dimension;
 
     private DimensionRestriction() {
         this.type = Type.NONE;
     }
 
-    public DimensionRestriction(DimensionType type) {
-        this(Type.WHITELIST, DimensionType.getKey(type).toString());
+    public DimensionRestriction(RegistryKey<World> type) {
+        this(Type.WHITELIST, type);
     }
 
-    public DimensionRestriction(Type type, DimensionType dimensionType) {
-        this(type, DimensionType.getKey(dimensionType).toString());
-    }
-
-    public DimensionRestriction(int dim) {
-        this(DimensionType.getById(dim));
-    }
-
-    public DimensionRestriction(Type type, int dim) {
-        this(type, DimensionType.getById(dim));
-    }
-
-    public DimensionRestriction(String name) {
-        this(Type.WHITELIST, name);
-    }
-
-    public DimensionRestriction(Type type, String name) {
+    public DimensionRestriction(Type type, RegistryKey<World> dimension) {
         this.type = type;
-        this.name = name;
+        this.dimension = dimension;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof DimensionRestriction) {
             DimensionRestriction other = (DimensionRestriction) obj;
-            return this.type == other.type && this.name.equals(other.name);
+            return this.type == other.type && this.dimension.equals(other.dimension);
         }
         return false;
     }
 
     @Override
     public String toString() {
-        return "Dimension: " + (type == Type.NONE ? "None" : type.name() + " " + name);
+        return "Dimension: " + (type == Type.NONE ? "None" : type.name() + " " + dimension.toString());
     }
 
     @Override
     public int hashCode() {
-        return type == Type.NONE ? super.hashCode() : type.hashCode() ^ name.hashCode();
+        return type == Type.NONE ? super.hashCode() : type.hashCode() ^ dimension.hashCode();
     }
 
     public String getDimensionName() {
-        return type == Type.NONE ? "all" : name;
+        return type == Type.NONE ? "all" : dimension.func_240901_a_().toString();
     }
 }

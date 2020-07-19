@@ -99,8 +99,10 @@ public class ChunkGetter implements Runnable {
             // load a square of chunks in a random area, and then profile the center ones.
             // worldgen does not populate the chunks that are on the edges.
 
-            final int chunkX = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterX();
-            final int chunkZ = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterZ();
+            // final int chunkX = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterX();
+            final int chunkX = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.func_230316_a_();
+            // final int chunkZ = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterZ();
+            final int chunkZ = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.func_230317_b_();
 
             return ChunkGetter.centerChunks(dummyWorld, chunkX, chunkZ, GENERATE_SIZE);
         }
@@ -119,11 +121,14 @@ public class ChunkGetter implements Runnable {
             this.sideLength = (int) Math.ceil(Math.sqrt(chunkCount));
 
             WorldBorder worldBorder = worldServer.getWorldBorder();
-            this.minX = (int) worldBorder.getCenterX() - this.sideLength / 2;
-            this.maxX = (int) worldBorder.getCenterX() + this.sideLength / 2;
+            // this.minX = (int) worldBorder.getCenterX() - this.sideLength / 2;
+            this.minX = (int) worldBorder.func_230316_a_() - this.sideLength / 2;
+            // this.maxX = (int) worldBorder.getCenterX() + this.sideLength / 2;
+            this.maxX = (int) worldBorder.func_230316_a_() + this.sideLength / 2;
             this.posX = this.minX;
 
-            this.posZ = (int) worldBorder.getCenterZ() - this.sideLength / 2;
+            // this.posZ = (int) worldBorder.getCenterZ() - this.sideLength / 2;
+            this.posZ = (int) worldBorder.func_230317_b_() - this.sideLength / 2;
         }
 
         @Override

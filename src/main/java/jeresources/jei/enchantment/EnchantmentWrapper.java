@@ -1,5 +1,6 @@
 package jeresources.jei.enchantment;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import jeresources.entry.EnchantmentEntry;
 import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.Font;
@@ -62,15 +63,15 @@ public class EnchantmentWrapper implements IRecipeCategoryExtension {
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments()) {
-            Font.normal.print(enchantment.getTranslatedWithLevels(), ENCHANT_X, y);
+            Font.normal.print(matrixStack, enchantment.getTranslatedWithLevels(), ENCHANT_X, y);
             y += SPACING_Y;
         }
         if (this.lastSet > 0) {
             String toPrint = TranslationHelper.getLocalPageInfo(this.set, this.lastSet);
-            Font.normal.print(toPrint, PAGE_X, PAGE_Y);
+            Font.normal.print(matrixStack, toPrint, PAGE_X, PAGE_Y);
         }
     }
 

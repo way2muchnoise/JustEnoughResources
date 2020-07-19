@@ -13,17 +13,15 @@ import net.minecraft.profiler.EmptyProfiler;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.tags.NetworkTagManager;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.lighting.WorldLightManager;
 import net.minecraft.world.storage.MapData;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.util.LazyOptional;
@@ -33,13 +31,13 @@ import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
 
 public class FakeClientWorld extends ClientWorld {
-    public static final WorldSettings worldSettings = new WorldSettings(0, GameType.SURVIVAL, true, false, WorldType.DEFAULT);
-    public static final WorldInfo worldInfo = new WorldInfo(worldSettings, "just_enough_resources_fake");
+    public static final ClientWorldInfo clientWorldInfo = new ClientWorldInfo(Difficulty.NORMAL, false, false);
 
     private CapabilityDispatcher capabilities;
 
     public FakeClientWorld() {
-        super(null, worldSettings, DimensionType.OVERWORLD, 0, EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer);
+        //public ClientWorld(ClientPlayNetHandler, ClientWorld.ClientWorldInfo, RegistryKey<World>, RegistryKey<DimensionType>, DimensionType, int, Supplier<IProfiler>, WorldRenderer, boolean, long) {
+        super(null, clientWorldInfo, World.field_234918_g_, DimensionType.field_235999_c_, DimensionType.func_236019_a_(), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientWorld.class, this);
     }
 
