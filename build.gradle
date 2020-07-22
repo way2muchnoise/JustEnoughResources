@@ -175,6 +175,9 @@ curseforge {
         releaseType =  'alpha'
         mainArtifact (jar) {
             displayName = "${jar.archiveName}".replace(".jar", "")
+			relations {
+				requiredLibrary 'jei'
+			}
         }
         addArtifact (javadocJar) {
             displayName = "${javadocJar.archiveName}".replace(".jar", "")
