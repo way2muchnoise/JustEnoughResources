@@ -63,15 +63,18 @@ public class MobEntry {
 
     public MobEntry(LivingEntity entity, LootDrop... drops) {
         this(entity, LightLevel.any, drops);
+        this.lightLevel = MobHelper.getLightLevel(this);
     }
 
     public MobEntry(LivingEntity entity, LootTable lootTable) {
         this(entity, LightLevel.any);
+        this.lightLevel = MobHelper.getLightLevel(this);
         this.drops.addAll(LootTableHelper.toDrops(lootTable));
     }
 
     public MobEntry(LivingEntity entity) {
         this(entity, LightLevel.any);
+        this.lightLevel = MobHelper.getLightLevel(this);
     }
 
     public LivingEntity getEntity() {
