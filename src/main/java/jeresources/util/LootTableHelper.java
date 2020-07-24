@@ -142,7 +142,7 @@ public class LootTableHelper {
         }
 
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
-            if (entityType.getClassification() != EntityClassification.MISC) {
+            if (entityType.getClassification() != EntityClassification.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getLootTable(), entityType);
             }
         }
