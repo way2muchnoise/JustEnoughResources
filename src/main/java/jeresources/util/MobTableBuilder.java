@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MobTableBuilder {
-    private final Map<ResourceLocation, LivingEntity> mobTables = new HashMap<>();
+    private final Map<LivingEntity, ResourceLocation> mobTables = new HashMap<>();
     private final World world;
 
     public MobTableBuilder(World world) {
@@ -22,7 +22,7 @@ public class MobTableBuilder {
     public void add(ResourceLocation resourceLocation, EntityType<?> entityType) {
         Entity entity = entityType.create(world);
         if (entity instanceof LivingEntity) {
-            mobTables.put(resourceLocation, (LivingEntity) entity);
+            mobTables.put((LivingEntity) entity, resourceLocation);
         } else {
             if (entity != null) {
                 entity.remove();
@@ -34,11 +34,11 @@ public class MobTableBuilder {
         SheepEntity entity = entityType.create(world);
         if (entity != null) {
             entity.setFleeceColor(dye);
-            mobTables.put(resourceLocation, entity);
+            mobTables.put(entity, resourceLocation);
         }
     }
 
-    public Map<ResourceLocation, LivingEntity> getMobTables() {
+    public Map<LivingEntity, ResourceLocation> getMobTables() {
         return mobTables;
     }
 }
