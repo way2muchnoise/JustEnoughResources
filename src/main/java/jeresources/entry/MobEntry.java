@@ -32,7 +32,8 @@ public class MobEntry {
 
     public MobEntry(LivingEntity entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, biomes, drops);
-        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
+        this.minExp = MobHelper.getExpDrop(this, false);
+        this.maxExp = MobHelper.getExpDrop(this, true);
     }
 
     public MobEntry(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
@@ -56,7 +57,8 @@ public class MobEntry {
 
     public MobEntry(LivingEntity entity, LightLevel lightLevel, LootDrop... drops) {
         this(entity, lightLevel, 0, 0, drops);
-        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
+        this.minExp = MobHelper.getExpDrop(this, false);
+        this.maxExp = MobHelper.getExpDrop(this, true);
     }
 
     public MobEntry(LivingEntity entity, LootDrop... drops) {
