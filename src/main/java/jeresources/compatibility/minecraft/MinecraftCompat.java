@@ -39,6 +39,13 @@ public class MinecraftCompat extends CompatBase {
         registerVanillaPlants();
     }
 
+    @Override
+    protected void registerMob(MobEntry entry) {
+        MobCompat.setLightLevel(entry);
+        MobCompat.setExperience(entry);
+        super.registerMob(entry);
+    }
+
     private void registerVanillaMobs() {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
