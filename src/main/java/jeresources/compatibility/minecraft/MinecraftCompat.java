@@ -50,7 +50,7 @@ public class MinecraftCompat extends CompatBase {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllMobLootTables(world).entrySet().stream()
-            .map(entry -> new MobEntry(entry.getKey(), manager.getLootTableFromLocation(entry.getValue())))
+            .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
             .sorted(Comparator.comparing(MobEntry::getMobName))
             .forEach(this::registerMob);
 

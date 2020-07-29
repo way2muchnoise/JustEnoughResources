@@ -132,7 +132,7 @@ public class LootTableHelper {
         return chestTables;
     }
 
-    public static Map<LivingEntity, ResourceLocation> getAllMobLootTables(World world) {
+    public static Map<ResourceLocation, LivingEntity> getAllMobLootTables(World world) {
         MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
 
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
