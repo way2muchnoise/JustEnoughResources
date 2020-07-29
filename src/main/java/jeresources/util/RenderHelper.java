@@ -79,7 +79,8 @@ public class RenderHelper {
         float rotationPitch = livingEntity.rotationPitch;
         float prevRotationYawHead = livingEntity.prevRotationYawHead;
         float rotationYawHead = livingEntity.rotationYawHead;
-        net.minecraft.client.renderer.RenderHelper.setupGuiFlatDiffuseLighting();
+        //Note: this line is necessary for mob rendering, needs to be re-enabled when mobs render again
+        //net.minecraft.client.renderer.RenderHelper.setupGuiFlatDiffuseLighting();
         IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
         x = renderInfo.x;
         y = renderInfo.y;
