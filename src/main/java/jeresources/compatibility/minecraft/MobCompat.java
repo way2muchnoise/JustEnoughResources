@@ -20,12 +20,13 @@ import net.minecraft.entity.monster.WitchEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MobCompat {
     private static World world = MinecraftCompat.getWorld();
-    private final HashMap<Class, Integer[]> MOB_XP = new HashMap<>();
+    private final HashMap<Class, Tuple<Integer, Integer>> MOB_XP = new HashMap<>();
     private final HashMap<Class, LightLevel> LIGHT_LEVEL = new HashMap<>();
     private static MobCompat instance;
 
@@ -49,8 +50,8 @@ public class MobCompat {
     public void setExperience(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
 
-        entry.setMinExp(MOB_XP.get(entityClass)[0]);
-        entry.setMaxExp(MOB_XP.get(entityClass)[1]);
+        entry.setMinExp(MOB_XP.get(entityClass).getA());
+        entry.setMaxExp(MOB_XP.get(entityClass).getB());
     }
 
     private void initMobXp() {
@@ -59,22 +60,19 @@ public class MobCompat {
 
             if (entity instanceof MobEntity) {
                 Class entityClass = entity.getClass();
-                Integer[] exp = new Integer[2];
+                Tuple<Integer, Integer> exp;
 
                 if(entity instanceof AnimalEntity || entity instanceof WaterMobEntity) {
-                    exp[0] = 1;
-                    exp[1] = 3;
+                    exp = new Tuple<>(1, 3);
                 }
                 else if(entity instanceof EnderDragonEntity) {
-                    exp[0] = 500;
-                    exp[1] = 12000;
+                    exp = new Tuple<>(500, 12000);
                 }
                 else if(entity instanceof SlimeEntity || entity instanceof MagmaCubeEntity) {
-                    exp[0] = 1;
-                    exp[1] = 4;
+                    exp = new Tuple<>(1, 4);
                 }
                 else {
-                    exp[0] = exp[1] = ((MobEntity)entity).experienceValue;
+                    exp = new Tuple<>(((MobEntity)entity).experienceValue, ((MobEntity)entity).experienceValue);
                 }
 
                 MOB_XP.put(entityClass, exp);
@@ -83,8 +81,7 @@ public class MobCompat {
     }
 
     private void initLightLevel() {
-        for (EntityType entityType : ForgeRegistries.ENTITIES)
-        {
+        for (EntityType entityType : ForgeRegistries.ENTITIES) {
             Entity entity = entityType.create(world);
 
             if (entity instanceof MobEntity) {
