@@ -1,14 +1,11 @@
 package jeresources.compatibility.minecraft;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
 import jeresources.api.conditionals.LightLevel;
 import jeresources.entry.MobEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.monster.BlazeEntity;
@@ -17,13 +14,11 @@ import net.minecraft.entity.monster.MagmaCubeEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.PatrollerEntity;
 import net.minecraft.entity.monster.PhantomEntity;
-import net.minecraft.entity.monster.PillagerEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.monster.VexEntity;
 import net.minecraft.entity.monster.WitchEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.DolphinEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -47,12 +42,13 @@ public class MobCompat {
 
     public void setLightLevel(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
+        
         entry.setLightLevel(LIGHT_LEVEL.get(entityClass));
     }
 
     public void setExperience(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
-        System.out.println("The Entity Class: "+entityClass+" | The Mininum Exp: "+MOB_XP.get(entityClass)[0]);
+
         entry.setMinExp(MOB_XP.get(entityClass)[0]);
         entry.setMaxExp(MOB_XP.get(entityClass)[1]);
     }
@@ -94,17 +90,26 @@ public class MobCompat {
             if (entity instanceof MobEntity) {
                 Class entityClass = entity.getClass();
 
-                if (entity instanceof VexEntity || entity instanceof GuardianEntity || (entity instanceof PatrollerEntity && !(entity instanceof WitchEntity))) //all the entities that cannot spawn naturally
+                if (cannotSpawnNaturally(entity)) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.any);
-                else if (entity instanceof BlazeEntity)
+                }
+                else if (entity instanceof BlazeEntity) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.blaze);
-                else if (entity instanceof MonsterEntity || entity instanceof SlimeEntity || entity instanceof PhantomEntity)
+                }
+                else if (entity instanceof MonsterEntity || entity instanceof SlimeEntity || entity instanceof PhantomEntity) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.hostile);
-                else if (entity instanceof BatEntity)
+                }
+                else if (entity instanceof BatEntity) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.bat);
-                else
+                }
+                else {
                     LIGHT_LEVEL.put(entityClass, LightLevel.any);
+                }
             }
         }
     }
-}
+
+    private boolean cannotSpawnNaturally(Entity entity) {
+        return entity instanceof VexEntity || entity instanceof GuardianEntity || (entity instanceof PatrollerEntity && !(entity instanceof WitchEntity));
+    }
+}
