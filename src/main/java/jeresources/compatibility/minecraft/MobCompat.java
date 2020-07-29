@@ -30,22 +30,34 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class MobCompat {
     private static World world = MinecraftCompat.getWorld();
-    private static final HashMap<Class, Integer[]> MOB_XP = new HashMap<>();
-    private static final HashMap<Class, LightLevel> LIGHT_LEVEL = new HashMap<>();
+    private final HashMap<Class, Integer[]> MOB_XP = new HashMap<>();
+    private final HashMap<Class, LightLevel> LIGHT_LEVEL = new HashMap<>();
+    private static MobCompat instance;
 
-    public static void setLightLevel(MobEntry entry) {
+    public static MobCompat getInstance() {
+        if (instance == null)
+            return instance = new MobCompat();
+        return instance;
+    }
+
+    private MobCompat() {
+        initMobXp();
+        initLightLevel();
+    }
+
+    public void setLightLevel(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
         entry.setLightLevel(LIGHT_LEVEL.get(entityClass));
     }
 
-    public static void setExperience(MobEntry entry) {
+    public void setExperience(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
         System.out.println("The Entity Class: "+entityClass+" | The Mininum Exp: "+MOB_XP.get(entityClass)[0]);
         entry.setMinExp(MOB_XP.get(entityClass)[0]);
         entry.setMaxExp(MOB_XP.get(entityClass)[1]);
     }
 
-    static {
+    private void initMobXp() {
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
             Entity entity = entityType.create(world);
 
@@ -70,6 +82,17 @@ public class MobCompat {
                 }
 
                 MOB_XP.put(entityClass, exp);
+            }
+        }
+    }
+
+    private void initLightLevel() {
+        for (EntityType entityType : ForgeRegistries.ENTITIES)
+        {
+            Entity entity = entityType.create(world);
+
+            if (entity instanceof MobEntity) {
+                Class entityClass = entity.getClass();
 
                 if (entity instanceof VexEntity || entity instanceof GuardianEntity || (entity instanceof PatrollerEntity && !(entity instanceof WitchEntity))) //all the entities that cannot spawn naturally
                     LIGHT_LEVEL.put(entityClass, LightLevel.any);

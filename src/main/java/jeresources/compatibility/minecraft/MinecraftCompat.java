@@ -41,8 +41,8 @@ public class MinecraftCompat extends CompatBase {
 
     @Override
     protected void registerMob(MobEntry entry) {
-        MobCompat.setLightLevel(entry);
-        MobCompat.setExperience(entry);
+        MobCompat.getInstance().setLightLevel(entry);
+        MobCompat.getInstance().setExperience(entry);
         super.registerMob(entry);
     }
 
