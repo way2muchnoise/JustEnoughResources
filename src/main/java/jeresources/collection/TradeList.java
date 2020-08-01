@@ -54,52 +54,52 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
     }
 
-    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ITrade[] trades, Random rand) {
-        for (VillagerTrades.ITrade trade : trades) {
-            MerchantOffer offer = trade.getOffer(villagerEntry.getVillagerEntity(), rand);
-            if (offer != null) {
-                merchantOffers.add(offer);
-            }
+    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ITrade trade, Random rand) {
+        MerchantOffer offer = trade.getOffer(villagerEntry.getVillagerEntity(), rand);
+        if (offer != null) {
+            merchantOffers.add(offer);
         }
     }
 
     public void addITradeList(VillagerTrades.ITrade[] tradeList) {
-        MerchantOffers tempList = new MerchantOffers();
-        Random rand = new Random();
-        for (int itr = 0; itr < 100; itr++)
-            addMerchantRecipe(tempList, tradeList, rand);
-        if (tempList.size() == 0) return; // Bad lists be bad
-        ItemStack buy1 = tempList.get(0).getBuyingStackFirst();
-        ItemStack buy2 = tempList.get(0).getBuyingStackSecond();
-        ItemStack sell = tempList.get(0).getSellingStack();
-        int minBuy1, minBuy2, minSell;
-        int maxBuy1, maxBuy2, maxSell;
-        minBuy1 = maxBuy1 = buy1.getCount();
-        if (!buy2.isEmpty()) minBuy2 = maxBuy2 = buy2.getCount();
-        else minBuy2 = maxBuy2 = 1; // Needs to be one with the new ItemStack.EMPTY implementation
-        minSell = maxSell = sell.getCount();
-        for (MerchantOffer merchantRecipe : tempList) {
-            if (minBuy1 > merchantRecipe.getBuyingStackFirst().getCount())
-                minBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
-            if (!buy2.isEmpty() && minBuy2 > merchantRecipe.getBuyingStackSecond().getCount())
-                minBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
-            if (minSell > merchantRecipe.getSellingStack().getCount())
-                minSell = merchantRecipe.getSellingStack().getCount();
+        for (VillagerTrades.ITrade trade : tradeList) {
+            MerchantOffers tempList = new MerchantOffers();
+            Random rand = new Random();
+            for (int itr = 0; itr < 100; itr++)
+                addMerchantRecipe(tempList, trade, rand);
+            if (tempList.size() == 0) return; // Bad lists be bad
+            ItemStack buy1 = tempList.get(0).getBuyingStackFirst();
+            ItemStack buy2 = tempList.get(0).getBuyingStackSecond();
+            ItemStack sell = tempList.get(0).getSellingStack();
+            int minBuy1, minBuy2, minSell;
+            int maxBuy1, maxBuy2, maxSell;
+            minBuy1 = maxBuy1 = buy1.getCount();
+            if(!buy2.isEmpty()) minBuy2 = maxBuy2 = buy2.getCount();
+            else minBuy2 = maxBuy2 = 1; // Needs to be one with the new ItemStack.EMPTY implementation
+            minSell = maxSell = sell.getCount();
+            for (MerchantOffer merchantRecipe : tempList) {
+                if(minBuy1 > merchantRecipe.getBuyingStackFirst().getCount())
+                    minBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
+                if(!buy2.isEmpty() && minBuy2 > merchantRecipe.getBuyingStackSecond().getCount())
+                    minBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
+                if(minSell > merchantRecipe.getSellingStack().getCount())
+                    minSell = merchantRecipe.getSellingStack().getCount();
 
-            if (maxBuy1 < merchantRecipe.getBuyingStackFirst().getCount())
-                maxBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
-            if (!buy2.isEmpty() && maxBuy2 < merchantRecipe.getBuyingStackSecond().getCount())
-                maxBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
-            if (maxSell < merchantRecipe.getSellingStack().getCount())
-                maxSell = merchantRecipe.getSellingStack().getCount();
+                if(maxBuy1 < merchantRecipe.getBuyingStackFirst().getCount())
+                    maxBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
+                if(!buy2.isEmpty() && maxBuy2 < merchantRecipe.getBuyingStackSecond().getCount())
+                    maxBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
+                if(maxSell < merchantRecipe.getSellingStack().getCount())
+                    maxSell = merchantRecipe.getSellingStack().getCount();
+            }
+            this.add(
+                    new Trade(
+                            buy1, minBuy1, maxBuy1,
+                            buy2, minBuy2, maxBuy2,
+                            sell, minSell, maxSell
+                    )
+            );
         }
-        this.add(
-            new Trade(
-                buy1, minBuy1, maxBuy1,
-                buy2, minBuy2, maxBuy2,
-                sell, minSell, maxSell
-            )
-        );
     }
 
     public static class Trade {
