@@ -27,12 +27,11 @@ public class VillagerEntry {
     }
 
     public void addITradeLists(Int2ObjectMap<VillagerTrades.ITrade[]> tradesLists) {
-        int i = 0;
-        for (VillagerTrades.ITrade[] levelList : tradesLists.values()) {
+        for (int i = 1;i < tradesLists.size() + 1;i++) {
+            VillagerTrades.ITrade[] levelList = tradesLists.get(i);
             TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(this);
             trades.addITradeList(levelList);
             this.tradeList.add(trades);
-            i++;
         }
     }
 
