@@ -57,6 +57,11 @@ public class DungeonRegistry {
         addCategoryMapping("chests/shipwreck_supply", "jer.dungeon.shipwreck_supply");
         addCategoryMapping("chests/shipwreck_treasure", "jer.dungeon.shipwreck_treasure");
         addCategoryMapping("chests/pillager_outpost", "jer.dungeon.pillager_outpost");
+        addCategoryMapping("chests/bastion_treasure", "jer.dungeon.bastion_treasure");
+        addCategoryMapping("chests/bastion_other", "jer.dungeon.bastion_other");
+        addCategoryMapping("chests/bastion_bridge", "jer.dungeon.bastion_bridge");
+        addCategoryMapping("chests/bastion_hoglin_stable", "jer.dungeon.bastion_hoglin_stable");
+        addCategoryMapping("chests/ruined_portal", "jer.dungeon.ruined_portal");
     }
 
     public static boolean addCategoryMapping(String category, String name) {

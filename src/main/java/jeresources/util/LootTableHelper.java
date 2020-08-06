@@ -128,6 +128,11 @@ public class LootTableHelper {
         chestTables.add(LootTables.CHESTS_SHIPWRECK_SUPPLY);
         chestTables.add(LootTables.CHESTS_SHIPWRECK_TREASURE);
         chestTables.add(LootTables.CHESTS_PILLAGER_OUTPOST);
+        chestTables.add(LootTables.field_237380_L_);
+        chestTables.add(LootTables.field_237381_M_);
+        chestTables.add(LootTables.field_237382_N_);
+        chestTables.add(LootTables.field_237383_O_);
+        chestTables.add(LootTables.field_237384_P_);
 
         return chestTables;
     }
