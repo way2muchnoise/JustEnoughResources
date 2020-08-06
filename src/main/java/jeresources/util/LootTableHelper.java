@@ -128,11 +128,11 @@ public class LootTableHelper {
         chestTables.add(LootTables.CHESTS_SHIPWRECK_SUPPLY);
         chestTables.add(LootTables.CHESTS_SHIPWRECK_TREASURE);
         chestTables.add(LootTables.CHESTS_PILLAGER_OUTPOST);
-        chestTables.add(LootTables.field_237380_L_);
-        chestTables.add(LootTables.field_237381_M_);
-        chestTables.add(LootTables.field_237382_N_);
-        chestTables.add(LootTables.field_237383_O_);
-        chestTables.add(LootTables.field_237384_P_);
+        chestTables.add(LootTables.field_237380_L_); //CHESTS_BASTION_TREASURE
+        chestTables.add(LootTables.field_237381_M_); //CHESTS_BASTION_OTHER
+        chestTables.add(LootTables.field_237382_N_); //CHESTS_BASTION_BRIDGE
+        chestTables.add(LootTables.field_237383_O_); //CHESTS_BASTION_HOGLIN_STABLE
+        chestTables.add(LootTables.field_237384_P_); //CHESTS_RUINED_PORTAL
 
         return chestTables;
     }
