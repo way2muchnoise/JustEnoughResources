@@ -71,6 +71,11 @@
 	"jer.dungeon.shipwreck_supply": "Shipwreck Supply",
 	"jer.dungeon.shipwreck_treasure": "Shipwreck Treasure",
 	"jer.dungeon.pillager_outpost": "Pillager Outpost",
+	"jer.dungeon.bastion_treasure": "Bastion Treasure",
+	"jer.dungeon.bastion_other": "Bastion Other",
+	"jer.dungeon.bastion_bridge": "Bastion Bridge",
+	"jer.dungeon.bastion_hoglin_stable": "Bastion Hoglin Stable",
+	"jer.dungeon.ruined_portal": "Ruined Portal",
 
 	"_comment": "#Enchantments View",
 	"jer.enchantments.title": "Enchantments",

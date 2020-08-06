@@ -69,6 +69,11 @@
 	"jer.dungeon.shipwreck_supply": "Schiffswrack Vorratstruhe",
 	"jer.dungeon.shipwreck_treasure": "Schiffswrack Schatztruhe",
 	"jer.dungeon.pillager_outpost": "Plünderer-Außenposten",
+	"jer.dungeon.bastion_treasure": "Bastion Schatz",
+	"jer.dungeon.bastion_other": "Bastion Sonstige Truhen",
+	"jer.dungeon.bastion_bridge": "Bastion Brücke",
+	"jer.dungeon.bastion_hoglin_stable": "Bastion Hoglinstall",
+	"jer.dungeon.ruined_portal": "Portalruine",
 
 	"_comment": "#Enchantments View",
 	"jer.enchantments.title": "Verzauberungen",
