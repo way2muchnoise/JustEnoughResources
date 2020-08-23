@@ -119,4 +119,16 @@ public class MobEntry {
     public String getExp() {
         return this.minExp + (this.maxExp == this.minExp ? "" : " - " + this.maxExp);
     }
+
+    public void setLightLevel(LightLevel lightLevel) {
+        this.lightLevel = lightLevel;
+    }
+
+    public void setMinExp(int xp) {
+        this.minExp = xp;
+    }
+
+    public void setMaxExp(int xp) {
+        this.maxExp = xp;
+    }
 }
