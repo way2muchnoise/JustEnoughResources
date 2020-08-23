@@ -53,7 +53,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
         LivingEntity LivingEntity = this.mob.getEntity();
-        RenderHelper.scissor(7, 43, 59, 79);
+        RenderHelper.scissor(matrixStack,7, 43, 59, 79);
         this.scale = getScale(this.mob.getEntity());
         this.offsetY = getOffsetY(this.mob.getEntity());
         RenderHelper.renderEntity(
