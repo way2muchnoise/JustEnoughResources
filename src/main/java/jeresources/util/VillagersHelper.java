@@ -1,6 +1,7 @@
 package jeresources.util;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import jeresources.entry.VillagerEntry;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
 import net.minecraft.entity.merchant.villager.VillagerTrades;
@@ -19,6 +20,6 @@ public class VillagersHelper {
     }
 
     private static Int2ObjectMap<VillagerTrades.ITrade[]> getTrades(VillagerProfession profession) {
-        return VillagerTrades.VILLAGER_DEFAULT_TRADES.get(profession);
+        return VillagerTrades.VILLAGER_DEFAULT_TRADES.getOrDefault(profession, Int2ObjectMaps.emptyMap());
     }
 }
