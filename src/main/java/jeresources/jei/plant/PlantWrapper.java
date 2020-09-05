@@ -89,7 +89,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
             else this.state = Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
 
             if (this.plantEntry.getAgeProperty() != null) this.ageProperty = this.plantEntry.getAgeProperty();
-            else this.state.func_235904_r_().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
+            else this.state.getProperties().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
         }
 
         if (ageProperty != null) {

@@ -4,19 +4,27 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.crafting.RecipeManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tags.ITagCollectionSupplier;
 import net.minecraft.tags.NetworkTagManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.chunk.listener.IChunkStatusListener;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.lighting.WorldLightManager;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.spawner.ISpecialSpawner;
+import net.minecraft.world.storage.IServerWorldInfo;
 import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.SaveFormat;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,8 +45,8 @@ public class DummyWorld extends ServerWorld {
 
     public DummyWorld(ServerWorld world) {
         // TODO: implement
-        //MinecraftServer, Executor, SaveFormat.LevelSave, IServerWorldInfo, RegistryKey<World>, RegistryKey<DimensionType>, DimensionType, IChunkStatusListener, ChunkGenerator, boolean, long, List<ISpecialSpawner>, boolean) {
-        super(null, null, null, null, null, null, null, null, null, false,0, null, false);
+        //MinecraftServer, Executor, SaveFormat.LevelSave, IServerWorldInfo, RegistryKey<World>, DimensionType, IChunkStatusListener, ChunkGenerator, boolean, long, List<ISpecialSpawner>, boolean
+        super(null, null, null, null, null, null, null, null, false,0, null, false);
         // this.dimension.setWorld(this);
         // this.function = world.getFunctionManager(); // Make sure this is here for a tick between object creation and dummy world init
         this.capabilities = ForgeEventFactory.gatherCapabilities(DummyWorld.class, this);
@@ -80,7 +88,7 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public NetworkTagManager getTags() {
+    public ITagCollectionSupplier getTags() {
         return null;
     }
 

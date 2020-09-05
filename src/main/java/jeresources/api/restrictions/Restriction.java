@@ -12,7 +12,7 @@ public class Restriction {
     private DimensionRestriction dimensionRestriction;
 
     private Restriction() {
-        this(BiomeRestriction.NONE);
+        this(BiomeRestriction.NO_RESTRICTION);
     }
 
     public Restriction(BiomeRestriction biomeRestriction) {
@@ -20,7 +20,7 @@ public class Restriction {
     }
 
     public Restriction(DimensionRestriction dimensionRestriction) {
-        this(BiomeRestriction.NONE, dimensionRestriction);
+        this(BiomeRestriction.NO_RESTRICTION, dimensionRestriction);
     }
 
     public Restriction(BiomeRestriction biomeRestriction, DimensionRestriction dimensionRestriction) {
@@ -53,5 +53,9 @@ public class Restriction {
     @Override
     public int hashCode() {
         return dimensionRestriction.hashCode() ^ biomeRestriction.hashCode();
+    }
+
+    public enum Type {
+        NONE, BLACKLIST, WHITELIST
     }
 }

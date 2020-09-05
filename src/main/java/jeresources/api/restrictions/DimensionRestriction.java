@@ -9,18 +9,18 @@ public class DimensionRestriction {
     public static final DimensionRestriction END = new DimensionRestriction(World.field_234920_i_);
     public static final DimensionRestriction NONE = new DimensionRestriction();
 
-    private Type type;
+    private Restriction.Type type;
     private RegistryKey<World> dimension;
 
     private DimensionRestriction() {
-        this.type = Type.NONE;
+        this.type = Restriction.Type.NONE;
     }
 
     public DimensionRestriction(RegistryKey<World> type) {
-        this(Type.WHITELIST, type);
+        this(Restriction.Type.WHITELIST, type);
     }
 
-    public DimensionRestriction(Type type, RegistryKey<World> dimension) {
+    public DimensionRestriction(Restriction.Type type, RegistryKey<World> dimension) {
         this.type = type;
         this.dimension = dimension;
     }
@@ -36,15 +36,15 @@ public class DimensionRestriction {
 
     @Override
     public String toString() {
-        return "Dimension: " + (type == Type.NONE ? "None" : type.name() + " " + dimension.toString());
+        return "Dimension: " + (type == Restriction.Type.NONE ? "None" : type.name() + " " + dimension.toString());
     }
 
     @Override
     public int hashCode() {
-        return type == Type.NONE ? super.hashCode() : type.hashCode() ^ dimension.hashCode();
+        return type == Restriction.Type.NONE ? super.hashCode() : type.hashCode() ^ dimension.hashCode();
     }
 
     public String getDimensionName() {
-        return type == Type.NONE ? "all" : dimension.func_240901_a_().toString();
+        return type == Restriction.Type.NONE ? "all" : dimension.func_240901_a_().toString();
     }
 }

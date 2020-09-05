@@ -10,13 +10,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.profiler.EmptyProfiler;
+import net.minecraft.profiler.IProfiler;
 import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.tags.ITagCollectionSupplier;
 import net.minecraft.tags.NetworkTagManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.*;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -36,8 +39,8 @@ public class FakeClientWorld extends ClientWorld {
     private CapabilityDispatcher capabilities;
 
     public FakeClientWorld() {
-        //public ClientWorld(ClientPlayNetHandler, ClientWorld.ClientWorldInfo, RegistryKey<World>, RegistryKey<DimensionType>, DimensionType, int, Supplier<IProfiler>, WorldRenderer, boolean, long) {
-        super(null, clientWorldInfo, World.field_234918_g_, DimensionType.field_235999_c_, DimensionType.func_236019_a_(), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
+        //ClientPlayNetHandler, ClientWorld.ClientWorldInfo, RegistryKey<World>, DimensionType , int, Supplier<IProfiler>, WorldRenderer, boolean, long
+        super(null, clientWorldInfo, World.field_234918_g_, DimensionHelper.getType(DimensionType.OVERWORLD), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientWorld.class, this);
     }
 
@@ -131,7 +134,7 @@ public class FakeClientWorld extends ClientWorld {
     }
 
     @Override
-    public NetworkTagManager getTags() {
+    public ITagCollectionSupplier getTags() {
         return null;
     }
 

@@ -12,4 +12,16 @@ public class BiomeHelper {
         ForgeRegistries.BIOMES.forEach(biomes::add);
         return biomes;
     }
+
+    public static List<Biome> getBiomes(Biome.Category category) {
+        List<Biome> biomes = new ArrayList<>();
+        ForgeRegistries.BIOMES.forEach(
+            biome -> {
+                if (biome.getCategory().equals(category)) {
+                    biomes.add(biome);
+                }
+            }
+        );
+        return biomes;
+    }
 }

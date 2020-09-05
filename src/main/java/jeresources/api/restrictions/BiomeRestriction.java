@@ -1,10 +1,7 @@
 package jeresources.api.restrictions;
 
 import jeresources.util.BiomeHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,44 +10,48 @@ import java.util.stream.Collectors;
 
 
 public class BiomeRestriction {
-    public static final BiomeRestriction NONE = new BiomeRestriction();
-    public static final BiomeRestriction OCEAN = new BiomeRestriction(BiomeDictionary.Type.OCEAN);
-    public static final BiomeRestriction PLAINS = new BiomeRestriction(BiomeDictionary.Type.PLAINS);
-    public static final BiomeRestriction FOREST = new BiomeRestriction(BiomeDictionary.Type.FOREST);
-    public static final BiomeRestriction SANDY = new BiomeRestriction(BiomeDictionary.Type.FOREST);
-    public static final BiomeRestriction SNOWY = new BiomeRestriction(BiomeDictionary.Type.FOREST);
-    public static final BiomeRestriction HILLS = new BiomeRestriction(BiomeDictionary.Type.HILLS);
-    public static final BiomeRestriction MUSHROOM = new BiomeRestriction(BiomeDictionary.Type.MUSHROOM);
-    public static final BiomeRestriction BADLANDS = new BiomeRestriction(BiomeDictionary.Type.MESA);
-
-    public static final BiomeRestriction HOT = new BiomeRestriction(BiomeDictionary.Type.HOT);
-    public static final BiomeRestriction COLD = new BiomeRestriction(BiomeDictionary.Type.COLD);
-    public static final BiomeRestriction TEMPERATE = new BiomeRestriction(Type.BLACKLIST, BiomeDictionary.Type.HOT, BiomeDictionary.Type.COLD);
-
-    public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Type.WHITELIST, ForgeRegistries.BIOMES.getValue(new ResourceLocation("minecraft:mountains")), ForgeRegistries.BIOMES.getValue(new ResourceLocation("minecraft:mountain_edge")));
+    public static final BiomeRestriction NO_RESTRICTION = new BiomeRestriction();
+    
+   public static final BiomeRestriction NONE = new BiomeRestriction(Biome.Category.NONE);
+   public static final BiomeRestriction TAIGA = new BiomeRestriction(Biome.Category.TAIGA);
+   public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Biome.Category.EXTREME_HILLS);
+   public static final BiomeRestriction JUNGLE = new BiomeRestriction(Biome.Category.JUNGLE);
+   public static final BiomeRestriction MESA = new BiomeRestriction(Biome.Category.MESA);
+   public static final BiomeRestriction PLAINS = new BiomeRestriction(Biome.Category.PLAINS);
+   public static final BiomeRestriction SAVANNA = new BiomeRestriction(Biome.Category.SAVANNA);
+   public static final BiomeRestriction ICY = new BiomeRestriction(Biome.Category.ICY);
+   public static final BiomeRestriction THEEND = new BiomeRestriction(Biome.Category.THEEND);
+   public static final BiomeRestriction BEACH = new BiomeRestriction(Biome.Category.BEACH);
+   public static final BiomeRestriction FOREST = new BiomeRestriction(Biome.Category.FOREST);
+   public static final BiomeRestriction OCEAN = new BiomeRestriction(Biome.Category.OCEAN);
+   public static final BiomeRestriction DESERT = new BiomeRestriction(Biome.Category.DESERT);
+   public static final BiomeRestriction RIVER = new BiomeRestriction(Biome.Category.RIVER);
+   public static final BiomeRestriction SWAMP = new BiomeRestriction(Biome.Category.SWAMP);
+   public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biome.Category.MUSHROOM);
+   public static final BiomeRestriction NETHER = new BiomeRestriction(Biome.Category.NETHER);
 
     private List<Biome> biomes = new ArrayList<>();
-    private Type type;
+    private Restriction.Type restrictionType;
 
     public BiomeRestriction() {
-        this.type = Type.NONE;
+        this.restrictionType = Restriction.Type.NONE;
     }
 
     public BiomeRestriction(Biome biome) {
-        this(Type.WHITELIST, biome);
+        this(Restriction.Type.WHITELIST, biome);
     }
 
-    public BiomeRestriction(Type type, Biome biome) {
-        this(type, biome, new Biome[0]);
+    public BiomeRestriction(Restriction.Type restrictionType, Biome biome) {
+        this(restrictionType, biome, new Biome[0]);
     }
 
     public BiomeRestriction(Biome biome, Biome... moreBiomes) {
-        this(Type.WHITELIST, biome, moreBiomes);
+        this(Restriction.Type.WHITELIST, biome, moreBiomes);
     }
 
-    public BiomeRestriction(Type type, Biome biome, Biome... moreBiomes) {
-        this.type = type;
-        switch (type) {
+    public BiomeRestriction(Restriction.Type restrictionType, Biome biome, Biome... moreBiomes) {
+        this.restrictionType = restrictionType;
+        switch (restrictionType) {
             case NONE:
                 break;
             case WHITELIST:
@@ -64,31 +65,31 @@ public class BiomeRestriction {
         }
     }
 
-    public BiomeRestriction(BiomeDictionary.Type type, BiomeDictionary.Type... biomeTypes) {
-        this(Type.WHITELIST, type, biomeTypes);
+    public BiomeRestriction(Biome.Category biomeCategory, Biome.Category... biomeCategories) {
+        this(Restriction.Type.WHITELIST, biomeCategory, biomeCategories);
     }
 
-    public BiomeRestriction(Type type, BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes) {
-        this.type = type;
-        switch (type) {
+    public BiomeRestriction(Restriction.Type restrictionType, Biome.Category biomeCategory, Biome.Category... biomeCategories) {
+        this.restrictionType = restrictionType;
+        switch (restrictionType) {
             case NONE:
                 break;
             case WHITELIST:
-                biomes = getBiomes(biomeType, biomeTypes);
+                biomes = getBiomes(biomeCategory, biomeCategories);
                 break;
             default:
                 biomes = BiomeHelper.getAllBiomes();
-                biomes.removeAll(getBiomes(biomeType, biomeTypes));
+                biomes.removeAll(getBiomes(biomeCategory, biomeCategories));
         }
     }
 
-    private ArrayList<Biome> getBiomes(BiomeDictionary.Type biomeType, BiomeDictionary.Type... biomeTypes) {
+    private ArrayList<Biome> getBiomes(Biome.Category biomeCategory, Biome.Category... biomeCategories) {
         ArrayList<Biome> biomes = new ArrayList<>();
-        biomes.addAll(BiomeDictionary.getBiomes(biomeType));
-        for (int i = 1; i < biomeTypes.length; i++) {
+        biomes.addAll(BiomeHelper.getBiomes(biomeCategory));
+        for (int i = 1; i < biomeCategories.length; i++) {
             ArrayList<Biome> newBiomes = new ArrayList<>();
-            for (Biome biome : BiomeDictionary.getBiomes(biomeTypes[i])) {
-                if (biomes.remove(biome)) newBiomes.add(biome);
+            for (Biome biome : BiomeHelper.getBiomes(biomeCategories[i])) {
+                if (biomes.remove(biome)) newBiomes.add(biome); // intersection of all selected categories
             }
             biomes = newBiomes;
         }
@@ -96,7 +97,7 @@ public class BiomeRestriction {
     }
 
     public List<String> toStringList() {
-        return biomes.stream().filter(biome -> !biome.getDisplayName().getString().equals("")).map(biome -> "  " + biome.getDisplayName().getString()).collect(Collectors.toList());
+        return biomes.stream().filter(biome -> !biome.toString().equals("")).map(biome -> "  " + biome.toString()).collect(Collectors.toList());
     }
 
     @Override
@@ -109,16 +110,16 @@ public class BiomeRestriction {
     }
 
     public boolean isMergeAble(BiomeRestriction other) {
-        return other.type == Type.NONE || (this.type != Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
+        return other.restrictionType == Restriction.Type.NONE || (this.restrictionType != Restriction.Type.NONE && !biomes.isEmpty() && other.biomes.containsAll(biomes));
     }
 
     @Override
     public String toString() {
-        return "Biomes: " + type + (type != Type.NONE ? " - " + biomes.size() : "");
+        return "Biomes: " + restrictionType + (restrictionType != Restriction.Type.NONE ? " - " + biomes.size() : "");
     }
 
     @Override
     public int hashCode() {
-        return type.hashCode() ^ biomes.hashCode();
+        return restrictionType.hashCode() ^ biomes.hashCode();
     }
 }

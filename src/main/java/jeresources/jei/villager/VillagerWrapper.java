@@ -11,10 +11,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.villager.IVillagerType;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -52,7 +49,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
 
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
-        //RenderHelper.scissor(7, 43, 59, 79);
+        RenderHelper.scissor(matrixStack,7, 43, 59, 79);
         VillagerEntity entityVillager = entry.getVillagerEntity();
         RenderHelper.renderEntity(
             matrixStack,
@@ -61,7 +58,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
             80 - mouseY,
             entityVillager
         );
-        //RenderHelper.stopScissor();
+        RenderHelper.stopScissor();
 
         int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getPossibleLevels(focus).size()) / 2;
         int i;
