@@ -3,7 +3,7 @@ package jeresources.api;
 import net.minecraft.world.World;
 
 /**
- * Will be delivered during {@link net.minecraftforge.fml.common.event.FMLPreInitializationEvent}
+ * Will be delivered during {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent}
  * to any public static field that is annotated with {@link JERPlugin}
  */
 public interface IJERAPI {

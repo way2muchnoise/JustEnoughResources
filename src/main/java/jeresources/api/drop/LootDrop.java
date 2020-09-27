@@ -55,7 +55,7 @@ public class LootDrop implements Comparable<LootDrop> {
      * @param item         The dropped {@link net.minecraft.item.ItemStack}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
-     * @param chance       the chance the {@param item} gets dropped
+     * @param chance       the chance the item gets dropped
      * @param fortuneLevel the level of fortune needed
      * @param conditionals a list of conditionals for this drop
      */
@@ -75,6 +75,7 @@ public class LootDrop implements Comparable<LootDrop> {
      * @param item    The dropped {@link net.minecraft.item.Item} (chance for drop will be 100% and the itemDamage will be default)
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
+     * @param conditionals a list of conditionals for this drop
      */
     public LootDrop(Item item, int minDrop, int maxDrop, Conditional... conditionals) {
         this(new ItemStack(item), minDrop, maxDrop, 1F, 0, conditionals);
@@ -95,7 +96,7 @@ public class LootDrop implements Comparable<LootDrop> {
      * @param item         The dropped {@link net.minecraft.item.Item}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
-     * @param chance       the chance the {@param item} gets dropped
+     * @param chance       the chance the item gets dropped
      * @param conditionals a list of conditionals for this drop
      */
     public LootDrop(Item item, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
@@ -107,10 +108,10 @@ public class LootDrop implements Comparable<LootDrop> {
      * @param tag          {@link CompoundNBT} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
-     * @param chance       the chance the {@param item} gets dropped
+     * @param chance       the chance the item gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item,CompoundNBT tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
+    public LootDrop(Item item, CompoundNBT tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
         this(new ItemStack(item, 1, tag), minDrop, maxDrop, chance, 0, conditionals);
     }
 
@@ -118,7 +119,7 @@ public class LootDrop implements Comparable<LootDrop> {
      * @param item         The dropped {@link net.minecraft.item.ItemStack}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
-     * @param chance       the chance the {@param item} gets dropped
+     * @param chance       the chance the item gets dropped
      * @param conditionals a list of conditionals for this drop
      */
     public LootDrop(ItemStack item, int minDrop, int maxDrop, float chance, Conditional... conditionals) {

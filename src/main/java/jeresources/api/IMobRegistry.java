@@ -13,9 +13,9 @@ import net.minecraft.util.ResourceLocation;
 public interface IMobRegistry {
     /**
      * Register a custom {@link LivingEntity} with given parameters
-     * Implement {@link jeresources.api.conditionals.ICustomEntityProperty} and {@link jeresources.api.conditionals.ICustomLootFunction}
+     * Implement {@link jeresources.api.conditionals.ICustomLootFunction}
      * to gain more control over the information added to the tooltips when using custom
-     * {@link net.minecraft.world.storage.loot.properties.EntityProperty}s and {@link net.minecraft.world.storage.loot.functions.LootFunction}s
+     * {@link net.minecraft.loot.LootFunction}s
      *
      * @param entity     the {@link LivingEntity} instance
      * @param lightLevel the {@link LightLevel} the {@link LivingEntity} spawns at

@@ -2,6 +2,8 @@ package jeresources.api.conditionals;
 
 import jeresources.api.drop.LootDrop;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootFunction;
 
 import java.util.Random;
 
@@ -15,7 +17,7 @@ import java.util.Random;
  */
 public interface ICustomLootFunction {
     /**
-     * Similar to {@link LootFunction#apply(ItemStack, LootContext)}
+     * Similar to {@link LootFunction#apply(ItemStack, LootContext)}}
      * but with out all the {@link Random} and {@link LootContext}
      * <p>
      * You only need to implement this if the the {@link LootFunction#apply(ItemStack, LootContext)}

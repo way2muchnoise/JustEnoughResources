@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-	id "com.matthewprenger.cursegradle" version "1.2.0"
+	id "com.matthewprenger.cursegradle" version "1.4.0"
 	id "com.jfrog.bintray" version "1.8.4"
 }
 
@@ -38,6 +38,11 @@ repositories {
         name = "jei"
         url =  "https://dvs1.progwml6.com/files/maven"
     }
+	// TODO temporary for JEI - https://github.com/mezz/JustEnoughItems/issues/2095
+	maven {
+		name = "ftb-gui"
+		url =  "https://maven.latmod.com/"
+	}
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
@@ -61,6 +66,9 @@ dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
 	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}")
+
+	// TODO temporary for JEI - https://github.com/mezz/JustEnoughItems/issues/2095
+	compileOnly fg.deobf('com.feed_the_beast.mods:ftb-gui-library:1.0.0.18')
 }
 
 minecraft {
@@ -176,7 +184,7 @@ curseforge {
         mainArtifact (jar) {
             displayName = "${jar.archiveName}".replace(".jar", "")
 			relations {
-				requiredLibrary 'jei'
+				requiredDependency 'jei'
 			}
         }
         addArtifact (javadocJar) {
