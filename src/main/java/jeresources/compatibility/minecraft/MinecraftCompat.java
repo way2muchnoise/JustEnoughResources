@@ -23,6 +23,7 @@ import net.minecraft.entity.monster.GiantEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.passive.BatEntity;
 import net.minecraft.entity.passive.SquidEntity;
+import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTableManager;
@@ -60,6 +61,7 @@ public class MinecraftCompat extends CompatBase {
         registerMobRenderHook(SquidEntity.class, RenderHooks.SQUID);
         registerMobRenderHook(GiantEntity.class, RenderHooks.GIANT);
         registerMobRenderHook(ShulkerEntity.class, RenderHooks.SHULKER);
+        registerMobRenderHook(AbstractGroupFishEntity.class, RenderHooks.GROUP_FISH);
     }
 
     private void registerDungeonLoot() {
