@@ -44,14 +44,16 @@ public class MobCompat {
     public void setLightLevel(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
         
-        entry.setLightLevel(LIGHT_LEVEL.get(entityClass));
+        entry.setLightLevel(LIGHT_LEVEL.getOrDefault(entityClass, LightLevel.any));
     }
 
     public void setExperience(MobEntry entry) {
         Class entityClass = entry.getEntity().getClass();
 
-        entry.setMinExp(MOB_XP.get(entityClass).getA());
-        entry.setMaxExp(MOB_XP.get(entityClass).getB());
+        Tuple<Integer, Integer> minMaxExp = MOB_XP.getOrDefault(entityClass, new Tuple<>(0,0));
+
+        entry.setMinExp(minMaxExp.getA());
+        entry.setMaxExp(minMaxExp.getB());
     }
 
     private void initMobXp() {
@@ -109,4 +111,4 @@ public class MobCompat {
     private boolean cannotSpawnNaturally(Entity entity) {
         return entity instanceof VexEntity || entity instanceof GuardianEntity || (entity instanceof PatrollerEntity && !(entity instanceof WitchEntity));
     }
-}
+}
