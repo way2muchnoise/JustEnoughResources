@@ -40,7 +40,7 @@ public class FakeClientWorld extends ClientWorld {
 
     public FakeClientWorld() {
         //ClientPlayNetHandler, ClientWorld.ClientWorldInfo, RegistryKey<World>, DimensionType , int, Supplier<IProfiler>, WorldRenderer, boolean, long
-        super(null, clientWorldInfo, World.field_234918_g_, DimensionHelper.getType(DimensionType.OVERWORLD), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
+        super(null, clientWorldInfo, World.OVERWORLD, DimensionHelper.getType(DimensionType.OVERWORLD), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientWorld.class, this);
     }
 

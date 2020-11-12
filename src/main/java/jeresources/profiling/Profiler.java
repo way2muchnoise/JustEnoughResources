@@ -42,7 +42,7 @@ public class Profiler implements Runnable {
         if (!allWorlds) {
 
             // Will never be null as the mod is client side only
-            RegistryKey<World> worldKey = sender.world.func_234923_W_();
+            RegistryKey<World> worldKey = sender.world.getDimensionKey();
             profileWorld(worldKey);
             
         } else {
@@ -77,7 +77,7 @@ public class Profiler implements Runnable {
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(worldKey.func_240901_a_().toString())) {
+        if (Settings.excludedDimensions.contains(worldKey.getLocation().toString())) {
             msg = "Skipped dimension " + DimensionHelper.getWorldName(worldKey) + " during profiling";
             LogHelper.info(msg);
             sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);

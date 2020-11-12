@@ -107,7 +107,7 @@ public class ProfilingAdapter {
                         writer.endArray();
                     }
 
-                    writer.name("dim").value(worldRegistryKey.func_240901_a_().toString());
+                    writer.name("dim").value(worldRegistryKey.getLocation().toString());
                     writer.endObject();
                 }
             }

@@ -4,9 +4,9 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
 public class DimensionRestriction {
-    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(World.field_234918_g_);
-    public static final DimensionRestriction NETHER = new DimensionRestriction(World.field_234919_h_);
-    public static final DimensionRestriction END = new DimensionRestriction(World.field_234920_i_);
+    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(World.OVERWORLD);
+    public static final DimensionRestriction NETHER = new DimensionRestriction(World.THE_NETHER);
+    public static final DimensionRestriction END = new DimensionRestriction(World.THE_END);
     public static final DimensionRestriction NONE = new DimensionRestriction();
 
     private Restriction.Type type;
@@ -45,6 +45,6 @@ public class DimensionRestriction {
     }
 
     public String getDimensionName() {
-        return type == Restriction.Type.NONE ? "all" : dimension.func_240901_a_().toString();
+        return type == Restriction.Type.NONE ? "all" : dimension.getLocation().toString();
     }
 }

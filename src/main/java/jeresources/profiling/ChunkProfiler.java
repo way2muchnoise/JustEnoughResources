@@ -47,7 +47,7 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        final RegistryKey<World> worldRegistryKey = world.func_234923_W_();
+        final RegistryKey<World> worldRegistryKey = world.getDimensionKey();
         this.timer.startChunk(worldRegistryKey);
         Map<String, Integer[]> temp = new HashMap<>();
 

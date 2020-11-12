@@ -142,7 +142,7 @@ public class WorldGenAdapter {
     private static Map<RegistryKey<World>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        RegistryKey<World> worldRegistryKey = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation(dim));
+        RegistryKey<World> worldRegistryKey = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }
