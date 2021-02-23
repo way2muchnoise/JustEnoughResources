@@ -36,8 +36,8 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
 
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
-        // RenderHelper.renderBlock(matrixStack, getFarmland(), 26, 50, -10, 20F, 0.4F);
-        // RenderHelper.renderBlock(matrixStack, getBlockState(), 26, 32, 10, 20F, 0.4F);
+        RenderHelper.renderBlock(matrixStack, getFarmland(), 30, 30, -10, 20F, 20F);
+        RenderHelper.renderBlock(matrixStack, getBlockState(), 30, 12, 10, 20F, 20F);
     }
 
     @Override
