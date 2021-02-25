@@ -10,7 +10,6 @@ import jeresources.reference.Resources;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
@@ -131,24 +130,26 @@ public class RenderHelper {
 
     public static void renderBlock(MatrixStack matrixStack, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
-        RenderSystem.enableRescaleNormal();
         matrixStack.push();
-        matrixStack.rotate(new Quaternion(-30.0F, 0.0F, 1.0F, 0.0F));
-        net.minecraft.client.renderer.RenderHelper.setupGuiFlatDiffuseLighting();
-        matrixStack.pop();
+        matrixStack.translate(x, y, z);
+        matrixStack.scale(-scale, -scale, -scale);
+        matrixStack.translate(-0.5F, -0.5F, 0);
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(-30F));
+        matrixStack.translate(0.5F, 0, -0.5F);
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(rotate));
+        matrixStack.translate(-0.5F, 0, 0.5F);
+
         matrixStack.push();
-        matrixStack.translate(x, y, 50.0F + z);
-        matrixStack.rotate(new Quaternion(20.0F, 1.0F, 0.0F, 0.0F));
-        scale *= 50;
-        matrixStack.scale(scale, -scale, -scale);
-        matrixStack.translate(0.5F, 0.5F, 0.5F);
-        matrixStack.rotate(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
-        matrixStack.translate(-0.5F, -0.5F, -0.5F);
+        RenderSystem.color4f(1F, 1F, 1F, 1F);
+        matrixStack.translate(0, 0, -1);
+
         mc.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-        mc.getBlockRendererDispatcher().renderBlock(block, matrixStack, IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()), 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+        IRenderTypeBuffer.Impl buffers = mc.getRenderTypeBuffers().getBufferSource();
+        mc.getBlockRendererDispatcher().renderBlock(block, matrixStack, buffers, 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+        buffers.finish();
         matrixStack.pop();
-        net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-        RenderSystem.disableRescaleNormal();
+
+        matrixStack.pop();
     }
 
     public static void scissor(MatrixStack matrixStack, int x, int y, int w, int h) {
