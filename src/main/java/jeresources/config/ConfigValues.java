@@ -16,6 +16,7 @@ public class ConfigValues {
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> enchantsBlacklist;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> hiddenTabs;
     public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> dimensionsBlacklist;
+    public static ForgeConfigSpec.BooleanValue disableLootManagerReloading;
 
     public static ForgeConfigSpec build() {
         ForgeConfigSpec.Builder builder =  new ForgeConfigSpec.Builder();
@@ -27,6 +28,7 @@ public class ConfigValues {
         enchantsBlacklist = builder.worldRestart().defineList("enchantsBlacklist", Arrays.asList("flimflam", "soulBound"), new TypePredicate(String.class));
         hiddenTabs = builder.worldRestart().defineList("hiddenTabs", new ArrayList<>(), new TypePredicate(String.class));
         dimensionsBlacklist = builder.worldRestart().defineList("dimensionsBlacklist", Arrays.asList(-11), new TypePredicate(Integer.class));
+        disableLootManagerReloading = builder.worldRestart().define("disableLootManagerReloading", false);
 
         return builder.build();
     }

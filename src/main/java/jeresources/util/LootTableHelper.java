@@ -2,6 +2,7 @@ package jeresources.util;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
+import jeresources.config.ConfigValues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -46,17 +47,17 @@ public class LootTableHelper {
     }
 
     public static List<LootPool> getPools(LootTable table) {
-        // net.minecraft.world.storage.loot.LootTable field_186466_c # pools
+        // public net.minecraft.loot.LootTable field_186466_c # pools
         return ReflectionHelper.getPrivateValue(LootTable.class, table, "field_186466_c");
     }
 
     public static List<LootEntry> getLootEntries(LootPool pool) {
-        // net.minecraft.world.storage.loot.LootPool field_186453_a # lootEntries
+        // public net.minecraft.loot.LootPool field_186453_a # lootEntries
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186453_a");
     }
 
     public static List<ILootCondition> getLootConditions(LootPool pool) {
-        // public net.minecraft.world.storage.loot.LootPool field_186454_b # conditions
+        // public net.minecraft.loot.LootPool field_186454_b # conditions
         return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186454_b");
     }
 
@@ -161,6 +162,11 @@ public class LootTableHelper {
         if (world == null || world.getServer() == null) {
             if (manager == null) {
                 manager = new LootTableManager(new LootPredicateManager());
+
+                if(ConfigValues.disableLootManagerReloading.get()) {
+                    return manager;
+                }
+
                 SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
                 List<IResourcePack> packs = new LinkedList<>();
                 packs.add(new VanillaPack("minecraft"));
