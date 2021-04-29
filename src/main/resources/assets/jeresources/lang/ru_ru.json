@@ -13,13 +13,13 @@
 	"jer.config.showDevData.description": "В основном для создателей сборок. Функции включают в себя, но не ограничиваются средн. блоков на чанк, ID существ, ...",
 	"jer.config.hiddenTabs.title": "Скрыть вкладки JER",
 	"_comment": "# do not translate strings between quotes as they are used in code",
-	"jer.config.hiddenTabs.description": "Вкладки добавленные JER 'dungeon', 'enchantment', 'mob', 'villager', worldgen' и 'plant'",
+	"jer.config.hiddenTabs.description": "Вкладки добавленные JER 'dungeon', 'enchantment', 'mob', 'villager', 'worldgen' и 'plant'",
 
     "_comment": "#Default dimensions",
 	"jer.dim.all": "Все",
     "jer.dim.minecraft:overworld": "Верхний мир",
-    "jer.dim.minecraft:the_nether": "Незер",
-    "jer.dim.minecraft:the_end": "Эндер",
+    "jer.dim.minecraft:the_nether": "Ад",
+    "jer.dim.minecraft:the_end": "Край",
 
     "_comment": "#Usage: jer.page pageNumber jer.of lastPage",
     "jer.page": "Страница",
@@ -100,7 +100,7 @@
     "jer.mob.exp": "Даёт опыта",
 
     "_comment": "#Villager View",
-    "jer.villager.title": "Торговля с крестьянином",
+    "jer.villager.title": "Торговля с жителем",
 
     "_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
     "jer.slimeBall.text": "Только из маленьких слизней",
