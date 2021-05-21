@@ -12,6 +12,8 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 
@@ -43,6 +45,12 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     @Override
     public String getTitle() {
         return TranslationHelper.translateAndFormat("jer.dungeon.title");
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getTitleAsTextComponent() {
+        return new TranslationTextComponent("jer.dungeon.title");
     }
 
     @Nonnull

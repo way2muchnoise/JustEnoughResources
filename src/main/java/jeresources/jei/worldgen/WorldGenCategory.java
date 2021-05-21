@@ -11,6 +11,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 
@@ -35,6 +37,12 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     @Override
     public String getTitle() {
         return TranslationHelper.translateAndFormat("jer.worldgen.title");
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getTitleAsTextComponent() {
+        return new TranslationTextComponent("jer.worldgen.title");
     }
 
     @Nonnull

@@ -9,6 +9,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 
@@ -37,10 +39,17 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
 
     @Nonnull
     @Override
+    public ITextComponent getTitleAsTextComponent() {
+        return new TranslationTextComponent("jer.plant.title");
+    }
+
+    @Nonnull
+    @Override
     public IDrawable getBackground() {
         return Resources.Gui.Jei.PLANT;
     }
 
+    @Nonnull
     @Override
     public Class<? extends PlantWrapper> getRecipeClass() {
         return PlantWrapper.class;

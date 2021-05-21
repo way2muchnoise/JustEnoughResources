@@ -95,7 +95,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         if (ageProperty != null) {
             if (timer == -1) timer = System.currentTimeMillis() + TICKS;
             else if (System.currentTimeMillis() > timer) {
-                this.state = this.state.func_235896_a_(ageProperty);
+                this.state = this.state.cycleValue(ageProperty);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
         }

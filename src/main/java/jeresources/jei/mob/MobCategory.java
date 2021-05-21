@@ -9,6 +9,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
 
@@ -30,6 +32,12 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
     @Override
     public String getTitle() {
         return TranslationHelper.translateAndFormat("jer.mob.title");
+    }
+
+    @Nonnull
+    @Override
+    public ITextComponent getTitleAsTextComponent() {
+        return new TranslationTextComponent("jer.mob.title");
     }
 
     @Nonnull
