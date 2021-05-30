@@ -120,7 +120,7 @@
 	"jer.hasPotion.text": "當帶有%s狀態時",
 	"jer.hasNoPotion.text": "當未帶有%s狀態時",
 	"jer.beyond.text": "距離重生點超過 %s 格方塊時",
-	"jer.nearer.text": "距離重生點小於 % 格方塊時",
+	"jer.nearer.text": "距離重生點小於 %s 格方塊時",
 	"jer.raining.text": "當下雨時",
 	"jer.dry.text": "當未下雨時",
 	"jer.thundering.text": "當雷暴時",
