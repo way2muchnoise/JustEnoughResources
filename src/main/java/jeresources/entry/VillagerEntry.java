@@ -36,7 +36,11 @@ public class VillagerEntry {
     }
 
     public TradeList getVillagerTrades(int level) {
-        return tradeList.get(level);
+        if (tradeList.size() > level) {
+            return tradeList.get(level);
+        } else {
+            return new TradeList(null);
+        }
     }
 
     public List<ItemStack> getInputs() {
