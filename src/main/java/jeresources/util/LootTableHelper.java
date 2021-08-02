@@ -28,22 +28,22 @@ public class LootTableHelper {
     private static final Map<DyeColor, ResourceLocation> sheepColors = new HashMap<>();
 
     static {
-        sheepColors.put(DyeColor.WHITE, LootTables.ENTITIES_SHEEP_WHITE);
-        sheepColors.put(DyeColor.ORANGE, LootTables.ENTITIES_SHEEP_ORANGE);
-        sheepColors.put(DyeColor.MAGENTA, LootTables.ENTITIES_SHEEP_MAGENTA);
-        sheepColors.put(DyeColor.LIGHT_BLUE, LootTables.ENTITIES_SHEEP_LIGHT_BLUE);
-        sheepColors.put(DyeColor.YELLOW, LootTables.ENTITIES_SHEEP_YELLOW);
-        sheepColors.put(DyeColor.LIME, LootTables.ENTITIES_SHEEP_LIME);
-        sheepColors.put(DyeColor.PINK, LootTables.ENTITIES_SHEEP_PINK);
-        sheepColors.put(DyeColor.GRAY, LootTables.ENTITIES_SHEEP_GRAY);
-        sheepColors.put(DyeColor.LIGHT_GRAY, LootTables.ENTITIES_SHEEP_LIGHT_GRAY);
-        sheepColors.put(DyeColor.CYAN, LootTables.ENTITIES_SHEEP_CYAN);
-        sheepColors.put(DyeColor.PURPLE, LootTables.ENTITIES_SHEEP_PURPLE);
-        sheepColors.put(DyeColor.BLUE, LootTables.ENTITIES_SHEEP_BLUE);
-        sheepColors.put(DyeColor.BROWN, LootTables.ENTITIES_SHEEP_BROWN);
-        sheepColors.put(DyeColor.GREEN, LootTables.ENTITIES_SHEEP_GREEN);
-        sheepColors.put(DyeColor.RED, LootTables.ENTITIES_SHEEP_RED);
-        sheepColors.put(DyeColor.BLACK, LootTables.ENTITIES_SHEEP_BLACK);
+        sheepColors.put(DyeColor.WHITE, LootTables.SHEEP_WHITE);
+        sheepColors.put(DyeColor.ORANGE, LootTables.SHEEP_ORANGE);
+        sheepColors.put(DyeColor.MAGENTA, LootTables.SHEEP_MAGENTA);
+        sheepColors.put(DyeColor.LIGHT_BLUE, LootTables.SHEEP_LIGHT_BLUE);
+        sheepColors.put(DyeColor.YELLOW, LootTables.SHEEP_YELLOW);
+        sheepColors.put(DyeColor.LIME, LootTables.SHEEP_LIME);
+        sheepColors.put(DyeColor.PINK, LootTables.SHEEP_PINK);
+        sheepColors.put(DyeColor.GRAY, LootTables.SHEEP_GRAY);
+        sheepColors.put(DyeColor.LIGHT_GRAY, LootTables.SHEEP_LIGHT_GRAY);
+        sheepColors.put(DyeColor.CYAN, LootTables.SHEEP_CYAN);
+        sheepColors.put(DyeColor.PURPLE, LootTables.SHEEP_PURPLE);
+        sheepColors.put(DyeColor.BLUE, LootTables.SHEEP_BLUE);
+        sheepColors.put(DyeColor.BROWN, LootTables.SHEEP_BROWN);
+        sheepColors.put(DyeColor.GREEN, LootTables.SHEEP_GREEN);
+        sheepColors.put(DyeColor.RED, LootTables.SHEEP_RED);
+        sheepColors.put(DyeColor.BLACK, LootTables.SHEEP_BLACK);
     }
 
     public static List<LootPool> getPools(LootTable table) {
@@ -80,7 +80,7 @@ public class LootTableHelper {
 
                 getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof TableLootEntry).map(entry -> (TableLootEntry) entry)
-                    .map(entry -> toDrops(manager.getLootTableFromLocation(entry.table))).forEach(drops::addAll);
+                    .map(entry -> toDrops(manager.get(entry.name))).forEach(drops::addAll);
             }
         );
 
@@ -89,46 +89,46 @@ public class LootTableHelper {
     }
 
     public static List<LootDrop> toDrops(World world, ResourceLocation lootTable) {
-        return toDrops(getManager(world).getLootTableFromLocation(lootTable));
+        return toDrops(getManager(world).get(lootTable));
     }
 
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
         ArrayList<ResourceLocation> chestTables = new ArrayList<>();
 
-        chestTables.add(LootTables.CHESTS_END_CITY_TREASURE);
-        chestTables.add(LootTables.CHESTS_SIMPLE_DUNGEON);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_WEAPONSMITH);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_TOOLSMITH);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_ARMORER);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_CARTOGRAPHER);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_MASON);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_SHEPHERD);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_BUTCHER);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_FLETCHER);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_FISHER);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_TANNERY);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_TEMPLE);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_DESERT_HOUSE);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_PLAINS_HOUSE);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_TAIGA_HOUSE);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_SNOWY_HOUSE);
-        chestTables.add(LootTables.CHESTS_VILLAGE_VILLAGE_SAVANNA_HOUSE);
-        chestTables.add(LootTables.CHESTS_ABANDONED_MINESHAFT);
-        chestTables.add(LootTables.CHESTS_NETHER_BRIDGE);
-        chestTables.add(LootTables.CHESTS_STRONGHOLD_LIBRARY);
-        chestTables.add(LootTables.CHESTS_STRONGHOLD_CROSSING);
-        chestTables.add(LootTables.CHESTS_STRONGHOLD_CORRIDOR);
-        chestTables.add(LootTables.CHESTS_DESERT_PYRAMID);
-        chestTables.add(LootTables.CHESTS_JUNGLE_TEMPLE);
-        chestTables.add(LootTables.CHESTS_IGLOO_CHEST);
-        chestTables.add(LootTables.CHESTS_WOODLAND_MANSION);
-        chestTables.add(LootTables.CHESTS_UNDERWATER_RUIN_SMALL);
-        chestTables.add(LootTables.CHESTS_UNDERWATER_RUIN_BIG);
-        chestTables.add(LootTables.CHESTS_BURIED_TREASURE);
-        chestTables.add(LootTables.CHESTS_SHIPWRECK_MAP);
-        chestTables.add(LootTables.CHESTS_SHIPWRECK_SUPPLY);
-        chestTables.add(LootTables.CHESTS_SHIPWRECK_TREASURE);
-        chestTables.add(LootTables.CHESTS_PILLAGER_OUTPOST);
+        chestTables.add(LootTables.END_CITY_TREASURE);
+        chestTables.add(LootTables.SIMPLE_DUNGEON);
+        chestTables.add(LootTables.VILLAGE_WEAPONSMITH);
+        chestTables.add(LootTables.VILLAGE_TOOLSMITH);
+        chestTables.add(LootTables.VILLAGE_ARMORER);
+        chestTables.add(LootTables.VILLAGE_CARTOGRAPHER);
+        chestTables.add(LootTables.VILLAGE_MASON);
+        chestTables.add(LootTables.VILLAGE_SHEPHERD);
+        chestTables.add(LootTables.VILLAGE_BUTCHER);
+        chestTables.add(LootTables.VILLAGE_FLETCHER);
+        chestTables.add(LootTables.VILLAGE_FISHER);
+        chestTables.add(LootTables.VILLAGE_TANNERY);
+        chestTables.add(LootTables.VILLAGE_TEMPLE);
+        chestTables.add(LootTables.VILLAGE_DESERT_HOUSE);
+        chestTables.add(LootTables.VILLAGE_PLAINS_HOUSE);
+        chestTables.add(LootTables.VILLAGE_TAIGA_HOUSE);
+        chestTables.add(LootTables.VILLAGE_SNOWY_HOUSE);
+        chestTables.add(LootTables.VILLAGE_SAVANNA_HOUSE);
+        chestTables.add(LootTables.ABANDONED_MINESHAFT);
+        chestTables.add(LootTables.NETHER_BRIDGE);
+        chestTables.add(LootTables.STRONGHOLD_LIBRARY);
+        chestTables.add(LootTables.STRONGHOLD_CROSSING);
+        chestTables.add(LootTables.STRONGHOLD_CORRIDOR);
+        chestTables.add(LootTables.DESERT_PYRAMID);
+        chestTables.add(LootTables.JUNGLE_TEMPLE);
+        chestTables.add(LootTables.IGLOO_CHEST);
+        chestTables.add(LootTables.WOODLAND_MANSION);
+        chestTables.add(LootTables.UNDERWATER_RUIN_SMALL);
+        chestTables.add(LootTables.UNDERWATER_RUIN_BIG);
+        chestTables.add(LootTables.BURIED_TREASURE);
+        chestTables.add(LootTables.SHIPWRECK_MAP);
+        chestTables.add(LootTables.SHIPWRECK_SUPPLY);
+        chestTables.add(LootTables.SHIPWRECK_TREASURE);
+        chestTables.add(LootTables.PILLAGER_OUTPOST);
         chestTables.add(LootTables.BASTION_TREASURE);
         chestTables.add(LootTables.BASTION_OTHER);
         chestTables.add(LootTables.BASTION_BRIDGE);
@@ -148,8 +148,8 @@ public class LootTableHelper {
         }
 
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
-            if (entityType.getClassification() != EntityClassification.MISC && entityType != EntityType.SHEEP) {
-                mobTableBuilder.add(entityType.getLootTable(), entityType);
+            if (entityType.getCategory() != EntityClassification.MISC && entityType != EntityType.SHEEP) {
+                mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }
         }
 
@@ -173,14 +173,14 @@ public class LootTableHelper {
                 for (ModFileInfo mod : ModList.get().getModFiles()) {
                     packs.add(new ModFileResourcePack(mod.getFile()));
                 }
-                packs.forEach(serverResourceManger::addResourcePack);
-                serverResourceManger.addReloadListener(manager);
-                CompletableFuture<Unit> completableFuture = serverResourceManger.reloadResourcesAndThen(Util.getServerExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
-                Minecraft.getInstance().driveUntil(completableFuture::isDone);
+                packs.forEach(serverResourceManger::add);
+                serverResourceManger.registerReloadListener(manager);
+                CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
+                Minecraft.getInstance().managedBlock(completableFuture::isDone);
             }
             return manager;
         }
-        return world.getServer().getLootTableManager();
+        return world.getServer().getLootTables();
     }
 
     public static LootTableManager getManager() {

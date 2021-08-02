@@ -30,7 +30,7 @@ public class EnchantmentRegistry {
         for (EnchantmentEntry enchantment : enchantments) {
             if (itemStack.getItem() == Items.BOOK && enchantment.getEnchantment().isAllowedOnBooks())
                 set.add(enchantment);
-            else if (enchantment.getEnchantment().canApply(itemStack)) set.add(enchantment);
+            else if (enchantment.getEnchantment().canEnchant(itemStack)) set.add(enchantment);
         }
         return set;
     }

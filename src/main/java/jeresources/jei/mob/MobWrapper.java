@@ -67,7 +67,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
 
         String mobName = this.mob.getMobName();
         if (Settings.showDevData) {
-            String entityString = LivingEntity.getEntityString();
+            String entityString = LivingEntity.getStringUUID();
             if (entityString != null) {
                 mobName += " (" + entityString + ")";
             }
@@ -99,9 +99,9 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
 
     public List<ITextComponent> getToolTip(ItemStack stack) {
         for (LootDrop item : this.mob.getDrops()) {
-            if (stack.isItemEqual(item.item))
+            if (stack.sameItem(item.item))
                 return item.getTooltipText();
-            if (item.canBeCooked() && stack.isItemEqual(item.smeltedItem))
+            if (item.canBeCooked() && stack.sameItem(item.smeltedItem))
                 return item.getTooltipText(true);
         }
         return null;
@@ -115,8 +115,8 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     }
 
     private float getScale(LivingEntity LivingEntity) {
-        float width = LivingEntity.getWidth();
-        float height = LivingEntity.getHeight();
+        float width = LivingEntity.getBbWidth();
+        float height = LivingEntity.getBbHeight();
         if (width <= height) {
             if (height < 0.9) return 50.0F;
             else if (height < 1) return 35.0F;

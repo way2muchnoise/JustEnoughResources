@@ -40,7 +40,7 @@ public class FakeClientWorld extends ClientWorld {
 
     public FakeClientWorld() {
         //ClientPlayNetHandler, ClientWorld.ClientWorldInfo, RegistryKey<World>, DimensionType , int, Supplier<IProfiler>, WorldRenderer, boolean, long
-        super(null, clientWorldInfo, World.OVERWORLD, DimensionHelper.getType(DimensionType.OVERWORLD), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().worldRenderer, false, 1234567);
+        super(null, clientWorldInfo, World.OVERWORLD, DimensionHelper.getType(DimensionType.OVERWORLD_LOCATION), 0, () -> EmptyProfiler.INSTANCE, Minecraft.getInstance().levelRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientWorld.class, this);
     }
 
@@ -51,7 +51,7 @@ public class FakeClientWorld extends ClientWorld {
     }
 
     @Override
-    public void notifyBlockUpdate(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
+    public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
 
     }
 
@@ -61,18 +61,18 @@ public class FakeClientWorld extends ClientWorld {
     }
 
     @Override
-    public void playMovingSound(@Nullable PlayerEntity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundCategory p_217384_4_, float p_217384_5_, float p_217384_6_) {
+    public void playSound(@Nullable PlayerEntity p_184133_1_, BlockPos p_184133_2_, SoundEvent p_184133_3_, SoundCategory p_184133_4_, float p_184133_5_, float p_184133_6_) {
 
     }
 
     @Nullable
     @Override
-    public Entity getEntityByID(int id) {
+    public Entity getEntity(int p_73045_1_) {
         return null;
     }
 
     @Override
-    public ClientChunkProvider getChunkProvider() {
+    public ClientChunkProvider getChunkSource() {
         return new ClientChunkProvider(this, 0) {
             @Nullable
             @Override
@@ -86,17 +86,17 @@ public class FakeClientWorld extends ClientWorld {
             }
 
             @Override
-            public String makeString() {
+            public String gatherStats() {
                 return "emptychunkprovider";
             }
 
             @Override
-            public WorldLightManager getLightManager() {
+            public WorldLightManager getLightEngine() {
                 return null;
             }
 
             @Override
-            public IBlockReader getWorld() {
+            public IBlockReader getLevel() {
                 return FakeClientWorld.this;
             }
         };
@@ -109,17 +109,17 @@ public class FakeClientWorld extends ClientWorld {
     }
 
     @Override
-    public void registerMapData(MapData mapDataIn) {
+    public void setMapData(MapData mapData) {
 
     }
 
     @Override
-    public int getNextMapId() {
+    public int getFreeMapId() {
         return 0;
     }
 
     @Override
-    public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+    public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
 
     }
 
@@ -134,27 +134,17 @@ public class FakeClientWorld extends ClientWorld {
     }
 
     @Override
-    public ITagCollectionSupplier getTags() {
+    public ITagCollectionSupplier getTagManager() {
         return null;
     }
 
     @Override
-    public boolean chunkExists(int p_217354_1_, int p_217354_2_) {
+    public boolean hasChunk(int p_217354_1_, int p_217354_2_) {
         return false;
     }
 
     @Override
-    public void playEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
+    public void levelEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
 
-    }
-
-    @Override
-    public ITickList<Block> getPendingBlockTicks() {
-        return null;
-    }
-
-    @Override
-    public ITickList<Fluid> getPendingFluidTicks() {
-        return null;
     }
 }

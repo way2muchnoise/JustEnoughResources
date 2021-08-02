@@ -20,6 +20,6 @@ public class VillagersHelper {
     }
 
     private static Int2ObjectMap<VillagerTrades.ITrade[]> getTrades(VillagerProfession profession) {
-        return VillagerTrades.VILLAGER_DEFAULT_TRADES.getOrDefault(profession, Int2ObjectMaps.emptyMap());
+        return VillagerTrades.TRADES.getOrDefault(profession, Int2ObjectMaps.emptyMap());
     }
 }

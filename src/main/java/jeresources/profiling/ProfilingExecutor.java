@@ -20,7 +20,7 @@ public class ProfilingExecutor {
     }
 
     public void addChunkProfiler(DummyWorld dummyWorld, List<Chunk> chunks) {
-        final RegistryKey<World> worldRegistryKey = dummyWorld.getDimensionKey();
+        final RegistryKey<World> worldRegistryKey = dummyWorld.dimension();
 
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(worldRegistryKey);
 

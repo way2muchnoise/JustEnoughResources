@@ -51,7 +51,7 @@ public class MinecraftCompat extends CompatBase {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllMobLootTables(world).entrySet().stream()
-            .map(entry -> new MobEntry(entry.getValue(), manager.getLootTableFromLocation(entry.getKey())))
+            .map(entry -> new MobEntry(entry.getValue(), manager.get(entry.getKey())))
             .sorted(Comparator.comparing(MobEntry::getMobName))
             .forEach(this::registerMob);
 
@@ -68,7 +68,7 @@ public class MinecraftCompat extends CompatBase {
         World world = getWorld();
         LootTableManager manager = LootTableHelper.getManager(world);
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), manager.getLootTableFromLocation(resourceLocation)))
+            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), manager.get(resourceLocation)))
             .forEach(this::registerDungeonEntry);
     }
 
@@ -116,13 +116,13 @@ public class MinecraftCompat extends CompatBase {
         //Nether Wart
         PlantDrop netherWartDrop = new PlantDrop(new ItemStack(Items.NETHER_WART), 2, 4);
         PlantEntry netherWartEntry = new PlantEntry((NetherWartBlock) Blocks.NETHER_WART, netherWartDrop);
-        netherWartEntry.setSoil(Blocks.SOUL_SAND.getDefaultState());
+        netherWartEntry.setSoil(Blocks.SOUL_SAND.defaultBlockState());
         registerPlant(netherWartEntry);
 
         // Sweet berries
         PlantDrop sweetBerriesDrop = new PlantDrop(new ItemStack(Items.SWEET_BERRIES), 1, 3); // Drops 1-2 at age 2, 2-3 at age 3
         PlantEntry sweetBerriesEntry = new PlantEntry((SweetBerryBushBlock) Blocks.SWEET_BERRY_BUSH, sweetBerriesDrop);
-        sweetBerriesEntry.setSoil(Blocks.GRASS_BLOCK.getDefaultState());
+        sweetBerriesEntry.setSoil(Blocks.GRASS_BLOCK.defaultBlockState());
         registerPlant(sweetBerriesEntry);
     }
 }

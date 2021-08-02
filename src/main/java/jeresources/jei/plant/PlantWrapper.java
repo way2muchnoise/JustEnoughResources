@@ -86,7 +86,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         if (this.state == null) {
             if (this.plantEntry.getPlantState() != null) this.state = this.plantEntry.getPlantState();
             else if (this.plantEntry.getPlant() != null) this.state = this.plantEntry.getPlant().getPlant(CompatBase.getWorld(), BlockPos.ZERO);
-            else this.state = Block.getBlockFromItem(this.plantEntry.getPlantItemStack().getItem()).getDefaultState();
+            else this.state = Block.byItem(this.plantEntry.getPlantItemStack().getItem()).defaultBlockState();
 
             if (this.plantEntry.getAgeProperty() != null) this.ageProperty = this.plantEntry.getAgeProperty();
             else this.state.getProperties().stream().filter(p -> p.getName().equals("age")).findAny().ifPresent(property -> this.ageProperty = property);
@@ -95,7 +95,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         if (ageProperty != null) {
             if (timer == -1) timer = System.currentTimeMillis() + TICKS;
             else if (System.currentTimeMillis() > timer) {
-                this.state = this.state.cycleValue(ageProperty);
+                this.state = this.state.cycle(ageProperty);
                 this.timer = System.currentTimeMillis() + TICKS;
             }
         }
@@ -108,6 +108,6 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
             return plantEntry.getSoil();
         }
 
-        return Blocks.FARMLAND.getDefaultState();
+        return Blocks.FARMLAND.defaultBlockState();
     }
 }

@@ -17,33 +17,33 @@ public class Font {
 
     public void print(MatrixStack matrixStack, Object o, int x, int y) {
         doTransform(matrixStack, x, y);
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, 8);
-        matrixStack.pop();
+        Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, 8);
+        matrixStack.popPose();
     }
 
     public void print(MatrixStack matrixStack, Object o, int x, int y, int color) {
         doTransform(matrixStack, x, y);
-        Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, color);
-        matrixStack.pop();
+        Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, color);
+        matrixStack.popPose();
     }
 
     public void print(MatrixStack matrixStack, Object o, int x, int y, int color, boolean shadow) {
         doTransform(matrixStack, x, y);
         if (shadow) {
-            Minecraft.getInstance().fontRenderer.drawStringWithShadow(matrixStack, String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().font.drawShadow(matrixStack, String.valueOf(o), 0, 0, color);
         } else {
-            Minecraft.getInstance().fontRenderer.drawString(matrixStack, String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, color);
         }
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public int getStringWidth(String string) {
-        int width = Minecraft.getInstance().fontRenderer.getStringWidth(string);
+        int width = Minecraft.getInstance().font.width(string);
         return (int)(isSmall ? width * SCALING : width);
     }
 
     private void doTransform(MatrixStack matrixStack, int x, int y) {
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(x, y, 0);
         if (isSmall) {
             matrixStack.scale(SCALING, SCALING, 1);

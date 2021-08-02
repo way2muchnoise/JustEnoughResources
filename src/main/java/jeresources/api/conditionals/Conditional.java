@@ -83,6 +83,6 @@ public class Conditional {
 
     @Override
     public String toString() {
-        return colour + I18n.format(text);
+        return colour + I18n.get(text);
     }
 }

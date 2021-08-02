@@ -98,7 +98,7 @@ public class MobEntry {
 
     public boolean addDrop(LootDrop item) {
         for (LootDrop drop : drops)
-            if (drop.item.isItemEqual(item.item)) return false;
+            if (drop.item.sameItem(item.item)) return false;
         drops.add(item);
         return true;
     }

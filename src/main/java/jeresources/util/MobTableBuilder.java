@@ -33,7 +33,7 @@ public class MobTableBuilder {
     public void addSheep(ResourceLocation resourceLocation, EntityType<SheepEntity> entityType, DyeColor dye) {
         SheepEntity entity = entityType.create(world);
         if (entity != null) {
-            entity.setFleeceColor(dye);
+            entity.setColor(dye);
             mobTables.put(resourceLocation, entity);
         }
     }

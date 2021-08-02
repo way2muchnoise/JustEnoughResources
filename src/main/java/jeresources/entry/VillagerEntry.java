@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import jeresources.compatibility.CompatBase;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.merchant.villager.VillagerProfession;
@@ -47,9 +46,9 @@ public class VillagerEntry {
         List<ItemStack> list = new LinkedList<>();
         for (List<TradeList.Trade> trades : this.tradeList) {
             for (TradeList.Trade trade : trades) {
-                list.add(trade.getMinBuyStack1());
-                if (!trade.getMinBuyStack2().isEmpty())
-                    list.add(trade.getMinBuyStack2());
+                list.add(trade.getMinCostA());
+                if (!trade.getMinCostB().isEmpty())
+                    list.add(trade.getMinCostB());
             }
         }
         return list;
@@ -58,7 +57,7 @@ public class VillagerEntry {
     public List<ItemStack> getOutputs() {
         List<ItemStack> list = new LinkedList<>();
         for (List<TradeList.Trade> trades : this.tradeList)
-            list.addAll(trades.stream().map(TradeList.Trade::getMinSellStack).collect(Collectors.toList()));
+            list.addAll(trades.stream().map(TradeList.Trade::getMinResult).collect(Collectors.toList()));
         return list;
     }
 
@@ -88,7 +87,7 @@ public class VillagerEntry {
 
     public VillagerEntity getVillagerEntity() {
         VillagerEntity villagerEntity = EntityType.VILLAGER.create(CompatBase.getWorld());
-        villagerEntity.setVillagerData(villagerEntity.getVillagerData().withProfession(this.profession));
+        villagerEntity.setVillagerData(villagerEntity.getVillagerData().setProfession(this.profession));
         return villagerEntity;
     }
 }

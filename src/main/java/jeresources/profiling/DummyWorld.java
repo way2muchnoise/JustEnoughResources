@@ -56,8 +56,9 @@ public class DummyWorld extends ServerWorld {
         // ((DummyChunkProvider) this.chunkProvider).unloadAllChunks();
     }
 
+    @Nullable
     @Override
-    public Entity getEntityByID(int i) {
+    public Entity getEntity(int id) {
         return null;
     }
 
@@ -68,17 +69,17 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public void registerMapData(MapData mapDataIn) {
+    public void setMapData(MapData mapData) {
 
     }
 
     @Override
-    public int getNextMapId() {
+    public int getFreeMapId() {
         return 0;
     }
 
     @Override
-    public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+    public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
 
     }
 
@@ -88,13 +89,13 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public ITagCollectionSupplier getTags() {
+    public ITagCollectionSupplier getTagManager() {
         return null;
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, BlockState newState, int flags) {
-        if (!isValid(pos) || !isBlockLoaded(pos)) {
+    public boolean setBlock(BlockPos pos, BlockState newState, int flags) {
+        if (!isOutsideBuildHeight(pos) || !isLoaded(pos)) {
             return false;
         }
 
@@ -104,12 +105,12 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public boolean setBlockState(BlockPos pos, BlockState state) {
-        return this.setBlockState(pos, state, 3);
+    public boolean setBlockAndUpdate(BlockPos pos, BlockState state) {
+        return this.setBlock(pos, state, 3);
     }
 
     @Override
-    public void notifyBlockUpdate(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
+    public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
 
     }
 
@@ -119,12 +120,12 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public void playMovingSound(@Nullable PlayerEntity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundCategory p_217384_4_, float p_217384_5_, float p_217384_6_) {
+    public void playSound(@Nullable PlayerEntity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundCategory p_217384_4_, float p_217384_5_, float p_217384_6_) {
 
     }
 
     @Override
-    public boolean addEntity(Entity entity) {
+    public boolean addFreshEntity(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
     }
@@ -136,7 +137,7 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public void playEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
+    public void levelEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
 
     }
 
@@ -187,22 +188,22 @@ public class DummyWorld extends ServerWorld {
         }
 
         @Override
-        public boolean canTick(BlockPos pos) {
+        public boolean isTickingChunk(BlockPos pos) {
             return false;
         }
 
         @Override
-        public String makeString() {
+        public String gatherStats() {
             return "Dummy";
         }
 
         @Override
-        public WorldLightManager getLightManager() {
+        public WorldLightManager getLightEngine() {
             return null;
         }
 
         @Override
-        public IBlockReader getWorld() {
+        public IBlockReader getLevel() {
             return null;
         }
     }

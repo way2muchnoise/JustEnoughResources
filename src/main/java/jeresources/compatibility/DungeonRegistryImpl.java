@@ -53,7 +53,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
         rawRegisters.entrySet().stream()
             .map(entry -> {
                 try {
-                    return new DungeonEntry(entry.getKey(), manager.getLootTableFromLocation(entry.getValue()));
+                    return new DungeonEntry(entry.getKey(), manager.get(entry.getValue()));
                 } catch (Exception e) {
                     LogHelper.debug("Bad dungeon chest registry for category %s", entry.getKey());
                     return null;

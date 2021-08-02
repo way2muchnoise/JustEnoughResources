@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public abstract class CompatBase {
     public static World getWorld() {
-        World world = Minecraft.getInstance().world;
+        World world = Minecraft.getInstance().level;
         if (world == null) {
             world = new FakeClientWorld();
         }

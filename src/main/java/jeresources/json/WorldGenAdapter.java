@@ -74,7 +74,7 @@ public class WorldGenAdapter {
                 String[] blockParts = block.split(":");
 
                 Block blockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
-                if (blockBlock == null || Item.getItemFromBlock(blockBlock) == null) continue;
+                if (blockBlock == null || Item.byBlock(blockBlock) == null) continue;
                 //int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
                 ItemStack blockStack = new ItemStack(blockBlock, 1, new CompoundNBT());
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
@@ -101,12 +101,12 @@ public class WorldGenAdapter {
 
                         ItemStack itemStack = new ItemStack(item);
                         if (stackStrings.length >= 3) {
-                            itemStack.setDamage(Integer.valueOf(stackStrings[2]));
+                            itemStack.setDamageValue(Integer.valueOf(stackStrings[2]));
                         }
 
                         if (stackStrings.length == 4) {
                             try {
-                                itemStack.setTag(JsonToNBT.getTagFromJson(stackStrings[3]));
+                                itemStack.setTag(JsonToNBT.parseTag(stackStrings[3]));
                             } catch (CommandSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -142,7 +142,7 @@ public class WorldGenAdapter {
     private static Map<RegistryKey<World>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        RegistryKey<World> worldRegistryKey = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(dim));
+        RegistryKey<World> worldRegistryKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }

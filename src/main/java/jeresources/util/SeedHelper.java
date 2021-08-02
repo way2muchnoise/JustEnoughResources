@@ -19,7 +19,7 @@ public class SeedHelper {
             if (o == null) continue;
             ItemStack seed = (ItemStack) ReflectionHelper.getPrivateValue(seedEntry, o, "seed");
             if (seed == null || seed.getItem() == null) continue;
-            result.add(new PlantDrop(seed, ((WeightedRandom.Item) o).itemWeight));
+            result.add(new PlantDrop(seed, ((WeightedRandom.Item) o).weight));
         }
         return result;
     }

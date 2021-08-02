@@ -9,9 +9,9 @@ public class LootConditionHelper {
         if (condition instanceof KilledByPlayer) {
             lootDrop.addConditional(Conditional.playerKill);
         } else if (condition instanceof RandomChance) {
-            lootDrop.chance = ((RandomChance) condition).chance;
+            lootDrop.chance = ((RandomChance) condition).probability;
         } else if (condition instanceof RandomChanceWithLooting) {
-            lootDrop.chance = ((RandomChanceWithLooting) condition).chance;
+            lootDrop.chance = ((RandomChanceWithLooting) condition).percent;
             lootDrop.addConditional(Conditional.affectedByLooting);
         } else if (condition instanceof EntityHasProperty) {
             /*

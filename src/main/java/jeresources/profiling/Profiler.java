@@ -42,11 +42,11 @@ public class Profiler implements Runnable {
         if (!allWorlds) {
 
             // Will never be null as the mod is client side only
-            RegistryKey<World> worldKey = sender.world.getDimensionKey();
+            RegistryKey<World> worldKey = sender.level.dimension();
             profileWorld(worldKey);
             
         } else {
-            for (RegistryKey<World> worldKey : sender.getServer().func_240770_D_()) {
+            for (RegistryKey<World> worldKey : sender.getServer().levelKeys()) {
                 profileWorld(worldKey);
             }
         }
@@ -58,14 +58,14 @@ public class Profiler implements Runnable {
 
     private void profileWorld(RegistryKey<World> worldKey) {
         String msg;
-        MinecraftServer server = Minecraft.getInstance().getIntegratedServer();
+        MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
         //Get the world we want to process.
-        ServerWorld world = server.getWorld(worldKey);
+        ServerWorld world = server.getLevel(worldKey);
 
         if (world == null) {
             msg = "Unable to profile dimension " + DimensionHelper.getWorldName(worldKey) + ".  There is no world for it.";
             LogHelper.error(msg);
-            sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
+            sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
             return;
         }
         
@@ -73,14 +73,14 @@ public class Profiler implements Runnable {
         final ServerWorld worldServer = world;
         
         msg = "Inspecting dimension " + DimensionHelper.getWorldName(worldKey) + ". ";
-        sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
+        sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(worldKey.getLocation().toString())) {
+        if (Settings.excludedDimensions.contains(worldKey.getRegistryName().toString())) {
             msg = "Skipped dimension " + DimensionHelper.getWorldName(worldKey) + " during profiling";
             LogHelper.info(msg);
-            sender.sendMessage(new StringTextComponent(msg), Util.DUMMY_UUID);
+            sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
             return;
         }
 
@@ -91,7 +91,7 @@ public class Profiler implements Runnable {
         DummyWorld dummyWorld = new DummyWorld(worldServer);
         // dummyWorld.initialize(null);
         ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
-        worldServer.getServer().deferTask(chunkGetter);
+        worldServer.getServer().addTickable(chunkGetter);
 
         executor.awaitTermination();
         this.currentExecutor = null;

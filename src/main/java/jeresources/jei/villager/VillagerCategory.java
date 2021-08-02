@@ -70,9 +70,9 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
         int i = 0;
         for (int level : recipeWrapper.getPossibleLevels(focus)) {
             TradeList tradeList = recipeWrapper.getTrades(level).getFocusedList(focus);
-            recipeLayout.getItemStacks().set(3 * i, tradeList.getFirstBuyStacks());
-            recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getSecondBuyStacks());
-            recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getSellStacks());
+            recipeLayout.getItemStacks().set(3 * i, tradeList.getCostAs());
+            recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getCostBs());
+            recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getResults());
             i++;
         }
     }

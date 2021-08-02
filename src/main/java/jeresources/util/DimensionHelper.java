@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 public class DimensionHelper {
 
     public static String getWorldName(RegistryKey<World> worldRegistryKey) {
-        return worldRegistryKey.getLocation().getPath();
+        return worldRegistryKey.getRegistryName().getPath();
     }
 
     public static DimensionType getType(RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-        return DynamicRegistries.func_239770_b_().func_230520_a_().getValueForKey(dimensionTypeRegistryKey);
+        return DynamicRegistries.builtin().dimensionTypes().get(dimensionTypeRegistryKey);
     }
 }

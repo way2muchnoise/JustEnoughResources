@@ -32,9 +32,9 @@ public class BackgroundDrawable implements IDrawable {
     @Override
     public void draw(MatrixStack matrixStack, int xOffset, int yOffset) {
         RenderSystem.clearCurrentColor();
-        Minecraft.getInstance().getTextureManager().bindTexture(this.resource);
+        Minecraft.getInstance().getTextureManager().bind(this.resource);
         RenderSystem.pushMatrix();
-        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
+        RenderSystem.multMatrix(matrixStack.last().pose());
         GuiUtils.drawTexturedModalRect(xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
         RenderSystem.popMatrix();
     }

@@ -30,8 +30,8 @@ public class LightLevel {
 
     @Override
     public String toString() {
-        String base = I18n.format("jer.lightLevel");
-        if (lightLevel < 0) return base + ": " + I18n.format("jer.any");
+        String base = I18n.get("jer.lightLevel");
+        if (lightLevel < 0) return base + ": " + I18n.get("jer.any");
         return base + ": " + relative.toString() + " " + lightLevel;
     }
 

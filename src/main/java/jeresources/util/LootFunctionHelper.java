@@ -16,12 +16,12 @@ import java.util.stream.IntStream;
 public class LootFunctionHelper {
     public static void applyFunction(ILootFunction lootFunction, LootDrop lootDrop) {
         if (lootFunction instanceof SetCount) {
-            lootDrop.minDrop = getMin(((SetCount) lootFunction).countRange);
+            lootDrop.minDrop = getMin(((SetCount) lootFunction).value);
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
             lootDrop.item.setCount(Math.max(lootDrop.minDrop, 1));
-            lootDrop.maxDrop = getMax(((SetCount) lootFunction).countRange);
+            lootDrop.maxDrop = getMax(((SetCount) lootFunction).value);
         } else if (lootFunction instanceof SetDamage) {
-            lootDrop.item.setDamage(MathHelper.floor(((SetDamage) lootFunction).damageRange.getMin()));
+            lootDrop.item.setDamageValue(MathHelper.floor(((SetDamage) lootFunction).damage.getMin()));
         } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels) {
             lootDrop.enchanted = true;
         } else if (lootFunction instanceof Smelt) {
@@ -47,27 +47,27 @@ public class LootFunctionHelper {
 
     public static int getMin(IRandomRange randomRange) {
         if (randomRange instanceof ConstantRange) {
-            return randomRange.generateInt(rand);
+            return randomRange.getInt(rand);
         } else if (randomRange instanceof RandomValueRange) {
             return MathHelper.floor(((RandomValueRange) randomRange).getMin());
         } else if (randomRange instanceof BinomialRange) {
             return 0;
         } else {
             // Test a 100 values
-            return IntStream.iterate(0, i -> randomRange.generateInt(rand)).limit(STATISTICAL_TEST).min().orElse(0);
+            return IntStream.iterate(0, i -> randomRange.getInt(rand)).limit(STATISTICAL_TEST).min().orElse(0);
         }
     }
 
     public static int getMax(IRandomRange randomRange) {
         if (randomRange instanceof ConstantRange) {
-            return randomRange.generateInt(rand);
+            return randomRange.getInt(rand);
         } else if (randomRange instanceof RandomValueRange) {
             return MathHelper.floor(((RandomValueRange) randomRange).getMax());
         } else if (randomRange instanceof BinomialRange) {
             return ((BinomialRange) randomRange).n;
         } else {
             // Test a 100 values
-            return IntStream.iterate(0, i -> randomRange.generateInt(rand)).limit(STATISTICAL_TEST).max().orElse(0);
+            return IntStream.iterate(0, i -> randomRange.getInt(rand)).limit(STATISTICAL_TEST).max().orElse(0);
         }
     }
 }

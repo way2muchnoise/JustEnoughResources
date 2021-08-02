@@ -45,14 +45,14 @@ public class DungeonEntry {
 
                 LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof TableLootEntry).map(entry -> (TableLootEntry) entry)
-                    .map(entry -> manager.getLootTableFromLocation(entry.table))
+                    .map(entry -> manager.get(entry.name))
                     .forEach(table -> handleTable(table, manager, tmpMinStacks, tmpMaxStacks));
             }
         );
     }
 
     public boolean containsItem(ItemStack itemStack) {
-        return drops.stream().anyMatch(drop -> drop.item.isItemEqual(itemStack));
+        return drops.stream().anyMatch(drop -> drop.item.sameItem(itemStack));
     }
 
     public String getName() {
@@ -66,7 +66,7 @@ public class DungeonEntry {
 
     public List<ItemStack> getItemStacks(IFocus<ItemStack> focus) {
         return drops.stream().map(drop -> drop.item)
-            .filter(stack -> focus == null || ItemStack.areItemStacksEqual(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().getCount()), focus.getValue()))
+            .filter(stack -> focus == null || ItemStack.isSame(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().getCount()), focus.getValue()))
             .collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class DungeonEntry {
     }
 
     public LootDrop getChestDrop(ItemStack ingredient) {
-        return drops.stream().filter(drop -> ItemStack.areItemsEqual(drop.item, ingredient)).findFirst().orElse(null);
+        return drops.stream().filter(drop -> ItemStack.isSame(drop.item, ingredient)).findFirst().orElse(null);
     }
 
 }

@@ -66,7 +66,7 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.sendMessage(new TranslationTextComponent(s), Util.DUMMY_UUID);
+        this.sender.sendMessage(new TranslationTextComponent(s), Util.NIL_UUID);
     }
 
     private void sendSpeed(RegistryKey<World> worldRegistryKey) {

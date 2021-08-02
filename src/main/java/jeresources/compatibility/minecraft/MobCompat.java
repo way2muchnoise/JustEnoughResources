@@ -74,7 +74,7 @@ public class MobCompat {
                     exp = new Tuple<>(1, 4);
                 }
                 else {
-                    exp = new Tuple<>(((MobEntity)entity).experienceValue, ((MobEntity)entity).experienceValue);
+                    exp = new Tuple<>(((MobEntity)entity).xpReward, ((MobEntity)entity).xpReward);
                 }
 
                 MOB_XP.put(entityClass, exp);

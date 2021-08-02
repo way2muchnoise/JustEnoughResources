@@ -19,16 +19,16 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         this.villagerEntry = villagerEntry;
     }
 
-    public List<ItemStack> getFirstBuyStacks() {
-        return this.stream().map(Trade::getMinBuyStack1).collect(Collectors.toList());
+    public List<ItemStack> getCostAs() {
+        return this.stream().map(Trade::getMinCostA).collect(Collectors.toList());
     }
 
-    public List<ItemStack> getSecondBuyStacks() {
-        return this.stream().map(Trade::getMinBuyStack2).filter(itemStack -> !itemStack.isEmpty()).collect(Collectors.toList());
+    public List<ItemStack> getCostBs() {
+        return this.stream().map(Trade::getMinCostB).filter(itemStack -> !itemStack.isEmpty()).collect(Collectors.toList());
     }
 
-    public List<ItemStack> getSellStacks() {
-        return this.stream().map(Trade::getMinSellStack).collect(Collectors.toList());
+    public List<ItemStack> getResults() {
+        return this.stream().map(Trade::getMinResult).collect(Collectors.toList());
     }
 
     public TradeList getSubListSell(ItemStack itemStack) {
@@ -68,110 +68,110 @@ public class TradeList extends LinkedList<TradeList.Trade> {
             for (int itr = 0; itr < 100; itr++)
                 addMerchantRecipe(tempList, trade, rand);
             if (tempList.size() == 0) return; // Bad lists be bad
-            ItemStack buy1 = tempList.get(0).getBuyingStackFirst();
-            ItemStack buy2 = tempList.get(0).getBuyingStackSecond();
-            ItemStack sell = tempList.get(0).getSellingStack();
-            int minBuy1, minBuy2, minSell;
-            int maxBuy1, maxBuy2, maxSell;
-            minBuy1 = maxBuy1 = buy1.getCount();
-            if(!buy2.isEmpty()) minBuy2 = maxBuy2 = buy2.getCount();
-            else minBuy2 = maxBuy2 = 1; // Needs to be one with the new ItemStack.EMPTY implementation
-            minSell = maxSell = sell.getCount();
+            ItemStack costA = tempList.get(0).getCostA();
+            ItemStack costB = tempList.get(0).getCostB();
+            ItemStack result = tempList.get(0).getResult();
+            int minCostA, minCostB, minResult;
+            int maxCostA, maxCostB, maxResult;
+            minCostA = maxCostA = costA.getCount();
+            if(!costB.isEmpty()) minCostB = maxCostB = costB.getCount();
+            else minCostB = maxCostB = 1; // Needs to be one with the new ItemStack.EMPTY implementation
+            minResult = maxResult = result.getCount();
             for (MerchantOffer merchantRecipe : tempList) {
-                if(minBuy1 > merchantRecipe.getBuyingStackFirst().getCount())
-                    minBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
-                if(!buy2.isEmpty() && minBuy2 > merchantRecipe.getBuyingStackSecond().getCount())
-                    minBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
-                if(minSell > merchantRecipe.getSellingStack().getCount())
-                    minSell = merchantRecipe.getSellingStack().getCount();
+                if(minCostA > merchantRecipe.getBaseCostA().getCount())
+                    minCostA = merchantRecipe.getCostA().getCount();
+                if(!costB.isEmpty() && minCostB > merchantRecipe.getCostB().getCount())
+                    minCostB = merchantRecipe.getCostB().getCount();
+                if(minResult > merchantRecipe.getResult().getCount())
+                    minResult = merchantRecipe.getResult().getCount();
 
-                if(maxBuy1 < merchantRecipe.getBuyingStackFirst().getCount())
-                    maxBuy1 = merchantRecipe.getBuyingStackFirst().getCount();
-                if(!buy2.isEmpty() && maxBuy2 < merchantRecipe.getBuyingStackSecond().getCount())
-                    maxBuy2 = merchantRecipe.getBuyingStackSecond().getCount();
-                if(maxSell < merchantRecipe.getSellingStack().getCount())
-                    maxSell = merchantRecipe.getSellingStack().getCount();
+                if(maxCostA < merchantRecipe.getCostA().getCount())
+                    maxCostA = merchantRecipe.getCostA().getCount();
+                if(!costB.isEmpty() && maxCostB < merchantRecipe.getCostB().getCount())
+                    maxCostB = merchantRecipe.getCostA().getCount();
+                if(maxResult < merchantRecipe.getResult().getCount())
+                    maxResult = merchantRecipe.getResult().getCount();
             }
             this.add(
                     new Trade(
-                            buy1, minBuy1, maxBuy1,
-                            buy2, minBuy2, maxBuy2,
-                            sell, minSell, maxSell
+                            costA, minCostA, maxCostA,
+                            costB, minCostB, maxCostB,
+                            result, minResult, maxResult
                     )
             );
         }
     }
 
     public static class Trade {
-        private final ItemStack buy1, buy2, sell;
-        private final int minBuy1, minBuy2, minSell;
-        private final int maxBuy1, maxBuy2, maxSell;
+        private final ItemStack costA, costB, result;
+        private final int minCostA, minCostB, minResult;
+        private final int maxCostA, maxCostB, maxResult;
 
         Trade(
-            ItemStack buy1, int minBuy1, int maxBuy1,
-            ItemStack buy2, int minBuy2, int maxBuy2,
-            ItemStack sell, int minSell, int maxSell
+            ItemStack costA, int minCostA, int maxCostA,
+            ItemStack costB, int minCostB, int maxCostB,
+            ItemStack result, int minResult, int maxResult
         ) {
-            this.buy1 = buy1;
-            this.minBuy1 = minBuy1;
-            this.maxBuy1 = maxBuy1;
-            this.buy2 = buy2;
-            this.minBuy2 = minBuy2;
-            this.maxBuy2 = maxBuy2;
-            this.sell = sell;
-            this.minSell = minSell;
-            this.maxSell = maxSell;
+            this.costA = costA;
+            this.minCostA = minCostA;
+            this.maxCostA = maxCostA;
+            this.costB = costB;
+            this.minCostB = minCostB;
+            this.maxCostB = maxCostB;
+            this.result = result;
+            this.minResult = minResult;
+            this.maxResult = maxResult;
         }
 
         public boolean sellsItem(ItemStack itemStack) {
-            return this.sell.isItemEqual(itemStack);
+            return this.result.sameItem(itemStack);
         }
 
         public boolean buysItem(ItemStack itemStack) {
-            return this.buy1.isItemEqual(itemStack) || (!this.buy2.isEmpty() && this.buy2.isItemEqual(itemStack));
+            return this.costA.sameItem(itemStack) || (!this.costB.isEmpty() && this.costB.sameItem(itemStack));
         }
 
-        public ItemStack getMinBuyStack1() {
-            ItemStack minBuyStack = this.buy1.copy();
-            minBuyStack.setCount(this.minBuy1);
+        public ItemStack getMinCostA() {
+            ItemStack minBuyStack = this.costA.copy();
+            minBuyStack.setCount(this.minCostA);
             return minBuyStack;
         }
 
-        public ItemStack getMinBuyStack2() {
-            if (this.buy2 == null) return ItemStack.EMPTY;
-            ItemStack minBuyStack = this.buy2.copy();
-            minBuyStack.setCount(this.minBuy2);
+        public ItemStack getMinCostB() {
+            if (this.costB == null) return ItemStack.EMPTY;
+            ItemStack minBuyStack = this.costB.copy();
+            minBuyStack.setCount(this.minCostB);
             return minBuyStack;
         }
 
-        public ItemStack getMinSellStack() {
-            ItemStack minSellStack = this.sell.copy();
-            minSellStack.setCount(this.minSell);
+        public ItemStack getMinResult() {
+            ItemStack minSellStack = this.result.copy();
+            minSellStack.setCount(this.minResult);
             return minSellStack;
         }
 
-        public ItemStack getMaxBuyStack1() {
-            ItemStack maxBuyStack = this.buy1.copy();
-            maxBuyStack.setCount(this.maxBuy1);
+        public ItemStack getMaxCostA() {
+            ItemStack maxBuyStack = this.costA.copy();
+            maxBuyStack.setCount(this.maxCostA);
             return maxBuyStack;
         }
 
-        public ItemStack getMaxBuyStack2() {
-            if (this.buy2 == null) return ItemStack.EMPTY;
-            ItemStack maxBuyStack = this.buy2.copy();
-            maxBuyStack.setCount(this.maxBuy2);
+        public ItemStack getMaxCostB() {
+            if (this.costB == null) return ItemStack.EMPTY;
+            ItemStack maxBuyStack = this.costB.copy();
+            maxBuyStack.setCount(this.maxCostB);
             return maxBuyStack;
         }
 
-        public ItemStack getMaxSellStack() {
-            ItemStack maxSellStack = this.sell.copy();
-            maxSellStack.setCount(this.maxSell);
+        public ItemStack getMaxResult() {
+            ItemStack maxSellStack = this.result.copy();
+            maxSellStack.setCount(this.maxResult);
             return maxSellStack;
         }
 
         @Override
         public String toString() {
-            return "Buy1: " + this.buy1 + ", Buy2: " + this.buy2 + ", Sell: " + this.sell;
+            return "Buy1: " + this.costA + ", Buy2: " + this.costB + ", Sell: " + this.result;
         }
     }
 }

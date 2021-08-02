@@ -47,7 +47,7 @@ public class ChunkProfiler implements Runnable {
     }
 
     private void profileChunk(Chunk chunk) {
-        final RegistryKey<World> worldRegistryKey = world.getDimensionKey();
+        final RegistryKey<World> worldRegistryKey = world.dimension();
         this.timer.startChunk(worldRegistryKey);
         Map<String, Integer[]> temp = new HashMap<>();
 
@@ -55,11 +55,11 @@ public class ChunkProfiler implements Runnable {
         RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vector3d(0, 0, 0), Direction.DOWN, blockPos, true);
         PlayerEntity player = Minecraft.getInstance().player;
 
-        final int maxY = chunk.getTopFilledSegment();
+        final int maxY = chunk.getHighestSectionPosition();
         for (int y = 0; y < maxY; y++)
             for (int x = 0; x < CHUNK_SIZE; x++)
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    blockPos.setPos(x + chunk.getPos().x * CHUNK_SIZE, y, z + chunk.getPos().z * CHUNK_SIZE);
+                    blockPos.set(x + chunk.getPos().x * CHUNK_SIZE, y, z + chunk.getPos().z * CHUNK_SIZE);
                     BlockState blockState = chunk.getBlockState(new BlockPos(x, y, z));
                     if (blacklist.contains(blockState)) continue;
                     final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);

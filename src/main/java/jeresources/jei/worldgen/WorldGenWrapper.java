@@ -155,7 +155,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
                 String line = "  ";
                 if (dropItem.fortuneLevel > 0) {
                     // line += Enchantment.getEnchantmentByLocation("fortune").getTranslatedName(dropItem.fortuneLevel)
-                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).getDisplayName(dropItem.fortuneLevel).toString();
+                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).getFullname(dropItem.fortuneLevel).toString();
                 } else {
                     line += TranslationHelper.translateAndFormat("jer.worldgen.base");
                 }
@@ -184,8 +184,8 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
     private static double getExactMouseX(final double mouseX) {
         Minecraft mc = Minecraft.getInstance();
-        final int scaledWidth = mc.getMainWindow().getScaledWidth();
-        final double mouseXExact = mc.mouseHelper.getMouseX() * scaledWidth / (double) mc.getMainWindow().getWidth();
+        final int scaledWidth = mc.getWindow().getGuiScaledWidth();
+        final double mouseXExact = mc.mouseHandler.xpos() * scaledWidth / (double) mc.getWindow().getWidth();
         final double mouseXFraction = mouseXExact - Math.floor(mouseXExact);
         return mouseX + mouseXFraction;
     }

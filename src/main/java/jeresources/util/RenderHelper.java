@@ -50,7 +50,7 @@ public class RenderHelper {
     public static void drawLine(MatrixStack matrixStack, double xBegin, double yBegin, double xEnd, double yEnd, int color) {
         ColorHelper.setColor3f(color);
         RenderSystem.pushMatrix();
-        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
+        RenderSystem.multMatrix(matrixStack.last().pose());
         GL11.glLineWidth((float)(getGuiScaleFactor() * 1.3F));
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex2d(xBegin, yBegin);
@@ -61,20 +61,20 @@ public class RenderHelper {
 
     public static void drawPoint(double x, double y, int color) {
         ColorHelper.setColor3f(color);
-        GL11.glPointSize((float)(Minecraft.getInstance().getMainWindow().getGuiScaleFactor() * 1.3F));
+        GL11.glPointSize((float)(Minecraft.getInstance().getWindow().getGuiScale() * 1.3F));
         GL11.glBegin(GL11.GL_POINTS);
         GL11.glVertex2d(x, y);
         GL11.glEnd();
     }
 
     public static void renderEntity(MatrixStack matrixStack, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
-        if (livingEntity.world == null) livingEntity.world = Minecraft.getInstance().world;
+        if (livingEntity.level == null) livingEntity.level = Minecraft.getInstance().level;
         RenderSystem.pushMatrix();
-        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
+        RenderSystem.multMatrix(matrixStack.last().pose());
         RenderSystem.translatef(x, y, 50.0F);
         RenderSystem.scalef((float) -scale, (float) scale, (float) scale);
         MatrixStack mobMatrix = new MatrixStack();
-        mobMatrix.rotate(Vector3f.ZP.rotationDegrees(180.0F));
+        mobMatrix.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
         IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
         x = renderInfo.x;
         y = renderInfo.y;
@@ -82,36 +82,36 @@ public class RenderHelper {
         yaw = renderInfo.yaw;
         pitch = renderInfo.pitch;
         RenderSystem.rotatef(((float) Math.atan((pitch / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
-        livingEntity.renderYawOffset = (float) Math.atan(yaw / 40.0F) * 20.0F;
-        livingEntity.rotationYaw = (float) Math.atan(yaw / 40.0F) * 40.0F;
-        livingEntity.rotationPitch = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
-        livingEntity.rotationYawHead = livingEntity.rotationYaw;
-        livingEntity.prevRotationYawHead = livingEntity.rotationYaw;
-        mobMatrix.translate(0.0F, livingEntity.getYOffset(), 0.0F);
-        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getRenderManager();
+        livingEntity.yo = (float) Math.atan(yaw / 40.0F) * 20.0F;
+        livingEntity.yRot = (float) Math.atan(yaw / 40.0F) * 40.0F;
+        livingEntity.xRot = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
+        livingEntity.yHeadRot = livingEntity.yRot;
+        livingEntity.yHeadRotO = livingEntity.yRot;
+        mobMatrix.translate(0.0F, livingEntity.getY(), 0.0F);
+        EntityRendererManager entityrenderermanager = Minecraft.getInstance().getEntityRenderDispatcher();
         entityrenderermanager.setRenderShadow(false);
-        IRenderTypeBuffer.Impl renderTypeBuffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+        IRenderTypeBuffer.Impl renderTypeBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
         RenderSystem.runAsFancy(() -> {
-            entityrenderermanager.renderEntityStatic(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, mobMatrix, renderTypeBuffer, 15728880);
+            entityrenderermanager.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, mobMatrix, renderTypeBuffer, 15728880);
         });
-        renderTypeBuffer.finish();
+        renderTypeBuffer.endBatch();
         entityrenderermanager.setRenderShadow(true);
         RenderSystem.popMatrix();
     }
 
     public static void renderChest(MatrixStack matrixStack, float x, float y, float rotate, float scale, float lidAngle) {
-        Minecraft.getInstance().getTextureManager().bindTexture(Resources.Vanilla.CHEST);
+        Minecraft.getInstance().getTextureManager().bind(Resources.Vanilla.CHEST);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
 
-        matrixStack.push();
+        matrixStack.pushPose();
         RenderSystem.enableRescaleNormal();
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         matrixStack.translate(x, y, 50.0F);
-        matrixStack.rotate(new Quaternion(-160.0F, 1.0F, 0.0F, 0.0F));
+        matrixStack.mulPose(new Quaternion(-160.0F, 1.0F, 0.0F, 0.0F));
         matrixStack.scale(scale, -scale, -scale);
         matrixStack.translate(0.5F, 0.5F, 0.5F);
-        matrixStack.rotate(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
+        matrixStack.mulPose(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
         matrixStack.translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
@@ -125,42 +125,42 @@ public class RenderHelper {
         // modelchest.field_78232_b.offsetZ -= 0.9F; // chestBelow
         // modelchest.renderAll();
         RenderSystem.disableRescaleNormal();
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public static void renderBlock(MatrixStack matrixStack, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
-        matrixStack.push();
+        matrixStack.pushPose();
         matrixStack.translate(x, y, z);
         matrixStack.scale(-scale, -scale, -scale);
         matrixStack.translate(-0.5F, -0.5F, 0);
-        matrixStack.rotate(Vector3f.XP.rotationDegrees(-30F));
+        matrixStack.mulPose(Vector3f.XP.rotationDegrees(-30F));
         matrixStack.translate(0.5F, 0, -0.5F);
-        matrixStack.rotate(Vector3f.YP.rotationDegrees(rotate));
+        matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotate));
         matrixStack.translate(-0.5F, 0, 0.5F);
 
-        matrixStack.push();
+        matrixStack.pushPose();
         RenderSystem.color4f(1F, 1F, 1F, 1F);
         matrixStack.translate(0, 0, -1);
 
-        mc.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-        IRenderTypeBuffer.Impl buffers = mc.getRenderTypeBuffers().getBufferSource();
-        mc.getBlockRendererDispatcher().renderBlock(block, matrixStack, buffers, 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
-        buffers.finish();
-        matrixStack.pop();
+        mc.getTextureManager().bind(PlayerContainer.BLOCK_ATLAS);
+        IRenderTypeBuffer.Impl buffers = mc.renderBuffers().bufferSource();
+        mc.getBlockRenderer().renderBlock(block, matrixStack, buffers, 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+        buffers.endBatch();
+        matrixStack.popPose();
 
-        matrixStack.pop();
+        matrixStack.popPose();
     }
 
     public static void scissor(MatrixStack matrixStack, int x, int y, int w, int h) {
-        double scale = Minecraft.getInstance().getMainWindow().getGuiScaleFactor();
+        double scale = Minecraft.getInstance().getWindow().getGuiScale();
         double[] xyzTranslation = getGLTranslation(matrixStack, scale);
         x *= scale;
         y *= scale;
         w *= scale;
         h *= scale;
         int scissorX = Math.round(Math.round(xyzTranslation[0] + x));
-        int scissorY = Math.round(Math.round(Minecraft.getInstance().getMainWindow().getHeight() - y - h - xyzTranslation[1]));
+        int scissorY = Math.round(Math.round(Minecraft.getInstance().getWindow().getHeight() - y - h - xyzTranslation[1]));
         int scissorW = Math.round(w);
         int scissorH = Math.round(h);
         IScissorHook.ScissorInfo scissorInfo = MobRegistryImpl.applyScissorHooks(new IScissorHook.ScissorInfo(scissorX, scissorY, scissorW, scissorH));
@@ -173,17 +173,17 @@ public class RenderHelper {
     }
 
     public static void drawTexture(MatrixStack matrixStack, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
-        Minecraft.getInstance().getTextureManager().bindTexture(resource);
+        Minecraft.getInstance().getTextureManager().bind(resource);
         RenderSystem.pushMatrix();
-        RenderSystem.multMatrix(matrixStack.getLast().getMatrix());
+        RenderSystem.multMatrix(matrixStack.last().pose());
         GuiUtils.drawTexturedModalRect(x, y, u, v, width, height, 0);
         RenderSystem.popMatrix();
     }
 
     public static double[] getGLTranslation(MatrixStack matrixStack, double scale) {
-        Matrix4f matrix = matrixStack.getLast().getMatrix();
+        Matrix4f matrix = matrixStack.last().pose();
         FloatBuffer buf = BufferUtils.createFloatBuffer(16);
-        matrix.write(buf);
+        matrix.store(buf);
         // { x, y, z }
         return new double[] { buf.get(getIndexFloatBuffer(0,3)) * scale, buf.get(getIndexFloatBuffer(1, 3)) * scale, buf.get(getIndexFloatBuffer(2, 3)) * scale };
     }
@@ -193,6 +193,6 @@ public class RenderHelper {
     }
 
     public static double getGuiScaleFactor() {
-        return Minecraft.getInstance().getMainWindow().getGuiScaleFactor();
+        return Minecraft.getInstance().getWindow().getGuiScale();
     }
 }

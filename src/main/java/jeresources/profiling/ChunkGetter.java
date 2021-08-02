@@ -44,7 +44,7 @@ public class ChunkGetter implements Runnable {
 
                         // add the next task to executor thread first so that the world's scheduledTasks
                         // has a chance to process other things like chat input
-                        executor.execute(() -> dummyWorld.getServer().deferTask(runnable));
+                        executor.execute(() -> dummyWorld.getServer().addTickable(runnable));
                     } else
                         executor.shutdown();
                 } catch (ReportedException re) {
@@ -74,7 +74,7 @@ public class ChunkGetter implements Runnable {
 
     private boolean areAllChunksEmpty(List<Chunk> chunks) {
         for (Chunk chunk : chunks) {
-            if (chunk.getTopFilledSegment() != 0)
+            if (chunk.getHighestSectionPosition() != 0)
                 return false;
         }
         return true;
@@ -95,12 +95,12 @@ public class ChunkGetter implements Runnable {
 
         @Override
         public List<Chunk> generateChunks(DummyWorld dummyWorld) {
-            final int maxChunkPos = (worldBorder.getSize() / 16) - GENERATE_SIZE;
+            final int maxChunkPos = (int)(worldBorder.getSize() / 16) - GENERATE_SIZE;
             // load a square of chunks in a random area, and then profile the center ones.
             // worldgen does not populate the chunks that are on the edges.
 
-            final int chunkX = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterX();
-            final int chunkZ = dummyWorld.rand.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterZ();
+            final int chunkX = dummyWorld.random.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterX();
+            final int chunkZ = dummyWorld.random.nextInt(2 * maxChunkPos) - maxChunkPos + (int) worldBorder.getCenterZ();
 
             return ChunkGetter.centerChunks(dummyWorld, chunkX, chunkZ, GENERATE_SIZE);
         }

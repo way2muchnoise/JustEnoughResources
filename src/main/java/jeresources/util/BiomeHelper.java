@@ -17,7 +17,7 @@ public class BiomeHelper {
         List<Biome> biomes = new ArrayList<>();
         ForgeRegistries.BIOMES.forEach(
             biome -> {
-                if (biome.getCategory().equals(category)) {
+                if (biome.getBiomeCategory().equals(category)) {
                     biomes.add(biome);
                 }
             }

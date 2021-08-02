@@ -11,7 +11,7 @@ public class EnchantmentEntry {
     }
 
     public String getTranslatedWithLevels() {
-        String s = this.enchantment.getDisplayName(1).getString();
+        String s = this.enchantment.getFullname(1).getString();
         if (this.enchantment.getMinLevel() != this.enchantment.getMaxLevel())
             s += "-" + TranslationHelper.translateAndFormat("enchantment.level." + this.enchantment.getMaxLevel());
         return s;

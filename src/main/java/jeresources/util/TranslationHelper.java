@@ -5,7 +5,7 @@ import net.minecraft.client.resources.I18n;
 
 public class TranslationHelper {
     public static String translateAndFormat(String key, Object... params) {
-        return I18n.format(key, params);
+        return I18n.get(key, params);
     }
 
     public static String getLocalPageInfo(int page, int lastPage) {
@@ -13,7 +13,7 @@ public class TranslationHelper {
     }
 
     public static boolean canTranslate(String key) {
-        return I18n.hasKey(key);
+        return I18n.exists(key);
     }
 
     public static String tryDimensionTranslate(String dimension) {
