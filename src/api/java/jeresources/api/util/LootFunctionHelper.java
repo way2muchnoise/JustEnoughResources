@@ -1,4 +1,4 @@
-package jeresources.util;
+package jeresources.api.util;
 
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;

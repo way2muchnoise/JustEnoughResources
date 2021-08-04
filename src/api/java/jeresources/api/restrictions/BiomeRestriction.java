@@ -1,6 +1,6 @@
 package jeresources.api.restrictions;
 
-import jeresources.util.BiomeHelper;
+import jeresources.api.util.BiomeHelper;
 import net.minecraft.world.biome.Biome;
 
 import java.util.ArrayList;

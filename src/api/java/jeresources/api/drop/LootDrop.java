@@ -1,8 +1,8 @@
 package jeresources.api.drop;
 
 import jeresources.api.conditionals.Conditional;
-import jeresources.util.LootConditionHelper;
-import jeresources.util.LootFunctionHelper;
+import jeresources.api.util.LootConditionHelper;
+import jeresources.api.util.LootFunctionHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.conditions.ILootCondition;

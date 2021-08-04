@@ -2,7 +2,7 @@ package jeresources.entry;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.registry.DungeonRegistry;
-import jeresources.util.LootFunctionHelper;
+import jeresources.api.util.LootFunctionHelper;
 import jeresources.util.LootTableHelper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.item.ItemStack;

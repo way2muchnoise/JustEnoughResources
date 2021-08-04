@@ -1,4 +1,4 @@
-package jeresources.util;
+package jeresources.api.util;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.ForgeRegistries;
