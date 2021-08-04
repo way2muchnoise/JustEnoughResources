@@ -7,8 +7,8 @@ import net.minecraft.world.World;
 
 public class DimensionHelper {
 
-    public static String getWorldName(RegistryKey<World> worldRegistryKey) {
-        return worldRegistryKey.getRegistryName().getPath();
+    public static String getDimensionName(RegistryKey<World> worldRegistryKey) {
+        return worldRegistryKey.location().getPath();
     }
 
     public static DimensionType getType(RegistryKey<DimensionType> dimensionTypeRegistryKey) {

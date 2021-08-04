@@ -2,6 +2,7 @@ package jeresources;
 
 import jeresources.compatibility.JERAPI;
 import jeresources.config.Config;
+import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.ClientProxy;
 import jeresources.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +29,7 @@ public class JEResources {
         // TODO create config folder
         Config.instance.loadConfig(Config.COMMON, FMLPaths.CONFIGDIR.get().resolve(ID + ".toml"));
         MinecraftForge.EVENT_BUS.register(Config.COMMON);
+        MinecraftForge.EVENT_BUS.register(new ProfileCommand());
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

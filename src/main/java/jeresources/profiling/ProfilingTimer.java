@@ -33,7 +33,7 @@ public class ProfilingTimer {
         if (counters == null) {
             counters = new DimensionCounters();
             this.dimensionsMap.put(worldRegistryKey, counters);
-            send("[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Started profiling");
+            send("[" + DimensionHelper.getDimensionName(worldRegistryKey) + "] Started profiling");
         }
         counters.threadCounter++;
     }
@@ -51,7 +51,7 @@ public class ProfilingTimer {
         for (RegistryKey<World> worldRegistryKey : this.dimensionsMap.keySet()) {
             DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
             counters.completed = true;
-            send("[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Completed profiling of " +
+            send("[" + DimensionHelper.getDimensionName(worldRegistryKey) + "] Completed profiling of " +
                 (getBlocksPerLayer(worldRegistryKey) * ChunkProfiler.CHUNK_HEIGHT) + " blocks in " +
                 (System.currentTimeMillis() - counters.start) + " ms saved to " + WorldGenAdapter.getWorldGenFile());
         }
@@ -72,7 +72,7 @@ public class ProfilingTimer {
     private void sendSpeed(RegistryKey<World> worldRegistryKey) {
         DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         float time = (System.currentTimeMillis() - counters.start) * 1.0F / counters.chunkCounter;
-        String message = "[" + DimensionHelper.getWorldName(worldRegistryKey) + "] Scanned " +
+        String message = "[" + DimensionHelper.getDimensionName(worldRegistryKey) + "] Scanned " +
             counters.chunkCounter + " chunks at " + String.format("%3.2f", time) + " ms/chunk";
         send(message);
     }

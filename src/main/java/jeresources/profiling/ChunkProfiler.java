@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
@@ -25,16 +25,18 @@ import java.util.Map;
 
 public class ChunkProfiler implements Runnable {
     private final ServerWorld world;
+    private final RegistryKey<World> dimensionKey;
     private final ProfilingTimer timer;
     private final ProfilingBlacklist blacklist;
-    private final List<Chunk> chunks;
+    private final List<IChunk> chunks;
     @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(ServerWorld world, List<Chunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
+    public ChunkProfiler(ServerWorld world, RegistryKey<World> dimensionKey, List<IChunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
         this.world = world;
+        this.dimensionKey = dimensionKey;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
         this.timer = timer;
@@ -46,7 +48,7 @@ public class ChunkProfiler implements Runnable {
         this.chunks.forEach(this::profileChunk);
     }
 
-    private void profileChunk(Chunk chunk) {
+    private void profileChunk(IChunk chunk) {
         final RegistryKey<World> worldRegistryKey = world.dimension();
         this.timer.startChunk(worldRegistryKey);
         Map<String, Integer[]> temp = new HashMap<>();
@@ -94,7 +96,7 @@ public class ChunkProfiler implements Runnable {
             dimensionData.distributionMap.put(entry.getKey(), array);
         }
 
-        this.timer.endChunk(worldRegistryKey);
+        this.timer.endChunk(dimensionKey);
     }
 
     public static Map<String, Map<Integer, Float>> getDrops(ServerWorld world, BlockPos pos, BlockState state) {

@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -24,23 +25,21 @@ public class Profiler implements Runnable {
     private final Entity sender;
     private final ProfilingBlacklist blacklist;
     private final int chunkCount;
-    private final boolean allWorlds;
+    private final boolean allDimensions;
     private ProfilingExecutor currentExecutor;
 
-    private Profiler(Entity sender, int chunkCount, boolean allWorlds) {
+    private Profiler(Entity sender, int chunkCount, boolean allDimensions) {
         this.sender = sender;
         this.allDimensionData = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
         this.timer = new ProfilingTimer(sender, chunkCount);
-        this.allWorlds = allWorlds;
+        this.allDimensions = allDimensions;
         this.blacklist = new ProfilingBlacklist();
     }
 
     @Override
     public void run() {
-        LogHelper.warn("There will be messages about world gen lag during the profiling, you can ignore these as that is what you get when profiling.");
-        if (!allWorlds) {
-
+        if (!allDimensions) {
             // Will never be null as the mod is client side only
             RegistryKey<World> worldKey = sender.level.dimension();
             profileWorld(worldKey);
@@ -56,14 +55,14 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(RegistryKey<World> worldKey) {
+    private void profileWorld(RegistryKey<World> dimensionKey) {
         String msg;
         MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
         //Get the world we want to process.
-        ServerWorld world = server.getLevel(worldKey);
+        ServerWorld world = server.getLevel(dimensionKey);
 
         if (world == null) {
-            msg = "Unable to profile dimension " + DimensionHelper.getWorldName(worldKey) + ".  There is no world for it.";
+            msg = "Unable to profile dimension " + DimensionHelper.getDimensionName(dimensionKey) + ".  There is no world for it.";
             LogHelper.error(msg);
             sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
             return;
@@ -72,13 +71,13 @@ public class Profiler implements Runnable {
         //Make this stick for recovery after profiling.
         final ServerWorld worldServer = world;
         
-        msg = "Inspecting dimension " + DimensionHelper.getWorldName(worldKey) + ". ";
+        msg = "Inspecting dimension " + DimensionHelper.getDimensionName(dimensionKey) + ". ";
         sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(worldKey.getRegistryName().toString())) {
-            msg = "Skipped dimension " + DimensionHelper.getWorldName(worldKey) + " during profiling";
+        if (Settings.excludedDimensions.contains(dimensionKey.location().toString())) {
+            msg = "Skipped dimension " + DimensionHelper.getDimensionName(dimensionKey) + " during profiling";
             LogHelper.info(msg);
             sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
             return;
@@ -86,7 +85,7 @@ public class Profiler implements Runnable {
 
         final ProfilingExecutor executor = new ProfilingExecutor(this);
         this.currentExecutor = executor;
-        this.allDimensionData.put(worldKey, new ProfiledDimensionData());
+        this.allDimensionData.put(dimensionKey, new ProfiledDimensionData());
 
         DummyWorld dummyWorld = new DummyWorld(worldServer);
         // dummyWorld.initialize(null);
@@ -95,10 +94,6 @@ public class Profiler implements Runnable {
 
         executor.awaitTermination();
         this.currentExecutor = null;
-
-        dummyWorld.clearChunks();
-        // Return the world to it's original state
-        // DimensionManager.setWorld(dimensionType, worldServer, server);
     }
 
     public ProfilingTimer getTimer() {
@@ -137,13 +132,21 @@ public class Profiler implements Runnable {
     private static Profiler currentProfiler;
 
     public static boolean init(Entity sender, int chunks, boolean allWorlds) {
+        if (true) {
+            sender.sendMessage(new StringTextComponent("Command not implemeted"), Util.NIL_UUID);
+            return true;
+        }
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
         currentProfiler = new Profiler(sender, chunks, allWorlds);
         new Thread(currentProfiler).start();
         return true;
     }
 
-    public static boolean stop() {
+    public static boolean stop(Entity sender) {
+        if (true) {
+            sender.sendMessage(new StringTextComponent("Command not implemeted"), Util.NIL_UUID);
+            return true;
+        }
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
         if (currentProfiler.currentExecutor != null)
             currentProfiler.currentExecutor.shutdownNow();
