@@ -133,7 +133,7 @@ public class Profiler implements Runnable {
 
     public static boolean init(Entity sender, int chunks, boolean allWorlds) {
         if (true) {
-            sender.sendMessage(new StringTextComponent("Command not implemeted"), Util.NIL_UUID);
+            sender.sendMessage(new StringTextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
             return true;
         }
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
@@ -144,7 +144,7 @@ public class Profiler implements Runnable {
 
     public static boolean stop(Entity sender) {
         if (true) {
-            sender.sendMessage(new StringTextComponent("Command not implemeted"), Util.NIL_UUID);
+            sender.sendMessage(new StringTextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
             return true;
         }
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;
