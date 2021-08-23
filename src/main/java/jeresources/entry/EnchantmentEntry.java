@@ -1,7 +1,7 @@
 package jeresources.entry;
 
 import jeresources.util.TranslationHelper;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class EnchantmentEntry {
     private Enchantment enchantment;

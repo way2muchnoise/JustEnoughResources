@@ -1,7 +1,7 @@
 package jeresources.util;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public class CollectionHelper {
         return new ArrayList<>(Arrays.asList(strings));
     }
 
-    public static List<ITextComponent> create(Function<String, ITextComponent> function, String... strings) {
+    public static List<Component> create(Function<String, Component> function, String... strings) {
         return new ArrayList<>(Arrays.asList(strings)).stream().map(function).collect(Collectors.toList());
     }
 }

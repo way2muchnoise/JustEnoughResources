@@ -4,11 +4,11 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import jeresources.compatibility.CompatBase;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.merchant.villager.VillagerEntity;
-import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,15 +19,15 @@ public class VillagerEntry {
     private final List<TradeList> tradeList;
     private final VillagerProfession profession;
 
-    public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ITrade[]> tradesLists) {
+    public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
         this.profession = profession;
         this.tradeList = new LinkedList<>();
-        addITradeLists(tradesLists);
+        addITradeLists(itemListings);
     }
 
-    public void addITradeLists(Int2ObjectMap<VillagerTrades.ITrade[]> tradesLists) {
-        for (int i = 1;i < tradesLists.size() + 1;i++) {
-            VillagerTrades.ITrade[] levelList = tradesLists.get(i);
+    public void addITradeLists(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
+        for (int i = 1;i < itemListings.size() + 1;i++) {
+            VillagerTrades.ItemListing[] levelList = itemListings.get(i);
             TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(this);
             trades.addITradeList(levelList);
             this.tradeList.add(trades);
@@ -85,9 +85,9 @@ public class VillagerEntry {
         return levels;
     }
 
-    public VillagerEntity getVillagerEntity() {
-        VillagerEntity villagerEntity = EntityType.VILLAGER.create(CompatBase.getWorld());
-        villagerEntity.setVillagerData(villagerEntity.getVillagerData().setProfession(this.profession));
-        return villagerEntity;
+    public Villager getVillagerEntity() {
+        Villager villager = EntityType.VILLAGER.create(CompatBase.getLevel());
+        villager.setVillagerData(villager.getVillagerData().setProfession(this.profession));
+        return villager;
     }
 }

@@ -1,6 +1,6 @@
 package jeresources.api.render;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 
 public interface IMobRenderHook<T extends LivingEntity> {
     class RenderInfo {

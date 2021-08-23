@@ -1,7 +1,7 @@
 package jeresources.jei.worldgen;
 
 import com.google.common.base.Objects;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
@@ -14,10 +14,10 @@ import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -56,7 +56,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
         float[] array = this.worldGenEntry.getChances();
         double max = 0;
         for (double d : array)
@@ -70,7 +70,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
             if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
             {
                 double x = xPrev + space;
-                RenderHelper.drawLine(matrixStack, xPrev, yPrev, x, y, getLineColor());
+                RenderHelper.drawLine(poseStack, xPrev, yPrev, x, y, getLineColor());
                 xPrev = x;
             }
             yPrev = y;
@@ -81,10 +81,10 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
         final String minPercent = "0%";
         final int minPercentWidth = Font.small.getStringWidth(minPercent);
-        Font.small.print(matrixStack, minPercent, xPercents - minPercentWidth, yPercents);
+        Font.small.print(poseStack, minPercent, xPercents - minPercentWidth, yPercents);
         final String maxPercent = String.format("%.2f", max * 100) + "%";
         final int maxPercentWidth = Font.small.getStringWidth(maxPercent);
-        Font.small.print(matrixStack, maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
+        Font.small.print(poseStack, maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
 
         final int yLabels = Y_OFFSET + 2;
         final int xLabels = X_OFFSET;
@@ -92,39 +92,39 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
         final int minLabel = this.worldGenEntry.getMinY();
         final int minLabelWidth = Font.small.getStringWidth(String.valueOf(minLabel));
         final int minLabelOffset = xLabels - (minLabelWidth / 2);
-        Font.small.print(matrixStack, minLabel, minLabelOffset, yLabels);
+        Font.small.print(poseStack, minLabel, minLabelOffset, yLabels);
 
         final int maxLabel = this.worldGenEntry.getMaxY();
         final int maxLabelWidth = Font.small.getStringWidth(String.valueOf(maxLabel));
         final int maxLabelOffset = xLabels + X_AXIS_SIZE - (maxLabelWidth / 2);
-        Font.small.print(matrixStack, maxLabel, maxLabelOffset, yLabels);
+        Font.small.print(poseStack, maxLabel, maxLabelOffset, yLabels);
 
         final int midLabel = (maxLabel + minLabel) / 2;
         final int midLabelWidth = Font.small.getStringWidth(String.valueOf(midLabel));
         final int midLabelOffset = xLabels + (X_AXIS_SIZE / 2) - (midLabelWidth / 2);
-        Font.small.print(matrixStack, midLabel, midLabelOffset, yLabels);
+        Font.small.print(poseStack, midLabel, midLabelOffset, yLabels);
 
-        Font.small.print(matrixStack, TranslationHelper.translateAndFormat("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
+        Font.small.print(poseStack, TranslationHelper.translateAndFormat("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
 
         String dimension = TranslationHelper.tryDimensionTranslate(worldGenEntry.getDimension());
         int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
-        Font.normal.print(matrixStack, dimension, x, 0);
+        Font.normal.print(poseStack, dimension, x, 0);
     }
 
     @Override
-    public List<ITextComponent> getTooltipStrings(double mouseX, double mouseY) {
-        List<ITextComponent> tooltip = new LinkedList<>();
+    public List<Component> getTooltipStrings(double mouseX, double mouseY) {
+        List<Component> tooltip = new LinkedList<>();
         if (onGraph(mouseX, mouseY))
             tooltip = getLineTooltip(mouseX, tooltip);
         return tooltip;
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<ITextComponent> tooltip) {
+    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
         tooltip.addAll(getItemStackTooltip(slotIndex, ingredient));
     }
 
-    private List<ITextComponent> getItemStackTooltip(int slot, ItemStack itemStack) {
+    private List<Component> getItemStackTooltip(int slot, ItemStack itemStack) {
         List<String> tooltip = new LinkedList<>();
         if (itemStack != null && slot == 0) {
             if (this.worldGenEntry.isSilkTouchNeeded())
@@ -163,10 +163,10 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
                 tooltip.add(line);
             }
         }
-        return tooltip.stream().map(StringTextComponent::new).collect(Collectors.toList());
+        return tooltip.stream().map(TextComponent::new).collect(Collectors.toList());
     }
 
-    private List<ITextComponent> getLineTooltip(double mouseX, List<ITextComponent> tooltip) {
+    private List<Component> getLineTooltip(double mouseX, List<Component> tooltip) {
         final double exactMouseX = getExactMouseX(mouseX);
         final float[] chances = this.worldGenEntry.getChances();
         final double space = X_AXIS_SIZE / (chances.length * 1D);
@@ -176,7 +176,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
         if (index >= 0 && index < chances.length) {
             float chance = chances[index] * 100;
             String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2f%%)", chance) : " <0.01%";
-            tooltip.add(new StringTextComponent("Y: " + yValue + percent));
+            tooltip.add(new TextComponent("Y: " + yValue + percent));
         }
 
         return tooltip;

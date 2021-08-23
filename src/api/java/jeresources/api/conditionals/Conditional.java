@@ -1,8 +1,8 @@
 package jeresources.api.conditionals;
 
 import jeresources.api.render.TextModifier;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.TextComponent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -77,8 +77,8 @@ public class Conditional {
         reverse.put(this, opposite);
     }
 
-    public StringTextComponent toStringTextComponent() {
-        return new StringTextComponent(toString());
+    public TextComponent toStringTextComponent() {
+        return new TextComponent(toString());
     }
 
     @Override

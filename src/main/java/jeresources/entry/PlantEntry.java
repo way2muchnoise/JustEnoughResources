@@ -3,12 +3,12 @@ package jeresources.entry;
 import jeresources.api.drop.PlantDrop;
 import jeresources.util.MapKeys;
 import jeresources.util.SeedHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.Property;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.IPlantable;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class PlantEntry {
 
     public static PlantEntry registerGrass() {
         List<PlantDrop> seeds = SeedHelper.getSeeds();
-        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALL_GRASS, 1, new CompoundNBT()), seeds.toArray(new PlantDrop[seeds.size()]));
+        PlantEntry grass = new PlantEntry(new ItemStack(Blocks.TALL_GRASS, 1, new CompoundTag()), seeds.toArray(new PlantDrop[seeds.size()]));
         grass.totalWeight *= 8;
         return grass;
     }

@@ -1,21 +1,21 @@
 package jeresources.profiling;
 
 import jeresources.util.MapKeys;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -24,18 +24,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ChunkProfiler implements Runnable {
-    private final ServerWorld world;
-    private final RegistryKey<World> dimensionKey;
+    private final ServerLevel level;
+    private final ResourceKey<Level> dimensionKey;
     private final ProfilingTimer timer;
     private final ProfilingBlacklist blacklist;
-    private final List<IChunk> chunks;
+    private final List<ChunkAccess> chunks;
     @Nonnull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(ServerWorld world, RegistryKey<World> dimensionKey, List<IChunk> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
-        this.world = world;
+    public ChunkProfiler(ServerLevel level, ResourceKey<Level> dimensionKey, List<ChunkAccess> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
+        this.level = level;
         this.dimensionKey = dimensionKey;
         this.chunks = chunks;
         this.dimensionData = dimensionData;
@@ -48,14 +48,14 @@ public class ChunkProfiler implements Runnable {
         this.chunks.forEach(this::profileChunk);
     }
 
-    private void profileChunk(IChunk chunk) {
-        final RegistryKey<World> worldRegistryKey = world.dimension();
+    private void profileChunk(ChunkAccess chunk) {
+        final ResourceKey<Level> worldRegistryKey = level.dimension();
         this.timer.startChunk(worldRegistryKey);
         Map<String, Integer[]> temp = new HashMap<>();
 
-        BlockPos.Mutable blockPos = new BlockPos.Mutable();
-        RayTraceResult rayTraceResult = new BlockRayTraceResult(new Vector3d(0, 0, 0), Direction.DOWN, blockPos, true);
-        PlayerEntity player = Minecraft.getInstance().player;
+        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
+        HitResult rayTraceResult = new BlockHitResult(new Vec3(0, 0, 0), Direction.DOWN, blockPos, true);
+        Player player = Minecraft.getInstance().player;
 
         final int maxY = chunk.getHighestSectionPosition();
         for (int y = 0; y < maxY; y++)
@@ -64,15 +64,15 @@ public class ChunkProfiler implements Runnable {
                     blockPos.set(x + chunk.getPos().x * CHUNK_SIZE, y, z + chunk.getPos().z * CHUNK_SIZE);
                     BlockState blockState = chunk.getBlockState(new BlockPos(x, y, z));
                     if (blacklist.contains(blockState)) continue;
-                    final String key = MapKeys.getKey(blockState, rayTraceResult, world, blockPos, player);
+                    final String key = MapKeys.getKey(blockState, rayTraceResult, level, blockPos, player);
 
                     if (!dimensionData.dropsMap.containsKey(key)) {
-                        dimensionData.dropsMap.put(key, getDrops(world, blockPos, blockState));
+                        dimensionData.dropsMap.put(key, getDrops(level, blockPos, blockState));
                     }
 
                     if (!dimensionData.silkTouchMap.containsKey(key)) {
                         Block block = blockState.getBlock();
-                        boolean canSilkTouch = block.canHarvestBlock(blockState, world, blockPos, player);
+                        boolean canSilkTouch = block.canHarvestBlock(blockState, level, blockPos, player);
                         dimensionData.silkTouchMap.put(key, canSilkTouch);
                     }
 
@@ -99,7 +99,7 @@ public class ChunkProfiler implements Runnable {
         this.timer.endChunk(dimensionKey);
     }
 
-    public static Map<String, Map<Integer, Float>> getDrops(ServerWorld world, BlockPos pos, BlockState state) {
+    public static Map<String, Map<Integer, Float>> getDrops(ServerLevel level, BlockPos pos, BlockState state) {
         final int totalTries = 10000;
 
         final Map<String, Map<Integer, Float>> resultMap = new HashMap<>();
@@ -109,7 +109,7 @@ public class ChunkProfiler implements Runnable {
                 NonNullList<ItemStack> drops = NonNullList.create();
                 // TODO reintroduce fortune
                 // block.getDrops(state, drops, world, pos, fortune);
-                Block.getDrops(state, world, pos, null);
+                Block.getDrops(state, level, pos, null);
                 //TODO: Add handling for tile entities (not chests)
                 for (ItemStack drop : drops) {
                     if (drop == null)

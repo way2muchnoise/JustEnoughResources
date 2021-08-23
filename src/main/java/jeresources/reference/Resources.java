@@ -1,7 +1,7 @@
 package jeresources.reference;
 
 import jeresources.jei.BackgroundDrawable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public final class Resources {
     public static final class Gui {

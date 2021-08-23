@@ -1,7 +1,7 @@
 package jeresources.api.restrictions;
 
 import jeresources.api.util.BiomeHelper;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.level.biome.Biome;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 public class BiomeRestriction {
     public static final BiomeRestriction NO_RESTRICTION = new BiomeRestriction();
     
-   public static final BiomeRestriction NONE = new BiomeRestriction(Biome.Category.NONE);
-   public static final BiomeRestriction TAIGA = new BiomeRestriction(Biome.Category.TAIGA);
-   public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Biome.Category.EXTREME_HILLS);
-   public static final BiomeRestriction JUNGLE = new BiomeRestriction(Biome.Category.JUNGLE);
-   public static final BiomeRestriction MESA = new BiomeRestriction(Biome.Category.MESA);
-   public static final BiomeRestriction PLAINS = new BiomeRestriction(Biome.Category.PLAINS);
-   public static final BiomeRestriction SAVANNA = new BiomeRestriction(Biome.Category.SAVANNA);
-   public static final BiomeRestriction ICY = new BiomeRestriction(Biome.Category.ICY);
-   public static final BiomeRestriction THEEND = new BiomeRestriction(Biome.Category.THEEND);
-   public static final BiomeRestriction BEACH = new BiomeRestriction(Biome.Category.BEACH);
-   public static final BiomeRestriction FOREST = new BiomeRestriction(Biome.Category.FOREST);
-   public static final BiomeRestriction OCEAN = new BiomeRestriction(Biome.Category.OCEAN);
-   public static final BiomeRestriction DESERT = new BiomeRestriction(Biome.Category.DESERT);
-   public static final BiomeRestriction RIVER = new BiomeRestriction(Biome.Category.RIVER);
-   public static final BiomeRestriction SWAMP = new BiomeRestriction(Biome.Category.SWAMP);
-   public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biome.Category.MUSHROOM);
-   public static final BiomeRestriction NETHER = new BiomeRestriction(Biome.Category.NETHER);
+   public static final BiomeRestriction NONE = new BiomeRestriction(Biome.BiomeCategory.NONE);
+   public static final BiomeRestriction TAIGA = new BiomeRestriction(Biome.BiomeCategory.TAIGA);
+   public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Biome.BiomeCategory.EXTREME_HILLS);
+   public static final BiomeRestriction JUNGLE = new BiomeRestriction(Biome.BiomeCategory.JUNGLE);
+   public static final BiomeRestriction MESA = new BiomeRestriction(Biome.BiomeCategory.MESA);
+   public static final BiomeRestriction PLAINS = new BiomeRestriction(Biome.BiomeCategory.PLAINS);
+   public static final BiomeRestriction SAVANNA = new BiomeRestriction(Biome.BiomeCategory.SAVANNA);
+   public static final BiomeRestriction ICY = new BiomeRestriction(Biome.BiomeCategory.ICY);
+   public static final BiomeRestriction THEEND = new BiomeRestriction(Biome.BiomeCategory.THEEND);
+   public static final BiomeRestriction BEACH = new BiomeRestriction(Biome.BiomeCategory.BEACH);
+   public static final BiomeRestriction FOREST = new BiomeRestriction(Biome.BiomeCategory.FOREST);
+   public static final BiomeRestriction OCEAN = new BiomeRestriction(Biome.BiomeCategory.OCEAN);
+   public static final BiomeRestriction DESERT = new BiomeRestriction(Biome.BiomeCategory.DESERT);
+   public static final BiomeRestriction RIVER = new BiomeRestriction(Biome.BiomeCategory.RIVER);
+   public static final BiomeRestriction SWAMP = new BiomeRestriction(Biome.BiomeCategory.SWAMP);
+   public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biome.BiomeCategory.MUSHROOM);
+   public static final BiomeRestriction NETHER = new BiomeRestriction(Biome.BiomeCategory.NETHER);
 
     private List<Biome> biomes = new ArrayList<>();
     private Restriction.Type restrictionType;
@@ -65,11 +65,11 @@ public class BiomeRestriction {
         }
     }
 
-    public BiomeRestriction(Biome.Category biomeCategory, Biome.Category... biomeCategories) {
+    public BiomeRestriction(Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
         this(Restriction.Type.WHITELIST, biomeCategory, biomeCategories);
     }
 
-    public BiomeRestriction(Restriction.Type restrictionType, Biome.Category biomeCategory, Biome.Category... biomeCategories) {
+    public BiomeRestriction(Restriction.Type restrictionType, Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
         this.restrictionType = restrictionType;
         switch (restrictionType) {
             case NONE:
@@ -83,7 +83,7 @@ public class BiomeRestriction {
         }
     }
 
-    private ArrayList<Biome> getBiomes(Biome.Category biomeCategory, Biome.Category... biomeCategories) {
+    private ArrayList<Biome> getBiomes(Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
         ArrayList<Biome> biomes = new ArrayList<>();
         biomes.addAll(BiomeHelper.getBiomes(biomeCategory));
         for (int i = 1; i < biomeCategories.length; i++) {

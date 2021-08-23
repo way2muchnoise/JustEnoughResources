@@ -1,16 +1,16 @@
 package jeresources.profiling;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.EmptyChunk;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.EmptyLevelChunk;
 
 import javax.annotation.Nullable;
 
-public class EmptyChunkJER extends EmptyChunk {
-    public EmptyChunkJER(World worldIn, int x, int z) {
-        super(worldIn, new ChunkPos(x, z));
+public class EmptyChunkJER extends EmptyLevelChunk {
+    public EmptyChunkJER(ServerLevel level, int x, int z) {
+        super(level, new ChunkPos(x, z));
     }
 
     @Nullable

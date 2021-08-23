@@ -1,6 +1,6 @@
 package jeresources.profiling;
 
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;

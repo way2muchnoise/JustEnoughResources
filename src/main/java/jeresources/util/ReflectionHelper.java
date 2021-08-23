@@ -1,12 +1,11 @@
 package jeresources.util;
 
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,14 +31,14 @@ public class ReflectionHelper extends ObfuscationReflectionHelper {
         for (ModFileScanData scanData : allScanData) {
             Iterable<ModFileScanData.AnnotationData> annotations = scanData.getAnnotations();
             for (ModFileScanData.AnnotationData a : annotations) {
-                if (Objects.equals(a.getAnnotationType(), annotationType)) {
+                if (Objects.equals(a.annotationType(), annotationType)) {
                     try {
-                        Class clazz = Class.forName(a.getClassType().getClassName());
-                        Field field = clazz.getField(a.getMemberName());
+                        Class clazz = Class.forName(a.clazz().getClassName());
+                        Field field = clazz.getField(a.memberName());
                         if (field.getType() == instanceClass)
                             field.set(null, instance);
                     } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-                        LogHelper.warn("Failed to set: {}" + a.getClassType().getClassName() + "." + a.getMemberName());
+                        LogHelper.warn("Failed to set: {}" + a.clazz().getClassName() + "." + a.memberName());
                     }
                 }
             }

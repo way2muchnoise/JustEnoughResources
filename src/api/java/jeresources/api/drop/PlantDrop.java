@@ -1,6 +1,6 @@
 package jeresources.api.drop;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class PlantDrop {
     private ItemStack drop;
@@ -18,7 +18,7 @@ public class PlantDrop {
      * This constructor is meant for registering grass
      * Which get auto collected by NER
      *
-     * @param drop       the The drop an {@link net.minecraft.item.ItemStack}
+     * @param drop       the The drop an {@link ItemStack}
      * @param itemWeight The Weight of the drop
      */
     public PlantDrop(ItemStack drop, int itemWeight) {
@@ -28,9 +28,9 @@ public class PlantDrop {
     }
 
     /**
-     * Use this for registering seeds that have a chance less then one to drop
+     * Use this for registering seeds that have a chance less than one to drop
      *
-     * @param drop   The drop an {@link net.minecraft.item.ItemStack}
+     * @param drop   The drop an {@link ItemStack}
      * @param chance the chance as float
      */
     public PlantDrop(ItemStack drop, float chance) {
@@ -40,9 +40,9 @@ public class PlantDrop {
     }
 
     /**
-     * Use this for registering seeds that have a chance of dropping more then one time
+     * Use this for registering seeds that have a chance of dropping more than one time
      *
-     * @param drop    The drop an {@link net.minecraft.item.ItemStack}
+     * @param drop    The drop an {@link ItemStack}
      * @param minDrop minimum of seeds dropped
      * @param maxDrop maximum of seeds dropped
      */

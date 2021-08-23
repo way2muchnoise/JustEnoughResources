@@ -4,16 +4,15 @@ import jeresources.config.Settings;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.util.TranslationHelper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -43,14 +42,8 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
 
     @Nonnull
     @Override
-    public String getTitle() {
-        return TranslationHelper.translateAndFormat("jer.dungeon.title");
-    }
-
-    @Nonnull
-    @Override
-    public ITextComponent getTitleAsTextComponent() {
-        return new TranslationTextComponent("jer.dungeon.title");
+    public Component getTitle() {
+        return new TranslatableComponent("jer.dungeon.title");
     }
 
     @Nonnull
@@ -79,7 +72,7 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
         }
 
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
+        IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
         int slots = Math.min(recipeWrapper.amountOfItems(focus), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++)
             recipeLayout.getItemStacks().set(i, recipeWrapper.getItems(focus, i, slots));

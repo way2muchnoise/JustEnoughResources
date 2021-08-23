@@ -2,7 +2,7 @@ package jeresources.compatibility;
 
 import jeresources.api.*;
 import jeresources.util.ReflectionHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 
 public class JERAPI implements IJERAPI {
     private IWorldGenRegistry worldGenRegistry;
@@ -49,7 +49,7 @@ public class JERAPI implements IJERAPI {
     }
 
     @Override
-    public World getWorld() {
-        return CompatBase.getWorld();
+    public Level getLevel() {
+        return CompatBase.getLevel();
     }
 }

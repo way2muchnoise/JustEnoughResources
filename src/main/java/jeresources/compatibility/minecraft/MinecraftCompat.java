@@ -16,19 +16,20 @@ import jeresources.entry.MobEntry;
 import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.LootTableHelper;
-import net.minecraft.block.*;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.monster.ElderGuardianEntity;
-import net.minecraft.entity.monster.GiantEntity;
-import net.minecraft.entity.monster.ShulkerEntity;
-import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.SquidEntity;
-import net.minecraft.entity.passive.fish.AbstractGroupFishEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootTableManager;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.Giant;
+import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.storage.loot.LootTables;
 
 public class MinecraftCompat extends CompatBase {
     @Override
@@ -48,32 +49,32 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerVanillaMobs() {
-        World world = getWorld();
-        LootTableManager manager = LootTableHelper.getManager(world);
-        LootTableHelper.getAllMobLootTables(world).entrySet().stream()
-            .map(entry -> new MobEntry(entry.getValue(), manager.get(entry.getKey())))
+        Level level = getLevel();
+        LootTables lootTables = LootTableHelper.getLootTables(level);
+        LootTableHelper.getAllMobLootTables(level).entrySet().stream()
+            .map(entry -> new MobEntry(entry.getValue(), lootTables.get(entry.getKey())))
             .sorted(Comparator.comparing(MobEntry::getMobName))
             .forEach(this::registerMob);
 
-        registerMobRenderHook(BatEntity.class, RenderHooks.BAT);
-        registerMobRenderHook(EnderDragonEntity.class, RenderHooks.ENDER_DRAGON);
-        registerMobRenderHook(ElderGuardianEntity.class, RenderHooks.ELDER_GUARDIAN);
-        registerMobRenderHook(SquidEntity.class, RenderHooks.SQUID);
-        registerMobRenderHook(GiantEntity.class, RenderHooks.GIANT);
-        registerMobRenderHook(ShulkerEntity.class, RenderHooks.SHULKER);
-        registerMobRenderHook(AbstractGroupFishEntity.class, RenderHooks.GROUP_FISH);
+        registerMobRenderHook(Bat.class, RenderHooks.BAT);
+        registerMobRenderHook(EnderDragon.class, RenderHooks.ENDER_DRAGON);
+        registerMobRenderHook(ElderGuardian.class, RenderHooks.ELDER_GUARDIAN);
+        registerMobRenderHook(Squid.class, RenderHooks.SQUID);
+        registerMobRenderHook(Giant.class, RenderHooks.GIANT);
+        registerMobRenderHook(Shulker.class, RenderHooks.SHULKER);
+        registerMobRenderHook(AbstractSchoolingFish.class, RenderHooks.GROUP_FISH);
     }
 
     private void registerDungeonLoot() {
-        World world = getWorld();
-        LootTableManager manager = LootTableHelper.getManager(world);
+        Level level = getLevel();
+        LootTables lootTables = LootTableHelper.getLootTables(level);
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), manager.get(resourceLocation)))
+            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootTables.get(resourceLocation)))
             .forEach(this::registerDungeonEntry);
     }
 
     private void registerOres() {
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI, 4, new CompoundNBT()))));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI, 4, new CompoundTag()))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(20, 8, 1, 64)));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.REDSTONE, 4))));
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new DistributionSquare(1, 7, 1, 16), true, new LootDrop(new ItemStack(Items.DIAMOND))));
@@ -98,7 +99,7 @@ public class MinecraftCompat extends CompatBase {
         //Wheat
         PlantDrop wheat = new PlantDrop(new ItemStack(Items.WHEAT), 1, 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.WHEAT_SEEDS), 0, 3);
-        registerPlant(new PlantEntry((CropsBlock) Blocks.WHEAT, wheat, seeds));
+        registerPlant(new PlantEntry((CropBlock) Blocks.WHEAT, wheat, seeds));
 
         //Melon
         PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.MELON_SLICE), 3, 7);

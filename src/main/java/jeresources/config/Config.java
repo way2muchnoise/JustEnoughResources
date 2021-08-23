@@ -5,7 +5,7 @@ import com.electronwill.nightconfig.core.io.WritingMode;
 import jeresources.JEResources;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import java.nio.file.Path;
 
@@ -35,13 +35,13 @@ public class Config {
     }
 
     @SubscribeEvent
-    public void onLoad(final ModConfig.Loading configEvent) {
+    public void onLoad(final ModConfigEvent.Loading configEvent) {
         JEResources.LOGGER.debug("Loaded {} config file {}", JEResources.ID, configEvent.getConfig().getFileName());
         ConfigValues.pushChanges();
     }
 
     @SubscribeEvent
-    public void onFileChange(final ModConfig.Reloading configEvent) {
+    public void onFileChange(final ModConfigEvent.Reloading configEvent) {
         JEResources.LOGGER.debug("Reloaded {} config file {}", JEResources.ID, configEvent.getConfig().getFileName());
         ConfigValues.pushChanges();
     }

@@ -9,18 +9,18 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.registry.MobRegistry;
 import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
-import jeresources.util.FakeClientWorld;
+import jeresources.util.FakeClientLevel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 public abstract class CompatBase {
-    public static World getWorld() {
-        World world = Minecraft.getInstance().level;
-        if (world == null) {
-            world = new FakeClientWorld();
+    public static Level getLevel() {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) {
+            level = new FakeClientLevel();
         }
-        return world;
+        return level;
     }
 
     public abstract void init(boolean worldGen);

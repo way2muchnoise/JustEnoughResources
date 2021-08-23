@@ -1,7 +1,6 @@
 package jeresources.api.conditionals;
 
-
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 
 public class LightLevel {
     public static LightLevel any = new LightLevel(-1, Relative.above);

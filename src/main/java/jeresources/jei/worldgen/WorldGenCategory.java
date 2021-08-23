@@ -1,18 +1,17 @@
 package jeresources.jei.worldgen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.render.ColorHelper;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.RenderHelper;
-import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -35,14 +34,8 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
 
     @Nonnull
     @Override
-    public String getTitle() {
-        return TranslationHelper.translateAndFormat("jer.worldgen.title");
-    }
-
-    @Nonnull
-    @Override
-    public ITextComponent getTitleAsTextComponent() {
-        return new TranslationTextComponent("jer.worldgen.title");
+    public Component getTitle() {
+        return new TranslatableComponent("jer.worldgen.title");
     }
 
     @Nonnull
@@ -57,10 +50,10 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     }
 
     @Override
-    public void draw(WorldGenWrapper recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-        RenderHelper.drawLine(matrixStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColorHelper.GRAY);
-        RenderHelper.drawLine(matrixStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
-        super.draw(recipe, matrixStack, mouseX, mouseY);
+    public void draw(WorldGenWrapper recipe, PoseStack poseStack, double mouseX, double mouseY) {
+        RenderHelper.drawLine(poseStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColorHelper.GRAY);
+        RenderHelper.drawLine(poseStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
+        super.draw(recipe, poseStack, mouseX, mouseY);
     }
 
     @Override

@@ -3,7 +3,7 @@ package jeresources.registry;
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
 import jeresources.util.MapKeys;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

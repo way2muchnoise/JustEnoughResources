@@ -3,8 +3,8 @@ package jeresources.util;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import jeresources.entry.VillagerEntry;
-import net.minecraft.entity.merchant.villager.VillagerProfession;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class VillagersHelper {
@@ -19,7 +19,7 @@ public class VillagersHelper {
         }
     }
 
-    private static Int2ObjectMap<VillagerTrades.ITrade[]> getTrades(VillagerProfession profession) {
+    private static Int2ObjectMap<VillagerTrades.ItemListing[]> getTrades(VillagerProfession profession) {
         return VillagerTrades.TRADES.getOrDefault(profession, Int2ObjectMaps.emptyMap());
     }
 }

@@ -2,19 +2,19 @@ package jeresources.profiling;
 
 import jeresources.json.WorldGenAdapter;
 import jeresources.util.DimensionHelper;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.Util;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProfilingTimer {
-    private final ICommandSource sender;
+    private final CommandSource sender;
     private int totalChunks;
-    private final Map<RegistryKey<World>, DimensionCounters> dimensionsMap = new HashMap<>();
+    private final Map<ResourceKey<Level>, DimensionCounters> dimensionsMap = new HashMap<>();
 
     private static class DimensionCounters {
         public final long start = System.currentTimeMillis();
@@ -23,12 +23,12 @@ public class ProfilingTimer {
         public boolean completed;
     }
 
-    public ProfilingTimer(ICommandSource sender, int chunkCount) {
+    public ProfilingTimer(CommandSource sender, int chunkCount) {
         this.sender = sender;
         this.totalChunks = chunkCount;
     }
 
-    public void startChunk(RegistryKey<World> worldRegistryKey) {
+    public void startChunk(ResourceKey<Level> worldRegistryKey) {
         DimensionCounters counters = this.dimensionsMap.get(worldRegistryKey);
         if (counters == null) {
             counters = new DimensionCounters();
@@ -38,7 +38,7 @@ public class ProfilingTimer {
         counters.threadCounter++;
     }
 
-    public void endChunk(RegistryKey<World> worldRegistryKey) {
+    public void endChunk(ResourceKey<Level> worldRegistryKey) {
         DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         counters.threadCounter--;
         if (++counters.chunkCounter % 100 == 0)
@@ -48,7 +48,7 @@ public class ProfilingTimer {
     }
 
     public void complete() {
-        for (RegistryKey<World> worldRegistryKey : this.dimensionsMap.keySet()) {
+        for (ResourceKey<Level> worldRegistryKey : this.dimensionsMap.keySet()) {
             DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
             counters.completed = true;
             send("[" + DimensionHelper.getDimensionName(worldRegistryKey) + "] Completed profiling of " +
@@ -66,10 +66,10 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.sendMessage(new TranslationTextComponent(s), Util.NIL_UUID);
+        this.sender.sendMessage(new TranslatableComponent(s), Util.NIL_UUID);
     }
 
-    private void sendSpeed(RegistryKey<World> worldRegistryKey) {
+    private void sendSpeed(ResourceKey<Level> worldRegistryKey) {
         DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         float time = (System.currentTimeMillis() - counters.start) * 1.0F / counters.chunkCounter;
         String message = "[" + DimensionHelper.getDimensionName(worldRegistryKey) + "] Scanned " +
@@ -77,7 +77,7 @@ public class ProfilingTimer {
         send(message);
     }
 
-    public long getBlocksPerLayer(RegistryKey<World> worldRegistryKey) {
+    public long getBlocksPerLayer(ResourceKey<Level> worldRegistryKey) {
         DimensionCounters counters = dimensionsMap.get(worldRegistryKey);
         return counters.chunkCounter * ChunkProfiler.CHUNK_SIZE * ChunkProfiler.CHUNK_SIZE;
     }

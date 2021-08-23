@@ -3,14 +3,13 @@ package jeresources.jei.enchantment;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import jeresources.util.TranslationHelper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
@@ -30,14 +29,8 @@ public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapp
 
     @Nonnull
     @Override
-    public String getTitle() {
-        return TranslationHelper.translateAndFormat("jer.enchantments.title");
-    }
-
-    @Nonnull
-    @Override
-    public ITextComponent getTitleAsTextComponent() {
-        return new TranslationTextComponent("jer.enchantments.title");
+    public Component getTitle() {
+        return new TranslatableComponent("jer.enchantments.title");
     }
 
     @Nonnull

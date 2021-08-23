@@ -10,9 +10,9 @@ import jeresources.registry.MobRegistry;
 import jeresources.util.LogHelper;
 import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,8 +200,8 @@ public class MobRegistryImpl implements IMobRegistry {
 
     protected static void commit() {
         preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
-        World world = CompatBase.getWorld();
-        rawRegisters.forEach((key, value) -> key.addDrops(LootTableHelper.toDrops(world, value)));
+        Level level = CompatBase.getLevel();
+        rawRegisters.forEach((key, value) -> key.addDrops(LootTableHelper.toDrops(level, value)));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
     }
 }

@@ -5,14 +5,15 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -35,14 +36,8 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
 
     @Nonnull
     @Override
-    public String getTitle() {
-        return TranslationHelper.translateAndFormat("jer.villager.title");
-    }
-
-    @Nonnull
-    @Override
-    public ITextComponent getTitleAsTextComponent() {
-        return new TranslationTextComponent("jer.villager.title");
+    public Component getTitle() {
+        return new TranslatableComponent("jer.villager.title");
     }
 
     @Nonnull
@@ -58,7 +53,7 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VillagerWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
-        IFocus<ItemStack> focus = (IFocus<ItemStack>) recipeLayout.getFocus();
+        IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
         recipeWrapper.setFocus(focus);
         int y = Y_ITEM_DISTANCE * (6 - recipeWrapper.getPossibleLevels(focus).size()) / 2;
         for (int i = 0; i < recipeWrapper.getPossibleLevels(focus).size(); i++) {

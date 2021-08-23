@@ -1,17 +1,20 @@
 package jeresources.util;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.DynamicRegistries;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 
 public class DimensionHelper {
 
-    public static String getDimensionName(RegistryKey<World> worldRegistryKey) {
+    public static String getDimensionName(ResourceKey<Level> worldRegistryKey) {
         return worldRegistryKey.location().getPath();
     }
 
-    public static DimensionType getType(RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-        return DynamicRegistries.builtin().dimensionTypes().get(dimensionTypeRegistryKey);
+    public static DimensionType getType(ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+        return RegistryAccess.builtin()
+            .registry(Registry.DIMENSION_TYPE_REGISTRY).get()
+            .get(dimensionTypeRegistryKey);
     }
 }

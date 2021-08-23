@@ -13,18 +13,16 @@ import jeresources.api.restrictions.DimensionRestriction;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -76,7 +74,7 @@ public class WorldGenAdapter {
                 Block blockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
                 if (blockBlock == null || Item.byBlock(blockBlock) == null) continue;
                 //int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
-                ItemStack blockStack = new ItemStack(blockBlock, 1, new CompoundNBT());
+                ItemStack blockStack = new ItemStack(blockBlock, 1, new CompoundTag());
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";")) {
                     String[] split = point.split(",");
@@ -106,7 +104,7 @@ public class WorldGenAdapter {
 
                         if (stackStrings.length == 4) {
                             try {
-                                itemStack.setTag(JsonToNBT.parseTag(stackStrings[3]));
+                                itemStack.setTag(TagParser.parseTag(stackStrings[3]));
                             } catch (CommandSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -139,10 +137,10 @@ public class WorldGenAdapter {
         return true;
     }
 
-    private static Map<RegistryKey<World>, Restriction> map = new HashMap<>();
+    private static Map<ResourceKey<Level>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        RegistryKey<World> worldRegistryKey = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dim));
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }

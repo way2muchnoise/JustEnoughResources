@@ -5,9 +5,9 @@ import jeresources.api.drop.LootDrop;
 import jeresources.util.LootTableHelper;
 import jeresources.util.MobHelper;
 import jeresources.util.TranslationHelper;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootTable;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.*;
 import java.util.stream.Collectors;

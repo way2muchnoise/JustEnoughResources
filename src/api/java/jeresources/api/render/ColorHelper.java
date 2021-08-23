@@ -33,10 +33,10 @@ public class ColorHelper {
     }
 
     public static void setColor3f(int color) {
-        RenderSystem.color3f(getRed(color), getGreen(color), getBlue(color));
+        RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), 1.0F);
     }
 
     public static void setColor4f(int color) {
-        RenderSystem.color4f(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+        RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
     }
 }

@@ -1,6 +1,6 @@
 package jeresources.jei.enchantment;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;

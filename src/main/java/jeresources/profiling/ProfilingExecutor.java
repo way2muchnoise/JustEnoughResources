@@ -1,10 +1,9 @@
 package jeresources.profiling;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -22,11 +21,11 @@ public class ProfilingExecutor {
         this.executor = Executors.newFixedThreadPool(processors * 2);
     }
 
-    public void addChunkProfiler(ServerWorld world, List<IChunk> chunks) {
-        final RegistryKey<World> dimensionKey = world.dimension();
+    public void addChunkProfiler(ServerLevel level, List<ChunkAccess> chunks) {
+        final ResourceKey<Level> dimensionKey = level.dimension();
         final ProfiledDimensionData dimensionData = profiler.getAllDimensionData().get(dimensionKey);
 
-        this.execute(new ChunkProfiler(world, dimensionKey, chunks, dimensionData, profiler.getTimer(), profiler.getBlacklist()));
+        this.execute(new ChunkProfiler(level, dimensionKey, chunks, dimensionData, profiler.getTimer(), profiler.getBlacklist()));
     }
 
     public void execute(Runnable runnable) {

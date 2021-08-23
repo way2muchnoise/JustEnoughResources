@@ -1,16 +1,16 @@
 package jeresources.api;
 
 import jeresources.api.drop.PlantDrop;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.Property;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.IPlantable;
 
 import javax.annotation.Nonnull;
 
 /**
- * Use to register plants and {@link PlantDrop}s
+ * Used to register plants and {@link PlantDrop}s
  * Note: Don't bother registering drops for tall grass.
  * They are fetched from {@link net.minecraftforge.common.ForgeHooks}
  */

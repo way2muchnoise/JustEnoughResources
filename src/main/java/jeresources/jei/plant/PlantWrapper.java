@@ -1,6 +1,6 @@
 package jeresources.jei.plant;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.drop.PlantDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
@@ -9,14 +9,14 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.Property;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -35,13 +35,13 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, MatrixStack matrixStack, double mouseX, double mouseY) {
-        RenderHelper.renderBlock(matrixStack, getFarmland(), 30, 30, -10, 20F, 20F);
-        RenderHelper.renderBlock(matrixStack, getBlockState(), 30, 12, 10, 20F, 20F);
+    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
+        RenderHelper.renderBlock(poseStack, getFarmland(), 30, 30, -10, 20F, 20F);
+        RenderHelper.renderBlock(poseStack, getBlockState(), 30, 12, 10, 20F, 20F);
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<ITextComponent> tooltip) {
+    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
         if (!input)
             tooltip.add(getChanceString(ingredient));
     }
@@ -65,7 +65,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         return new int[]{drop.getMinDrop(), drop.getMaxDrop()};
     }
 
-    private StringTextComponent getChanceString(ItemStack itemStack) {
+    private Component getChanceString(ItemStack itemStack) {
         float chance = getChance(itemStack);
         String toPrint;
         if (Float.isNaN(chance)) {
@@ -74,7 +74,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
         } else {
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
         }
-        return new StringTextComponent(toPrint);
+        return new TextComponent(toPrint);
     }
 
     private BlockState state;
@@ -85,7 +85,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
     private BlockState getBlockState() {
         if (this.state == null) {
             if (this.plantEntry.getPlantState() != null) this.state = this.plantEntry.getPlantState();
-            else if (this.plantEntry.getPlant() != null) this.state = this.plantEntry.getPlant().getPlant(CompatBase.getWorld(), BlockPos.ZERO);
+            else if (this.plantEntry.getPlant() != null) this.state = this.plantEntry.getPlant().getPlant(CompatBase.getLevel(), BlockPos.ZERO);
             else this.state = Block.byItem(this.plantEntry.getPlantItemStack().getItem()).defaultBlockState();
 
             if (this.plantEntry.getAgeProperty() != null) this.ageProperty = this.plantEntry.getAgeProperty();

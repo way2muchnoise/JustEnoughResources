@@ -1,35 +1,45 @@
 package jeresources.api.util;
 
+import com.google.common.collect.Maps;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
-import net.minecraft.loot.BinomialRange;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.IRandomRange;
-import net.minecraft.loot.RandomValueRange;
-import net.minecraft.loot.functions.*;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.Random;
 import java.util.stream.IntStream;
 
 public class LootFunctionHelper {
-    public static void applyFunction(ILootFunction lootFunction, LootDrop lootDrop) {
-        if (lootFunction instanceof SetCount) {
-            lootDrop.minDrop = getMin(((SetCount) lootFunction).value);
+    public static final LootContext randContext = new RandomLootContext();
+    private static final int STATISTICAL_TEST = 100; // Values tested to determine min and max
+
+    public static void applyFunction(LootItemFunction lootFunction, LootDrop lootDrop) {
+        if (lootFunction instanceof SetItemCountFunction) {
+            lootDrop.minDrop = getMin(((SetItemCountFunction) lootFunction).value);
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
             lootDrop.item.setCount(Math.max(lootDrop.minDrop, 1));
-            lootDrop.maxDrop = getMax(((SetCount) lootFunction).value);
-        } else if (lootFunction instanceof SetDamage) {
-            lootDrop.item.setDamageValue(MathHelper.floor(((SetDamage) lootFunction).damage.getMin()));
-        } else if (lootFunction instanceof EnchantRandomly || lootFunction instanceof EnchantWithLevels) {
+            lootDrop.maxDrop = getMax(((SetItemCountFunction) lootFunction).value);
+        } else if (lootFunction instanceof SetItemDamageFunction) {
+            ((SetItemDamageFunction) lootFunction).run(lootDrop.item, randContext);
+        } else if (lootFunction instanceof EnchantRandomlyFunction || lootFunction instanceof EnchantWithLevelsFunction) {
             lootDrop.enchanted = true;
-        } else if (lootFunction instanceof Smelt) {
+        } else if (lootFunction instanceof SmeltItemFunction) {
             // TODO figure out how to create a client side LootContext
             //lootDrop.smeltedItem = lootFunction.apply(lootDrop.item, new Random(), null);
-            //if (ItemStack.areItemStacksEqual(lootDrop.item, lootDrop.smeltedItem))
-                //lootDrop.smeltedItem = null;
-        } else if (lootFunction instanceof LootingEnchantBonus) {
+            //if (ItemStack.isSame(lootDrop.item, lootDrop.smeltedItem)) {
+            //    lootDrop.smeltedItem = null;
+            //}
+        } else if (lootFunction instanceof LootingEnchantFunction) {
             lootDrop.addConditional(Conditional.affectedByLooting);
         } else if (lootFunction instanceof ICustomLootFunction) {
             ((ICustomLootFunction) lootFunction).apply(lootDrop);
@@ -42,32 +52,36 @@ public class LootFunctionHelper {
         }
     }
 
-    private static final Random rand = new Random();
-    private static final int STATISTICAL_TEST = 100; // Values tested to determine min and max
-
-    public static int getMin(IRandomRange randomRange) {
-        if (randomRange instanceof ConstantRange) {
-            return randomRange.getInt(rand);
-        } else if (randomRange instanceof RandomValueRange) {
-            return MathHelper.floor(((RandomValueRange) randomRange).getMin());
-        } else if (randomRange instanceof BinomialRange) {
+    public static int getMin(NumberProvider randomRange) {
+        if (randomRange instanceof ConstantValue) {
+            return randomRange.getInt(randContext);
+        } else if (randomRange instanceof UniformGenerator) {
+            return Mth.floor(((UniformGenerator) randomRange).min.getInt(randContext));
+        } else if (randomRange instanceof BinomialDistributionGenerator) {
             return 0;
         } else {
             // Test a 100 values
-            return IntStream.iterate(0, i -> randomRange.getInt(rand)).limit(STATISTICAL_TEST).min().orElse(0);
+            return IntStream.iterate(0, i -> randomRange.getInt(randContext)).limit(STATISTICAL_TEST).min().orElse(0);
         }
     }
 
-    public static int getMax(IRandomRange randomRange) {
-        if (randomRange instanceof ConstantRange) {
-            return randomRange.getInt(rand);
-        } else if (randomRange instanceof RandomValueRange) {
-            return MathHelper.floor(((RandomValueRange) randomRange).getMax());
-        } else if (randomRange instanceof BinomialRange) {
-            return ((BinomialRange) randomRange).n;
+    public static int getMax(NumberProvider randomRange) {
+        if (randomRange instanceof ConstantValue) {
+            return randomRange.getInt(randContext);
+        } else if (randomRange instanceof UniformGenerator) {
+            return Mth.floor(((UniformGenerator) randomRange).max.getInt(randContext));
+        } else if (randomRange instanceof BinomialDistributionGenerator) {
+            return ((BinomialDistributionGenerator) randomRange).n.getInt(randContext);
         } else {
             // Test a 100 values
-            return IntStream.iterate(0, i -> randomRange.getInt(rand)).limit(STATISTICAL_TEST).max().orElse(0);
+            return IntStream.iterate(0, i -> randomRange.getInt(randContext)).limit(STATISTICAL_TEST).max().orElse(0);
+        }
+    }
+
+    public static class RandomLootContext extends LootContext {
+        public RandomLootContext(){
+            //LootContext(Random, float, ServerLevel, Function<ResourceLocation, LootTable>, Function<ResourceLocation, LootItemCondition>, Map<LootContextParam<?>, Object>, Map<ResourceLocation, LootContext.DynamicDrop>)
+            super(new Random(), 0.0F, null, null, null, Maps.newIdentityHashMap(), Maps.newHashMap());
         }
     }
 }

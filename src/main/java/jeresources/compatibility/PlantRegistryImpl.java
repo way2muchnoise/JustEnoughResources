@@ -5,13 +5,13 @@ import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
 import jeresources.registry.PlantRegistry;
 import jeresources.util.LogHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.Property;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.IPlantable;
 
 import javax.annotation.Nonnull;
@@ -21,7 +21,7 @@ import java.util.List;
 public class PlantRegistryImpl implements IPlantRegistry {
     private static List<PlantEntry> registers = new ArrayList<>();
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
-    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1, new CompoundNBT());
+    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1, new CompoundTag());
 
     protected PlantRegistryImpl() {
 

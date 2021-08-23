@@ -4,15 +4,14 @@ import jeresources.config.Settings;
 import jeresources.json.ProfilingAdapter;
 import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class Profiler implements Runnable {
-    private final ConcurrentMap<RegistryKey<World>, ProfiledDimensionData> allDimensionData;
+    private final ConcurrentMap<ResourceKey<Level>, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
     private final Entity sender;
     private final ProfilingBlacklist blacklist;
@@ -41,11 +40,11 @@ public class Profiler implements Runnable {
     public void run() {
         if (!allDimensions) {
             // Will never be null as the mod is client side only
-            RegistryKey<World> worldKey = sender.level.dimension();
+            ResourceKey<Level> worldKey = sender.level.dimension();
             profileWorld(worldKey);
             
         } else {
-            for (RegistryKey<World> worldKey : sender.getServer().levelKeys()) {
+            for (ResourceKey<Level> worldKey : sender.getServer().levelKeys()) {
                 profileWorld(worldKey);
             }
         }
@@ -55,31 +54,31 @@ public class Profiler implements Runnable {
         this.timer.complete();
     }
 
-    private void profileWorld(RegistryKey<World> dimensionKey) {
+    private void profileWorld(ResourceKey<Level> dimensionKey) {
         String msg;
         MinecraftServer server = Minecraft.getInstance().getSingleplayerServer();
         //Get the world we want to process.
-        ServerWorld world = server.getLevel(dimensionKey);
+        ServerLevel world = server.getLevel(dimensionKey);
 
         if (world == null) {
             msg = "Unable to profile dimension " + DimensionHelper.getDimensionName(dimensionKey) + ".  There is no world for it.";
             LogHelper.error(msg);
-            sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
+            sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
             return;
         }
         
         //Make this stick for recovery after profiling.
-        final ServerWorld worldServer = world;
+        final ServerLevel serverLevel = world;
         
         msg = "Inspecting dimension " + DimensionHelper.getDimensionName(dimensionKey) + ". ";
-        sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
+        sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
         LogHelper.info(msg);
 
         
         if (Settings.excludedDimensions.contains(dimensionKey.location().toString())) {
             msg = "Skipped dimension " + DimensionHelper.getDimensionName(dimensionKey) + " during profiling";
             LogHelper.info(msg);
-            sender.sendMessage(new StringTextComponent(msg), Util.NIL_UUID);
+            sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
             return;
         }
 
@@ -87,10 +86,10 @@ public class Profiler implements Runnable {
         this.currentExecutor = executor;
         this.allDimensionData.put(dimensionKey, new ProfiledDimensionData());
 
-        DummyWorld dummyWorld = new DummyWorld(worldServer);
+        DummyWorld dummyWorld = new DummyWorld(serverLevel);
         // dummyWorld.initialize(null);
         ChunkGetter chunkGetter = new ChunkGetter(chunkCount, dummyWorld, executor);
-        worldServer.getServer().addTickable(chunkGetter);
+        serverLevel.getServer().addTickable(chunkGetter);
 
         executor.awaitTermination();
         this.currentExecutor = null;
@@ -104,13 +103,13 @@ public class Profiler implements Runnable {
         return blacklist;
     }
 
-    public ConcurrentMap<RegistryKey<World>, ProfiledDimensionData> getAllDimensionData() {
+    public ConcurrentMap<ResourceKey<Level>, ProfiledDimensionData> getAllDimensionData() {
         return allDimensionData;
     }
 
     private void writeData() {
-        Map<RegistryKey<World>, ProfilingAdapter.DimensionData> allData = new HashMap<>();
-        for (RegistryKey<World> worldRegistryKey : this.allDimensionData.keySet()) {
+        Map<ResourceKey<Level>, ProfilingAdapter.DimensionData> allData = new HashMap<>();
+        for (ResourceKey<Level> worldRegistryKey : this.allDimensionData.keySet()) {
             ProfiledDimensionData profiledData = this.allDimensionData.get(worldRegistryKey);
             ProfilingAdapter.DimensionData data = new ProfilingAdapter.DimensionData();
             data.dropsMap = profiledData.dropsMap;
@@ -133,7 +132,7 @@ public class Profiler implements Runnable {
 
     public static boolean init(Entity sender, int chunks, boolean allWorlds) {
         if (true) {
-            sender.sendMessage(new StringTextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
+            sender.sendMessage(new TextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
             return true;
         }
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
@@ -144,7 +143,7 @@ public class Profiler implements Runnable {
 
     public static boolean stop(Entity sender) {
         if (true) {
-            sender.sendMessage(new StringTextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
+            sender.sendMessage(new TextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
             return true;
         }
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;

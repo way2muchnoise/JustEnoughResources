@@ -1,7 +1,6 @@
 package jeresources.util;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 
 public class Font {
@@ -15,26 +14,26 @@ public class Font {
         this.isSmall = small;
     }
 
-    public void print(MatrixStack matrixStack, Object o, int x, int y) {
-        doTransform(matrixStack, x, y);
-        Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, 8);
-        matrixStack.popPose();
+    public void print(PoseStack poseStack, Object o, int x, int y) {
+        doTransform(poseStack, x, y);
+        Minecraft.getInstance().font.draw(poseStack, String.valueOf(o), 0, 0, 8);
+        poseStack.popPose();
     }
 
-    public void print(MatrixStack matrixStack, Object o, int x, int y, int color) {
-        doTransform(matrixStack, x, y);
-        Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, color);
-        matrixStack.popPose();
+    public void print(PoseStack poseStack, Object o, int x, int y, int color) {
+        doTransform(poseStack, x, y);
+        Minecraft.getInstance().font.draw(poseStack, String.valueOf(o), 0, 0, color);
+        poseStack.popPose();
     }
 
-    public void print(MatrixStack matrixStack, Object o, int x, int y, int color, boolean shadow) {
-        doTransform(matrixStack, x, y);
+    public void print(PoseStack poseStack, Object o, int x, int y, int color, boolean shadow) {
+        doTransform(poseStack, x, y);
         if (shadow) {
-            Minecraft.getInstance().font.drawShadow(matrixStack, String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().font.drawShadow(poseStack, String.valueOf(o), 0, 0, color);
         } else {
-            Minecraft.getInstance().font.draw(matrixStack, String.valueOf(o), 0, 0, color);
+            Minecraft.getInstance().font.draw(poseStack, String.valueOf(o), 0, 0, color);
         }
-        matrixStack.popPose();
+        poseStack.popPose();
     }
 
     public int getStringWidth(String string) {
@@ -42,11 +41,11 @@ public class Font {
         return (int)(isSmall ? width * SCALING : width);
     }
 
-    private void doTransform(MatrixStack matrixStack, int x, int y) {
-        matrixStack.pushPose();
-        matrixStack.translate(x, y, 0);
+    private void doTransform(PoseStack poseStack, int x, int y) {
+        poseStack.pushPose();
+        poseStack.translate(x, y, 0);
         if (isSmall) {
-            matrixStack.scale(SCALING, SCALING, 1);
+            poseStack.scale(SCALING, SCALING, 1);
         }
     }
 }

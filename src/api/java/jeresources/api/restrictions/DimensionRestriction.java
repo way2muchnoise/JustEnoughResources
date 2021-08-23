@@ -1,26 +1,26 @@
 package jeresources.api.restrictions;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 public class DimensionRestriction {
-    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(World.OVERWORLD);
-    public static final DimensionRestriction NETHER = new DimensionRestriction(World.NETHER);
-    public static final DimensionRestriction END = new DimensionRestriction(World.END);
+    public static final DimensionRestriction OVERWORLD = new DimensionRestriction(Level.OVERWORLD);
+    public static final DimensionRestriction NETHER = new DimensionRestriction(Level.NETHER);
+    public static final DimensionRestriction END = new DimensionRestriction(Level.END);
     public static final DimensionRestriction NONE = new DimensionRestriction();
 
     private Restriction.Type type;
-    private RegistryKey<World> dimension;
+    private ResourceKey<Level> dimension;
 
     private DimensionRestriction() {
         this.type = Restriction.Type.NONE;
     }
 
-    public DimensionRestriction(RegistryKey<World> type) {
+    public DimensionRestriction(ResourceKey<Level> type) {
         this(Restriction.Type.WHITELIST, type);
     }
 
-    public DimensionRestriction(Restriction.Type type, RegistryKey<World> dimension) {
+    public DimensionRestriction(Restriction.Type type, ResourceKey<Level> dimension) {
         this.type = type;
         this.dimension = dimension;
     }

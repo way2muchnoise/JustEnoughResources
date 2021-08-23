@@ -7,8 +7,8 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import jeresources.util.LogHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.LinkedList;

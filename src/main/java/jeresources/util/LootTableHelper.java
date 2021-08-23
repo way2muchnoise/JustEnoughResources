@@ -3,21 +3,26 @@ package jeresources.util;
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.config.ConfigValues;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.loot.*;
-import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.resources.*;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.VanillaPackResources;
+import net.minecraft.server.packs.repository.ServerPacksSource;
+import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.Unit;
-import net.minecraft.util.Util;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.*;
+import net.minecraft.world.level.storage.loot.entries.*;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
-import net.minecraftforge.fml.packs.ModFileResourcePack;
+import net.minecraftforge.fmllegacy.packs.ModFileResourcePack;
+import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -28,59 +33,59 @@ public class LootTableHelper {
     private static final Map<DyeColor, ResourceLocation> sheepColors = new HashMap<>();
 
     static {
-        sheepColors.put(DyeColor.WHITE, LootTables.SHEEP_WHITE);
-        sheepColors.put(DyeColor.ORANGE, LootTables.SHEEP_ORANGE);
-        sheepColors.put(DyeColor.MAGENTA, LootTables.SHEEP_MAGENTA);
-        sheepColors.put(DyeColor.LIGHT_BLUE, LootTables.SHEEP_LIGHT_BLUE);
-        sheepColors.put(DyeColor.YELLOW, LootTables.SHEEP_YELLOW);
-        sheepColors.put(DyeColor.LIME, LootTables.SHEEP_LIME);
-        sheepColors.put(DyeColor.PINK, LootTables.SHEEP_PINK);
-        sheepColors.put(DyeColor.GRAY, LootTables.SHEEP_GRAY);
-        sheepColors.put(DyeColor.LIGHT_GRAY, LootTables.SHEEP_LIGHT_GRAY);
-        sheepColors.put(DyeColor.CYAN, LootTables.SHEEP_CYAN);
-        sheepColors.put(DyeColor.PURPLE, LootTables.SHEEP_PURPLE);
-        sheepColors.put(DyeColor.BLUE, LootTables.SHEEP_BLUE);
-        sheepColors.put(DyeColor.BROWN, LootTables.SHEEP_BROWN);
-        sheepColors.put(DyeColor.GREEN, LootTables.SHEEP_GREEN);
-        sheepColors.put(DyeColor.RED, LootTables.SHEEP_RED);
-        sheepColors.put(DyeColor.BLACK, LootTables.SHEEP_BLACK);
+        sheepColors.put(DyeColor.WHITE, BuiltInLootTables.SHEEP_WHITE);
+        sheepColors.put(DyeColor.ORANGE, BuiltInLootTables.SHEEP_ORANGE);
+        sheepColors.put(DyeColor.MAGENTA, BuiltInLootTables.SHEEP_MAGENTA);
+        sheepColors.put(DyeColor.LIGHT_BLUE, BuiltInLootTables.SHEEP_LIGHT_BLUE);
+        sheepColors.put(DyeColor.YELLOW, BuiltInLootTables.SHEEP_YELLOW);
+        sheepColors.put(DyeColor.LIME, BuiltInLootTables.SHEEP_LIME);
+        sheepColors.put(DyeColor.PINK, BuiltInLootTables.SHEEP_PINK);
+        sheepColors.put(DyeColor.GRAY, BuiltInLootTables.SHEEP_GRAY);
+        sheepColors.put(DyeColor.LIGHT_GRAY, BuiltInLootTables.SHEEP_LIGHT_GRAY);
+        sheepColors.put(DyeColor.CYAN, BuiltInLootTables.SHEEP_CYAN);
+        sheepColors.put(DyeColor.PURPLE, BuiltInLootTables.SHEEP_PURPLE);
+        sheepColors.put(DyeColor.BLUE, BuiltInLootTables.SHEEP_BLUE);
+        sheepColors.put(DyeColor.BROWN, BuiltInLootTables.SHEEP_BROWN);
+        sheepColors.put(DyeColor.GREEN, BuiltInLootTables.SHEEP_GREEN);
+        sheepColors.put(DyeColor.RED, BuiltInLootTables.SHEEP_RED);
+        sheepColors.put(DyeColor.BLACK, BuiltInLootTables.SHEEP_BLACK);
     }
 
     public static List<LootPool> getPools(LootTable table) {
-        // public net.minecraft.loot.LootTable field_186466_c # pools
-        return ReflectionHelper.getPrivateValue(LootTable.class, table, "field_186466_c");
+        // public net.minecraft.world.level.storage.loot.LootTable f_79109_ # pools
+        return ReflectionHelper.getPrivateValue(LootTable.class, table, "f_79109_");
     }
 
-    public static List<LootEntry> getLootEntries(LootPool pool) {
-        // public net.minecraft.loot.LootPool field_186453_a # lootEntries
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186453_a");
+    public static List<LootPoolEntryContainer> getLootEntries(LootPool pool) {
+        // public net.minecraft.world.level.storage.loot.LootPool f_79023_ # entries
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79023_");
     }
 
-    public static List<ILootCondition> getLootConditions(LootPool pool) {
-        // public net.minecraft.loot.LootPool field_186454_b # conditions
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "field_186454_b");
+    public static List<LootItemCondition> getLootConditions(LootPool pool) {
+        // public net.minecraft.world.level.storage.loot.LootPool f_79024_ # conditions
+        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79024_");
     }
 
     public static List<LootDrop> toDrops(LootTable table) {
         List<LootDrop> drops = new ArrayList<>();
 
-        final LootTableManager manager = getManager();
+        final LootTables lootTables = getLootTables();
 
         getPools(table).forEach(
             pool -> {
                 final float totalWeight = getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof StandaloneLootEntry).map(entry -> (StandaloneLootEntry) entry)
+                    .filter(entry -> entry instanceof LootPoolSingletonContainer).map(entry -> (LootPoolSingletonContainer) entry)
                     .mapToInt(entry -> entry.weight).sum();
-                final List<ILootCondition> poolConditions = getLootConditions(pool);
+                final List<LootItemCondition> poolConditions = getLootConditions(pool);
                 getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof ItemLootEntry).map(entry -> (ItemLootEntry) entry)
+                    .filter(entry -> entry instanceof LootItem).map(entry -> (LootItem) entry)
                     .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.conditions, entry.functions))
                     .map(drop -> drop.addLootConditions(poolConditions))
                     .forEach(drops::add);
 
                 getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof TableLootEntry).map(entry -> (TableLootEntry) entry)
-                    .map(entry -> toDrops(manager.get(entry.name))).forEach(drops::addAll);
+                    .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)
+                    .map(entry -> toDrops(lootTables.get(entry.name))).forEach(drops::addAll);
             }
         );
 
@@ -88,57 +93,57 @@ public class LootTableHelper {
         return drops;
     }
 
-    public static List<LootDrop> toDrops(World world, ResourceLocation lootTable) {
-        return toDrops(getManager(world).get(lootTable));
+    public static List<LootDrop> toDrops(Level level, ResourceLocation lootTable) {
+        return toDrops(getLootTables(level).get(lootTable));
     }
 
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
         ArrayList<ResourceLocation> chestTables = new ArrayList<>();
 
-        chestTables.add(LootTables.END_CITY_TREASURE);
-        chestTables.add(LootTables.SIMPLE_DUNGEON);
-        chestTables.add(LootTables.VILLAGE_WEAPONSMITH);
-        chestTables.add(LootTables.VILLAGE_TOOLSMITH);
-        chestTables.add(LootTables.VILLAGE_ARMORER);
-        chestTables.add(LootTables.VILLAGE_CARTOGRAPHER);
-        chestTables.add(LootTables.VILLAGE_MASON);
-        chestTables.add(LootTables.VILLAGE_SHEPHERD);
-        chestTables.add(LootTables.VILLAGE_BUTCHER);
-        chestTables.add(LootTables.VILLAGE_FLETCHER);
-        chestTables.add(LootTables.VILLAGE_FISHER);
-        chestTables.add(LootTables.VILLAGE_TANNERY);
-        chestTables.add(LootTables.VILLAGE_TEMPLE);
-        chestTables.add(LootTables.VILLAGE_DESERT_HOUSE);
-        chestTables.add(LootTables.VILLAGE_PLAINS_HOUSE);
-        chestTables.add(LootTables.VILLAGE_TAIGA_HOUSE);
-        chestTables.add(LootTables.VILLAGE_SNOWY_HOUSE);
-        chestTables.add(LootTables.VILLAGE_SAVANNA_HOUSE);
-        chestTables.add(LootTables.ABANDONED_MINESHAFT);
-        chestTables.add(LootTables.NETHER_BRIDGE);
-        chestTables.add(LootTables.STRONGHOLD_LIBRARY);
-        chestTables.add(LootTables.STRONGHOLD_CROSSING);
-        chestTables.add(LootTables.STRONGHOLD_CORRIDOR);
-        chestTables.add(LootTables.DESERT_PYRAMID);
-        chestTables.add(LootTables.JUNGLE_TEMPLE);
-        chestTables.add(LootTables.IGLOO_CHEST);
-        chestTables.add(LootTables.WOODLAND_MANSION);
-        chestTables.add(LootTables.UNDERWATER_RUIN_SMALL);
-        chestTables.add(LootTables.UNDERWATER_RUIN_BIG);
-        chestTables.add(LootTables.BURIED_TREASURE);
-        chestTables.add(LootTables.SHIPWRECK_MAP);
-        chestTables.add(LootTables.SHIPWRECK_SUPPLY);
-        chestTables.add(LootTables.SHIPWRECK_TREASURE);
-        chestTables.add(LootTables.PILLAGER_OUTPOST);
-        chestTables.add(LootTables.BASTION_TREASURE);
-        chestTables.add(LootTables.BASTION_OTHER);
-        chestTables.add(LootTables.BASTION_BRIDGE);
-        chestTables.add(LootTables.BASTION_HOGLIN_STABLE);
-        chestTables.add(LootTables.RUINED_PORTAL);
+        chestTables.add(BuiltInLootTables.END_CITY_TREASURE);
+        chestTables.add(BuiltInLootTables.SIMPLE_DUNGEON);
+        chestTables.add(BuiltInLootTables.VILLAGE_WEAPONSMITH);
+        chestTables.add(BuiltInLootTables.VILLAGE_TOOLSMITH);
+        chestTables.add(BuiltInLootTables.VILLAGE_ARMORER);
+        chestTables.add(BuiltInLootTables.VILLAGE_CARTOGRAPHER);
+        chestTables.add(BuiltInLootTables.VILLAGE_MASON);
+        chestTables.add(BuiltInLootTables.VILLAGE_SHEPHERD);
+        chestTables.add(BuiltInLootTables.VILLAGE_BUTCHER);
+        chestTables.add(BuiltInLootTables.VILLAGE_FLETCHER);
+        chestTables.add(BuiltInLootTables.VILLAGE_FISHER);
+        chestTables.add(BuiltInLootTables.VILLAGE_TANNERY);
+        chestTables.add(BuiltInLootTables.VILLAGE_TEMPLE);
+        chestTables.add(BuiltInLootTables.VILLAGE_DESERT_HOUSE);
+        chestTables.add(BuiltInLootTables.VILLAGE_PLAINS_HOUSE);
+        chestTables.add(BuiltInLootTables.VILLAGE_TAIGA_HOUSE);
+        chestTables.add(BuiltInLootTables.VILLAGE_SNOWY_HOUSE);
+        chestTables.add(BuiltInLootTables.VILLAGE_SAVANNA_HOUSE);
+        chestTables.add(BuiltInLootTables.ABANDONED_MINESHAFT);
+        chestTables.add(BuiltInLootTables.NETHER_BRIDGE);
+        chestTables.add(BuiltInLootTables.STRONGHOLD_LIBRARY);
+        chestTables.add(BuiltInLootTables.STRONGHOLD_CROSSING);
+        chestTables.add(BuiltInLootTables.STRONGHOLD_CORRIDOR);
+        chestTables.add(BuiltInLootTables.DESERT_PYRAMID);
+        chestTables.add(BuiltInLootTables.JUNGLE_TEMPLE);
+        chestTables.add(BuiltInLootTables.IGLOO_CHEST);
+        chestTables.add(BuiltInLootTables.WOODLAND_MANSION);
+        chestTables.add(BuiltInLootTables.UNDERWATER_RUIN_SMALL);
+        chestTables.add(BuiltInLootTables.UNDERWATER_RUIN_BIG);
+        chestTables.add(BuiltInLootTables.BURIED_TREASURE);
+        chestTables.add(BuiltInLootTables.SHIPWRECK_MAP);
+        chestTables.add(BuiltInLootTables.SHIPWRECK_SUPPLY);
+        chestTables.add(BuiltInLootTables.SHIPWRECK_TREASURE);
+        chestTables.add(BuiltInLootTables.PILLAGER_OUTPOST);
+        chestTables.add(BuiltInLootTables.BASTION_TREASURE);
+        chestTables.add(BuiltInLootTables.BASTION_OTHER);
+        chestTables.add(BuiltInLootTables.BASTION_BRIDGE);
+        chestTables.add(BuiltInLootTables.BASTION_HOGLIN_STABLE);
+        chestTables.add(BuiltInLootTables.RUINED_PORTAL);
 
         return chestTables;
     }
 
-    public static Map<ResourceLocation, LivingEntity> getAllMobLootTables(World world) {
+    public static Map<ResourceLocation, LivingEntity> getAllMobLootTables(Level world) {
         MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
 
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
@@ -148,7 +153,7 @@ public class LootTableHelper {
         }
 
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
-            if (entityType.getCategory() != EntityClassification.MISC && entityType != EntityType.SHEEP) {
+            if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }
         }
@@ -156,34 +161,34 @@ public class LootTableHelper {
         return mobTableBuilder.getMobTables();
     }
 
-    private static LootTableManager manager;
+    private static LootTables lootTables;
 
-    public static LootTableManager getManager(@Nullable World world) {
-        if (world == null || world.getServer() == null) {
-            if (manager == null) {
-                manager = new LootTableManager(new LootPredicateManager());
+    public static LootTables getLootTables(@Nullable Level level) {
+        if (level == null || level.getServer() == null) {
+            if (lootTables == null) {
+                lootTables = new LootTables(new PredicateManager());
 
                 if(ConfigValues.disableLootManagerReloading.get()) {
-                    return manager;
+                    return lootTables;
                 }
 
-                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(ResourcePackType.SERVER_DATA);
-                List<IResourcePack> packs = new LinkedList<>();
-                packs.add(new VanillaPack("minecraft"));
-                for (ModFileInfo mod : ModList.get().getModFiles()) {
+                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(PackType.SERVER_DATA);
+                List<PackResources> packs = new LinkedList<>();
+                packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
+                for (IModFileInfo mod : ModList.get().getModFiles()) {
                     packs.add(new ModFileResourcePack(mod.getFile()));
                 }
                 packs.forEach(serverResourceManger::add);
-                serverResourceManger.registerReloadListener(manager);
+                serverResourceManger.registerReloadListener(lootTables);
                 CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
                 Minecraft.getInstance().managedBlock(completableFuture::isDone);
             }
-            return manager;
+            return lootTables;
         }
-        return world.getServer().getLootTables();
+        return level.getServer().getLootTables();
     }
 
-    public static LootTableManager getManager() {
-        return getManager(CompatBase.getWorld());
+    public static LootTables getLootTables() {
+        return getLootTables(CompatBase.getLevel());
     }
 }

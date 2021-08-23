@@ -4,8 +4,8 @@ import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * Use to register new {@link LivingEntity}s, {@link IMobRenderHook}s and {@link IScissorHook}s
@@ -15,7 +15,7 @@ public interface IMobRegistry {
      * Register a custom {@link LivingEntity} with given parameters
      * Implement {@link jeresources.api.conditionals.ICustomLootFunction}
      * to gain more control over the information added to the tooltips when using custom
-     * {@link net.minecraft.loot.LootFunction}s
+     * {@link net.minecraft.world.level.storage.loot.functions.LootItemFunction}s
      *
      * @param entity     the {@link LivingEntity} instance
      * @param lightLevel the {@link LightLevel} the {@link LivingEntity} spawns at

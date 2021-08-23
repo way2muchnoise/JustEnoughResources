@@ -3,13 +3,14 @@ package jeresources.api.drop;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.util.LootConditionHelper;
 import jeresources.api.util.LootFunctionHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.functions.ILootFunction;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -42,7 +43,7 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.ItemStack} (chance for drop will be 100%)
+     * @param item         The dropped {@link ItemStack} (chance for drop will be 100%)
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
@@ -52,7 +53,7 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.ItemStack}
+     * @param item         The dropped {@link ItemStack}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the item gets dropped
@@ -72,7 +73,7 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * @param item    The dropped {@link net.minecraft.item.Item} (chance for drop will be 100% and the itemDamage will be default)
+     * @param item    The dropped {@link Item} (chance for drop will be 100% and the itemDamage will be default)
      * @param minDrop the maximum amount dropped
      * @param maxDrop the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
@@ -82,18 +83,18 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.Item} (chance for drop will be 100%)
-     * @param tag          {@link CompoundNBT} of the Item
+     * @param item         The dropped {@link Item} (chance for drop will be 100%)
+     * @param tag          {@link CompoundTag} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, CompoundNBT tag, int minDrop, int maxDrop, Conditional... conditionals) {
+    public LootDrop(Item item, CompoundTag tag, int minDrop, int maxDrop, Conditional... conditionals) {
         this(new ItemStack(item, 1, tag), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.Item}
+     * @param item         The dropped {@link Item}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the item gets dropped
@@ -104,19 +105,19 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.Item}
-     * @param tag          {@link CompoundNBT} of the Item
+     * @param item         The dropped {@link Item}
+     * @param tag          {@link CompoundTag} of the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the item gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, CompoundNBT tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
+    public LootDrop(Item item, CompoundTag tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
         this(new ItemStack(item, 1, tag), minDrop, maxDrop, chance, 0, conditionals);
     }
 
     /**
-     * @param item         The dropped {@link net.minecraft.item.ItemStack}
+     * @param item         The dropped {@link ItemStack}
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the item gets dropped
@@ -126,41 +127,41 @@ public class LootDrop implements Comparable<LootDrop> {
         this(item, minDrop, maxDrop, chance, 0, conditionals);
     }
 
-    public LootDrop(Item item, float chance, ILootFunction... lootFunctions) {
+    public LootDrop(Item item, float chance, LootItemFunction... lootFunctions) {
         this(new ItemStack(item), chance);
         this.enchanted = false;
         addLootFunctions(lootFunctions);
     }
 
-    public LootDrop(Item item, float chance, ILootCondition[] lootConditions, ILootFunction... lootFunctions) {
+    public LootDrop(Item item, float chance, LootItemCondition[] lootConditions, LootItemFunction... lootFunctions) {
         this(item, chance, lootFunctions);
         addLootConditions(lootConditions);
     }
 
-    public LootDrop addLootConditions(ILootCondition[] lootFunctions) {
-        return addLootConditions(Arrays.asList(lootFunctions));
+    public LootDrop addLootConditions(LootItemCondition[] lootConditions) {
+        return addLootConditions(Arrays.asList(lootConditions));
     }
 
-    public LootDrop addLootConditions(Collection<ILootCondition> lootFunctions) {
-        lootFunctions.forEach(this::addLootCondition);
+    public LootDrop addLootConditions(Collection<LootItemCondition> lootConditions) {
+        lootConditions.forEach(this::addLootCondition);
         return this;
     }
 
-    public LootDrop addLootCondition(ILootCondition condition) {
+    public LootDrop addLootCondition(LootItemCondition condition) {
         LootConditionHelper.applyCondition(condition, this);
         return this;
     }
 
-    public LootDrop addLootFunctions(ILootFunction[] lootFunctions) {
+    public LootDrop addLootFunctions(LootItemFunction[] lootFunctions) {
         return addLootFunctions(Arrays.asList(lootFunctions));
     }
 
-    public LootDrop addLootFunctions(Collection<ILootFunction> lootFunctions) {
+    public LootDrop addLootFunctions(Collection<LootItemFunction> lootFunctions) {
         lootFunctions.forEach(this::addLootFunction);
         return this;
     }
 
-    public LootDrop addLootFunction(ILootFunction lootFunction) {
+    public LootDrop addLootFunction(LootItemFunction lootFunction) {
         LootFunctionHelper.applyFunction(lootFunction, this);
         return this;
     }
@@ -196,12 +197,12 @@ public class LootDrop implements Comparable<LootDrop> {
         else return String.format("%.2G%%", chance * 100f);
     }
 
-    public List<ITextComponent> getTooltipText() {
+    public List<Component> getTooltipText() {
         return getTooltipText(false);
     }
 
-    public List<ITextComponent> getTooltipText(boolean smelted) {
-        List<ITextComponent> list = conditionals.stream().map(Conditional::toStringTextComponent).collect(Collectors.toList());
+    public List<Component> getTooltipText(boolean smelted) {
+        List<Component> list = conditionals.stream().map(Conditional::toStringTextComponent).collect(Collectors.toList());
         if (smelted)
             list.add(Conditional.burning.toStringTextComponent());
         return list;
@@ -219,8 +220,8 @@ public class LootDrop implements Comparable<LootDrop> {
         return sortIndex;
     }
 
-    public StringTextComponent toStringTextComponent() {
-        return new StringTextComponent(toString());
+    public TextComponent toStringTextComponent() {
+        return new TextComponent(toString());
     }
 
     @Override

@@ -10,14 +10,14 @@ import com.google.common.cache.CacheBuilder;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.IPlantable;
 
 public class MapKeys {
@@ -27,24 +27,24 @@ public class MapKeys {
             .build();
 
     @Nullable
-    public static String getKey(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
+    public static String getKey(BlockState state, HitResult target, ServerLevel serverLevel, BlockPos pos, Player player) {
         Block block = state.getBlock();
-        if (!block.hasTileEntity(state)) {
+        if (!block.isRandomlyTicking(state)) {
             try {
-                return keyCache.get(state, () -> getKeyUncached(block, state, target, world, pos, player));
+                return keyCache.get(state, () -> getKeyUncached(block, state, target, serverLevel, pos, player));
             } catch (ExecutionException e) {
                 LogHelper.error("Cache error", e);
             }
         }
 
-        return getKeyUncached(block, state, target, world, pos, player);
+        return getKeyUncached(block, state, target, serverLevel, pos, player);
     }
 
     @Nullable
-    private static String getKeyUncached(Block block, BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
+    private static String getKeyUncached(Block block, BlockState state, HitResult target, ServerLevel serverLevel, BlockPos pos, Player player) {
         ItemStack pickBlock = null;
         try {
-            pickBlock = block.getPickBlock(state, target, world, pos, player);
+            pickBlock = block.getPickBlock(state, target, serverLevel, pos, player);
         } catch (Exception ignored) {
         }
 

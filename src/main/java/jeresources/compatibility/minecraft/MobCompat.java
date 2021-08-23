@@ -4,28 +4,20 @@ import java.util.HashMap;
 
 import jeresources.api.conditionals.LightLevel;
 import jeresources.entry.MobEntry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.monster.BlazeEntity;
-import net.minecraft.entity.monster.GuardianEntity;
-import net.minecraft.entity.monster.MagmaCubeEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.PatrollerEntity;
-import net.minecraft.entity.monster.PhantomEntity;
-import net.minecraft.entity.monster.SlimeEntity;
-import net.minecraft.entity.monster.VexEntity;
-import net.minecraft.entity.monster.WitchEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.BatEntity;
-import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ambient.Bat;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class MobCompat {
-    private static World world = MinecraftCompat.getWorld();
+    private static Level level = MinecraftCompat.getLevel();
     private final HashMap<Class, Tuple<Integer, Integer>> MOB_XP = new HashMap<>();
     private final HashMap<Class, LightLevel> LIGHT_LEVEL = new HashMap<>();
     private static MobCompat instance;
@@ -58,23 +50,23 @@ public class MobCompat {
 
     private void initMobXp() {
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
-            Entity entity = entityType.create(world);
+            Entity entity = entityType.create(level);
 
-            if (entity instanceof MobEntity) {
+            if (entity instanceof Mob) {
                 Class entityClass = entity.getClass();
                 Tuple<Integer, Integer> exp;
 
-                if(entity instanceof AnimalEntity || entity instanceof WaterMobEntity) {
+                if(entity instanceof Animal || entity instanceof WaterAnimal) {
                     exp = new Tuple<>(1, 3);
                 }
-                else if(entity instanceof EnderDragonEntity) {
+                else if(entity instanceof EnderDragon) {
                     exp = new Tuple<>(500, 12000);
                 }
-                else if(entity instanceof SlimeEntity || entity instanceof MagmaCubeEntity) {
+                else if(entity instanceof Slime || entity instanceof MagmaCube) {
                     exp = new Tuple<>(1, 4);
                 }
                 else {
-                    exp = new Tuple<>(((MobEntity)entity).xpReward, ((MobEntity)entity).xpReward);
+                    exp = new Tuple<>(((Mob)entity).xpReward, ((Mob)entity).xpReward);
                 }
 
                 MOB_XP.put(entityClass, exp);
@@ -84,21 +76,21 @@ public class MobCompat {
 
     private void initLightLevel() {
         for (EntityType entityType : ForgeRegistries.ENTITIES) {
-            Entity entity = entityType.create(world);
+            Entity entity = entityType.create(level);
 
-            if (entity instanceof MobEntity) {
+            if (entity instanceof Mob) {
                 Class entityClass = entity.getClass();
 
                 if (cannotSpawnNaturally(entity)) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.any);
                 }
-                else if (entity instanceof BlazeEntity) {
+                else if (entity instanceof Blaze) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.blaze);
                 }
-                else if (entity instanceof MonsterEntity || entity instanceof SlimeEntity || entity instanceof PhantomEntity) {
+                else if (entity instanceof Monster || entity instanceof Slime || entity instanceof Phantom) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.hostile);
                 }
-                else if (entity instanceof BatEntity) {
+                else if (entity instanceof Bat) {
                     LIGHT_LEVEL.put(entityClass, LightLevel.bat);
                 }
                 else {
@@ -109,6 +101,6 @@ public class MobCompat {
     }
 
     private boolean cannotSpawnNaturally(Entity entity) {
-        return entity instanceof VexEntity || entity instanceof GuardianEntity || (entity instanceof PatrollerEntity && !(entity instanceof WitchEntity));
+        return entity instanceof Vex || entity instanceof Guardian || (entity instanceof PatrollingMonster && !(entity instanceof Witch));
     }
 }

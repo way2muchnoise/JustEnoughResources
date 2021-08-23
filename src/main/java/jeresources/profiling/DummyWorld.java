@@ -1,30 +1,27 @@
 package jeresources.profiling;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.crafting.RecipeManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tags.ITagCollectionSupplier;
-import net.minecraft.tags.NetworkTagManager;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.AbstractChunkProvider;
-import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.chunk.listener.IChunkStatusListener;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.lighting.WorldLightManager;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.spawner.ISpecialSpawner;
-import net.minecraft.world.storage.IServerWorldInfo;
-import net.minecraft.world.storage.MapData;
-import net.minecraft.world.storage.SaveFormat;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkSource;
+import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityDispatcher;
 import net.minecraftforge.common.util.LazyOptional;
@@ -32,18 +29,18 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 /**
  * Dummy world wraps a regular world.
  * It prevents saving new chunks, doing lighting calculations, or spawning entities.
  */
-public class DummyWorld extends ServerWorld {
+public class DummyWorld extends ServerLevel {
     public List<Entity> spawnedEntities = new ArrayList<>();
     private CapabilityDispatcher capabilities;
 
-    public DummyWorld(ServerWorld world) {
+    public DummyWorld(ServerLevel level) {
         // TODO: implement
         //MinecraftServer, Executor, SaveFormat.LevelSave, IServerWorldInfo, RegistryKey<World>, DimensionType, IChunkStatusListener, ChunkGenerator, boolean, long, List<ISpecialSpawner>, boolean
         super(null, null, null, null, null, null, null, null, false,0, null, false);
@@ -64,13 +61,13 @@ public class DummyWorld extends ServerWorld {
 
     @Nullable
     @Override
-    public MapData getMapData(String mapName) {
+    public MapItemSavedData getMapData(String mapName) {
         return null;
     }
 
     @Override
-    public void setMapData(MapData mapData) {
-
+    public void setMapData(String p_143305_, MapItemSavedData p_143306_) {
+        this.getServer().overworld().getDataStorage().set(p_143305_, p_143306_);
     }
 
     @Override
@@ -89,7 +86,7 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public ITagCollectionSupplier getTagManager() {
+    public TagContainer getTagManager() {
         return null;
     }
 
@@ -99,7 +96,7 @@ public class DummyWorld extends ServerWorld {
             return false;
         }
 
-        IChunk chunk = getChunk(pos);
+        ChunkAccess chunk = getChunk(pos);
         BlockState blockState = chunk.setBlockState(pos, newState, false);
         return blockState != null;
     }
@@ -115,12 +112,12 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public void playSound(@Nullable PlayerEntity player, double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
+    public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource source, float volume, float pitch) {
 
     }
 
     @Override
-    public void playSound(@Nullable PlayerEntity p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundCategory p_217384_4_, float p_217384_5_, float p_217384_6_) {
+    public void playSound(@Nullable Player p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundSource p_217384_4_, float p_217384_5_, float p_217384_6_) {
 
     }
 
@@ -137,28 +134,27 @@ public class DummyWorld extends ServerWorld {
     }
 
     @Override
-    public void levelEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
+    public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
 
     }
 
-    private static class DummyChunkProvider extends AbstractChunkProvider {
-        private final World realWorld;
-        private final AbstractChunkProvider realChunkProvider;
+    private static class DummyChunkSource extends ChunkSource {
+        private final Level realLevel;
+        private final ChunkSource realChunkSource;
         private boolean allowLoading = true;
 
-        public DummyChunkProvider(World realWorld, AbstractChunkProvider chunkProviderServer) {
+        public DummyChunkSource(Level realLevel, ChunkSource serverChunkSource) {
             super();
-            this.realWorld = realWorld;
-
-            this.realChunkProvider = chunkProviderServer;
+            this.realLevel = realLevel;
+            this.realChunkSource = serverChunkSource;
         }
 
         @Nullable
         @Override
-        public IChunk getChunk(int x, int z, ChunkStatus requiredStatus, boolean load) {
+        public ChunkAccess getChunk(int x, int z, ChunkStatus requiredStatus, boolean load) {
             /*
             final long chunkKey = ChunkPos.asLong(x, z);
-            Chunk chunk = this.loadedChunks.get(chunkKey);
+            LevelChunk chunk = this.loadedChunks.get(chunkKey);
             if (chunk != null) {
                 return chunk;
             }
@@ -167,12 +163,12 @@ public class DummyWorld extends ServerWorld {
             }
 
             try {
-                chunk = realChunkProvider.generateChunk(x, z);
+                chunk = realChunkSource.getChunkNow(x, z);
             } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Exception generating new chunk");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("Chunk to be generated");
-                crashreportcategory.addDetail("Location", String.format("%d,%d", x, z));
-                crashreportcategory.addDetail("Generator", realChunkProvider.makeString());
+                CrashReport crashreport = CrashReport.forThrowable(throwable, "Exception generating new chunk");
+                CrashReportCategory crashreportcategory = crashreport.addCategory("Chunk to be generated");
+                crashreportcategory.setDetail("Location", String.format("%d,%d", x, z));
+                crashreportcategory.setDetail("Generator", realChunkSource.gatherStats());
                 throw new ReportedException(crashreport);
             }
 
@@ -183,13 +179,14 @@ public class DummyWorld extends ServerWorld {
             chunk.populate(this, this);
             this.allowLoading = true;
 
-            return chunk;*/
+            return chunk;
+            */
             return null;
         }
 
         @Override
-        public boolean isTickingChunk(BlockPos pos) {
-            return false;
+        public void tick(BooleanSupplier booleanSupplier) {
+
         }
 
         @Override
@@ -198,12 +195,17 @@ public class DummyWorld extends ServerWorld {
         }
 
         @Override
-        public WorldLightManager getLightEngine() {
+        public int getLoadedChunksCount() {
+            return 0;
+        }
+
+        @Override
+        public LevelLightEngine getLightEngine() {
             return null;
         }
 
         @Override
-        public IBlockReader getLevel() {
+        public BlockGetter getLevel() {
             return null;
         }
     }

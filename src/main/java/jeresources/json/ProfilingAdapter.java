@@ -2,13 +2,9 @@ package jeresources.json;
 
 import com.google.common.collect.Sets;
 import com.google.gson.stream.JsonWriter;
-import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.World;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.io.File;
@@ -28,7 +24,7 @@ public class ProfilingAdapter {
         public Map<String, Map<String, Map<Integer, Float>>> dropsMap = new HashMap<>();
     }
 
-    public static void write(final Map<RegistryKey<World>, DimensionData> allDimensionData) {
+    public static void write(final Map<ResourceKey<Level>, DimensionData> allDimensionData) {
 
         File oldWorldGenFile = WorldGenAdapter.getWorldGenFile();
         if (oldWorldGenFile.exists()) {
@@ -46,7 +42,7 @@ public class ProfilingAdapter {
             writer.setIndent("\t");
             writer.beginArray();
 
-            for (RegistryKey<World> worldRegistryKey : allDimensionData.keySet()) {
+            for (ResourceKey<Level> worldRegistryKey : allDimensionData.keySet()) {
                 DimensionData dimensionData = allDimensionData.get(worldRegistryKey);
 
                 Set<String> blockKeys = Sets.union(dimensionData.distribution.keySet(), dimensionData.dropsMap.keySet());

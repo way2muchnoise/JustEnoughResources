@@ -1,7 +1,6 @@
 package jeresources.util;
 
-
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.language.I18n;
 
 public class TranslationHelper {
     public static String translateAndFormat(String key, Object... params) {

@@ -2,10 +2,10 @@ package jeresources.collection;
 
 import jeresources.entry.VillagerEntry;
 import mezz.jei.api.recipe.IFocus;
-import net.minecraft.entity.merchant.villager.VillagerTrades;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MerchantOffer;
-import net.minecraft.item.MerchantOffers;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,19 +54,19 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
     }
 
-    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ITrade trade, Random rand) {
-        MerchantOffer offer = trade.getOffer(villagerEntry.getVillagerEntity(), rand);
+    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, Random rand) {
+        MerchantOffer offer = itemListing.getOffer(villagerEntry.getVillagerEntity(), rand);
         if (offer != null) {
             merchantOffers.add(offer);
         }
     }
 
-    public void addITradeList(VillagerTrades.ITrade[] tradeList) {
-        for (VillagerTrades.ITrade trade : tradeList) {
+    public void addITradeList(VillagerTrades.ItemListing[] itemListings) {
+        for (VillagerTrades.ItemListing itemListing : itemListings) {
             MerchantOffers tempList = new MerchantOffers();
             Random rand = new Random();
             for (int itr = 0; itr < 100; itr++)
-                addMerchantRecipe(tempList, trade, rand);
+                addMerchantRecipe(tempList, itemListing, rand);
             if (tempList.size() == 0) return; // Bad lists be bad
             ItemStack costA = tempList.get(0).getCostA();
             ItemStack costB = tempList.get(0).getCostB();
