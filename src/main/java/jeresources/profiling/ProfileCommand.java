@@ -3,7 +3,6 @@ package jeresources.profiling;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -23,7 +22,7 @@ public class ProfileCommand {
 
     public void register(CommandDispatcher<CommandSource> dispatcher) {
         LiteralArgumentBuilder<CommandSource> profileCommand = Commands.literal(COMMAND_NAME)
-            .requires(source -> source.hasPermission(4) && Minecraft.getInstance().hasSingleplayerServer());
+            .requires(source -> source.hasPermission(4) && source.getServer().isSingleplayer());
 
         profileCommand.then(
             Commands.argument(CHUNK_PARAM, IntegerArgumentType.integer(1))
