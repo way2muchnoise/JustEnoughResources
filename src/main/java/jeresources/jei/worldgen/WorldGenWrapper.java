@@ -70,7 +70,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
             if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
             {
                 double x = xPrev + space;
-                RenderHelper.drawLine(poseStack, xPrev, yPrev, x, y, getLineColor());
+                RenderHelper.drawLine(poseStack, (int)xPrev, (int)yPrev, (int)x, (int)y, getLineColor());
                 xPrev = x;
             }
             yPrev = y;

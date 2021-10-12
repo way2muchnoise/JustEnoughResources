@@ -2,6 +2,7 @@ package jeresources.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -11,6 +12,7 @@ import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -27,29 +29,10 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 
 public class RenderHelper {
-    public static void drawLine(PoseStack poseStack, double xBegin, double yBegin, double xEnd, double yEnd, int color) {
-        if (true) {
-            // TODO fix line drawing, currently throws a GL error
-            // Can maybe be replace by using net.minecraft.client.gui.GuiComponent.fill() ?
-            return;
-        }
-        ColorHelper.setColor3f(color);
-        PoseStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.pushPose();
-        modelViewStack.mulPoseMatrix(poseStack.last().pose());
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        RenderSystem.disableDepthTest();
-        GL11.glLineWidth((float)(getGuiScaleFactor() * 1.3F));
-        GL11.glEnable(GL11.GL_LINE_SMOOTH);
-        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex2d(xBegin, yBegin);
-        GL11.glVertex2d(xEnd, yEnd);
-        GL11.glEnd();
-        RenderSystem.enableDepthTest();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        modelViewStack.popPose();
-        RenderSystem.applyModelViewMatrix();
+    public static void drawLine(PoseStack poseStack, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
+        xEnd += xBegin == xEnd ? 1 : 0;
+        yEnd += yBegin == yEnd ? 1 : 0;
+        GuiComponent.fill(poseStack, xBegin, yBegin, xEnd, yEnd, color);
     }
 
     public static void renderEntity(PoseStack poseStack, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
