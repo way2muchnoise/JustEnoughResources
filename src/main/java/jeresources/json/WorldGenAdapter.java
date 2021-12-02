@@ -74,7 +74,11 @@ public class WorldGenAdapter {
                 String[] blockParts = block.split(":");
 
                 Item itemBlock = ForgeRegistries.ITEMS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
-                if (itemBlock == null || itemBlock == Items.AIR) continue;
+
+                if (itemBlock == null || itemBlock == Items.AIR)
+                    itemBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1])).asItem();
+
+                if (itemBlock == Items.AIR) continue;
                 ItemStack blockStack = itemBlock.getDefaultInstance();
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";")) {
