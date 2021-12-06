@@ -5,7 +5,9 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,5 +45,19 @@ public class ReflectionHelper extends ObfuscationReflectionHelper {
                 }
             }
         }
+    }
+
+    public static <T, E> List<T> getPrivateArrayValueAsList(Class<? super E> classToAccess, E instance, String fieldName) {
+        T array = getPrivateValue(classToAccess, instance, fieldName);
+        int length = Array.getLength(array);
+        List<T> arrayList = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            arrayList.add((T) Array.get(array, i));
+        }
+        return arrayList;
+    }
+
+    public static <T, E> T[] getPrivateArrayValue(Class<? super E> classToAccess, E instance, String fieldName) {
+        return (T[]) getPrivateArrayValueAsList(classToAccess, instance, fieldName).toArray();
     }
 }

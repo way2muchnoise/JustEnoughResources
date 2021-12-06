@@ -71,10 +71,13 @@ public class WorldGenAdapter {
 
                 String[] blockParts = block.split(":");
 
-                Block blockBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
-                if (blockBlock == null || Item.byBlock(blockBlock) == null) continue;
-                //int oreMeta = blockParts.length == 3 ? Integer.parseInt(blockParts[2]) : 0;
-                ItemStack blockStack = new ItemStack(blockBlock, 1, new CompoundTag());
+                Item itemBlock = ForgeRegistries.ITEMS.getValue(new ResourceLocation(blockParts[0], blockParts[1]));
+
+                if (itemBlock == null || itemBlock == Items.AIR)
+                    itemBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(blockParts[0], blockParts[1])).asItem();
+
+                if (itemBlock == Items.AIR) continue;
+                ItemStack blockStack = itemBlock.getDefaultInstance();
                 List<DistributionHelpers.OrePoint> points = new ArrayList<>();
                 for (String point : distrib.split(";")) {
                     String[] split = point.split(",");

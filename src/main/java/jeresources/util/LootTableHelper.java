@@ -21,9 +21,9 @@ import net.minecraft.world.level.storage.loot.*;
 import net.minecraft.world.level.storage.loot.entries.*;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fmllegacy.packs.ModFileResourcePack;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.resource.PathResourcePack;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -58,12 +58,12 @@ public class LootTableHelper {
 
     public static List<LootPoolEntryContainer> getLootEntries(LootPool pool) {
         // public net.minecraft.world.level.storage.loot.LootPool f_79023_ # entries
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79023_");
+        return ReflectionHelper.getPrivateArrayValueAsList(LootPool.class, pool, "f_79023_");
     }
 
     public static List<LootItemCondition> getLootConditions(LootPool pool) {
         // public net.minecraft.world.level.storage.loot.LootPool f_79024_ # conditions
-        return ReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79024_");
+        return ReflectionHelper.getPrivateArrayValueAsList(LootPool.class, pool, "f_79024_");
     }
 
     public static List<LootDrop> toDrops(LootTable table) {
@@ -176,7 +176,7 @@ public class LootTableHelper {
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
                 for (IModFileInfo mod : ModList.get().getModFiles()) {
-                    packs.add(new ModFileResourcePack(mod.getFile()));
+                    packs.add(new PathResourcePack(mod.getFile().getFileName(), mod.getFile().getFilePath()));
                 }
                 packs.forEach(serverResourceManger::add);
                 serverResourceManger.registerReloadListener(lootTables);
