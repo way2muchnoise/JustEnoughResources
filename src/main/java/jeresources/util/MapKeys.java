@@ -44,7 +44,7 @@ public class MapKeys {
     private static String getKeyUncached(Block block, BlockState state, HitResult target, ServerLevel serverLevel, BlockPos pos, Player player) {
         ItemStack pickBlock = null;
         try {
-            pickBlock = block.getPickBlock(state, target, serverLevel, pos, player);
+            pickBlock = block.getCloneItemStack(state, target, serverLevel, pos, player);
         } catch (Exception ignored) {
         }
 

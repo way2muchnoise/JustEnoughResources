@@ -156,11 +156,12 @@ public class ChunkGetter implements Runnable {
 
 
 
-        // TODO - do I need to recurse over all parent states first ?
+        /*/ TODO - do I need to recurse over all parent states first ?
         ChunkStatus.FEATURES.generate(level.getServer(), level, chunkGenerator,
             level.getStructureManager(), (ThreadedLevelLightEngine) level.getLightEngine(),
             iChunk -> iChunk.getStatus().isOrAfter(ChunkStatus.FEATURES) ? CompletableFuture.completedFuture(Either.left(iChunk)) : ChunkHolder.UNLOADED_CHUNK_FUTURE,
             centerChunks);
+         /*/
 
         return centerChunks;
     }

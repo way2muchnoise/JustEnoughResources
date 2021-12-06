@@ -21,8 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.gui.GuiUtils;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 

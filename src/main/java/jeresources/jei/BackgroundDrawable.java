@@ -6,7 +6,7 @@ import jeresources.reference.Reference;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
 
 public class BackgroundDrawable implements IDrawable {
     private final int width, height;

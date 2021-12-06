@@ -44,9 +44,8 @@ public class WorldGenAdapter {
     }
 
     public static boolean readDIYData() {
-        JsonParser parser = new JsonParser();
         try {
-            JsonElement base = parser.parse(new FileReader(getWorldGenFile()));
+            JsonElement base = JsonParser.parseReader(new FileReader(getWorldGenFile()));
             if (!base.isJsonArray() || base.getAsJsonArray().size() == 0) return false;
             JsonArray array = base.getAsJsonArray();
             for (int i = 0; i < array.size(); i++) {

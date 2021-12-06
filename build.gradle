@@ -2,7 +2,7 @@ buildscript {
 	repositories {
 		maven {
 			name = "forge"
-			url = "https://files.minecraftforge.net/maven" 
+			url = "https://maven.minecraftforge.net/"
 		}
 		mavenCentral()
 	}
@@ -38,7 +38,7 @@ repositories {
     }
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 sourceSets {
 	api
