@@ -76,8 +76,8 @@ public class WorldGenEntry {
     }
 
     private void calcChances() {
-        chances = new float[256];
-        minY = 256;
+        chances = new float[256 + 64];
+        minY = 256 + 64;
         maxY = 0;
         int i = -1;
         for (float chance : this.distribution.getDistribution()) {
@@ -90,22 +90,23 @@ public class WorldGenEntry {
                     maxY = i;
             }
         }
-        if (minY == 256) minY = 0;
-        if (maxY == 0) maxY = 255;
+        if (minY == 256 + 64) minY = 0;
+        if (maxY == 0) maxY = 255 + 64;
 
-        if (minY < 128)
+        if (minY < 128 + 32)
             minY = 0;
         else
-            minY = 128;
+            minY = 128 + 32;
 
-        if (maxY <= 127)
-            maxY = 127;
+        if (maxY <= 127 + 32)
+            maxY = 127 + 32;
         else
-            maxY = 255;
+            maxY = 255 + 32;
+        minY -= 64;
     }
 
     public float[] getChances() {
-        return Arrays.copyOfRange(chances, minY, maxY + 1);
+        return Arrays.copyOfRange(chances, minY + 64, maxY + 1 + 64);
     }
 
     public int getMinY() {

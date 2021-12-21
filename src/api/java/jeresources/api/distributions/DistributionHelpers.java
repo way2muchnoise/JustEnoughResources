@@ -11,7 +11,7 @@ public class DistributionHelpers {
      * @param midY      the top, middle of the triangle
      * @param range     length of the sides
      * @param maxChance chance at the top
-     * @return an array of 256 floats in triangular distribution
+     * @return an array of 320 floats in triangular distribution
      */
     public static float[] getTriangularDistribution(int midY, int range, float maxChance) {
         return getTriangularDistribution(midY - range, range, range, maxChance);
@@ -23,9 +23,9 @@ public class DistributionHelpers {
         for (int i = 0; i < rand1; i++)
             for (int j = 0; j < rand2; j++)
                 triangle[i + j] += modChance;
-        float[] result = new float[256];
+        float[] result = new float[256 + 64];
         for (int i = 0; i < triangle.length; i++) {
-            int mapToPos = i + minY;
+            int mapToPos = i + minY + 64;
             if (mapToPos < 0) continue;
             if (mapToPos == result.length) break;
             result[mapToPos] = triangle[i];
@@ -37,11 +37,11 @@ public class DistributionHelpers {
      * @param minY   first occurrence
      * @param maxY   last occurrence
      * @param chance the chance
-     * @return an array of 256 floats in square distribution
+     * @return an array of 320 floats in square distribution
      */
     public static float[] getSquareDistribution(int minY, int maxY, float chance) {
-        float[] result = new float[256];
-        for (int i = minY; i <= maxY; i++)
+        float[] result = new float[256 + 64];
+        for (int i = minY + 64; i <= maxY + 64; i++)
             result[i] = chance;
         return result;
     }
@@ -52,13 +52,13 @@ public class DistributionHelpers {
      * @param maxY   start of the ramp down
      * @param max0   end of ramp down
      * @param chance the chance at the top
-     * @return an array of 256 floats in square distribution
+     * @return an array of 320 floats in square distribution
      */
     public static float[] getRoundedSquareDistribution(int min0, int minY, int maxY, int max0, float chance) {
-        float[] result = new float[256];
-        addDistribution(result, getRampDistribution(min0, minY, chance), min0);
+        float[] result = new float[256 + 64];
+        addDistribution(result, getRampDistribution(min0, minY, chance), min0 + 64);
         addDistribution(result, getSquareDistribution(minY, maxY, chance));
-        addDistribution(result, getRampDistribution(max0, maxY, chance), maxY);
+        addDistribution(result, getRampDistribution(max0, maxY, chance), maxY + 64);
         return result;
     }
 
@@ -91,13 +91,13 @@ public class DistributionHelpers {
     }
 
     public static float[] getRampDistribution(int minY, int maxY, float maxChance) {
-        return getRampDistribution(minY, maxY, 0, maxChance);
+        return getRampDistribution(minY + 64, maxY + 64, 0, maxChance);
     }
 
     public static float[] getOverworldSurfaceDistribution(int oreDiameter) {
-        float[] result = new float[256];
+        float[] result = new float[256 + 64];
         float[] triangularDist = getOverworldSurface();
-        float chance = (float) oreDiameter / 256F;
+        float chance = (float) oreDiameter / 320F;
         for (int i = 0; i < result.length - oreDiameter; i++) {
             if (i == triangularDist.length) break;
             if (triangularDist[i] == 0) continue;
@@ -228,14 +228,14 @@ public class DistributionHelpers {
      * @return the chance that a block appears within the specified Y boundaries
      */
     public static float calculateChance(int veinCount, int veinSize, int minY, int maxY) {
-        return ((float) veinCount * veinSize) / ((maxY - minY + 1) * 256);
+        return ((float) veinCount * veinSize) / ((maxY - minY + 1) * (256+64));
     }
 
     public static float[] getDistributionFromPoints(OrePoint... points) {
         Set<OrePoint> set = new TreeSet<>();
         Collections.addAll(set, points);
         points = set.toArray(new OrePoint[set.size()]);
-        float[] array = new float[256];
+        float[] array = new float[256 + 64];
         addDistribution(array, getRampDistribution(0, points[0].level, points[0].chance));
         for (int i = 1; i < points.length; i++) {
             OrePoint min, max;

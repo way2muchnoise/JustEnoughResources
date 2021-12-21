@@ -16,6 +16,7 @@ public class Conditional {
     public static final Conditional silkTouch = new Conditional("jer.worldgen.silkTouch", TextModifier.darkCyan);
     public static final Conditional equipmentDrop = new Conditional("jer.equipmentDrop.text", TextModifier.lightCyan);
     public static final Conditional affectedByLooting = new Conditional("jer.affectedByLooting.text", TextModifier.lightCyan);
+    public static final Conditional affectedByFortune = new Conditional("jer.affectedByFortune.text", TextModifier.lightCyan);
     public static final Conditional powered = new Conditional("jer.powered.text", TextModifier.lightCyan);
 
     public static final Conditional burning = new Conditional("jer.burning.text", TextModifier.lightRed);

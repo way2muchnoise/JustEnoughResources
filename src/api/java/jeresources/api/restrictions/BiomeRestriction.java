@@ -1,7 +1,10 @@
 package jeresources.api.restrictions;
 
 import jeresources.api.util.BiomeHelper;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,12 +32,18 @@ public class BiomeRestriction {
    public static final BiomeRestriction SWAMP = new BiomeRestriction(Biome.BiomeCategory.SWAMP);
    public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biome.BiomeCategory.MUSHROOM);
    public static final BiomeRestriction NETHER = new BiomeRestriction(Biome.BiomeCategory.NETHER);
+   public static final BiomeRestriction DRIPSTONE_CAVES = new BiomeRestriction(Biomes.DRIPSTONE_CAVES);
+   public static final BiomeRestriction BADLANDS = new BiomeRestriction(Biomes.BADLANDS);
 
     private List<Biome> biomes = new ArrayList<>();
     private Restriction.Type restrictionType;
 
     public BiomeRestriction() {
         this.restrictionType = Restriction.Type.NONE;
+    }
+
+    public BiomeRestriction(ResourceKey<Biome> biome) {
+        this(BiomeHelper.getBiome(biome));
     }
 
     public BiomeRestriction(Biome biome) {
