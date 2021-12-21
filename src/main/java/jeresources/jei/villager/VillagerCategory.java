@@ -55,19 +55,25 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull VillagerWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         IFocus<ItemStack> focus = recipeLayout.getFocus(VanillaTypes.ITEM);
         recipeWrapper.setFocus(focus);
+
+        if (recipeWrapper.hasPois()) {
+            recipeLayout.getItemStacks().init(0, true, 49, 18);
+            recipeLayout.getItemStacks().set(0, recipeWrapper.getPois());
+        }
+
         int y = Y_ITEM_DISTANCE * (6 - recipeWrapper.getPossibleLevels(focus).size()) / 2;
         for (int i = 0; i < recipeWrapper.getPossibleLevels(focus).size(); i++) {
-            recipeLayout.getItemStacks().init(3 * i, true, X_FIRST_ITEM, y + i * Y_ITEM_DISTANCE);
-            recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
-            recipeLayout.getItemStacks().init(3 * i + 2, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
+            recipeLayout.getItemStacks().init(3 * i + 1, true, X_FIRST_ITEM, y + i * Y_ITEM_DISTANCE);
+            recipeLayout.getItemStacks().init(3 * i + 2, true, X_FIRST_ITEM + X_ITEM_DISTANCE, y + i * Y_ITEM_DISTANCE);
+            recipeLayout.getItemStacks().init(3 * i + 3, false, X_ITEM_RESULT, y + i * Y_ITEM_DISTANCE);
         }
 
         int i = 0;
         for (int level : recipeWrapper.getPossibleLevels(focus)) {
             TradeList tradeList = recipeWrapper.getTrades(level).getFocusedList(focus);
-            recipeLayout.getItemStacks().set(3 * i, tradeList.getCostAs());
-            recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getCostBs());
-            recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getResults());
+            recipeLayout.getItemStacks().set(3 * i + 1, tradeList.getCostAs());
+            recipeLayout.getItemStacks().set(3 * i + 2, tradeList.getCostBs());
+            recipeLayout.getItemStacks().set(3 * i + 3, tradeList.getResults());
             i++;
         }
     }

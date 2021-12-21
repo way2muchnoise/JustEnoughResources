@@ -47,6 +47,14 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
         this.focus = focus;
     }
 
+    public List<ItemStack> getPois() {
+        return entry.getPois();
+    }
+
+    public boolean hasPois() {
+        return entry.hasPois();
+    }
+
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
         RenderHelper.scissor(poseStack,7, 43, 59, 79);
@@ -64,12 +72,19 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
         int i;
         for (i = 0; i < getPossibleLevels(focus).size(); i++) {
             RenderHelper.drawTexture(poseStack, 130, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
+            RenderHelper.drawTexture(poseStack, VillagerCategory.X_FIRST_ITEM, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
+            RenderHelper.drawTexture(poseStack, VillagerCategory.X_FIRST_ITEM + VillagerCategory.X_ITEM_DISTANCE, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
+            RenderHelper.drawTexture(poseStack, VillagerCategory.X_ITEM_RESULT, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
         }
         i = 0;
         for (int level : getPossibleLevels(focus)) {
             Font.normal.print(poseStack, "lv. " + (level + 1), 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
         }
 
-        Font.normal.print(poseStack, TranslationHelper.translateAndFormat(entry.getDisplayName()), 10, 25);
+        Font.normal.print(poseStack, TranslationHelper.translateAndFormat(entry.getDisplayName()), 5, 5);
+        if (entry.hasPois()) {
+            Font.normal.splitPrint(poseStack, TranslationHelper.translateAndFormat("jer.villager.poi"), 5, 18, 45);
+            RenderHelper.drawTexture(poseStack, 49, 18, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
+        }
     }
 }

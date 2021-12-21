@@ -90,4 +90,12 @@ public class VillagerEntry {
         villager.setVillagerData(villager.getVillagerData().setProfession(this.profession));
         return villager;
     }
+
+    public List<ItemStack> getPois() {
+        return this.profession.getJobPoiType().getBlockStates().stream().map(blockstate -> new ItemStack(blockstate.getBlock())).collect(Collectors.toList());
+    }
+
+    public boolean hasPois() {
+        return !this.profession.getJobPoiType().getBlockStates().isEmpty();
+    }
 }
