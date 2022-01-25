@@ -7,8 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -45,7 +45,7 @@ public class MobTableBuilder {
     /** Helper class to allow public access to EntityLoot.isNonLiving */
     private static class MyEntityLoot extends EntityLoot {
         @Override
-        public boolean isNonLiving(@NotNull EntityType<?> entitytype) {
+        public boolean isNonLiving(@Nonnull EntityType<?> entitytype) {
             return super.isNonLiving(entitytype);
         }
     }
