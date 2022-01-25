@@ -1,15 +1,7 @@
 package jeresources.compatibility.minecraft;
 
-public class ExperienceRange {
+public record ExperienceRange(int min, int max) {
     public static final ExperienceRange ZERO = new ExperienceRange(0, 0);
-
-    public final int min;
-    public final int max;
-
-    public ExperienceRange(int min, int max) {
-        this.min = min;
-        this.max = max;
-    }
 
     public String getExpString() {
         if (this.max == this.min)
