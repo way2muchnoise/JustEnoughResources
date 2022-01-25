@@ -33,7 +33,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel, minExp, maxExp, biomes), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel, minExp, maxExp, biomes), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -42,7 +42,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel, minExp, maxExp), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel, minExp, maxExp), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -51,7 +51,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel, exp, biomes), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel, exp, biomes), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -60,7 +60,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel, exp), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel, exp), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -69,7 +69,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel, biomes), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel, biomes), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -78,7 +78,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity, lightLevel), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity, lightLevel), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -87,7 +87,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, ResourceLocation lootTable) {
         try {
-            rawRegisters.put(new MobEntry(entity), lootTable);
+            rawRegisters.put(MobEntry.create(() -> entity), lootTable);
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -98,7 +98,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, minExp, maxExp, biomes, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, minExp, maxExp, biomes, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -107,7 +107,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, minExp, maxExp, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, minExp, maxExp, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -116,7 +116,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, exp, biomes, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, exp, biomes, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -125,7 +125,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, int exp, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, exp, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, exp, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -134,7 +134,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, biomes, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, biomes, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -143,7 +143,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LightLevel lightLevel, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lightLevel, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lightLevel, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -152,7 +152,7 @@ public class MobRegistryImpl implements IMobRegistry {
     @Override
     public void register(LivingEntity entity, LootDrop... lootDrops) {
         try {
-            preppedRegisters.add(new MobEntry(entity, lootDrops));
+            preppedRegisters.add(MobEntry.create(() -> entity, lootDrops));
         } catch (Exception e) {
             LogHelper.debug("Bad mob register for %s", entity.getClass().getName());
         }
@@ -201,7 +201,7 @@ public class MobRegistryImpl implements IMobRegistry {
     protected static void commit() {
         preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
         Level level = CompatBase.getLevel();
-        rawRegisters.forEach((key, value) -> key.addDrops(LootTableHelper.toDrops(level, value)));
+        rawRegisters.forEach((key, value) -> key.setDrops(LootTableHelper.toDrops(level, value)));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
     }
 }

@@ -11,16 +11,37 @@ import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
 import jeresources.util.FakeClientLevel;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+
 public abstract class CompatBase {
+    @Nullable
+    private static Level fakeClientLevel = null;
+
     public static Level getLevel() {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            level = new FakeClientLevel();
+        Minecraft minecraft = Minecraft.getInstance();
+        IntegratedServer integratedServer = minecraft.getSingleplayerServer();
+
+        if (integratedServer != null) {
+            ServerLevel serverLevel = integratedServer.getLevel(Level.OVERWORLD);
+            if (serverLevel != null) {
+                return serverLevel;
+            }
         }
-        return level;
+
+        Level level = minecraft.level;
+        if (level != null) {
+            return level;
+        }
+
+        if (fakeClientLevel == null) {
+            fakeClientLevel = new FakeClientLevel();
+        }
+        return fakeClientLevel;
     }
 
     public abstract void init(boolean worldGen);

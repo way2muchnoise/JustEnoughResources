@@ -2,133 +2,138 @@ package jeresources.entry;
 
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
+import jeresources.compatibility.minecraft.ExperienceRange;
+import jeresources.compatibility.minecraft.MobCompat;
 import jeresources.util.LootTableHelper;
 import jeresources.util.MobHelper;
 import jeresources.util.TranslationHelper;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootTable;
 
+import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class MobEntry {
-    private LivingEntity entity;
-    private Set<LootDrop> drops;
-    private LightLevel lightLevel;
-    private List<String> biomes;
-    private int minExp, maxExp;
+    private static final List<String> ANY_BIOMES = List.of("jer.any");
 
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops) {
-        this.entity = entity;
+    private static List<String> distinctBiomes(String... biomes) {
+        return Arrays.stream(biomes).distinct().toList();
+    }
+
+    private static List<LootDrop> distinctDrops(LootDrop... drops) {
+        return distinctDrops(Arrays.stream(drops));
+    }
+
+    private static List<LootDrop> distinctDrops(Stream<LootDrop> dropsStream) {
+        Set<Item> seen =  Collections.newSetFromMap(new IdentityHashMap<>());
+        return dropsStream
+                .filter(drop -> drop != null && drop.item != null && seen.add(drop.item.getItem()))
+                .toList();
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, new ExperienceRange(minExp, maxExp), distinctBiomes(biomes), distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, null, distinctBiomes(biomes), distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, new ExperienceRange(exp, exp), distinctBiomes(biomes), distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, int exp, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, new ExperienceRange(exp, exp), ANY_BIOMES, distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, new ExperienceRange(minExp, maxExp), ANY_BIOMES, distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LightLevel lightLevel, LootDrop... drops) {
+        return new MobEntry(entity, lightLevel, null, ANY_BIOMES, distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LootDrop... drops) {
+        return new MobEntry(entity, null, null, ANY_BIOMES, distinctDrops(drops));
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity, LootTable lootTable) {
+        List<LootDrop> drops = LootTableHelper.toDrops(lootTable);
+        return new MobEntry(entity, null, null, ANY_BIOMES, drops);
+    }
+
+    public static MobEntry create(Supplier<LivingEntity> entity) {
+        List<LootDrop> drops = new ArrayList<>();
+        return new MobEntry(entity, null, null, ANY_BIOMES, drops);
+    }
+
+    private final List<String> biomes;
+    private final Supplier<LivingEntity> entitySupplier;
+    private @Nullable LivingEntity entity;
+    private @Nullable LightLevel lightLevel;
+    private @Nullable ExperienceRange experience;
+    private List<LootDrop> drops;
+
+    private MobEntry(Supplier<LivingEntity> entitySupplier, @Nullable LightLevel lightLevel, @Nullable ExperienceRange experience, List<String> biomes, List<LootDrop> drops) {
+        this.entitySupplier = entitySupplier;
+        this.entity = null;
         this.lightLevel = lightLevel;
-        this.biomes = new ArrayList<>();
-        this.biomes.addAll(Arrays.asList(biomes));
-        this.drops = new TreeSet<>();
-        this.drops.addAll(Arrays.asList(drops));
-        this.maxExp = maxExp;
-        this.minExp = minExp;
-    }
-
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, String[] biomes, LootDrop... drops) {
-        this(entity, lightLevel, 0, 0, biomes, drops);
-        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
-    }
-
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, LootDrop... drops) {
-        this(entity, lightLevel, exp, exp, biomes, drops);
-    }
-
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, int exp, LootDrop... drops) {
-        this(entity, lightLevel, exp, exp, drops);
-    }
-
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, LootDrop... drops) {
-        this.entity = entity;
-        this.lightLevel = lightLevel;
-        this.biomes = new ArrayList<>();
-        this.biomes.add("jer.any");
-        this.drops = new TreeSet<>();
-        this.drops.addAll(Arrays.asList(drops));
-        this.maxExp = maxExp;
-        this.minExp = minExp;
-    }
-
-    public MobEntry(LivingEntity entity, LightLevel lightLevel, LootDrop... drops) {
-        this(entity, lightLevel, 0, 0, drops);
-        this.maxExp = this.minExp = MobHelper.getExpDrop(this);
-    }
-
-    public MobEntry(LivingEntity entity, LootDrop... drops) {
-        this(entity, LightLevel.any, drops);
-    }
-
-    public MobEntry(LivingEntity entity, LootTable lootTable) {
-        this(entity, LightLevel.any);
-        this.drops.addAll(LootTableHelper.toDrops(lootTable));
-    }
-
-    public MobEntry(LivingEntity entity) {
-        this(entity, LightLevel.any);
+        this.biomes = biomes;
+        this.drops = drops;
+        this.experience = experience;
     }
 
     public LivingEntity getEntity() {
+        if (this.entity == null) {
+            this.entity = this.entitySupplier.get();
+        }
         return entity;
     }
 
     public String getMobName() {
-        return MobHelper.getExpandedName(this);
+        LivingEntity entity = getEntity();
+        return MobHelper.getExpandedName(entity);
     }
 
-    public LootDrop[] getDrops() {
-        return drops.toArray(new LootDrop[drops.size()]);
+    public List<LootDrop> getDrops() {
+        return this.drops;
     }
 
     public List<ItemStack> getDropsItemStacks() {
-        return this.drops.stream().map(LootDrop::getDrops).flatMap(List::stream).collect(Collectors.toList());
+        return this.drops.stream().map(LootDrop::getDrops).flatMap(List::stream).toList();
     }
 
-    public String[] getBiomes() {
-        String[] translatedBiomes = new String[biomes.size()];
-        for (int i = 0; i < biomes.size(); i++) {
-            translatedBiomes[i] = TranslationHelper.translateAndFormat(biomes.get(i));
-        }
-        return translatedBiomes;
+    public boolean hasMultipleBiomes() {
+        return this.biomes.size() > 1;
     }
 
-    public boolean addDrop(LootDrop item) {
-        for (LootDrop drop : drops)
-            if (drop.item.sameItem(item.item)) return false;
-        drops.add(item);
-        return true;
+    public Stream<String> getTranslatedBiomes() {
+        return this.biomes.stream().map(TranslationHelper::translateAndFormat);
     }
 
-    public void addDrops(LootDrop... drops) {
-        for (LootDrop drop : drops)
-            addDrop(drop);
-    }
-
-    public void addDrops(Collection<LootDrop> drops) {
-        drops.stream().filter(Objects::nonNull).forEach(this::addDrop);
+    public void setDrops(Collection<LootDrop> drops) {
+        this.drops = distinctDrops(drops.stream());
     }
 
     public LightLevel getLightLevel() {
-        return lightLevel;
+        if (this.lightLevel == null) {
+            LivingEntity entity = getEntity();
+            this.lightLevel = MobCompat.getLightLevel(entity);
+        }
+        return this.lightLevel;
     }
 
     public String getExp() {
-        return this.minExp + (this.maxExp == this.minExp ? "" : " - " + this.maxExp);
-    }
-
-    public void setLightLevel(LightLevel lightLevel) {
-        this.lightLevel = lightLevel;
-    }
-
-    public void setMinExp(int xp) {
-        this.minExp = xp;
-    }
-
-    public void setMaxExp(int xp) {
-        this.maxExp = xp;
+        if (this.experience == null) {
+            LivingEntity entity = getEntity();
+            this.experience = MobCompat.getExperience(entity);
+        }
+        return this.experience.getExpString();
     }
 }

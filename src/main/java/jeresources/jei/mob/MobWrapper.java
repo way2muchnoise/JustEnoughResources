@@ -20,8 +20,6 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
-import net.minecraft.world.entity.monster.piglin.Piglin;
-import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
@@ -32,13 +30,9 @@ import java.util.List;
 
 public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
     private final MobEntry mob;
-    private float scale;
-    private int offsetY;
 
     public MobWrapper(MobEntry mob) {
         this.mob = mob;
-        this.scale = getScale(mob.getEntity());
-        this.offsetY = getOffsetY(mob.getEntity());
     }
 
     @Override
@@ -46,55 +40,63 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
         ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
     }
 
-    public LootDrop[] getDrops() {
+    public List<LootDrop> getDrops() {
         return this.mob.getDrops();
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
-        LivingEntity LivingEntity = this.mob.getEntity();
+    public void drawInfo(int recipeWidth, int recipeHeight, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
+        LivingEntity livingEntity = this.mob.getEntity();
         RenderHelper.scissor(poseStack,7, 43, 59, 79);
-        this.scale = getScale(this.mob.getEntity());
-        this.offsetY = getOffsetY(this.mob.getEntity());
+        float scale = getScale(livingEntity);
+        int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
             poseStack,
             37, 105 - offsetY, scale,
             38 - mouseX,
             70 - offsetY - mouseY,
-            LivingEntity
+            livingEntity
         );
         RenderHelper.stopScissor();
 
         String mobName = this.mob.getMobName();
         if (Settings.showDevData) {
-            String entityString = LivingEntity.getStringUUID();
+            String entityString = livingEntity.getStringUUID();
             if (entityString != null) {
                 mobName += " (" + entityString + ")";
             }
         }
         Font.normal.print(poseStack, mobName, 7, 2);
-        Font.normal.print(poseStack, this.mob.getBiomes().length > 1 ? TranslationHelper.translateAndFormat("jer.mob.biome") : TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + this.mob.getBiomes()[0], 7, 12);
+
+        final String biomesLine;
+        if (this.mob.hasMultipleBiomes())
+            biomesLine = TranslationHelper.translateAndFormat("jer.mob.biome");
+        else
+            biomesLine = this.mob.getTranslatedBiomes()
+                .findFirst()
+                .map(firstBiome -> TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + firstBiome)
+                .orElse("");
+        Font.normal.print(poseStack, biomesLine, 7, 12);
+
         Font.normal.print(poseStack, this.mob.getLightLevel().toString(), 7, 22);
         Font.normal.print(poseStack, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
     @Override
+    @Nonnull
     public List<Component> getTooltipStrings(double mouseX, double mouseY) {
-        if (this.mob.getBiomes().length > 1 && isOnBiome(mouseX, mouseY))
-            return CollectionHelper.create(TextComponent::new, this.mob.getBiomes());
+        if (this.mob.hasMultipleBiomes() && isOnBiome(mouseX, mouseY))
+            return CollectionHelper.create(TextComponent::new, this.mob.getTranslatedBiomes());
         return Collections.emptyList();
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
-        tooltip.add(this.mob.getDrops()[slotIndex].toStringTextComponent());
+    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, List<Component> tooltip) {
+        LootDrop lootDrop = this.mob.getDrops().get(slotIndex);
+        tooltip.add(lootDrop.toStringTextComponent());
         List<Component> list = getToolTip(ingredient);
         if (list != null)
             tooltip.addAll(list);
-    }
-
-    public LivingEntity getMob() {
-        return this.mob.getEntity();
     }
 
     public List<Component> getToolTip(ItemStack stack) {
