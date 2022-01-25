@@ -11,11 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 public class MobTableBuilder {
-    private final Map<ResourceLocation, Supplier<LivingEntity>> mobTables = new ConcurrentHashMap<>();
+    private final Map<ResourceLocation, Supplier<LivingEntity>> mobTables = new HashMap<>();
     private final MyEntityLoot entityLootHelper = new MyEntityLoot();
     private final Level level;
 
