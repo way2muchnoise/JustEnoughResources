@@ -186,10 +186,19 @@ public class LootDrop implements Comparable<LootDrop> {
         return chance < 1F ? " (" + formatChance() + "%)" : "";
     }
 
-    private String formatChance() {
+    public String formatChance() {
         float chance = this.chance * 100;
         if (chance < 10) return String.format("%.1f", chance);
         return String.format("%2d", (int) chance);
+    }
+
+    /**
+     * Use by world gen only
+     * Check if conditionals contains Conditional.affectedByFortune
+     * @return True if Conditional.affectedByFortune is found, False if it not
+     */
+    public boolean isAffectedByFortune() {
+        return this.conditionals.contains(Conditional.affectedByFortune);
     }
 
     public String chanceString() {
