@@ -28,6 +28,7 @@ import net.minecraftforge.resource.PathResourcePack;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class LootTableHelper {
     private static final Map<DyeColor, ResourceLocation> sheepColors = new HashMap<>();
@@ -143,7 +144,7 @@ public class LootTableHelper {
         return chestTables;
     }
 
-    public static Map<ResourceLocation, LivingEntity> getAllMobLootTables(Level world) {
+    public static Map<ResourceLocation, Supplier<LivingEntity>> getAllMobLootTables(Level world) {
         MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
 
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
@@ -152,7 +153,7 @@ public class LootTableHelper {
             mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
 
-        for (EntityType entityType : ForgeRegistries.ENTITIES) {
+        for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
             if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }

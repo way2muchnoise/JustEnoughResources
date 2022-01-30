@@ -1,6 +1,6 @@
 package jeresources.compatibility.minecraft;
 
-import java.util.Comparator;
+import java.util.Map;
 
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.distributions.DistributionSquare;
@@ -39,19 +39,12 @@ public class MinecraftCompat extends CompatBase {
         registerVanillaPlants();
     }
 
-    @Override
-    protected void registerMob(MobEntry entry) {
-        MobCompat.getInstance().setLightLevel(entry);
-        MobCompat.getInstance().setExperience(entry);
-        super.registerMob(entry);
-    }
-
     private void registerVanillaMobs() {
         Level level = getLevel();
         LootTables lootTables = LootTableHelper.getLootTables(level);
         LootTableHelper.getAllMobLootTables(level).entrySet().stream()
-            .map(entry -> new MobEntry(entry.getValue(), lootTables.get(entry.getKey())))
-            .sorted(Comparator.comparing(MobEntry::getMobName))
+            .sorted(Map.Entry.comparingByKey())
+            .map(entry -> MobEntry.create(entry.getValue(), lootTables.get(entry.getKey())))
             .forEach(this::registerMob);
 
         registerMobRenderHook(Bat.class, RenderHooks.BAT);
