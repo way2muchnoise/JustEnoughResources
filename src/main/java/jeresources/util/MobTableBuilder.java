@@ -1,5 +1,6 @@
 package jeresources.util;
 
+import jeresources.compatibility.CompatBase;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -16,10 +17,15 @@ import java.util.function.Supplier;
 public class MobTableBuilder {
     private final Map<ResourceLocation, Supplier<LivingEntity>> mobTables = new HashMap<>();
     private final MyEntityLoot entityLootHelper = new MyEntityLoot();
+    /**
+     * level should be a client level.
+     * Passing in a ServerLevel can allow modded mobs to load all kinds of things,
+     * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
+     */
     private final Level level;
 
-    public MobTableBuilder(Level level) {
-        this.level = level;
+    public MobTableBuilder() {
+        this.level = CompatBase.getLevel();
     }
 
     public void add(ResourceLocation resourceLocation, EntityType<?> entityType) {

@@ -200,8 +200,7 @@ public class MobRegistryImpl implements IMobRegistry {
 
     protected static void commit() {
         preppedRegisters.forEach(MobRegistry.getInstance()::registerMob);
-        Level level = CompatBase.getLevel();
-        rawRegisters.forEach((key, value) -> key.setDrops(LootTableHelper.toDrops(level, value)));
+        rawRegisters.forEach((key, value) -> key.setDrops(LootTableHelper.toDrops(value)));
         rawRegisters.keySet().forEach(MobRegistry.getInstance()::registerMob);
     }
 }

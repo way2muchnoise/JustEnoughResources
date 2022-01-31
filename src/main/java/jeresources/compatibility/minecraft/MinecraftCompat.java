@@ -40,9 +40,8 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerVanillaMobs() {
-        Level level = getLevel();
-        LootTables lootTables = LootTableHelper.getLootTables(level);
-        LootTableHelper.getAllMobLootTables(level).entrySet().stream()
+        LootTables lootTables = LootTableHelper.getLootTables();
+        LootTableHelper.getAllMobLootTables().entrySet().stream()
             .sorted(Map.Entry.comparingByKey())
             .map(entry -> MobEntry.create(entry.getValue(), lootTables.get(entry.getKey())))
             .forEach(this::registerMob);
@@ -57,8 +56,7 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerDungeonLoot() {
-        Level level = getLevel();
-        LootTables lootTables = LootTableHelper.getLootTables(level);
+        LootTables lootTables = LootTableHelper.getLootTables();
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
             .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootTables.get(resourceLocation)))
             .forEach(this::registerDungeonEntry);

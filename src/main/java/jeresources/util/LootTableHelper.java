@@ -25,7 +25,6 @@ import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.resource.PathResourcePack;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -94,8 +93,8 @@ public class LootTableHelper {
         return drops;
     }
 
-    public static List<LootDrop> toDrops(Level level, ResourceLocation lootTable) {
-        return toDrops(getLootTables(level).get(lootTable));
+    public static List<LootDrop> toDrops(ResourceLocation lootTable) {
+        return toDrops(getLootTables().get(lootTable));
     }
 
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
@@ -144,8 +143,8 @@ public class LootTableHelper {
         return chestTables;
     }
 
-    public static Map<ResourceLocation, Supplier<LivingEntity>> getAllMobLootTables(Level world) {
-        MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
+    public static Map<ResourceLocation, Supplier<LivingEntity>> getAllMobLootTables() {
+        MobTableBuilder mobTableBuilder = new MobTableBuilder();
 
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
             ResourceLocation lootTableList = entry.getValue();
@@ -164,8 +163,10 @@ public class LootTableHelper {
 
     private static LootTables lootTables;
 
-    public static LootTables getLootTables(@Nullable Level level) {
-        if (level == null || level.getServer() == null) {
+    public static LootTables getLootTables() {
+        Level level = CompatBase.getServerLevel()
+                .orElseGet(CompatBase::getLevel);
+        if (level.getServer() == null) {
             if (lootTables == null) {
                 lootTables = new LootTables(new PredicateManager());
 
@@ -187,9 +188,5 @@ public class LootTableHelper {
             return lootTables;
         }
         return level.getServer().getLootTables();
-    }
-
-    public static LootTables getLootTables() {
-        return getLootTables(CompatBase.getLevel());
     }
 }
