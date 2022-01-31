@@ -11,28 +11,35 @@ import jeresources.registry.PlantRegistry;
 import jeresources.registry.WorldGenRegistry;
 import jeresources.util.FakeClientLevel;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.server.IntegratedServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public abstract class CompatBase {
     @Nullable
     private static Level fakeClientLevel = null;
 
+    /**
+     * This should only be used for loading loot tables,
+     * it is used so that clients connected to an integrated server
+     * do not need to load the loot tables multiple times.
+     *
+     * It is dangerous to use for other purposes, because modded entities (and even vanilla villagers)
+     * can load lots of things if they have the server level, which will make JER load slowly.
+     */
+    public static Optional<Level> getServerLevel() {
+        Minecraft minecraft = Minecraft.getInstance();
+        return Optional.of(minecraft)
+                .map(Minecraft::getSingleplayerServer)
+                .map(integratedServer -> integratedServer.getLevel(Level.OVERWORLD));
+    }
+
+    @Nonnull
     public static Level getLevel() {
         Minecraft minecraft = Minecraft.getInstance();
-        IntegratedServer integratedServer = minecraft.getSingleplayerServer();
-
-        if (integratedServer != null) {
-            ServerLevel serverLevel = integratedServer.getLevel(Level.OVERWORLD);
-            if (serverLevel != null) {
-                return serverLevel;
-            }
-        }
-
         Level level = minecraft.level;
         if (level != null) {
             return level;

@@ -7,7 +7,6 @@ import jeresources.util.LogHelper;
 import jeresources.util.LootTableHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 
@@ -48,8 +47,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     protected static void commit() {
         categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getA(), t.getB()));
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
-        Level level = CompatBase.getLevel();
-        LootTables manager = LootTableHelper.getLootTables(level);
+        LootTables manager = LootTableHelper.getLootTables();
         rawRegisters.entrySet().stream()
             .map(entry -> {
                 try {

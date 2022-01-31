@@ -90,6 +90,11 @@ public class VillagerEntry {
 
     public Villager getVillagerEntity() {
         if (this.entity == null) {
+            /*
+             * level must be a client level here.
+             * Passing in a ServerLevel can allow villagers to load all kinds of things,
+             * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
+             */
             this.entity = EntityType.VILLAGER.create(CompatBase.getLevel());
             assert this.entity != null;
             this.entity.setVillagerData(this.entity.getVillagerData().setProfession(this.profession));
