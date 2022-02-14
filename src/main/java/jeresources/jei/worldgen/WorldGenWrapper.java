@@ -163,7 +163,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
                     line += ": " + dropItem.minDrop + " - " + dropItem.maxDrop;
                 }
 
-                if (dropItem.isAffectedByFortune()) {
+                if (dropItem.isAffectedBy(Conditional.affectedByFortune)) {
                     line += " " + TranslationHelper.translateAndFormat("jer.worldgen.affectedByFortune");
                 }
 

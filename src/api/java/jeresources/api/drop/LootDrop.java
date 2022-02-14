@@ -193,12 +193,12 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     /**
-     * Use by world gen only
-     * Check if conditionals contains Conditional.affectedByFortune
-     * @return True if Conditional.affectedByFortune is found, False if it not
+     * Check if conditionals contains a specified Conditional
+     * @param conditional Conditional to check it presence in conditionals
+     * @return True if conditional is found, False if it not
      */
-    public boolean isAffectedByFortune() {
-        return this.conditionals.contains(Conditional.affectedByFortune);
+    public boolean isAffectedBy(Conditional conditional) {
+        return this.conditionals.contains(conditional);
     }
 
     public String chanceString() {
