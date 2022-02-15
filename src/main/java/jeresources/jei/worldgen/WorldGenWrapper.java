@@ -18,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -143,23 +144,29 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
         } else {
             tooltip.add(TranslationHelper.translateAndFormat("jer.worldgen.average"));
-            String previousChanceString = null;
             for (LootDrop dropItem : this.worldGenEntry.getLootDrops(itemStack)) {
-                final String chanceString = dropItem.chanceString();
-                if (Objects.equal(chanceString, previousChanceString)) {
-                    continue;
-                } else {
-                    previousChanceString = chanceString;
-                }
+                String line = " - ";
 
-                String line = "  ";
                 if (dropItem.fortuneLevel > 0) {
-                    // line += Enchantment.getEnchantmentByLocation("fortune").getTranslatedName(dropItem.fortuneLevel)
-                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).getFullname(dropItem.fortuneLevel).toString();
+                    line += Enchantments.BLOCK_FORTUNE.getFullname(dropItem.fortuneLevel).getString(); // Avoid crash by using Minecraft ObjectHolder
                 } else {
                     line += TranslationHelper.translateAndFormat("jer.worldgen.base");
                 }
-                line += ": " + chanceString;
+
+                if (dropItem.chance < 1f) {
+                    line += " " + TranslationHelper.translateAndFormat("jer.worldgen.chance", dropItem.formatChance() + "%");
+                }
+
+                if (dropItem.minDrop == dropItem.maxDrop) {
+                    line += ": " + dropItem.minDrop;
+                } else {
+                    line += ": " + dropItem.minDrop + " - " + dropItem.maxDrop;
+                }
+
+                if (dropItem.isAffectedBy(Conditional.affectedByFortune)) {
+                    line += " " + TranslationHelper.translateAndFormat("jer.worldgen.affectedByFortune");
+                }
+
                 tooltip.add(line);
             }
         }

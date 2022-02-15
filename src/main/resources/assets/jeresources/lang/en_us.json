@@ -91,6 +91,8 @@
 	"jer.worldgen.drops": "Drops",
 	"jer.worldgen.average": "Avg. Drops",
 	"jer.worldgen.base": "Normal",
+	"jer.worldgen.chance": "with %s chance",
+	"jer.worldgen.affectedByFortune": "(Affected By Fortune)",
 	"jer.worldgen.averageChunk": "Avg. blocks per chunk",
 
 	"_comment": "#Mob View",
