@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapper> {
-    private static final int ITEM_X = 12;
-    private static final int ITEM_Y = 11;
+    private static final int ITEM_X = 13;
+    private static final int ITEM_Y = 12;
 
     public EnchantmentCategory() {
         super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 0, 16, 16));

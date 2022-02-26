@@ -4,6 +4,7 @@ import jeresources.entry.EnchantmentEntry;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashSet;
@@ -27,10 +28,12 @@ public class EnchantmentRegistry {
 
     public Set<EnchantmentEntry> getEnchantments(ItemStack itemStack) {
         Set<EnchantmentEntry> set = new HashSet<>();
-        for (EnchantmentEntry enchantment : enchantments) {
-            if (itemStack.getItem() == Items.BOOK && enchantment.getEnchantment().isAllowedOnBooks())
-                set.add(enchantment);
-            else if (enchantment.getEnchantment().canEnchant(itemStack)) set.add(enchantment);
+        for (EnchantmentEntry enchantmentEntry : enchantments) {
+            Enchantment enchantment = enchantmentEntry.getEnchantment();
+            if (itemStack.getItem() == Items.BOOK && enchantment.isAllowedOnBooks())
+                set.add(enchantmentEntry);
+            else if (enchantment.canEnchant(itemStack) && EnchantmentHelper.isEnchantmentCompatible(EnchantmentHelper.getEnchantments(itemStack).keySet(), enchantment))
+                set.add(enchantmentEntry);
         }
         return set;
     }
