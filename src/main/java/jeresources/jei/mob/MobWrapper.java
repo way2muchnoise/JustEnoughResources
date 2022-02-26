@@ -8,14 +8,16 @@ import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.ingredient.ITooltipCallback;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.*;
@@ -23,21 +25,16 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
-public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
+public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
     private final MobEntry mob;
 
     public MobWrapper(MobEntry mob) {
         this.mob = mob;
-    }
-
-    @Override
-    public void setIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
     }
 
     public List<LootDrop> getDrops() {
@@ -45,7 +42,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @Nonnull PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         LivingEntity livingEntity = this.mob.getEntity();
         RenderHelper.scissor(poseStack,7, 43, 59, 79);
         float scale = getScale(livingEntity);
@@ -83,18 +80,17 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     }
 
     @Override
-    @Nonnull
-    public List<Component> getTooltipStrings(double mouseX, double mouseY) {
+    public @NotNull List<Component> getTooltipStrings(double mouseX, double mouseY) {
         if (this.mob.hasMultipleBiomes() && isOnBiome(mouseX, mouseY))
             return CollectionHelper.create(TextComponent::new, this.mob.getTranslatedBiomes());
         return Collections.emptyList();
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, List<Component> tooltip) {
-        LootDrop lootDrop = this.mob.getDrops().get(slotIndex);
+    public void onTooltip(@NotNull IRecipeSlotView recipeSlotView, @NotNull List<Component> tooltip) {
+        LootDrop lootDrop = this.mob.getDrops().get(Integer.parseInt(recipeSlotView.getSlotName().orElse("0")));
         tooltip.add(lootDrop.toStringTextComponent());
-        List<Component> list = getToolTip(ingredient);
+        List<Component> list = getToolTip((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient());
         if (list != null)
             tooltip.addAll(list);
     }

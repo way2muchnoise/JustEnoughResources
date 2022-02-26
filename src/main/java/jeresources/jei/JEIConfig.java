@@ -24,6 +24,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -44,7 +45,7 @@ public class JEIConfig implements IModPlugin {
     private static IJeiRuntime jeiRuntime;
 
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return new ResourceLocation(JEResources.ID);
     }
 
@@ -59,7 +60,7 @@ public class JEIConfig implements IModPlugin {
     }
 
     @Override
-    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+    public void onRuntimeAvailable(@NotNull IJeiRuntime jeiRuntime) {
         JEIConfig.jeiRuntime = jeiRuntime;
         hideCategories(Settings.hiddenCategories);
     }

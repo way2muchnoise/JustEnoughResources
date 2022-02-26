@@ -6,28 +6,21 @@ import jeresources.registry.DungeonRegistry;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.ingredient.ITooltipCallback;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 
-public class DungeonWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
+public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
     public final DungeonEntry chest;
 
     public DungeonWrapper(DungeonEntry chest) {
         this.chest = chest;
-    }
-
-    @Override
-    public void setIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setOutputs(VanillaTypes.ITEM, this.chest.getItemStacks());
     }
 
     public int amountOfItems(IFocus<ItemStack> focus) {
@@ -50,8 +43,8 @@ public class DungeonWrapper implements IRecipeCategoryExtension, ITooltipCallbac
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<Component> tooltip) {
-        tooltip.add(this.chest.getChestDrop(ingredient).toStringTextComponent());
+    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+        tooltip.add(this.chest.getChestDrop((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()).toStringTextComponent());
     }
 
     private boolean done;

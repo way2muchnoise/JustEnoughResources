@@ -3,15 +3,14 @@ package jeresources.jei.enchantment;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapper> {
     private static final int ITEM_X = 12;
@@ -21,33 +20,28 @@ public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapp
         super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 32, 0, 16, 16));
     }
 
-    @Nonnull
     @Override
-    public ResourceLocation getUid() {
+    public @NotNull ResourceLocation getUid() {
         return JEIConfig.ENCHANTMENT;
     }
 
-    @Nonnull
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return new TranslatableComponent("jer.enchantments.title");
     }
 
-    @Nonnull
     @Override
-    public IDrawable getBackground() {
+    public @NotNull IDrawable getBackground() {
         return Resources.Gui.Jei.ENCHANTMENT;
     }
 
     @Override
-    public Class<? extends EnchantmentWrapper> getRecipeClass() {
+    public @NotNull Class<? extends EnchantmentWrapper> getRecipeClass() {
         return EnchantmentWrapper.class;
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchantmentWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
-        recipeLayout.getItemStacks().init(0, true, ITEM_X, ITEM_Y);
-
-        recipeLayout.getItemStacks().set(0, ingredients.getInputs(VanillaTypes.ITEM).get(0));
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull EnchantmentWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
+        builder.addSlot(RecipeIngredientRole.INPUT, ITEM_X, ITEM_Y).addItemStack(recipeWrapper.itemStack);
     }
 }

@@ -7,14 +7,11 @@ import jeresources.reference.Resources;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class VillagerWrapper implements IRecipeCategoryExtension {
@@ -23,12 +20,6 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
 
     public VillagerWrapper(VillagerEntry entry) {
         this.entry = entry;
-    }
-
-    @Override
-    public void setIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInputs(VanillaTypes.ITEM, entry.getInputs());
-        ingredients.setOutputs(VanillaTypes.ITEM, entry.getOutputs());
     }
 
     public TradeList getTrades(int level) {
