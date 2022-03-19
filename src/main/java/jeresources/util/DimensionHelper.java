@@ -13,7 +13,7 @@ public class DimensionHelper {
     }
 
     public static DimensionType getType(ResourceKey<DimensionType> dimensionTypeRegistryKey) {
-        return RegistryAccess.builtin()
+        return RegistryAccess.m_123086_()
             .registry(Registry.DIMENSION_TYPE_REGISTRY).get()
             .get(dimensionTypeRegistryKey);
     }

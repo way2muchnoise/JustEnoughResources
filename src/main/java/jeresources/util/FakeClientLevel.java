@@ -78,7 +78,8 @@ public class FakeClientLevel extends ClientLevel {
             }
 
             @Override
-            public void tick(BooleanSupplier booleanSupplier) {
+            // public void tick(BooleanSupplier booleanSupplier) {
+            public void m_142483_(BooleanSupplier booleanSupplier) {
 
             }
 
@@ -130,7 +131,8 @@ public class FakeClientLevel extends ClientLevel {
     }
 
     @Override
-    public TagContainer getTagManager() {
+    //public TagContainer getTagManager() {
+    public TagContainer m_5999_() {
         return null;
     }
 

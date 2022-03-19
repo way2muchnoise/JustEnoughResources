@@ -180,9 +180,11 @@ public class LootTableHelper {
                 for (IModFileInfo mod : ModList.get().getModFiles()) {
                     packs.add(new PathResourcePack(mod.getFile().getFileName(), mod.getFile().getFilePath()));
                 }
-                packs.forEach(serverResourceManger::add);
+                // packs.forEach(serverResourceManger::add);
+                packs.forEach(serverResourceManger::m_10880_);
                 serverResourceManger.registerReloadListener(lootTables);
-                CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
+                // CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
+                CompletableFuture<Unit> completableFuture = serverResourceManger.m_10715_(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
                 Minecraft.getInstance().managedBlock(completableFuture::isDone);
             }
             return lootTables;
