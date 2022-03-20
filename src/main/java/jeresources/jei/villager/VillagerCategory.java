@@ -3,6 +3,7 @@ package jeresources.jei.villager;
 import jeresources.collection.TradeList;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
+import jeresources.jei.plant.PlantWrapper;
 import jeresources.reference.Resources;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -10,6 +11,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -46,6 +48,11 @@ public class VillagerCategory extends BlankJEIRecipeCategory<VillagerWrapper> {
     @Override
     public @NotNull Class<? extends VillagerWrapper> getRecipeClass() {
         return VillagerWrapper.class;
+    }
+
+    @Override
+    public @NotNull RecipeType<VillagerWrapper> getRecipeType() {
+        return JEIConfig.VILLAGER_TYPE;
     }
 
     @Override

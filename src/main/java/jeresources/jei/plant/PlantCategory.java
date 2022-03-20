@@ -2,11 +2,13 @@ package jeresources.jei.plant;
 
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
+import jeresources.jei.mob.MobWrapper;
 import jeresources.reference.Resources;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +44,11 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     @Override
     public @NotNull Class<? extends PlantWrapper> getRecipeClass() {
         return PlantWrapper.class;
+    }
+
+    @Override
+    public @NotNull RecipeType<PlantWrapper> getRecipeType() {
+        return JEIConfig.PLANT_TYPE;
     }
 
     @Override

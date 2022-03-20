@@ -2,11 +2,13 @@ package jeresources.jei.enchantment;
 
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
+import jeresources.jei.dungeon.DungeonWrapper;
 import jeresources.reference.Resources;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +40,11 @@ public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapp
     @Override
     public @NotNull Class<? extends EnchantmentWrapper> getRecipeClass() {
         return EnchantmentWrapper.class;
+    }
+
+    @Override
+    public @NotNull RecipeType<EnchantmentWrapper> getRecipeType() {
+        return JEIConfig.ENCHANTMENT_TYPE;
     }
 
     @Override

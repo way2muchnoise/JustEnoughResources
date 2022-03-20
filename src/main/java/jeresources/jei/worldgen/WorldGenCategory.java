@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.render.ColorHelper;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
+import jeresources.jei.villager.VillagerWrapper;
 import jeresources.reference.Resources;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -11,6 +12,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -45,6 +47,11 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     @Override
     public @NotNull Class<? extends WorldGenWrapper> getRecipeClass() {
         return WorldGenWrapper.class;
+    }
+
+    @Override
+    public @NotNull RecipeType<WorldGenWrapper> getRecipeType() {
+        return JEIConfig.WORLD_GEN_TYPE;
     }
 
     @Override

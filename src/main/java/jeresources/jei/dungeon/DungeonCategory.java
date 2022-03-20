@@ -9,6 +9,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -50,6 +51,11 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     @Override
     public @NotNull Class<? extends DungeonWrapper> getRecipeClass() {
         return DungeonWrapper.class;
+    }
+
+    @Override
+    public @NotNull RecipeType<DungeonWrapper> getRecipeType() {
+        return JEIConfig.DUNGEON_TYPE;
     }
 
     @Override
