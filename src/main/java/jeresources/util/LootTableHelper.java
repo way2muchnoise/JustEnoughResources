@@ -10,7 +10,8 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
-import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
+import net.minecraft.server.packs.resources.ReloadInstance;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -174,18 +175,16 @@ public class LootTableHelper {
                     return lootTables;
                 }
 
-                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(PackType.SERVER_DATA);
+
+                ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
                 for (IModFileInfo mod : ModList.get().getModFiles()) {
                     packs.add(new PathResourcePack(mod.getFile().getFileName(), mod.getFile().getFilePath()));
                 }
-                // packs.forEach(serverResourceManger::add);
-                packs.forEach(serverResourceManger::m_10880_);
-                serverResourceManger.registerReloadListener(lootTables);
-                // CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
-                CompletableFuture<Unit> completableFuture = serverResourceManger.m_10715_(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
-                Minecraft.getInstance().managedBlock(completableFuture::isDone);
+                reloadableResourceManager.registerReloadListener(lootTables);
+                ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
+                Minecraft.getInstance().managedBlock(reloadInstance::isDone);
             }
             return lootTables;
         }

@@ -12,7 +12,6 @@ import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.HashMap;

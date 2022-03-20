@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 public class EmptyChunkJER extends EmptyLevelChunk {
     public EmptyChunkJER(ServerLevel level, int x, int z) {
-        super(level, new ChunkPos(x, z));
+        super(level, new ChunkPos(x, z), null);
     }
 
     @Nullable

@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagContainer;
 import net.minecraft.util.profiling.InactiveProfiler;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +35,7 @@ public class FakeClientLevel extends ClientLevel {
     private CapabilityDispatcher capabilities;
 
     public FakeClientLevel() {
-        //(ClientPacketListener, ClientLevel.ClientLevelData, ResourceKey<Level>, DimensionType, int, int, Supplier<ProfilerFiller>, LevelRenderer, boolean, long
+        //(ClientPacketListener, ClientLevel.ClientLevelData, ResourceKey<Level>, Holder<DimensionType>, int, int, Supplier<ProfilerFiller>, LevelRenderer, boolean, long
         super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(DimensionType.OVERWORLD_LOCATION), 0, 0, () -> InactiveProfiler.INSTANCE, Minecraft.getInstance().levelRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientLevel.class, this);
     }
@@ -78,8 +77,7 @@ public class FakeClientLevel extends ClientLevel {
             }
 
             @Override
-            // public void tick(BooleanSupplier booleanSupplier) {
-            public void m_142483_(BooleanSupplier booleanSupplier) {
+            public void tick(BooleanSupplier booleanSupplier, boolean bool) {
 
             }
 
@@ -127,12 +125,6 @@ public class FakeClientLevel extends ClientLevel {
 
     @Override
     public RecipeManager getRecipeManager() {
-        return null;
-    }
-
-    @Override
-    //public TagContainer getTagManager() {
-    public TagContainer m_5999_() {
         return null;
     }
 

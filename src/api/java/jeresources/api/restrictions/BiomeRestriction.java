@@ -1,10 +1,10 @@
 package jeresources.api.restrictions;
 
 import jeresources.api.util.BiomeHelper;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,7 +106,7 @@ public class BiomeRestriction {
     }
 
     public List<String> toStringList() {
-        return biomes.stream().filter(biome -> !biome.toString().equals("")).map(biome -> "  " + biome.toString()).collect(Collectors.toList());
+        return biomes.stream().filter(biome -> !biome.toString().equals("")).map(biome -> "  " + I18n.get("biome." + biome.getRegistryName().toString().replace(":","."))).collect(Collectors.toList());
     }
 
     @Override

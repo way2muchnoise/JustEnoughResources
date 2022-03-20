@@ -1,19 +1,14 @@
 package jeresources.profiling;
 
-import com.mojang.datafixers.util.Either;
 import jeresources.util.LogHelper;
 import net.minecraft.ReportedException;
-import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ThreadedLevelLightEngine;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.ChunkStatus;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class ChunkGetter implements Runnable {
     public static final int CHUNKS_PER_RUN = 25;
