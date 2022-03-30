@@ -91,6 +91,8 @@
 	"jer.worldgen.drops": "Obtención",
 	"jer.worldgen.average": "Prom. de obtención",
 	"jer.worldgen.base": "Normal",
+	"jer.worldgen.chance": "con %s de oportunidad",
+	"jer.worldgen.affectedByFortune": "(Afectado por fortuna)",
 	"jer.worldgen.averageChunk": "Prom. de bloques por chunk",
 
 	"_comment": "#Mob View",
