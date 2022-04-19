@@ -23,7 +23,7 @@
 
 	"_comment": "#Usage: jer.page pageNumber jer.of lastPage",
 	"jer.page": "페이지",
-	"jer.of": "of",
+	"jer.of": "/",
 	"_comment": "#Usage X jer.stacks",
 	"_comment": "#X will either be \"[max]\" or \"[min] - [max]\"",
 	"jer.stacks": "%s 묶음",
