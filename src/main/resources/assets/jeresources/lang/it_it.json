@@ -6,7 +6,7 @@
 	"jer.config.enchantsBlacklist.title": "Lista Nera degli incantesimi",
 	"jer.config.enchantsBlacklist.description": "Rimuove gli incantesimi dalla scheda Incantesimi della JEI",
 	"jer.config.diyData.title": "Usa i dati DIY nelle schede",
-	"jer.config.diyData.description": "The build in compat code will not load and jsons will be loaded (requires MC restart)",
+	"jer.config.diyData.description": "Verranno caricati i file JSON invece del codice integrato della JER(Richiede il riavvio di Minecraft)",
 	"jer.config.dimensionsBlacklist.title": "Lista Nera delle dimensioni",
 	"jer.config.dimensionsBlacklist.description": "Rimuove le dimensioni dalla scheda della Profilazione della JEI",
 	"jer.config.showDevData.title": "Mostra informazioni aggiuntive",
