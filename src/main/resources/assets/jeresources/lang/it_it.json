@@ -105,7 +105,7 @@
 	"jer.villager.title": "Commercio con i Villici",
 	"jer.villager.poi": "Punto di interesse",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Small and Large Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
 	"jer.slimeBall.text": "Slime piccoli soltanto",
 	"jer.rareDrop.text": "Ottenimento raro",
 

@@ -105,7 +105,8 @@
 	"jer.villager.title": "Villager Trades",
 	"jer.villager.poi": "Point of Interest",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Small and Large Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
+	"jer.magmaCream.text": "Small and Large Magma Cubes",
 	"jer.slimeBall.text": "Tiny Slimes only",
 	"jer.rareDrop.text": "Rare Drop",
 
