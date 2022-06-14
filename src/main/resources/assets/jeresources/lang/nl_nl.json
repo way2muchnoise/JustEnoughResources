@@ -43,7 +43,8 @@
 	"jer.mob.biome": "Spawn Biomes: Hover muis hier",
 	"jer.mob.exp": "Experience Dropped",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Grote en kleine Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
+	"jer.magmaCream.text": "Grote en kleine Magma Cubes",
 	"jer.slimeBall.text": "Alleen kleine slimes",
 	"jer.rareDrop.text": "Zeldzame Drop",
 

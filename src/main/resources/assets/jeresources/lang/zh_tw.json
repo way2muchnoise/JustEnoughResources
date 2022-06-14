@@ -102,7 +102,7 @@
 	"_comment": "#Villager View",
 	"jer.villager.title": "村民交易",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Small and Large Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
 	"jer.slimeBall.text": "僅小型史萊姆掉落",
 	"jer.rareDrop.text": "稀有掉落物",
 

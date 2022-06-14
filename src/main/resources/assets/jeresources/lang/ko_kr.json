@@ -105,7 +105,7 @@
 	"jer.villager.title": "주민 거래",
 	"jer.villager.poi": "관심점",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Small and Large Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
 	"jer.slimeBall.text": "가장 작은 슬라임 전용",
 	"jer.rareDrop.text": "희귀 드랍",
 
