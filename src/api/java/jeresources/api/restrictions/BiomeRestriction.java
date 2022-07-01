@@ -74,11 +74,11 @@ public class BiomeRestriction {
         }
     }
 
-    public BiomeRestriction(Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
+    public BiomeRestriction(Biomes biomeCategory, Biomes... biomeCategories) {
         this(Restriction.Type.WHITELIST, biomeCategory, biomeCategories);
     }
 
-    public BiomeRestriction(Restriction.Type restrictionType, Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
+    public BiomeRestriction(Restriction.Type restrictionType, Biomes biomeCategory, Biomes... biomeCategories) {
         this.restrictionType = restrictionType;
         switch (restrictionType) {
             case NONE:
@@ -92,7 +92,7 @@ public class BiomeRestriction {
         }
     }
 
-    private ArrayList<Biome> getBiomes(Biome.BiomeCategory biomeCategory, Biome.BiomeCategory... biomeCategories) {
+    private ArrayList<Biome> getBiomes(Biomes biomeCategory, Biomes... biomeCategories) {
         ArrayList<Biome> biomes = new ArrayList<>();
         biomes.addAll(BiomeHelper.getBiomes(biomeCategory));
         for (int i = 1; i < biomeCategories.length; i++) {

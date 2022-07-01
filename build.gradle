@@ -57,8 +57,8 @@ configurations {
 
 dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
-	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}")
+	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge:${version_jei}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge:${version_jei}")
 }
 
 minecraft {

@@ -44,7 +44,7 @@ public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTool
 
     @Override
     public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
-        tooltip.add(this.chest.getChestDrop((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()).toStringTextComponent());
+        tooltip.add(this.chest.getChestDrop((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()).toStringComponent());
     }
 
     private boolean done;

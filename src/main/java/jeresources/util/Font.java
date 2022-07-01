@@ -2,7 +2,7 @@ package jeresources.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class Font {
     public void splitPrint(PoseStack poseStack, String line, int x, int y, int maxWidth) {
         doTransform(poseStack, x, y);
         int scaledWidth = (int) (maxWidth * (isSmall ? SCALING : 1));
-        List<FormattedCharSequence> lines = Minecraft.getInstance().font.split(new TextComponent(line), scaledWidth);
+        List<FormattedCharSequence> lines = Minecraft.getInstance().font.split(Component.literal(line), scaledWidth);
         int scaledLineHeight = (int) (Minecraft.getInstance().font.lineHeight * (isSmall ? SCALING : 1));
         for (int i = 0; i < lines.size(); i++) {
             Minecraft.getInstance().font.draw(poseStack, lines.get(i), 0, i * scaledLineHeight, 8);

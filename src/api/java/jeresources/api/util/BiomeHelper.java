@@ -2,6 +2,7 @@ package jeresources.api.util;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class BiomeHelper {
         return ForgeRegistries.BIOMES.getValue(key.location());
     }
 
-    public static List<Biome> getBiomes(Biome.BiomeCategory category) {
+    public static List<Biome> getBiomes(Biomes category) {
         List<Biome> biomes = new ArrayList<>();
         ForgeRegistries.BIOMES.forEach(
             biome -> {

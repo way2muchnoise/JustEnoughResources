@@ -11,8 +11,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TradeList extends LinkedList<TradeList.Trade> {
-    private static final Random r = new Random();
-
     private VillagerEntry villagerEntry;
 
     public TradeList(VillagerEntry villagerEntry) {
