@@ -5,6 +5,7 @@ import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
@@ -77,7 +78,8 @@ public class LootFunctionHelper {
     public static class RandomLootContext extends LootContext {
         public RandomLootContext(){
             //LootContext(Random, float, ServerLevel, Function<ResourceLocation, LootTable>, Function<ResourceLocation, LootItemCondition>, Map<LootContextParam<?>, Object>, Map<ResourceLocation, LootContext.DynamicDrop>)
-            super(new Random(), 0.0F, null, null, null, Maps.newIdentityHashMap(), Maps.newHashMap());
+            // FIXME No longer support null argument
+            super(RandomSource.create(), 0.0F, null, null, null, Maps.newIdentityHashMap(), Maps.newHashMap());
         }
     }
 }

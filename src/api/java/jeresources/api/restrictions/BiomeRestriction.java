@@ -13,25 +13,24 @@ import java.util.stream.Collectors;
 
 
 public class BiomeRestriction {
-    public static final BiomeRestriction NO_RESTRICTION = new BiomeRestriction();
+   public static final BiomeRestriction NO_RESTRICTION = new BiomeRestriction();
     
-   public static final BiomeRestriction NONE = new BiomeRestriction(Biome.BiomeCategory.NONE);
-   public static final BiomeRestriction TAIGA = new BiomeRestriction(Biome.BiomeCategory.TAIGA);
-   public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Biome.BiomeCategory.EXTREME_HILLS);
-   public static final BiomeRestriction JUNGLE = new BiomeRestriction(Biome.BiomeCategory.JUNGLE);
-   public static final BiomeRestriction MESA = new BiomeRestriction(Biome.BiomeCategory.MESA);
-   public static final BiomeRestriction PLAINS = new BiomeRestriction(Biome.BiomeCategory.PLAINS);
-   public static final BiomeRestriction SAVANNA = new BiomeRestriction(Biome.BiomeCategory.SAVANNA);
-   public static final BiomeRestriction ICY = new BiomeRestriction(Biome.BiomeCategory.ICY);
-   public static final BiomeRestriction THEEND = new BiomeRestriction(Biome.BiomeCategory.THEEND);
-   public static final BiomeRestriction BEACH = new BiomeRestriction(Biome.BiomeCategory.BEACH);
-   public static final BiomeRestriction FOREST = new BiomeRestriction(Biome.BiomeCategory.FOREST);
-   public static final BiomeRestriction OCEAN = new BiomeRestriction(Biome.BiomeCategory.OCEAN);
-   public static final BiomeRestriction DESERT = new BiomeRestriction(Biome.BiomeCategory.DESERT);
-   public static final BiomeRestriction RIVER = new BiomeRestriction(Biome.BiomeCategory.RIVER);
-   public static final BiomeRestriction SWAMP = new BiomeRestriction(Biome.BiomeCategory.SWAMP);
-   public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biome.BiomeCategory.MUSHROOM);
-   public static final BiomeRestriction NETHER = new BiomeRestriction(Biome.BiomeCategory.NETHER);
+   public static final BiomeRestriction TAIGA = new BiomeRestriction(Biomes.TAIGA);
+   public static final BiomeRestriction EXTREME_HILLS = new BiomeRestriction(Biomes.WINDSWEPT_HILLS);
+   public static final BiomeRestriction JUNGLE = new BiomeRestriction(Biomes.JUNGLE);
+   public static final BiomeRestriction MESA = new BiomeRestriction(Biomes.BADLANDS);
+   public static final BiomeRestriction PLAINS = new BiomeRestriction(Biomes.PLAINS);
+   public static final BiomeRestriction SAVANNA = new BiomeRestriction(Biomes.SAVANNA);
+   public static final BiomeRestriction ICY = new BiomeRestriction(Biomes.ICE_SPIKES);
+   public static final BiomeRestriction THEEND = new BiomeRestriction(Biomes.THE_END);
+   public static final BiomeRestriction BEACH = new BiomeRestriction(Biomes.BEACH);
+   public static final BiomeRestriction FOREST = new BiomeRestriction(Biomes.FOREST);
+   public static final BiomeRestriction OCEAN = new BiomeRestriction(Biomes.OCEAN);
+   public static final BiomeRestriction DESERT = new BiomeRestriction(Biomes.DESERT);
+   public static final BiomeRestriction RIVER = new BiomeRestriction(Biomes.RIVER);
+   public static final BiomeRestriction SWAMP = new BiomeRestriction(Biomes.SWAMP);
+   public static final BiomeRestriction MUSHROOM = new BiomeRestriction(Biomes.MUSHROOM_FIELDS);
+   public static final BiomeRestriction NETHER = new BiomeRestriction(Biomes.NETHER_WASTES);
    public static final BiomeRestriction DRIPSTONE_CAVES = new BiomeRestriction(Biomes.DRIPSTONE_CAVES);
    public static final BiomeRestriction BADLANDS = new BiomeRestriction(Biomes.BADLANDS);
 
@@ -106,7 +105,16 @@ public class BiomeRestriction {
     }
 
     public List<String> toStringList() {
-        return biomes.stream().filter(biome -> !biome.toString().equals("")).map(biome -> "  " + I18n.get("biome." + biome.getRegistryName().toString().replace(":","."))).collect(Collectors.toList());
+        return biomes.stream()
+        .filter(
+            biome -> !biome.toString().equals("")
+        )
+        .map(
+            biome -> "  " + I18n.get("biome." + biome.toString().replace(":","."))
+        )
+        .collect(
+            Collectors.toList()
+        );
     }
 
     @Override
