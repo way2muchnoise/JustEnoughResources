@@ -49,7 +49,7 @@ public class MapKeys {
         }
 
         if (pickBlock == null || pickBlock.getItem() == null) {
-            return block.getRegistryName().toString();
+            return block.getDescriptionId();
         } else {
             return getKey(pickBlock);
         }
@@ -62,7 +62,7 @@ public class MapKeys {
         Item item = drop.getItem();
         if (item == null)
             return null;
-        String registryName = item.getRegistryName().toString();
+        String registryName = item.getDescriptionId();
         StringBuilder key = new StringBuilder(registryName);
         if (drop.getTag() != null)
             key.append(":").append(drop.getTag());

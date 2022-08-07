@@ -2,6 +2,7 @@ package jeresources.collection;
 
 import jeresources.entry.VillagerEntry;
 import mezz.jei.api.recipe.IFocus;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -51,7 +52,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
     }
 
-    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, Random rand) {
+    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, RandomSource rand) {
         MerchantOffer offer = itemListing.getOffer(villagerEntry.getVillagerEntity(), rand);
         if (offer != null) {
             merchantOffers.add(offer);
@@ -61,7 +62,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     public void addITradeList(VillagerTrades.ItemListing[] itemListings) {
         for (VillagerTrades.ItemListing itemListing : itemListings) {
             MerchantOffers tempList = new MerchantOffers();
-            Random rand = new Random();
+            RandomSource rand = RandomSource.create();
             for (int itr = 0; itr < 100; itr++)
                 addMerchantRecipe(tempList, itemListing, rand);
             if (tempList.size() == 0) return; // Bad lists be bad

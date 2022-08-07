@@ -83,7 +83,7 @@ public class ChunkGetter implements Runnable {
         private final ChunkGenerator chunkGenerator;
 
         public ChunkGetterRandom(ServerLevel level) {
-            this.chunkGenerator = level.getChunkSource().getGenerator().withSeed(level.random.nextLong());
+            this.chunkGenerator = level.getChunkSource().getGenerator();// .withSeed(level.random.nextLong());
         }
 
         @Override
@@ -111,7 +111,7 @@ public class ChunkGetter implements Runnable {
         private int posZ;
 
         public ChunkGetterOrigin(ServerLevel level, int chunkCount) {
-            this.chunkGenerator = level.getChunkSource().getGenerator().withSeed(level.random.nextLong());
+            this.chunkGenerator = level.getChunkSource().getGenerator();// .withSeed(level.random.nextLong());
 
             this.sideLength = (int) Math.ceil(Math.sqrt(chunkCount));
 

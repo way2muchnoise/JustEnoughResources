@@ -11,8 +11,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -33,24 +31,15 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
         super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16));
     }
 
-    @Override
-    public @NotNull ResourceLocation getUid() {
-        return JEIConfig.DUNGEON;
-    }
 
     @Override
     public @NotNull Component getTitle() {
-        return new TranslatableComponent("jer.dungeon.title");
+        return Component.translatable("jer.dungeon.title");
     }
 
     @Override
     public @NotNull IDrawable getBackground() {
         return Resources.Gui.Jei.DUNGEON;
-    }
-
-    @Override
-    public @NotNull Class<? extends DungeonWrapper> getRecipeClass() {
-        return DungeonWrapper.class;
     }
 
     @Override
@@ -62,11 +51,11 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull DungeonWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        int slots = Math.min(recipeWrapper.amountOfItems(focuses.getFocuses(VanillaTypes.ITEM).findFirst().orElse(null)), ITEMS_PER_PAGE);
+        int slots = Math.min(recipeWrapper.amountOfItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null)), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
                 .addTooltipCallback(recipeWrapper)
-                .addItemStacks(recipeWrapper.getItems(focuses.getFocuses(VanillaTypes.ITEM).findFirst().orElse(null), i, slots));
+                .addItemStacks(recipeWrapper.getItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null), i, slots));
             x += SPACING_X;
 
             if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2) {

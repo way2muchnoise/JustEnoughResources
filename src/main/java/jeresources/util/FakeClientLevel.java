@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.scores.Scoreboard;
@@ -36,7 +36,7 @@ public class FakeClientLevel extends ClientLevel {
 
     public FakeClientLevel() {
         //(ClientPacketListener, ClientLevel.ClientLevelData, ResourceKey<Level>, Holder<DimensionType>, int, int, Supplier<ProfilerFiller>, LevelRenderer, boolean, long
-        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(DimensionType.OVERWORLD_LOCATION), 0, 0, () -> InactiveProfiler.INSTANCE, Minecraft.getInstance().levelRenderer, false, 1234567);
+        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(BuiltinDimensionTypes.OVERWORLD), 0, 0, () -> InactiveProfiler.INSTANCE, Minecraft.getInstance().levelRenderer, false, 1234567);
         this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientLevel.class, this);
     }
 

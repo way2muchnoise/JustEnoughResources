@@ -4,7 +4,7 @@ import jeresources.json.WorldGenAdapter;
 import jeresources.util.DimensionHelper;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandSource;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
@@ -66,7 +66,7 @@ public class ProfilingTimer {
     }
 
     private void send(String s) {
-        this.sender.sendMessage(new TranslatableComponent(s), Util.NIL_UUID);
+        this.sender.sendSystemMessage(Component.translatable(s));
     }
 
     private void sendSpeed(ResourceKey<Level> worldRegistryKey) {

@@ -3,6 +3,8 @@ buildscript {
 		maven { url = "https://maven.minecraftforge.net/" }
 		maven { url = 'https://maven.parchmentmc.org' }
 		mavenCentral()
+		// Sponge mirrors a lot of maven repos, using as fallback
+		maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
 	}
 
 	dependencies {
@@ -35,6 +37,8 @@ repositories {
         name = "jei"
         url =  "https://dvs1.progwml6.com/files/maven"
     }
+	// Sponge mirrors a lot of maven repos, using as fallback
+	maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -57,12 +61,13 @@ configurations {
 
 dependencies {
 	minecraft "net.minecraftforge:forge:${version_minecraft}-${version_forge}"
-	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}:${version_jei}")
+	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}-common-api:${version_jei}")
+	compileOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge-api:${version_jei}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${version_minecraft}-forge:${version_jei}")
 }
 
 minecraft {
-	mappings channel: "${channel_mapping}", version: "${version_mapping}"
+	mappings channel: "${channel_mapping}", version: "${version_mapping}-${version_minecraft}"
 
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 

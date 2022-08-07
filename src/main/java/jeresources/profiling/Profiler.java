@@ -6,7 +6,7 @@ import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -63,7 +63,7 @@ public class Profiler implements Runnable {
         if (world == null) {
             msg = "Unable to profile dimension " + DimensionHelper.getDimensionName(dimensionKey) + ".  There is no world for it.";
             LogHelper.error(msg);
-            sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
+            sender.sendSystemMessage(Component.literal(msg));
             return;
         }
         
@@ -71,14 +71,14 @@ public class Profiler implements Runnable {
         final ServerLevel serverLevel = world;
         
         msg = "Inspecting dimension " + DimensionHelper.getDimensionName(dimensionKey) + ". ";
-        sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
+        sender.sendSystemMessage(Component.literal(msg));
         LogHelper.info(msg);
 
         
         if (Settings.excludedDimensions.contains(dimensionKey.location().toString())) {
             msg = "Skipped dimension " + DimensionHelper.getDimensionName(dimensionKey) + " during profiling";
             LogHelper.info(msg);
-            sender.sendMessage(new TextComponent(msg), Util.NIL_UUID);
+            sender.sendSystemMessage(Component.literal(msg));
             return;
         }
 
@@ -132,7 +132,7 @@ public class Profiler implements Runnable {
 
     public static boolean init(Entity sender, int chunks, boolean allWorlds) {
         if (true) {
-            sender.sendMessage(new TextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
+            sender.sendSystemMessage(Component.literal("Command not yet re-implemented, profiling will be re-added in the future"));
             return true;
         }
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
@@ -143,7 +143,7 @@ public class Profiler implements Runnable {
 
     public static boolean stop(Entity sender) {
         if (true) {
-            sender.sendMessage(new TextComponent("Command not yet re-implemented, profiling will be re-added in the future"), Util.NIL_UUID);
+            sender.sendSystemMessage(Component.literal("Command not yet re-implemented, profiling will be re-added in the future"));
             return true;
         }
         if (currentProfiler == null || currentProfiler.timer.isCompleted()) return false;

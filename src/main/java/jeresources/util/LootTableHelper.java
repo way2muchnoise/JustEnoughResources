@@ -24,7 +24,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.resource.PathResourcePack;
+import net.minecraftforge.resource.PathPackResources;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -153,7 +153,7 @@ public class LootTableHelper {
             mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
 
-        for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
+        for (EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES) {
             if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }
@@ -180,7 +180,7 @@ public class LootTableHelper {
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
                 for (IModFileInfo mod : ModList.get().getModFiles()) {
-                    packs.add(new PathResourcePack(mod.getFile().getFileName(), mod.getFile().getFilePath()));
+                    packs.add(new PathPackResources(mod.getFile().getFileName(), mod.getFile().getFilePath()));
                 }
                 reloadableResourceManager.registerReloadListener(lootTables);
                 ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);

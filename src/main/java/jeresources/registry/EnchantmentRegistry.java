@@ -39,12 +39,12 @@ public class EnchantmentRegistry {
     }
 
     private void excludeFormRegistry(Enchantment enchantment) {
-        enchantments.removeIf(enchantmentEntry -> enchantmentEntry.getEnchantment().getRegistryName().toString().equals(enchantment.getRegistryName().toString()));
+        enchantments.removeIf(enchantmentEntry -> enchantmentEntry.getEnchantment().getDescriptionId().toString().equals(enchantment.getDescriptionId()));
     }
 
     private void excludeFormRegistry(String sEnchantment) {
         for (Enchantment enchantment : getEnchants())
-            if (enchantment != null && enchantment.getRegistryName().toString().toLowerCase().contains(sEnchantment.toLowerCase()))
+            if (enchantment != null && enchantment.getDescriptionId().toLowerCase().contains(sEnchantment.toLowerCase()))
                 excludeFormRegistry(enchantment);
     }
 

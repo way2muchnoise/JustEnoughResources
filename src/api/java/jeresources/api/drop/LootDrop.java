@@ -5,7 +5,6 @@ import jeresources.api.util.LootConditionHelper;
 import jeresources.api.util.LootFunctionHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
@@ -229,8 +228,8 @@ public class LootDrop implements Comparable<LootDrop> {
         return sortIndex;
     }
 
-    public TextComponent toStringTextComponent() {
-        return new TextComponent(toString());
+    public Component toStringTextComponent() {
+        return Component.literal(toString());
     }
 
     @Override

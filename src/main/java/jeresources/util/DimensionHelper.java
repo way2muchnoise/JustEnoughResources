@@ -16,6 +16,7 @@ public class DimensionHelper {
     public static Holder<DimensionType> getType(ResourceKey<DimensionType> dimensionTypeRegistryKey) {
         return Minecraft.getInstance().level.registryAccess()
             .registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY)
-            .getOrCreateHolder(dimensionTypeRegistryKey);
+            .getOrCreateHolder(dimensionTypeRegistryKey)
+            .getOrThrow(false, LogHelper::error);
     }
 }

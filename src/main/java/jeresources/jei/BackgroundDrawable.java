@@ -6,7 +6,7 @@ import jeresources.reference.Reference;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.gui.GuiUtils;
+import net.minecraftforge.client.gui.ScreenUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class BackgroundDrawable implements IDrawable {
@@ -35,7 +35,7 @@ public class BackgroundDrawable implements IDrawable {
         RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, this.resource);
-        GuiUtils.drawTexturedModalRect(poseStack, xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
+        ScreenUtils.drawTexturedModalRect(poseStack, xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
         RenderSystem.applyModelViewMatrix();
     }
 

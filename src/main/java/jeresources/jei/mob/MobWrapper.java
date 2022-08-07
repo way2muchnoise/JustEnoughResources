@@ -12,7 +12,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;
@@ -82,7 +81,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     @Override
     public @NotNull List<Component> getTooltipStrings(double mouseX, double mouseY) {
         if (this.mob.hasMultipleBiomes() && isOnBiome(mouseX, mouseY))
-            return CollectionHelper.create(TextComponent::new, this.mob.getTranslatedBiomes());
+            return CollectionHelper.create(Component::literal, this.mob.getTranslatedBiomes());
         return Collections.emptyList();
     }
 

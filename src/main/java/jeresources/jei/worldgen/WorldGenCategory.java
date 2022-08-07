@@ -14,7 +14,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,23 +29,13 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
-        return JEIConfig.WORLD_GEN;
-    }
-
-    @Override
     public @NotNull Component getTitle() {
-        return new TranslatableComponent("jer.worldgen.title");
+        return Component.translatable("jer.worldgen.title");
     }
 
     @Override
     public @NotNull IDrawable getBackground() {
         return Resources.Gui.Jei.WORLD_GEN;
-    }
-
-    @Override
-    public @NotNull Class<? extends WorldGenWrapper> getRecipeClass() {
-        return WorldGenWrapper.class;
     }
 
     @Override

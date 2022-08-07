@@ -97,7 +97,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
             entry.setAgeProperty(ageProperty);
             registers.add(entry);
         } catch (Exception e) {
-            LogHelper.debug("Error while registering plant %s", plant.getRegistryName());
+            LogHelper.debug("Error while registering plant %s", plant.getDescriptionId());
         }
     }
 
@@ -106,7 +106,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
         try {
             registers.add(new PlantEntry(plant, drops));
         } catch (Exception e) {
-            LogHelper.debug("Error while registering plant %s", plant.getRegistryName());
+            LogHelper.debug("Error while registering plant %s", plant.getDescriptionId());
         }
     }
 
@@ -189,7 +189,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
             entry.setSoil(soil);
             registers.add(entry);
         } catch (Exception e) {
-            LogHelper.debug("Error while registering plant %s", plant.getRegistryName());
+            LogHelper.debug("Error while registering plant %s", plant.getDescriptionId());
         }
     }
 
@@ -200,7 +200,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
             entry.setSoil(soil);
             registers.add(entry);
         } catch (Exception e) {
-            LogHelper.debug("Error while registering plant %s", plant.getRegistryName());
+            LogHelper.debug("Error while registering plant %s", plant.getDescriptionId());
         }
     }
 

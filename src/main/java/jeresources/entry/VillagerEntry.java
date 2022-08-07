@@ -3,6 +3,7 @@ package jeresources.entry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import jeresources.compatibility.CompatBase;
+import jeresources.util.VillagersHelper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
@@ -103,10 +104,10 @@ public class VillagerEntry {
     }
 
     public List<ItemStack> getPois() {
-        return this.profession.getJobPoiType().getBlockStates().stream().map(blockstate -> new ItemStack(blockstate.getBlock())).collect(Collectors.toList());
+        return VillagersHelper.getPoiBlocks(this.profession.heldJobSite()).stream().map(blockstate -> new ItemStack(blockstate.getBlock())).collect(Collectors.toList());
     }
 
     public boolean hasPois() {
-        return !this.profession.getJobPoiType().getBlockStates().isEmpty();
+        return !VillagersHelper.getPoiBlocks(this.profession.heldJobSite()).isEmpty();
     }
 }

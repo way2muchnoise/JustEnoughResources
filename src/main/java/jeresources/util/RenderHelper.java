@@ -19,8 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.gui.GuiUtils;
-import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.gui.ScreenUtils;
+import net.minecraftforge.client.model.data.ModelData;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -119,7 +119,7 @@ public class RenderHelper {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+        mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
         bufferSource.endBatch();
         poseStack.popPose();
 
@@ -149,7 +149,7 @@ public class RenderHelper {
     public static void drawTexture(PoseStack poseStack, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, resource);
-        GuiUtils.drawTexturedModalRect(poseStack, x, y, u, v, width, height, 0);
+        ScreenUtils.drawTexturedModalRect(poseStack, x, y, u, v, width, height, 0);
     }
 
     public static double[] getGLTranslation(PoseStack poseStack, double scale) {

@@ -13,7 +13,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 
@@ -160,7 +159,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
                 tooltip.add(line);
             }
         }
-        return tooltip.stream().map(TextComponent::new).collect(Collectors.toList());
+        return tooltip.stream().map(Component::literal).collect(Collectors.toList());
     }
 
     private List<Component> getLineTooltip(double mouseX, List<Component> tooltip) {
@@ -173,7 +172,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         if (index >= 0 && index < chances.length) {
             float chance = chances[index] * 100;
             String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2f%%)", chance) : " <0.01%";
-            tooltip.add(new TextComponent("Y: " + yValue + percent));
+            tooltip.add(Component.literal("Y: " + yValue + percent));
         }
 
         return tooltip;

@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -63,7 +62,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
         } else {
             toPrint = String.format("%2.2f", chance * 100).replace(",", ".") + "%";
         }
-        return new TextComponent(toPrint);
+        return Component.literal(toPrint);
     }
 
     private BlockState state;

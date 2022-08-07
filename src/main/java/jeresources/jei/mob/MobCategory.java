@@ -4,7 +4,6 @@ import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
-import jeresources.jei.enchantment.EnchantmentWrapper;
 import jeresources.reference.Resources;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -13,7 +12,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,23 +26,13 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
     }
 
     @Override
-    public @NotNull ResourceLocation getUid() {
-        return JEIConfig.MOB;
-    }
-
-    @Override
     public @NotNull Component getTitle() {
-        return new TranslatableComponent("jer.mob.title");
+        return Component.translatable("jer.mob.title");
     }
 
     @Override
     public @NotNull IDrawable getBackground() {
         return Resources.Gui.Jei.MOB;
-    }
-
-    @Override
-    public @NotNull Class<? extends MobWrapper> getRecipeClass() {
-        return MobWrapper.class;
     }
 
     @Override
