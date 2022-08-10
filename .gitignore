@@ -8,38 +8,34 @@ options.txt
 MinecraftForge-Credits.txt
 MinecraftForge-License.txt
 
-## gradle
-/.gradle
-/build
-/eclipse
 ## ForgeGradle
 /run
 /out
+/output
 
-## idea
-/.idea
-*.iml
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
 *.ipr
 *.iws
-/classes
+*.iml
+.idea/*
+!.idea/scopes
 
-## eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
+# gradle
+build
+.gradle
 
-## netbeans
-.nb*
-/nbproject/private/
-/nbbuild/
-output/
-install.bat
-.cache
-build.xml
-natives/
-nbproject/
+# other
+eclipse
+run
 
 ## minecraft
 /config/
