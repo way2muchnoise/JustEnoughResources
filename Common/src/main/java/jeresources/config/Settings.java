@@ -14,8 +14,7 @@ public final class Settings {
     public static boolean useDIYdata = true;
 
     public static String[] excludedEnchants = new String[] {"flimflam", "soulBound"};
-    public static String[]  hiddenCategories = new String[0];
-    public static boolean gameLoaded = false;
+    public static String[] hiddenCategories = new String[0];
     public static boolean showDevData = false;
     public static boolean disableLootManagerReloading = false;
     public static List<Integer> excludedDimensions = List.of(-11);
@@ -24,10 +23,8 @@ public final class Settings {
         if (Services.PLATFORM.isClient()) {
             DungeonCategory.reloadSettings();
         }
-        if (gameLoaded) {
-            EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
-            JEIConfig.resetCategories();
-            JEIConfig.hideCategories(hiddenCategories);
-        }
+        EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
+        JEIConfig.resetCategories();
+        JEIConfig.hideCategories(hiddenCategories);
     }
 }

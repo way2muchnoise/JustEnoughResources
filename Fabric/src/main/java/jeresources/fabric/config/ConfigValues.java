@@ -9,8 +9,7 @@ import me.shedaniel.clothconfig2.gui.entries.IntegerListListEntry;
 import me.shedaniel.clothconfig2.gui.entries.StringListListEntry;
 import net.minecraft.network.chat.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class ConfigValues {
 
@@ -44,16 +43,16 @@ public class ConfigValues {
             .setSaveConsumer(newValue -> Settings.showDevData = newValue)
             .build();
         category.addEntry(showDevData);
-        excludedEnchants = builder.startStrList(Component.literal("enchantsBlacklist"), Arrays.asList("flimflam", "soulBound"))
+        excludedEnchants = builder.startStrList(Component.literal("enchantsBlacklist"), List.of("flimflam", "soulBound"))
             .setSaveConsumer(newValue -> Settings.excludedEnchants = newValue.toArray(new String[0]))
             .build();
         category.addEntry(excludedEnchants);
-        hiddenCategories = builder.startStrList(Component.literal("hiddenTabs"), new ArrayList<>())
+        hiddenCategories = builder.startStrList(Component.literal("hiddenTabs"), List.of())
             .setSaveConsumer(newValue -> Settings.hiddenCategories = newValue.toArray(new String[0]))
             .build();
         category.addEntry(hiddenCategories);
-        excludedDimensions = builder.startIntList(Component.literal("dimensionsBlacklist"), new ArrayList<>())
-            .setSaveConsumer(newValue -> Settings.excludedDimensions = new ArrayList<>(newValue))
+        excludedDimensions = builder.startIntList(Component.literal("dimensionsBlacklist"), List.of(-11))
+            .setSaveConsumer(newValue -> Settings.excludedDimensions = List.copyOf(newValue))
             .build();
         category.addEntry(excludedDimensions);
         disableLootManagerReloading = builder.startBooleanToggle(Component.literal("disableLootManagerReloading"), Settings.disableLootManagerReloading)

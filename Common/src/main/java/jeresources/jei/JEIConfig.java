@@ -70,12 +70,12 @@ public class JEIConfig implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(WORLD_GEN_TYPE, asRecipes(WorldGenRegistry.getInstance().getWorldGen(), WorldGenWrapper::new));
-        registration.addRecipes(PLANT_TYPE, asRecipes(PlantRegistry.getInstance().getAllPlants(), PlantWrapper::new));
-        registration.addRecipes(MOB_TYPE, asRecipes(MobRegistry.getInstance().getMobs(), MobWrapper::new));
         registration.addRecipes(DUNGEON_TYPE, asRecipes(DungeonRegistry.getInstance().getDungeons(), DungeonWrapper::new));
-        registration.addRecipes(VILLAGER_TYPE, asRecipes(VillagerRegistry.getInstance().getVillagers(), VillagerWrapper::new));
         registration.addRecipes(ENCHANTMENT_TYPE, EnchantmentMaker.createRecipes(registration.getIngredientManager().getAllIngredients(VanillaTypes.ITEM_STACK)));
+        registration.addRecipes(MOB_TYPE, asRecipes(MobRegistry.getInstance().getMobs(), MobWrapper::new));
+        registration.addRecipes(PLANT_TYPE, asRecipes(PlantRegistry.getInstance().getAllPlants(), PlantWrapper::new));
+        registration.addRecipes(VILLAGER_TYPE, asRecipes(VillagerRegistry.getInstance().getVillagers(), VillagerWrapper::new));
+        registration.addRecipes(WORLD_GEN_TYPE, asRecipes(WorldGenRegistry.getInstance().getWorldGen(), WorldGenWrapper::new));
     }
 
     @Override
@@ -87,14 +87,22 @@ public class JEIConfig implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         JEIConfig.jeiHelpers = registration.getJeiHelpers();
-        registration.addRecipeCategories(new PlantCategory(), new WorldGenCategory(), new MobCategory(), new EnchantmentCategory(), new DungeonCategory(), new VillagerCategory());
+        registration.addRecipeCategories(
+            new DungeonCategory(),
+            new EnchantmentCategory(),
+            new MobCategory(),
+            new PlantCategory(),
+            new VillagerCategory(),
+            new WorldGenCategory()
+        );
         Services.PLATFORM.getProxy().initCompatibility();
     }
 
     public static void resetCategories() {
         if (jeiRuntime != null) {
-            for (RecipeType<?> recipeType : TYPES.values())
+            for (RecipeType<?> recipeType : TYPES.values()) {
                 jeiRuntime.getRecipeManager().unhideRecipeCategory(recipeType);
+            }
         }
     }
 

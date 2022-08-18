@@ -4,8 +4,9 @@ package jeresources.api;
 import net.minecraft.world.level.Level;
 
 /**
- * Will be delivered during {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent}
- * to any public static field that is annotated with {@link JERPlugin}
+ * Will be delivered during startup to any public static field that is:
+ * Forge: annotated with {@link JERPlugin}
+ * Fabric: mentioned as entrypoint {@link IJERPlugin#entry_point} in fabric.mod.json
  */
 public interface IJERAPI {
     IMobRegistry getMobRegistry();

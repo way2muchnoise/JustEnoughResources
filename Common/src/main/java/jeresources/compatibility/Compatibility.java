@@ -1,6 +1,6 @@
 package jeresources.compatibility;
 
-import jeresources.compatibility.api.*;
+import jeresources.compatibility.api.JERAPI;
 import jeresources.compatibility.minecraft.MinecraftCompat;
 import jeresources.config.Settings;
 import jeresources.json.WorldGenAdapter;

@@ -1,11 +1,11 @@
 package jeresources.entry;
 
 import jeresources.api.drop.LootDrop;
+import jeresources.api.util.ItemHelper;
+import jeresources.api.util.LootFunctionHelper;
 import jeresources.platform.ILootTableHelper;
 import jeresources.platform.Services;
 import jeresources.registry.DungeonRegistry;
-import jeresources.api.util.LootFunctionHelper;
-import jeresources.api.util.ItemHelper;
 import jeresources.util.LootTableHelper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.Mth;

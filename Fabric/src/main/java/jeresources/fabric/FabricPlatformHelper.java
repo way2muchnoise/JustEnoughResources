@@ -2,7 +2,7 @@ package jeresources.fabric;
 
 import jeresources.JEResources;
 import jeresources.api.IJERAPI;
-import jeresources.api.drop.PlantDrop;
+import jeresources.api.IJERPlugin;
 import jeresources.platform.ILootTableHelper;
 import jeresources.platform.IModList;
 import jeresources.platform.IPlatformHelper;
@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FabricPlatformHelper implements IPlatformHelper {
     @Override
@@ -43,18 +41,14 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public void injectApi(IJERAPI instance) {
-        // TODO
+        FabricLoader.getInstance()
+            .getEntrypoints(IJERPlugin.entry_point, IJERPlugin.class)
+            .forEach(plugin -> plugin.receive(instance));
     }
 
     @Override
     public boolean isCorrectToolForBlock(Block block, BlockState blockState, BlockGetter level, BlockPos blockPos, Player player) {
         return player.hasCorrectToolForDrops(blockState);
-    }
-
-    @Override
-    public List<PlantDrop> getSeedsFromTallGrassAsPlantDrops() {
-        // TODO figure out how this is loaded in Fabric
-        return new ArrayList<>();
     }
 
     @Override
@@ -64,6 +58,7 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public boolean isAllowedOnBooks(Enchantment enchantment) {
+        // TODO: Does Fabric have a similar check for enchantments that can't be books?
         return true;
     }
 

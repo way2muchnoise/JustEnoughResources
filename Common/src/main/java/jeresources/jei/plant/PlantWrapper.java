@@ -29,7 +29,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         RenderHelper.renderBlock(poseStack, getFarmland(), 30, 30, -10, 20F, 20F);
         RenderHelper.renderBlock(poseStack, getBlockState(), 30, 12, 10, 20F, 20F);
     }

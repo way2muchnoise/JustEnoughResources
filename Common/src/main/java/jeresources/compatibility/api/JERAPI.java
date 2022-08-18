@@ -3,7 +3,6 @@ package jeresources.compatibility.api;
 import jeresources.api.*;
 import jeresources.compatibility.CompatBase;
 import jeresources.platform.Services;
-import jeresources.util.ReflectionHelper;
 import net.minecraft.world.level.Level;
 
 public class JERAPI implements IJERAPI {
