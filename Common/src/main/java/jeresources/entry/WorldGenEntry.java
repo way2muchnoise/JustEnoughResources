@@ -15,6 +15,8 @@ public class WorldGenEntry {
     private float[] chances;
     private boolean silktouch;
     private ItemStack block;
+
+    private ItemStack deepSlateBlock;
     private int minY;
     private int maxY;
     private int colour;
@@ -24,8 +26,9 @@ public class WorldGenEntry {
     private Map<Item, Set<LootDrop>> wildcardDrops;
     private Map<String, ItemStack> dropsDisplay;
 
-    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
+    public WorldGenEntry(ItemStack block, ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
         this.block = block;
+        this.deepSlateBlock = deepSlateBlock;
         this.distribution = distribution;
         this.restriction = restriction;
         this.colour = ColorHelper.BLACK;
@@ -37,16 +40,32 @@ public class WorldGenEntry {
         calcChances();
     }
 
+    public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
+        this(block, null, distribution, restriction, silktouch, drops);
+    }
+
     public WorldGenEntry(ItemStack block, DistributionBase distribution, LootDrop... drops) {
         this(block, distribution, Restriction.OVERWORLD, false, drops);
+    }
+
+    public WorldGenEntry(ItemStack block, ItemStack deepSlateBlock, DistributionBase distribution, LootDrop... drops) {
+        this(block, deepSlateBlock, distribution, Restriction.OVERWORLD, false, drops);
     }
 
     public WorldGenEntry(ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops) {
         this(block, distribution, Restriction.OVERWORLD, silktouch, drops);
     }
 
+    public WorldGenEntry(ItemStack block, ItemStack deepSlateBlock, DistributionBase distribution, boolean silktouch, LootDrop... drops) {
+        this(block, deepSlateBlock, distribution, Restriction.OVERWORLD, silktouch, drops);
+    }
+
     public WorldGenEntry(ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
         this(block, distribution, restriction, false, drops);
+    }
+
+    public WorldGenEntry(ItemStack block, ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
+        this(block, deepSlateBlock, distribution, restriction, false, drops);
     }
 
     public void addDrops(LootDrop... drops) {
@@ -140,6 +159,10 @@ public class WorldGenEntry {
         return this.block;
     }
 
+    public ItemStack getDeepSlateBlock() {
+        return deepSlateBlock;
+    }
+
     public List<String> getBiomeRestrictions() {
         return this.restriction.getBiomeRestrictions();
     }
@@ -176,5 +199,9 @@ public class WorldGenEntry {
         entry.drops.values().forEach(this::addDrops);
         this.distribution = DistributionHelpers.addDistribution(this.distribution, entry.distribution);
         calcChances();
+    }
+
+    public boolean hasDeepSlateVariant() {
+        return this.deepSlateBlock != null && !this.deepSlateBlock.isEmpty();
     }
 }
