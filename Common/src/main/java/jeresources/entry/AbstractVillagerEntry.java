@@ -45,8 +45,9 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
         for (List<TradeList.Trade> trades : this.tradeList) {
             for (TradeList.Trade trade : trades) {
                 list.add(trade.getMinCostA());
-                if (!trade.getMinCostB().isEmpty())
+                if (!trade.getMinCostB().isEmpty()) {
                     list.add(trade.getMinCostB());
+                }
             }
         }
         return list;
@@ -54,8 +55,9 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
 
     public List<ItemStack> getOutputs() {
         List<ItemStack> list = new LinkedList<>();
-        for (List<TradeList.Trade> trades : this.tradeList)
+        for (List<TradeList.Trade> trades : this.tradeList) {
             list.addAll(trades.stream().map(TradeList.Trade::getMinResult).collect(Collectors.toList()));
+        }
         return list;
     }
 
@@ -69,9 +71,11 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
 
     public List<Integer> getPossibleLevels(IFocus<ItemStack> focus) {
         List<Integer> levels = new ArrayList<>();
-        for (int i = 0; i < tradeList.size(); i++)
-            if (tradeList.get(i) != null && tradeList.get(i).getFocusedList(focus).size() > 0)
+        for (int i = 0; i < tradeList.size(); i++) {
+            if (tradeList.get(i) != null && tradeList.get(i).getFocusedList(focus).size() > 0) {
                 levels.add(i);
+            }
+        }
         return levels;
     }
 
