@@ -1,6 +1,6 @@
 package jeresources.registry;
 
-import jeresources.entry.VillagerEntry;
+import jeresources.entry.AbstractVillagerEntry;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public class VillagerRegistry {
     private static VillagerRegistry instance;
 
-    private List<VillagerEntry> villagers;
+    private List<AbstractVillagerEntry<?>> villagers;
 
     public static VillagerRegistry getInstance() {
         if (instance == null) {
@@ -21,13 +21,13 @@ public class VillagerRegistry {
         this.villagers = new LinkedList<>();
     }
 
-    public void addVillagerEntry(VillagerEntry entry) {
+    public void addVillagerEntry(AbstractVillagerEntry<?> entry) {
         if (entry.getVillagerTrades(0).size() > 0) {
             this.villagers.add(entry);
         }
     }
 
-    public List<VillagerEntry> getVillagers() {
+    public List<AbstractVillagerEntry<?>> getVillagers() {
         return this.villagers;
     }
 

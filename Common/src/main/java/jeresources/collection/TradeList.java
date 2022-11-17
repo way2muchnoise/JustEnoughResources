@@ -1,8 +1,8 @@
 package jeresources.collection;
 
-import jeresources.entry.VillagerEntry;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 public class TradeList extends LinkedList<TradeList.Trade> {
     private static final Random r = new Random();
 
-    private VillagerEntry villagerEntry;
+    private AbstractVillager entity;
 
-    public TradeList(VillagerEntry villagerEntry) {
-        this.villagerEntry = villagerEntry;
+    public TradeList(AbstractVillager entity) {
+        this.entity = entity;
     }
 
     public List<ItemStack> getCostAs() {
@@ -35,11 +35,11 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     public TradeList getSubListSell(ItemStack itemStack) {
-        return this.stream().filter(trade -> trade.sellsItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(villagerEntry)));
+        return this.stream().filter(trade -> trade.sellsItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entity)));
     }
 
     public TradeList getSubListBuy(ItemStack itemStack) {
-        return this.stream().filter(trade -> trade.buysItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(villagerEntry)));
+        return this.stream().filter(trade -> trade.buysItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entity)));
     }
 
     public TradeList getFocusedList(IFocus<ItemStack> focus) {
@@ -55,7 +55,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, RandomSource rand) {
-        MerchantOffer offer = itemListing.getOffer(villagerEntry.getVillagerEntity(), rand);
+        MerchantOffer offer = itemListing.getOffer(entity, rand);
         if (offer != null) {
             merchantOffers.add(offer);
         }
