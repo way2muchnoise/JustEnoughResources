@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("fabric-loom") version ("0.12-SNAPSHOT")
+	id("fabric-loom") version ("1.0-SNAPSHOT")
 }
 
 // gradle.properties
@@ -53,5 +53,5 @@ dependencies {
 }
 
 loom {
-	remapArchives.set(false)
+	// remapArchives.set(false) TODO: find out what replaces this or if we still need it
 }

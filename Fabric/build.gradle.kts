@@ -3,8 +3,8 @@ import net.darkhax.curseforgegradle.Constants as CFG_Constants
 
 plugins {
 	java
-	id("fabric-loom") version ("0.12-SNAPSHOT")
-	id("net.darkhax.curseforgegradle") version("1.0.8")
+	id("fabric-loom") version ("1.0-SNAPSHOT")
+	id("net.darkhax.curseforgegradle") version("1.0.11")
 }
 
 // gradle.properties

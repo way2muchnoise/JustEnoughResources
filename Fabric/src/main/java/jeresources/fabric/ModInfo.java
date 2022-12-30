@@ -5,6 +5,9 @@ import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.server.packs.FilePackResources;
 import net.minecraft.server.packs.PackResources;
 
+import java.nio.file.Path;
+import java.util.List;
+
 public class ModInfo implements IModInfo {
 
     private ModContainer modContainer;
@@ -19,7 +22,7 @@ public class ModInfo implements IModInfo {
     }
 
     @Override
-    public PackResources getPackResources() {
-        return new FilePackResources(this.modContainer.getRoot().toFile());
+    public List<? extends PackResources> getPackResources() {
+        return this.modContainer.getRootPaths().stream().map(Path::toFile).map(FilePackResources::new).toList();
     }
 }

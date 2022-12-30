@@ -176,7 +176,7 @@ public class LootTableHelper {
                 ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
-                Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.add(mod.getPackResources()));
+                Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
                 reloadableResourceManager.registerReloadListener(lootTables);
                 ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
                 Minecraft.getInstance().managedBlock(reloadInstance::isDone);

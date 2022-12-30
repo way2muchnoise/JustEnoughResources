@@ -5,6 +5,8 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.resource.PathPackResources;
 
+import java.util.List;
+
 public class ModInfo implements IModInfo {
 
     private IModFileInfo modFile;
@@ -19,7 +21,7 @@ public class ModInfo implements IModInfo {
     }
 
     @Override
-    public PackResources getPackResources() {
-        return new PathPackResources(modFile.getFile().getFileName(), modFile.getFile().getFilePath());
+    public List<? extends PackResources> getPackResources() {
+        return List.of(new PathPackResources(modFile.getFile().getFileName(), modFile.getFile().getFilePath()));
     }
 }
