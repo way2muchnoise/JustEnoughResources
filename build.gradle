@@ -36,11 +36,6 @@ repositories {
         name = "jei"
         url =  "https://dvs1.progwml6.com/files/maven"
     }
-	// TODO temporary for JEI - https://github.com/mezz/JustEnoughItems/issues/2095
-	maven {
-		name = "ftb-gui"
-		url =  "https://maven.latmod.com/"
-	}
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
