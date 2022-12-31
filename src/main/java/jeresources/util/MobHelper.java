@@ -17,7 +17,9 @@ public class MobHelper {
             raw += " (" + TranslationHelper.translateAndFormat("color.minecraft."+((SheepEntity) entry.getEntity()).getColor().getName()) + ")";
         StringBuilder sb = new StringBuilder();
         for (String s : raw.split(" "))
-            sb.append(s.substring(0, 1).toUpperCase()).append(s.substring(1)).append(" ");
+            if (s.length() >= 1) {
+                sb.append(s.substring(0, 1).toUpperCase()).append(s.substring(1)).append(" ");
+            }
         return sb.toString().trim();
     }
 }
