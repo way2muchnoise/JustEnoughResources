@@ -9,6 +9,8 @@
 	"jer.config.diyData.description": "The build in compat code will not load and jsons will be loaded （需要重启Minecraft）",
 	"jer.config.dimensionsBlacklist.title": "维度黑名单",
 	"jer.config.dimensionsBlacklist.description": "来自于JEI分析扫描的黑名单维度",
+	"jer.config.perChunkCount.title": "显示每个区块方块统计数",
+	"jer.config.perChunkCount.description": "世界生成 view 中的方块的统计数。",
 	"jer.config.showDevData.title": "Show extra information",
 	"jer.config.showDevData.description": "Mainly for pack devs. Features include but not limited to avg. blocks per chuck, entity ids, ...",
 	"jer.config.hiddenTabs.title": "Hide tabs added by JER",
