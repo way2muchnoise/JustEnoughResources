@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
-    private final MobEntry mob;
+    public final MobEntry mob;
 
     public MobWrapper(MobEntry mob) {
         this.mob = mob;
@@ -76,6 +76,8 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
 
         Font.normal.print(poseStack, this.mob.getLightLevel().toString(), 7, 22);
         Font.normal.print(poseStack, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
+        
+        RenderHelper.drawTexture(poseStack, 150, 18, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
     }
 
     @Override
