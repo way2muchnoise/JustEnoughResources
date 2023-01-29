@@ -1,9 +1,16 @@
 package jeresources.jei.mob;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
+import jeresources.reference.Resources;
 import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
@@ -19,15 +26,17 @@ import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.AbstractIllager;
+import net.minecraft.world.entity.monster.Blaze;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Husk;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.List;
 
 public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
     public final MobEntry mob;
