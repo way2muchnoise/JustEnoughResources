@@ -21,10 +21,9 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
 	protected static final int X_FIRST_ITEM = 97;
 	protected static final int Y_FIRST_ITEM = 43;
 
-	public MobCategory() {
-		super(ModJEICraftingPlugin.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16,
-				16));
-	}
+    	public MobCategory() {
+        	super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16));
+    	}
 
 	@Override
 	public @NotNull Component getTitle() {
@@ -38,7 +37,7 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
 
 	@Override
 	public @NotNull RecipeType<MobWrapper> getRecipeType() {
-		return ModJEICraftingPlugin.MOB_TYPE;
+		return JEIConfig.MOB_TYPE;
 	}
 
 	@Override
