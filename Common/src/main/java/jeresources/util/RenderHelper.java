@@ -2,9 +2,7 @@ package jeresources.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.api.MobRegistryImpl;
@@ -19,8 +17,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
@@ -39,14 +38,14 @@ public class RenderHelper {
         modelViewStack.translate(x, y, 50.0F);
         modelViewStack.scale((float) -scale, (float) scale, (float) scale);
         PoseStack mobPoseStack = new PoseStack();
-        mobPoseStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+        mobPoseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
         x = renderInfo.x;
         y = renderInfo.y;
         scale = renderInfo.scale;
         yaw = renderInfo.yaw;
         pitch = renderInfo.pitch;
-        mobPoseStack.mulPose(Vector3f.XN.rotationDegrees(((float) Math.atan((pitch / 40.0F))) * 20.0F));
+        mobPoseStack.mulPose(Axis.XN.rotationDegrees(((float) Math.atan((pitch / 40.0F))) * 20.0F));
         livingEntity.yo = (float) Math.atan(yaw / 40.0F) * 20.0F;
         float yRot = (float) Math.atan(yaw / 40.0F) * 40.0F;
         float xRot = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
@@ -79,10 +78,10 @@ public class RenderHelper {
         // RenderSystem.enableRescaleNormal();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.translate(x, y, 50.0F);
-        poseStack.mulPose(new Quaternion(-160.0F, 1.0F, 0.0F, 0.0F));
+        poseStack.mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
         poseStack.scale(scale, -scale, -scale);
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(new Quaternion(rotate, 0.0F, 1.0F, 0.0F));
+        poseStack.mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
@@ -105,9 +104,9 @@ public class RenderHelper {
         poseStack.translate(x, y, z);
         poseStack.scale(-scale, -scale, -scale);
         poseStack.translate(-0.5F, -0.5F, 0);
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(-30F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(-30F));
         poseStack.translate(0.5F, 0, -0.5F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(rotate));
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotate));
         poseStack.translate(-0.5F, 0, 0.5F);
 
         poseStack.pushPose();
@@ -132,16 +131,15 @@ public class RenderHelper {
         w *= scale;
         h *= scale;
         int scissorX = Math.round(Math.round(xyzTranslation[0] + x));
-        int scissorY = Math.round(Math.round(Minecraft.getInstance().getWindow().getHeight() - y - h - xyzTranslation[1]));
-        int scissorW = Math.round(w);
-        int scissorH = Math.round(h);
+        int scissorY = Math.round(Math.round(Minecraft.getInstance().getWindow().getHeight() - y - xyzTranslation[1]));
+        int scissorW = Math.round(w - x);
+        int scissorH = Math.round(h - y);
         IScissorHook.ScissorInfo scissorInfo = MobRegistryImpl.applyScissorHooks(new IScissorHook.ScissorInfo(scissorX, scissorY, scissorW, scissorH));
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(scissorInfo.x, scissorInfo.y, scissorInfo.width, scissorInfo.height);
+        RenderSystem.enableScissor(scissorInfo.x, scissorInfo.y, Math.max(0, scissorInfo.width), Math.max(0, scissorInfo.height));
     }
 
     public static void stopScissor() {
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        RenderSystem.disableScissor();
     }
 
     public static void drawTexture(PoseStack poseStack, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
@@ -153,7 +151,7 @@ public class RenderHelper {
     public static double[] getGLTranslation(PoseStack poseStack, double scale) {
         Matrix4f matrix = poseStack.last().pose();
         FloatBuffer buf = BufferUtils.createFloatBuffer(16);
-        matrix.store(buf);
+        matrix.set(buf);
         // { x, y, z }
         return new double[] { buf.get(getIndexFloatBuffer(0,3)) * scale, buf.get(getIndexFloatBuffer(1, 3)) * scale, buf.get(getIndexFloatBuffer(2, 3)) * scale };
     }

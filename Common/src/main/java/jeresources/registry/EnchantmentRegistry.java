@@ -2,7 +2,7 @@ package jeresources.registry;
 
 import jeresources.entry.EnchantmentEntry;
 import jeresources.platform.Services;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -55,6 +55,6 @@ public class EnchantmentRegistry {
     }
 
     private static Iterable<Enchantment> getEnchants() {
-        return Registry.ENCHANTMENT;
+        return BuiltInRegistries.ENCHANTMENT;
     }
 }
