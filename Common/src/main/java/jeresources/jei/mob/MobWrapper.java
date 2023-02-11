@@ -153,7 +153,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     }
     
     public boolean hasSpawnEgg() {
-        return getSpawnEgg() != null ? true : false;
+        return getSpawnEgg() != null;
     }
     
     public ItemStack getSpawnEgg() {
