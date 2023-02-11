@@ -1,16 +1,9 @@
 package jeresources.jei.mob;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
-import jeresources.reference.Resources;
 import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
@@ -26,20 +19,18 @@ import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.AbstractIllager;
-import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Ghast;
-import net.minecraft.world.entity.monster.Husk;
-import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
 
 public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
-    public final MobEntry mob;
+    private final MobEntry mob;
 
     public MobWrapper(MobEntry mob) {
         this.mob = mob;
@@ -86,8 +77,6 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
 
         Font.normal.print(poseStack, this.mob.getLightLevel().toString(), 7, 22);
         Font.normal.print(poseStack, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
-        
-        RenderHelper.drawTexture(poseStack, 150, 18, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
     }
 
     @Override
@@ -161,5 +150,13 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
         else if (livingEntity instanceof Creeper) offsetY = -15;
         else if (livingEntity instanceof AbstractPiglin) offsetY = -15;
         return offsetY;
+    }
+    
+    public boolean hasSpawnEgg() {
+        return getSpawnEgg() != null ? true : false;
+    }
+    
+    public ItemStack getSpawnEgg() {
+        return this.mob.getEntity().getPickResult();
     }
 }
