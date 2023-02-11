@@ -22,6 +22,6 @@ public class ModInfo implements IModInfo {
 
     @Override
     public List<? extends PackResources> getPackResources() {
-        return List.of(new PathPackResources(modFile.getFile().getFileName(), modFile.getFile().getFilePath()));
+        return List.of(new PathPackResources(modFile.getFile().getFileName(), false, modFile.getFile().getFilePath()));
     }
 }

@@ -6,11 +6,10 @@ import jeresources.config.Settings;
 import jeresources.platform.Services;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.ReloadInstance;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
@@ -151,7 +150,7 @@ public class LootTableHelper {
             mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
 
-        for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
+        for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
             if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }
@@ -175,7 +174,7 @@ public class LootTableHelper {
 
                 ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
                 List<PackResources> packs = new LinkedList<>();
-                packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
+                packs.add(new ServerPacksSource().getVanillaPack());
                 Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
                 reloadableResourceManager.registerReloadListener(lootTables);
                 ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
