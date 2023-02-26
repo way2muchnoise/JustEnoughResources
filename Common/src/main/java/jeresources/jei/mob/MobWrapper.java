@@ -151,4 +151,12 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
         else if (livingEntity instanceof AbstractPiglin) offsetY = -15;
         return offsetY;
     }
+    
+    public boolean hasSpawnEgg() {
+        return getSpawnEgg() != null;
+    }
+    
+    public ItemStack getSpawnEgg() {
+        return this.mob.getEntity().getPickResult();
+    }
 }
