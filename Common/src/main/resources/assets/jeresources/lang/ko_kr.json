@@ -99,7 +99,7 @@
 	"jer.mob.title": "몹 드롭",
 	"jer.mob.spawn": "생성 생물군계:",
 	"jer.mob.biome": "생성 생물군계: 여기에 마우스",
-	"jer.mob.exp": "경험치 드롭량",
+	"jer.mob.exp": "경험치",
 
 	"_comment": "#Villager View",
 	"jer.villager.title": "주민 거래",
