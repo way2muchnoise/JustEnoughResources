@@ -1,6 +1,5 @@
 package jeresources.jei.worldgen;
 
-import com.google.common.base.Objects;
 import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
@@ -9,27 +8,25 @@ import jeresources.entry.WorldGenEntry;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.ingredient.ITooltipCallback;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.enchantment.Enchantments;
 
-import javax.annotation.Nonnull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
+public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
     protected static final int X_OFFSET = 49 - 20;
     protected static final int Y_OFFSET = 52;
     protected static final int X_AXIS_SIZE = 100 + 20 + 8;
     protected static final int Y_AXIS_SIZE = 40;
+    protected static final String ORE_SLOT_NAME = "oreSlot";
 
     private final WorldGenEntry worldGenEntry;
 
@@ -39,12 +36,6 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
     public int getLineColor() {
         return this.worldGenEntry.getColour();
-    }
-
-    @Override
-    public void setIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInput(VanillaTypes.ITEM, this.worldGenEntry.getBlock());
-        ingredients.setOutputs(VanillaTypes.ITEM, this.worldGenEntry.getBlockAndDrops());
     }
 
     public ItemStack getBlock() {
@@ -120,13 +111,13 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
-        tooltip.addAll(getItemStackTooltip(slotIndex, ingredient));
+    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+        tooltip.addAll(getItemStackTooltip(recipeSlotView.getSlotName().orElse(null), (ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
     }
 
-    private List<Component> getItemStackTooltip(int slot, ItemStack itemStack) {
+    private List<Component> getItemStackTooltip(String slotName, ItemStack itemStack) {
         List<String> tooltip = new LinkedList<>();
-        if (itemStack != null && slot == 0) {
+        if (itemStack != null && slotName != null && slotName.equals(ORE_SLOT_NAME)) {
             if (this.worldGenEntry.isSilkTouchNeeded())
                 tooltip.add(Conditional.silkTouch.toString());
 
@@ -143,23 +134,29 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, ITooltipCallba
 
         } else {
             tooltip.add(TranslationHelper.translateAndFormat("jer.worldgen.average"));
-            String previousChanceString = null;
             for (LootDrop dropItem : this.worldGenEntry.getLootDrops(itemStack)) {
-                final String chanceString = dropItem.chanceString();
-                if (Objects.equal(chanceString, previousChanceString)) {
-                    continue;
-                } else {
-                    previousChanceString = chanceString;
-                }
+                String line = " - ";
 
-                String line = "  ";
                 if (dropItem.fortuneLevel > 0) {
-                    // line += Enchantment.getEnchantmentByLocation("fortune").getTranslatedName(dropItem.fortuneLevel)
-                    line += ForgeRegistries.ENCHANTMENTS.getValue(new ResourceLocation("minecraft.fortune")).getFullname(dropItem.fortuneLevel).toString();
+                    line += Enchantments.BLOCK_FORTUNE.getFullname(dropItem.fortuneLevel).getString(); // Avoid crash by using Minecraft ObjectHolder
                 } else {
                     line += TranslationHelper.translateAndFormat("jer.worldgen.base");
                 }
-                line += ": " + chanceString;
+
+                if (dropItem.chance < 1f) {
+                    line += " " + TranslationHelper.translateAndFormat("jer.worldgen.chance", dropItem.formatChance() + "%");
+                }
+
+                if (dropItem.minDrop == dropItem.maxDrop) {
+                    line += ": " + dropItem.minDrop;
+                } else {
+                    line += ": " + dropItem.minDrop + " - " + dropItem.maxDrop;
+                }
+
+                if (dropItem.isAffectedBy(Conditional.affectedByFortune)) {
+                    line += " " + TranslationHelper.translateAndFormat("jer.worldgen.affectedByFortune");
+                }
+
                 tooltip.add(line);
             }
         }

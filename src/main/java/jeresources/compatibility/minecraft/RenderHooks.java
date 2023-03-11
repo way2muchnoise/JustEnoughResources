@@ -2,7 +2,6 @@ package jeresources.compatibility.minecraft;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import jeresources.api.render.IMobRenderHook;
 import net.minecraft.world.entity.ambient.Bat;

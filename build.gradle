@@ -1,24 +1,23 @@
 buildscript {
 	repositories {
-		maven {
-			name = "forge"
-			url = "https://files.minecraftforge.net/maven" 
-		}
+		maven { url = "https://maven.minecraftforge.net/" }
+		maven { url = 'https://maven.parchmentmc.org' }
 		mavenCentral()
 	}
 
 	dependencies {
 		classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true
+		classpath 'org.parchmentmc:librarian:1.+'
 	}
 }
 
 plugins {
 	id "com.matthewprenger.cursegradle" version "1.4.0"
-	id "com.jfrog.bintray" version "1.8.4"
 }
 
 apply plugin: 'idea'
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'
 
 group = "jeresources"
@@ -38,7 +37,7 @@ repositories {
     }
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 sourceSets {
 	api
@@ -63,7 +62,7 @@ dependencies {
 }
 
 minecraft {
-	mappings channel: "official", version: "${version_minecraft}"
+	mappings channel: "${channel_mapping}", version: "${version_mapping}"
 
 	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -136,7 +135,7 @@ jar {
 		])
 	}
 
-	destinationDir(file (rootProject.getRootDir().getPath() + '/output'))
+	destinationDir(file(rootProject.getRootDir().getPath() + '/output'))
 
 	finalizedBy('reobfJar')
 }
@@ -145,7 +144,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 	duplicatesStrategy(DuplicatesStrategy.FAIL)
 	archiveClassifier.set('javadoc')
 	from javadoc.destinationDir
-	destinationDir(file (rootProject.getRootDir().getPath() + '/output'))
+	destinationDir(file(rootProject.getRootDir().getPath() + '/output'))
 }
 
 task sourcesJar(type: Jar) {
@@ -153,7 +152,7 @@ task sourcesJar(type: Jar) {
 	archiveClassifier.set('sources')
 	from sourceSets.main.allJava
 	from sourceSets.api.allJava
-	destinationDir(file (rootProject.getRootDir().getPath() + '/output'))
+	destinationDir(file(rootProject.getRootDir().getPath() + '/output'))
 }
 
 task apiJar(type: Jar) {
@@ -161,7 +160,7 @@ task apiJar(type: Jar) {
 	archiveClassifier.set('api')
 	from sourceSets.api.output
 	afterEvaluate { finalizedBy reobfApiJar }
-	destinationDir(file (rootProject.getRootDir().getPath() + '/output'))
+	destinationDir(file(rootProject.getRootDir().getPath() + '/output'))
 
 	// TODO: when FG bug is fixed, remove allJava from the api jar.
 	// https://github.com/MinecraftForge/ForgeGradle/issues/369
@@ -200,22 +199,22 @@ curseforge {
         releaseType =  'alpha'
 		addGameVersion "${version_minecraft}"
         mainArtifact (jar) {
-            displayName = "${jar.archiveName}".replace(".jar", "")
+            displayName = "${jar.archiveFileName.get()}".replace(".jar", "")
 			relations {
 				requiredDependency 'jei'
 			}
         }
         addArtifact (javadocJar) {
-            displayName = "${javadocJar.archiveName}".replace(".jar", "")
+            displayName = "${javadocJar.archiveFileName.get()}".replace(".jar", "")
         }
         addArtifact (sourcesJar) {
-            displayName = "${sourcesJar.archiveName}".replace(".jar", "")
+            displayName = "${sourcesJar.archiveFileName.get()}".replace(".jar", "")
         }
         addArtifact (apiJar) {
-            displayName = "${apiJar.archiveName}".replace(".jar", "")
+            displayName = "${apiJar.archiveFileName.get()}".replace(".jar", "")
         }
         addArtifact (deobfJar) {
-			displayName = "${deobfJar.archiveName}".replace(".jar", "")
+			displayName = "${deobfJar.archiveFileName.get()}".replace(".jar", "")
 		}
     }
 }

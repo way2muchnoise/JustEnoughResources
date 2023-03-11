@@ -1,10 +1,10 @@
 package jeresources.compatibility.minecraft;
 
-import java.util.Comparator;
+import java.util.Map;
 
+import jeresources.api.conditionals.Conditional;
 import jeresources.api.distributions.DistributionSquare;
 import jeresources.api.distributions.DistributionTriangular;
-import jeresources.api.distributions.DistributionUnderWater;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.drop.PlantDrop;
 import jeresources.api.restrictions.BiomeRestriction;
@@ -16,8 +16,6 @@ import jeresources.entry.MobEntry;
 import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.LootTableHelper;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Squid;
@@ -27,7 +25,6 @@ import net.minecraft.world.entity.monster.Giant;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.storage.loot.LootTables;
 
@@ -41,19 +38,11 @@ public class MinecraftCompat extends CompatBase {
         registerVanillaPlants();
     }
 
-    @Override
-    protected void registerMob(MobEntry entry) {
-        MobCompat.getInstance().setLightLevel(entry);
-        MobCompat.getInstance().setExperience(entry);
-        super.registerMob(entry);
-    }
-
     private void registerVanillaMobs() {
-        Level level = getLevel();
-        LootTables lootTables = LootTableHelper.getLootTables(level);
-        LootTableHelper.getAllMobLootTables(level).entrySet().stream()
-            .map(entry -> new MobEntry(entry.getValue(), lootTables.get(entry.getKey())))
-            .sorted(Comparator.comparing(MobEntry::getMobName))
+        LootTables lootTables = LootTableHelper.getLootTables();
+        LootTableHelper.getAllMobLootTables().entrySet().stream()
+            .sorted(Map.Entry.comparingByKey())
+            .map(entry -> MobEntry.create(entry.getValue(), lootTables.get(entry.getKey())))
             .forEach(this::registerMob);
 
         registerMobRenderHook(Bat.class, RenderHooks.BAT);
@@ -66,24 +55,45 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerDungeonLoot() {
-        Level level = getLevel();
-        LootTables lootTables = LootTableHelper.getLootTables(level);
+        LootTables lootTables = LootTableHelper.getLootTables();
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
             .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootTables.get(resourceLocation)))
             .forEach(this::registerDungeonEntry);
     }
 
     private void registerOres() {
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(15, 15, 0.001F), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI, 4, new CompoundTag()))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(20, 8, 1, 64)));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(8, 7, 1, 16), true, new LootDrop(new ItemStack(Items.REDSTONE, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new DistributionSquare(1, 7, 1, 16), true, new LootDrop(new ItemStack(Items.DIAMOND))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.EMERALD_ORE), new DistributionSquare(6, 1, 4, 32), new Restriction(BiomeRestriction.EXTREME_HILLS), true, new LootDrop(new ItemStack(Items.EMERALD))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionSquare(2, 8, 1, 32)));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionSquare(20, 9, 32, 80), new Restriction(BiomeRestriction.MESA)));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COAL_ORE), new DistributionSquare(20, 16, 1, 128), true, new LootDrop(new ItemStack(Items.COAL))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.NETHER_QUARTZ_ORE), new DistributionSquare(20, 14, 1, 126), new Restriction(DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.QUARTZ, 4))));
-        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.CLAY), new DistributionUnderWater(0.0035F), new LootDrop(new ItemStack(Items.CLAY_BALL, 4))));
+        // Overworld
+        // Coal ore
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COAL_ORE), new DistributionSquare(30, 16, 136, 256), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.COAL), 1, 4, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COAL_ORE), new DistributionTriangular(20, 16, 96, 96), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.COAL), 1, 4, Conditional.affectedByFortune)));
+        // Copper ore
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COPPER_ORE), new DistributionTriangular(16, 8, 46, 66), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_COPPER), 2, 20, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.COPPER_ORE), new DistributionTriangular(16, 16, 46, 66), new Restriction(BiomeRestriction.DRIPSTONE_CAVES, DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_COPPER), 2, 20, Conditional.affectedByFortune)));
+        // Lapis
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionSquare(4, 8, -64, 64), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI), 4, 36, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.LAPIS_ORE), new DistributionTriangular(2, 8, 0, 32), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.LAPIS_LAZULI), 4, 36, Conditional.affectedByFortune)));
+        // Iron ore
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionTriangular(90, 8, 232, 152), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_IRON), 1, 4, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionTriangular(10, 8, 16, 40), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_IRON), 1, 4, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.IRON_ORE), new DistributionSquare(10, 8, -64, 72), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_IRON), 1, 4, Conditional.affectedByFortune)));
+        // Gold ore
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionSquare(1, 8, -64, -48), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_GOLD), 1, 4, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionTriangular(4, 8, -16, 48), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_GOLD), 1, 4, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.GOLD_ORE), new DistributionTriangular(50, 8, -16, 48), new Restriction(BiomeRestriction.BADLANDS, DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.RAW_GOLD), 1, 4, Conditional.affectedByFortune)));
+        // Redstone
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionTriangular(8, 8, -64, 32), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.REDSTONE), 1, 32, Conditional.affectedByFortune)));
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.REDSTONE_ORE), new DistributionSquare(4, 8, -64, 15), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.REDSTONE), 1, 32, Conditional.affectedByFortune)));
+        // Diamonds
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new DistributionTriangular(6, 6, -64, 64), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.DIAMOND), 1, 4, Conditional.affectedByFortune)));
+        // Emeralds
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.EMERALD_ORE), new DistributionTriangular(100, 4, 202, 218), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.EMERALD), 1, 4, Conditional.affectedByFortune)));
+        // Nether
+        // Quartz
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.NETHER_QUARTZ_ORE), new DistributionSquare(16, 16, 10, 128), new Restriction(DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.QUARTZ), 1, 4, Conditional.affectedByFortune)));
+        // Gold
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.NETHER_GOLD_ORE), new DistributionSquare(8, 16, 15, 117), new Restriction(DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.GOLD_NUGGET), 2, 24, Conditional.affectedByFortune)));
+        // Ancient Debris
+        registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.ANCIENT_DEBRIS), new DistributionTriangular(14, 9, 0.00016F), new Restriction(DimensionRestriction.NETHER)));
     }
 
     private void registerVanillaPlants() {

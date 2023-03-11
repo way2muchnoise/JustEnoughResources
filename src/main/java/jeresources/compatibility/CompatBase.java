@@ -14,13 +14,41 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
+
 public abstract class CompatBase {
+    @Nullable
+    private static Level fakeClientLevel = null;
+
+    /**
+     * This should only be used for loading loot tables,
+     * it is used so that clients connected to an integrated server
+     * do not need to load the loot tables multiple times.
+     *
+     * It is dangerous to use for other purposes, because modded entities (and even vanilla villagers)
+     * can load lots of things if they have the server level, which will make JER load slowly.
+     */
+    public static Optional<Level> getServerLevel() {
+        Minecraft minecraft = Minecraft.getInstance();
+        return Optional.of(minecraft)
+                .map(Minecraft::getSingleplayerServer)
+                .map(integratedServer -> integratedServer.getLevel(Level.OVERWORLD));
+    }
+
+    @Nonnull
     public static Level getLevel() {
-        Level level = Minecraft.getInstance().level;
-        if (level == null) {
-            level = new FakeClientLevel();
+        Minecraft minecraft = Minecraft.getInstance();
+        Level level = minecraft.level;
+        if (level != null) {
+            return level;
         }
-        return level;
+
+        if (fakeClientLevel == null) {
+            fakeClientLevel = new FakeClientLevel();
+        }
+        return fakeClientLevel;
     }
 
     public abstract void init(boolean worldGen);

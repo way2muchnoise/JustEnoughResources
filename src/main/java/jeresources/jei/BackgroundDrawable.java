@@ -6,7 +6,8 @@ import jeresources.reference.Reference;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
+import net.minecraftforge.client.gui.GuiUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class BackgroundDrawable implements IDrawable {
     private final int width, height;
@@ -30,7 +31,7 @@ public class BackgroundDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(PoseStack poseStack, int xOffset, int yOffset) {
+    public void draw(@NotNull PoseStack poseStack, int xOffset, int yOffset) {
         RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, this.resource);

@@ -1,44 +1,58 @@
 package jeresources.util;
 
+import jeresources.compatibility.CompatBase;
+import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class MobTableBuilder {
-    private final Map<ResourceLocation, LivingEntity> mobTables = new HashMap<>();
+    private final Map<ResourceLocation, Supplier<LivingEntity>> mobTables = new HashMap<>();
+    private final MyEntityLoot entityLootHelper = new MyEntityLoot();
+    /**
+     * level should be a client level.
+     * Passing in a ServerLevel can allow modded mobs to load all kinds of things,
+     * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
+     */
     private final Level level;
 
-    public MobTableBuilder(Level level) {
-        this.level = level;
+    public MobTableBuilder() {
+        this.level = CompatBase.getLevel();
     }
 
     public void add(ResourceLocation resourceLocation, EntityType<?> entityType) {
-        Entity entity = entityType.create(level);
-        if (entity instanceof LivingEntity) {
-            mobTables.put(resourceLocation, (LivingEntity) entity);
-        } else {
-            if (entity != null) {
-                entity.remove(Entity.RemovalReason.DISCARDED);
-            }
+        if (entityLootHelper.isNonLiving(entityType)) {
+            return;
         }
+        mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(level));
     }
 
     public void addSheep(ResourceLocation resourceLocation, EntityType<Sheep> entityType, DyeColor dye) {
-        Sheep sheep = entityType.create(level);
-        if (sheep != null) {
+        mobTables.put(resourceLocation, () -> {
+            Sheep sheep = entityType.create(level);
+            assert sheep != null;
             sheep.setColor(dye);
-            mobTables.put(resourceLocation, sheep);
-        }
+            return sheep;
+        });
     }
 
-    public Map<ResourceLocation, LivingEntity> getMobTables() {
+    public Map<ResourceLocation, Supplier<LivingEntity>> getMobTables() {
         return mobTables;
+    }
+
+    /** Helper class to allow public access to EntityLoot.isNonLiving */
+    private static class MyEntityLoot extends EntityLoot {
+        @Override
+        public boolean isNonLiving(@Nonnull EntityType<?> entitytype) {
+            return super.isNonLiving(entitytype);
+        }
     }
 }

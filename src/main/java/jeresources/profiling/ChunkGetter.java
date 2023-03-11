@@ -1,19 +1,14 @@
 package jeresources.profiling;
 
-import com.mojang.datafixers.util.Either;
 import jeresources.util.LogHelper;
 import net.minecraft.ReportedException;
-import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ThreadedLevelLightEngine;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.ChunkStatus;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class ChunkGetter implements Runnable {
     public static final int CHUNKS_PER_RUN = 25;
@@ -156,11 +151,12 @@ public class ChunkGetter implements Runnable {
 
 
 
-        // TODO - do I need to recurse over all parent states first ?
+        /*/ TODO - do I need to recurse over all parent states first ?
         ChunkStatus.FEATURES.generate(level.getServer(), level, chunkGenerator,
             level.getStructureManager(), (ThreadedLevelLightEngine) level.getLightEngine(),
             iChunk -> iChunk.getStatus().isOrAfter(ChunkStatus.FEATURES) ? CompletableFuture.completedFuture(Either.left(iChunk)) : ChunkHolder.UNLOADED_CHUNK_FUTURE,
             centerChunks);
+         /*/
 
         return centerChunks;
     }

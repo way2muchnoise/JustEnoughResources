@@ -5,9 +5,9 @@ import jeresources.api.drop.PlantDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
 import jeresources.util.RenderHelper;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.ingredient.ITooltipCallback;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -17,21 +17,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
-public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<ItemStack> {
-    private final PlantEntry plantEntry;
+public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+    protected final PlantEntry plantEntry;
 
     public PlantWrapper(PlantEntry entry) {
         plantEntry = entry;
-    }
-
-    @Override
-    public void setIngredients(@Nonnull IIngredients ingredients) {
-        ingredients.setInput(VanillaTypes.ITEM, plantEntry.getPlantItemStack());
-        ingredients.setOutputs(VanillaTypes.ITEM, plantEntry.getLootDropStacks());
     }
 
     @Override
@@ -41,23 +35,18 @@ public class PlantWrapper implements IRecipeCategoryExtension, ITooltipCallback<
     }
 
     @Override
-    public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
-        if (!input)
-            tooltip.add(getChanceString(ingredient));
+    public void onTooltip(IRecipeSlotView recipeSlotView, @NotNull List<Component> tooltip) {
+        if (recipeSlotView.getRole() != RecipeIngredientRole.INPUT) tooltip.add(getChanceString((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
     }
 
     public float getChance(ItemStack itemStack) {
         PlantDrop drop = this.plantEntry.getDrop(itemStack);
-        switch (drop.getDropKind()) {
-            case chance:
-                return drop.getChance();
-            case weight:
-                return (float) drop.getWeight() / this.plantEntry.getTotalWeight();
-            case minMax:
-                return Float.NaN;
-            default:
-                return 0;
-        }
+        return switch (drop.getDropKind()) {
+            case chance -> drop.getChance();
+            case weight -> (float) drop.getWeight() / this.plantEntry.getTotalWeight();
+            case minMax -> Float.NaN;
+            default -> 0;
+        };
     }
 
     public int[] getMinMax(ItemStack itemStack) {

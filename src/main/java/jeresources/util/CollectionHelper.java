@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CollectionHelper {
     public static List<ItemStack> create(ItemStack... itemStacks) {
@@ -18,7 +19,7 @@ public class CollectionHelper {
         return new ArrayList<>(Arrays.asList(strings));
     }
 
-    public static List<Component> create(Function<String, Component> function, String... strings) {
-        return new ArrayList<>(Arrays.asList(strings)).stream().map(function).collect(Collectors.toList());
+    public static List<Component> create(Function<String, Component> function, Stream<String> strings) {
+        return strings.map(function).collect(Collectors.toList());
     }
 }

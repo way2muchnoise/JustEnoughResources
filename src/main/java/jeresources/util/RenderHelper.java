@@ -2,11 +2,9 @@ package jeresources.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import jeresources.api.render.ColorHelper;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.MobRegistryImpl;
@@ -21,8 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.gui.GuiUtils;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 

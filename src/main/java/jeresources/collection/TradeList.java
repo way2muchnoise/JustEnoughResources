@@ -43,14 +43,11 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         if (focus == null) {
             return this;
         } else {
-            switch (focus.getMode()) {
-                case INPUT:
-                    return getSubListBuy(focus.getValue());
-                case OUTPUT:
-                    return getSubListSell(focus.getValue());
-                default:
-                    return this;
-            }
+            return switch (focus.getRole()) {
+                case INPUT -> getSubListBuy(focus.getTypedValue().getIngredient());
+                case OUTPUT -> getSubListSell(focus.getTypedValue().getIngredient());
+                default -> this;
+            };
         }
     }
 

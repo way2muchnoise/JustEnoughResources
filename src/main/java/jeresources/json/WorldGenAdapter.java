@@ -14,7 +14,6 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.registry.WorldGenRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLPaths;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -44,9 +42,8 @@ public class WorldGenAdapter {
     }
 
     public static boolean readDIYData() {
-        JsonParser parser = new JsonParser();
         try {
-            JsonElement base = parser.parse(new FileReader(getWorldGenFile()));
+            JsonElement base = JsonParser.parseReader(new FileReader(getWorldGenFile()));
             if (!base.isJsonArray() || base.getAsJsonArray().size() == 0) return false;
             JsonArray array = base.getAsJsonArray();
             for (int i = 0; i < array.size(); i++) {

@@ -10,7 +10,8 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
-import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
+import net.minecraft.server.packs.resources.ReloadInstance;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,9 +26,9 @@ import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.resource.PathResourcePack;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 public class LootTableHelper {
     private static final Map<DyeColor, ResourceLocation> sheepColors = new HashMap<>();
@@ -93,8 +94,8 @@ public class LootTableHelper {
         return drops;
     }
 
-    public static List<LootDrop> toDrops(Level level, ResourceLocation lootTable) {
-        return toDrops(getLootTables(level).get(lootTable));
+    public static List<LootDrop> toDrops(ResourceLocation lootTable) {
+        return toDrops(getLootTables().get(lootTable));
     }
 
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
@@ -143,8 +144,8 @@ public class LootTableHelper {
         return chestTables;
     }
 
-    public static Map<ResourceLocation, LivingEntity> getAllMobLootTables(Level world) {
-        MobTableBuilder mobTableBuilder = new MobTableBuilder(world);
+    public static Map<ResourceLocation, Supplier<LivingEntity>> getAllMobLootTables() {
+        MobTableBuilder mobTableBuilder = new MobTableBuilder();
 
         for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
             ResourceLocation lootTableList = entry.getValue();
@@ -152,7 +153,7 @@ public class LootTableHelper {
             mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
 
-        for (EntityType entityType : ForgeRegistries.ENTITIES) {
+        for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
             if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
             }
@@ -163,8 +164,10 @@ public class LootTableHelper {
 
     private static LootTables lootTables;
 
-    public static LootTables getLootTables(@Nullable Level level) {
-        if (level == null || level.getServer() == null) {
+    public static LootTables getLootTables() {
+        Level level = CompatBase.getServerLevel()
+                .orElseGet(CompatBase::getLevel);
+        if (level.getServer() == null) {
             if (lootTables == null) {
                 lootTables = new LootTables(new PredicateManager());
 
@@ -172,23 +175,19 @@ public class LootTableHelper {
                     return lootTables;
                 }
 
-                SimpleReloadableResourceManager serverResourceManger = new SimpleReloadableResourceManager(PackType.SERVER_DATA);
+
+                ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
                 for (IModFileInfo mod : ModList.get().getModFiles()) {
                     packs.add(new PathResourcePack(mod.getFile().getFileName(), mod.getFile().getFilePath()));
                 }
-                packs.forEach(serverResourceManger::add);
-                serverResourceManger.registerReloadListener(lootTables);
-                CompletableFuture<Unit> completableFuture = serverResourceManger.reload(Util.backgroundExecutor(), Minecraft.getInstance(), packs, CompletableFuture.completedFuture(Unit.INSTANCE));
-                Minecraft.getInstance().managedBlock(completableFuture::isDone);
+                reloadableResourceManager.registerReloadListener(lootTables);
+                ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
+                Minecraft.getInstance().managedBlock(reloadInstance::isDone);
             }
             return lootTables;
         }
         return level.getServer().getLootTables();
-    }
-
-    public static LootTables getLootTables() {
-        return getLootTables(CompatBase.getLevel());
     }
 }

@@ -9,7 +9,7 @@ public class DistributionSquare extends DistributionBase {
      * @param chance chance for the distribution
      */
     public DistributionSquare(int minY, int maxY, float chance) {
-        super(DistributionHelpers.getSquareDistribution(Math.max(minY, 0), Math.min(maxY, 255), chance));
+        super(DistributionHelpers.getSquareDistribution(Math.max(minY, -64), Math.min(maxY, 255), chance));
         this.bestHeight = (minY + maxY) / 2;
     }
 
@@ -23,7 +23,7 @@ public class DistributionSquare extends DistributionBase {
      * @param chance the chance at the top
      */
     public DistributionSquare(int min0, int minY, int maxY, int max0, float chance) {
-        super(DistributionHelpers.getRoundedSquareDistribution(Math.max(min0, 0), Math.max(minY, 0), Math.min(maxY, 255), Math.min(max0, 255), chance));
+        super(DistributionHelpers.getRoundedSquareDistribution(Math.max(min0, -64), Math.max(minY, -64), Math.min(maxY, 255), Math.min(max0, 255), chance));
         this.bestHeight = DistributionHelpers.calculateMeanLevel(this.getDistribution(), (minY + maxY) / 2);
     }
 

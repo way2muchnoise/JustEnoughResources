@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DungeonEntry {
     private Set<LootDrop> drops;
@@ -64,14 +65,14 @@ public class DungeonEntry {
         return name == null ? this.name : name;
     }
 
-    public List<ItemStack> getItemStacks() {
-        return getItemStacks(null);
-    }
-
     public List<ItemStack> getItemStacks(IFocus<ItemStack> focus) {
         return drops.stream().map(drop -> drop.item)
-            .filter(stack -> focus == null || ItemStack.isSame(ItemHandlerHelper.copyStackWithSize(stack, focus.getValue().getCount()), focus.getValue()))
+            .filter(stack -> focus == null || ItemStack.isSame(ItemHandlerHelper.copyStackWithSize(stack, focus.getTypedValue().getIngredient().getCount()), focus.getTypedValue().getIngredient()))
             .collect(Collectors.toList());
+    }
+
+    public List<ItemStack> getItemStacks(Stream<IFocus<ItemStack>> focuses) {
+        return getItemStacks(focuses.findFirst().orElse(null));
     }
 
     public int getMaxStacks() {

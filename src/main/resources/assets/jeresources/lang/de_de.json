@@ -34,14 +34,16 @@
 	"jer.not": "Nicht",
 
 	"_comment": "#Dungeon View",
-	"jer.dungeon.title": "Dungeontruhen",
+	"jer.dungeon.title": "Verliestruhen",
 	"jer.dungeon.abandonedMineshaftChest": "Minenschacht",
 	"jer.dungeon.desertPyramidChest": "Wüstentempel",
 	"jer.dungeon.pyramidJungleChest": "Dschungeltempel",
 	"jer.dungeon.strongholdCorridorChest": "Festung Gang",
 	"jer.dungeon.strongholdLibraryChest": "Festung Bibliothek",
 	"jer.dungeon.strongholdCrossingChest": "Festung Kreuzung",
-	"jer.dungeon.simpleDungeonChest": "Festung",
+	"jer.dungeon.villageBlacksmithChest": "Schmiede",
+	"jer.dungeon.spawnBonusChest": "Bonustruhe",
+	"jer.dungeon.simpleDungeonChest": "Verlies",
 	"jer.dungeon.netherBridgeChest": "Netherfestung",
 	"jer.dungeon.endCityTreasureChest": "Endsiedlung",
 	"jer.dungeon.iglooChest": "Iglu",
@@ -100,7 +102,7 @@
 	"_comment": "#Villager View",
 	"jer.villager.title": "Dorfbewohnerangebote",
 
-	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string\"jer.magmaCream.text\": \"Small and Large Magma Cubes\",",
+	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
 	"jer.slimeBall.text": "Nur kleine Schleime",
 	"jer.rareDrop.text": "Seltener Drop",
 

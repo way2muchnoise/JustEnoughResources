@@ -1,25 +1,19 @@
 package jeresources.profiling;
 
-import net.minecraft.CrashReport;
-import net.minecraft.CrashReportCategory;
-import net.minecraft.ReportedException;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.ChunkStatus;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraftforge.common.capabilities.Capability;
@@ -82,11 +76,6 @@ public class DummyWorld extends ServerLevel {
 
     @Override
     public RecipeManager getRecipeManager() {
-        return null;
-    }
-
-    @Override
-    public TagContainer getTagManager() {
         return null;
     }
 
@@ -185,7 +174,7 @@ public class DummyWorld extends ServerLevel {
         }
 
         @Override
-        public void tick(BooleanSupplier booleanSupplier) {
+        public void tick(BooleanSupplier booleanSupplier, boolean bool) {
 
         }
 

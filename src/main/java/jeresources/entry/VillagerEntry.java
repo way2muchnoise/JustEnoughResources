@@ -10,6 +10,7 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class VillagerEntry {
     private final List<TradeList> tradeList;
     private final VillagerProfession profession;
+    @Nullable
+    private Villager entity;
 
     public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
         this.profession = profession;
@@ -86,8 +89,24 @@ public class VillagerEntry {
     }
 
     public Villager getVillagerEntity() {
-        Villager villager = EntityType.VILLAGER.create(CompatBase.getLevel());
-        villager.setVillagerData(villager.getVillagerData().setProfession(this.profession));
-        return villager;
+        if (this.entity == null) {
+            /*
+             * level must be a client level here.
+             * Passing in a ServerLevel can allow villagers to load all kinds of things,
+             * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
+             */
+            this.entity = EntityType.VILLAGER.create(CompatBase.getLevel());
+            assert this.entity != null;
+            this.entity.setVillagerData(this.entity.getVillagerData().setProfession(this.profession));
+        }
+        return this.entity;
+    }
+
+    public List<ItemStack> getPois() {
+        return this.profession.getJobPoiType().getBlockStates().stream().map(blockstate -> new ItemStack(blockstate.getBlock())).collect(Collectors.toList());
+    }
+
+    public boolean hasPois() {
+        return !this.profession.getJobPoiType().getBlockStates().isEmpty();
     }
 }
