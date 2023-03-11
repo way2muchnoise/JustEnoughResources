@@ -53,8 +53,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
 
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-        // TODO: Fix scissoring
-        // RenderHelper.scissor(poseStack,7, 43, 59, 79);
+        RenderHelper.scissor(poseStack,7, 43, 59, 79);
         AbstractVillager villager = entry.getVillagerEntity();
         RenderHelper.renderEntity(
             poseStack,
@@ -63,7 +62,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
             80 - mouseY,
             villager
         );
-        //RenderHelper.stopScissor();
+        RenderHelper.stopScissor();
 
         int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - getPossibleLevels(focus).size()) / 2;
         int i;

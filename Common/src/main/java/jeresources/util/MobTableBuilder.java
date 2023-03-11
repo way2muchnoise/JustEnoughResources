@@ -1,6 +1,7 @@
 package jeresources.util;
 
 import jeresources.compatibility.CompatBase;
+import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,11 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static net.minecraft.data.loot.EntityLootSubProvider.SPECIAL_LOOT_TABLE_TYPES;
-
-
 public class MobTableBuilder {
     private final Map<ResourceLocation, Supplier<LivingEntity>> mobTables = new HashMap<>();
+    private final MyEntityLoot entityLootHelper = new MyEntityLoot();
     /**
      * level should be a client level.
      * Passing in a ServerLevel can allow modded mobs to load all kinds of things,
@@ -31,7 +30,7 @@ public class MobTableBuilder {
     }
 
     public void add(ResourceLocation resourceLocation, EntityType<?> entityType) {
-        if (isNonLiving(entityType) || !entityType.isEnabled(level.enabledFeatures())) {
+        if (entityLootHelper.isNonLiving(entityType)) {
             return;
         }
         mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(level));
@@ -50,7 +49,10 @@ public class MobTableBuilder {
         return mobTables;
     }
 
-    private static boolean isNonLiving(@Nonnull EntityType<?> entityType) {
-        return !SPECIAL_LOOT_TABLE_TYPES.contains(entityType) && entityType.getCategory() == MobCategory.MISC;
+    /** Helper class to add method to check nonLiving */
+    private static class MyEntityLoot extends EntityLoot {
+        public boolean isNonLiving(@Nonnull EntityType<?> entityType) {
+            return !SPECIAL_LOOT_TABLE_TYPES.contains(entityType) && entityType.getCategory() == MobCategory.MISC;
+        }
     }
 }

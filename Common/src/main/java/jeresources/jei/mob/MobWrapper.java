@@ -43,8 +43,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     @Override
     public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         LivingEntity livingEntity = this.mob.getEntity();
-        // TODO: Fix scissoring
-        //RenderHelper.scissor(poseStack,7, 43, 59, 79);
+        RenderHelper.scissor(poseStack,7, 43, 59, 79);
         float scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
@@ -54,7 +53,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
             70 - offsetY - mouseY,
             livingEntity
         );
-        //RenderHelper.stopScissor();
+        RenderHelper.stopScissor();
 
         String mobName = this.mob.getMobName();
         if (Settings.showDevData) {
@@ -112,9 +111,9 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
             && mouseY < 12 + 10;
     }
 
-    private float getScale(LivingEntity livingEntity) {
-        float width = livingEntity.getBbWidth();
-        float height = livingEntity.getBbHeight();
+    private float getScale(LivingEntity LivingEntity) {
+        float width = LivingEntity.getBbWidth();
+        float height = LivingEntity.getBbHeight();
         if (width <= height) {
             if (height < 0.9) return 50.0F;
             else if (height < 1) return 35.0F;
@@ -151,11 +150,11 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
         else if (livingEntity instanceof AbstractPiglin) offsetY = -15;
         return offsetY;
     }
-    
+
     public boolean hasSpawnEgg() {
         return getSpawnEgg() != null;
     }
-    
+
     public ItemStack getSpawnEgg() {
         return this.mob.getEntity().getPickResult();
     }

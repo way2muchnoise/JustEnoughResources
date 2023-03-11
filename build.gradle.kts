@@ -79,11 +79,8 @@ subprojects {
     repositories {
         // Sponge mirrors a lot of maven repos, using as fallback
         maven("https://repo.spongepowered.org/repository/maven-public/")
-        // JEI repo before January 2023
+        // JEI repo + mirror
         maven("https://dvs1.progwml6.com/files/maven/")
-        // JEI repo after January 2023
-        maven("https://maven.blamejared.com/")
-        // JEI mirror
         maven("https://modmaven.dev")
     }
 }

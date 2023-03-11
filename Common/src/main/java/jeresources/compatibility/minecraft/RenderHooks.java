@@ -2,7 +2,7 @@ package jeresources.compatibility.minecraft;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
 import jeresources.api.render.IMobRenderHook;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
@@ -16,18 +16,18 @@ public class RenderHooks {
     public static final IMobRenderHook ENDER_DRAGON = (IMobRenderHook<EnderDragon>) (renderInfo, entity) ->
     {
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.mulPose(Axis.XP.rotationDegrees(20.0F));
-        modelViewStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        modelViewStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
+        modelViewStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
         renderInfo.pitch = -renderInfo.pitch - 80;
-        modelViewStack.mulPose(Axis.YN.rotationDegrees(((float)(renderInfo.yaw < 90 ? (renderInfo.yaw < -90 ? 90 : -renderInfo.yaw) : -90) / 2.0F)));
+        modelViewStack.mulPose(Vector3f.YN.rotationDegrees(((float)(renderInfo.yaw < 90 ? (renderInfo.yaw < -90 ? 90 : -renderInfo.yaw) : -90) / 2.0F)));
         return renderInfo;
     };
 
     public static final IMobRenderHook BAT = (IMobRenderHook<Bat>) (renderInfo, entity) ->
     {
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.mulPose(Axis.XP.rotationDegrees(20.0F));
-        modelViewStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+        modelViewStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
+        modelViewStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
         renderInfo.pitch = -renderInfo.pitch;
         return renderInfo;
     };
@@ -43,7 +43,7 @@ public class RenderHooks {
     public static final IMobRenderHook SQUID = (IMobRenderHook<Squid>) (renderInfo, entity) ->
     {
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.mulPose(Axis.XP.rotationDegrees(50.0F));
+        modelViewStack.mulPose(Vector3f.XP.rotationDegrees(50.0F));
         return renderInfo;
     };
 
@@ -65,7 +65,7 @@ public class RenderHooks {
     {
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
         modelViewStack.translate(-0.1F, -0.5F, 0.0F);
-        modelViewStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
+        modelViewStack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
         double pitch = renderInfo.pitch;
         renderInfo.pitch = renderInfo.yaw;
         renderInfo.yaw = - pitch;
