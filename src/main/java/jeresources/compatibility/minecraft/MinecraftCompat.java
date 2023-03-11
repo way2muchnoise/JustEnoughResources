@@ -1,7 +1,5 @@
 package jeresources.compatibility.minecraft;
 
-import java.util.Map;
-
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.distributions.DistributionSquare;
 import jeresources.api.distributions.DistributionTriangular;
@@ -27,6 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.storage.loot.LootTables;
+
+import java.util.Map;
+
 
 public class MinecraftCompat extends CompatBase {
     @Override

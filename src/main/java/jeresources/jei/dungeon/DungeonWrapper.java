@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTool
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         RenderHelper.renderChest(poseStack, 15, 20, -40, 20, getLidAngle());
         Font.normal.print(poseStack, TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
         Font.small.print(poseStack, DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);

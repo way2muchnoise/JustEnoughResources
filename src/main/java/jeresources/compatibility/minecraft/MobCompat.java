@@ -8,15 +8,7 @@ import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.Blaze;
-import net.minecraft.world.entity.monster.Guardian;
-import net.minecraft.world.entity.monster.MagmaCube;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.PatrollingMonster;
-import net.minecraft.world.entity.monster.Phantom;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.monster.Vex;
-import net.minecraft.world.entity.monster.Witch;
+import net.minecraft.world.entity.monster.*;
 
 public class MobCompat {
     private MobCompat() {}

@@ -31,6 +31,7 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
 
     public DungeonCategory() {
         super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16));
+        reloadSettings();
     }
 
     @Override
