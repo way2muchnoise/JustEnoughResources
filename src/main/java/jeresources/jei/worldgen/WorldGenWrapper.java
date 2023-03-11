@@ -38,8 +38,13 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         return this.worldGenEntry.getColour();
     }
 
-    public ItemStack getBlock() {
-        return this.worldGenEntry.getBlock();
+    public List<ItemStack> getBlocks() {
+        List<ItemStack> blocks = new LinkedList<>();
+        blocks.add(this.worldGenEntry.getBlock());
+        if (this.worldGenEntry.hasDeepSlateVariant()) {
+            blocks.add(this.worldGenEntry.getDeepSlateBlock());
+        }
+        return blocks;
     }
 
     public List<ItemStack> getDrops() {

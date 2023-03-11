@@ -21,9 +21,13 @@ public interface IWorldGenRegistry {
      * @param silktouch     true if this block can only be harvested with silktouch
      * @param drops         the list of possible {@link LootDrop}s this has
      */
+    void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops);
     void register(@Nonnull ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops);
+    void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, LootDrop... drops);
     void register(@Nonnull ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops);
+    void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, boolean silktouch, LootDrop... drops);
     void register(@Nonnull ItemStack block, DistributionBase distribution, boolean silktouch, LootDrop... drops);
+    void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, LootDrop... drops);
     void register(@Nonnull ItemStack block, DistributionBase distribution, LootDrop... drops);
 
     /**
