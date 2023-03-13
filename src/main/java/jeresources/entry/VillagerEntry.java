@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 public class VillagerEntry extends AbstractVillagerEntry<Villager>{
     private final VillagerProfession profession;
+    @Nullable
+    private Villager entity;
 
     public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
         super(itemListings);

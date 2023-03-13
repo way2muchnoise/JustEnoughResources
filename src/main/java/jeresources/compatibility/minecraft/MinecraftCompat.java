@@ -88,6 +88,7 @@ public class MinecraftCompat extends CompatBase {
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Blocks.DEEPSLATE_DIAMOND_ORE), new DistributionTriangular(6, 6, -64, 64), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.DIAMOND), 1, 4, Conditional.affectedByFortune)));
         // Emeralds
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Blocks.DEEPSLATE_EMERALD_ORE), new DistributionTriangular(100, 4, 202, 218), new Restriction(DimensionRestriction.OVERWORLD), true, new LootDrop(new ItemStack(Items.EMERALD), 1, 4, Conditional.affectedByFortune)));
+        
         // Nether
         // Quartz
         registerWorldGen(new WorldGenEntry(new ItemStack(Blocks.NETHER_QUARTZ_ORE), new DistributionSquare(16, 16, 10, 128), new Restriction(DimensionRestriction.NETHER), true, new LootDrop(new ItemStack(Items.QUARTZ), 1, 4, Conditional.affectedByFortune)));
