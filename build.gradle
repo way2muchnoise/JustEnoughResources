@@ -23,10 +23,6 @@ apply plugin: 'idea'
 
 repositories {
     maven {
-        name = "forge"
-        url = "http://files.minecraftforge.net/maven"
-    }
-    maven {
         name = "jei"
         url =  "http://dvs1.progwml6.com/files/maven"
     }
