@@ -8,6 +8,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.stream.Collectors;
