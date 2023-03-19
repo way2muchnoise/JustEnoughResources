@@ -64,7 +64,7 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     @Override
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull WorldGenWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.OUTPUT, X_ITEM, Y_ITEM)
-            .addItemStack(recipeWrapper.getBlock())
+            .addItemStacks(recipeWrapper.getBlocks())
             .setSlotName(WorldGenWrapper.ORE_SLOT_NAME)
             .addTooltipCallback(recipeWrapper);
 

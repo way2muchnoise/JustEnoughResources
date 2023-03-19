@@ -2,23 +2,24 @@ package jeresources.jei.villager;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.collection.TradeList;
-import jeresources.entry.VillagerEntry;
+import jeresources.entry.AbstractVillagerEntry;
 import jeresources.reference.Resources;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class VillagerWrapper implements IRecipeCategoryExtension {
-    private final VillagerEntry entry;
+    private final AbstractVillagerEntry<?> entry;
     private IFocus<ItemStack> focus;
 
-    public VillagerWrapper(VillagerEntry entry) {
+    public VillagerWrapper(AbstractVillagerEntry<?> entry) {
         this.entry = entry;
     }
 
@@ -46,16 +47,20 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
         return entry.hasPois();
     }
 
+    public boolean hasLevels() {
+        return entry.hasLevels();
+    }
+
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         RenderHelper.scissor(poseStack,7, 43, 59, 79);
-        Villager villager = entry.getVillagerEntity();
+        AbstractVillager villager = entry.getVillagerEntity();
         RenderHelper.renderEntity(
-            poseStack,
-            37, 118, 36.0F,
-            38 - mouseX,
-            80 - mouseY,
-            villager
+                poseStack,
+                37, 118, 36.0F,
+                38 - mouseX,
+                80 - mouseY,
+                villager
         );
         RenderHelper.stopScissor();
 
@@ -67,9 +72,11 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
             RenderHelper.drawTexture(poseStack, VillagerCategory.X_FIRST_ITEM + VillagerCategory.X_ITEM_DISTANCE, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
             RenderHelper.drawTexture(poseStack, VillagerCategory.X_ITEM_RESULT, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
         }
-        i = 0;
-        for (int level : getPossibleLevels(focus)) {
-            Font.normal.print(poseStack, "lv. " + (level + 1), 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
+        if (entry.hasLevels()) {
+            i = 0;
+            for (int level : getPossibleLevels(focus)) {
+                Font.normal.print(poseStack, "lv. " + (level + 1), 72, y + i++ * VillagerCategory.Y_ITEM_DISTANCE + 6);
+            }
         }
 
         Font.normal.print(poseStack, TranslationHelper.translateAndFormat(entry.getDisplayName()), 5, 5);

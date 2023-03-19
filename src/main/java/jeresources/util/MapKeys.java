@@ -1,10 +1,5 @@
 package jeresources.util;
 
-import javax.annotation.Nullable;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import jeresources.api.drop.LootDrop;
@@ -19,6 +14,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.IPlantable;
+
+import javax.annotation.Nullable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class MapKeys {
 

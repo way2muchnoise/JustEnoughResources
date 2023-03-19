@@ -75,7 +75,7 @@ public class JEIConfig implements IModPlugin {
         registration.addRecipes(MOB_TYPE, asRecipes(MobRegistry.getInstance().getMobs(), MobWrapper::new));
         registration.addRecipes(DUNGEON_TYPE, asRecipes(DungeonRegistry.getInstance().getDungeons(), DungeonWrapper::new));
         registration.addRecipes(VILLAGER_TYPE, asRecipes(VillagerRegistry.getInstance().getVillagers(), VillagerWrapper::new));
-        registration.addRecipes(ENCHANTMENT_TYPE, EnchantmentMaker.createRecipes(registration.getIngredientManager().getAllIngredients(VanillaTypes.ITEM)));
+        registration.addRecipes(ENCHANTMENT_TYPE, EnchantmentMaker.createRecipes(registration.getIngredientManager().getAllIngredients(VanillaTypes.ITEM_STACK)));
     }
 
     @Override
@@ -93,8 +93,9 @@ public class JEIConfig implements IModPlugin {
 
     public static void resetCategories() {
         if (jeiRuntime != null) {
-            for (RecipeType<?> recipeType : TYPES.values())
+            for (RecipeType<?> recipeType : TYPES.values()) {
                 jeiRuntime.getRecipeManager().unhideRecipeCategory(recipeType);
+            }
         }
     }
 

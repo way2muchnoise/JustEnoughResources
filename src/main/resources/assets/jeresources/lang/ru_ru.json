@@ -97,7 +97,7 @@
     "jer.mob.title": "Выпадение из мобов",
     "jer.mob.spawn": "Появляется в биоме:",
     "jer.mob.biome": "Появляется в биомах: наведите курсор сюда",
-    "jer.mob.exp": "Даёт опыта",
+    "jer.mob.exp": "опыта",
 
     "_comment": "#Villager View",
     "jer.villager.title": "Торговля с жителем",

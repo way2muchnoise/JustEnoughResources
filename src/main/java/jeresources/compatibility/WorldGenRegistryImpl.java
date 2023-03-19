@@ -32,9 +32,27 @@ public class WorldGenRegistryImpl implements IWorldGenRegistry {
     }
 
     @Override
+    public void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, LootDrop... drops) {
+        try {
+            registers.add(new WorldGenEntry(block, deepSlateBlock, distribution, drops));
+        } catch (Exception e) {
+            LogHelper.info("Error during worldgen registry for %s", block.toString());
+        }
+    }
+
+    @Override
     public void register(@Nonnull ItemStack block, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
         try {
             registers.add(new WorldGenEntry(block, distribution, restriction, drops));
+        } catch (Exception e) {
+            LogHelper.info("Error during worldgen registry for %s", block.toString());
+        }
+    }
+
+    @Override
+    public void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, LootDrop... drops) {
+        try {
+            registers.add(new WorldGenEntry(block, deepSlateBlock, distribution, restriction, drops));
         } catch (Exception e) {
             LogHelper.info("Error during worldgen registry for %s", block.toString());
         }
@@ -50,9 +68,26 @@ public class WorldGenRegistryImpl implements IWorldGenRegistry {
     }
 
     @Override
+    public void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, boolean silktouch, LootDrop... drops) {
+        try {
+            registers.add(new WorldGenEntry(block, distribution, silktouch, drops));
+        } catch (Exception e) {
+            LogHelper.info("Error during worldgen registry for %s", block.toString());
+        }
+    }
+    @Override
     public void register(@Nonnull ItemStack block, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
         try {
             registers.add(new WorldGenEntry(block, distribution, restriction, silktouch, drops));
+        } catch (Exception e) {
+            LogHelper.info("Error during worldgen registry for %s", block.toString());
+        }
+    }
+
+    @Override
+    public void register(@Nonnull ItemStack block, @Nonnull ItemStack deepSlateBlock, DistributionBase distribution, Restriction restriction, boolean silktouch, LootDrop... drops) {
+        try {
+            registers.add(new WorldGenEntry(block, deepSlateBlock, distribution, restriction, silktouch, drops));
         } catch (Exception e) {
             LogHelper.info("Error during worldgen registry for %s", block.toString());
         }

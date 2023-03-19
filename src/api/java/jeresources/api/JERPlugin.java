@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
  * During {@link net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent}
  * this field will be set to an instance of {@link IJERAPI}
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.TYPE)
 public @interface JERPlugin {
 }

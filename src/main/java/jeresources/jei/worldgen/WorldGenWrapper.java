@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,8 +39,13 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         return this.worldGenEntry.getColour();
     }
 
-    public ItemStack getBlock() {
-        return this.worldGenEntry.getBlock();
+    public List<ItemStack> getBlocks() {
+        List<ItemStack> blocks = new LinkedList<>();
+        blocks.add(this.worldGenEntry.getBlock());
+        if (this.worldGenEntry.hasDeepSlateVariant()) {
+            blocks.add(this.worldGenEntry.getDeepSlateBlock());
+        }
+        return blocks;
     }
 
     public List<ItemStack> getDrops() {
@@ -47,7 +53,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         float[] array = this.worldGenEntry.getChances();
         double max = 0;
         for (double d : array)
