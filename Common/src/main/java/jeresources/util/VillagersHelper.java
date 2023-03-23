@@ -30,7 +30,7 @@ public class VillagersHelper {
             reg.addVillagerEntry(new WanderingTraderEntry(getWanderingTrades()));
         } catch (Exception e) {
             LogHelper.warn("Failed loading wandering trader");
-            LogHelper.warn("Exception caught when registering wandering traderr", e);
+            LogHelper.warn("Exception caught when registering wandering trader", e);
         }
     }
 
