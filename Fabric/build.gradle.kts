@@ -146,6 +146,8 @@ tasks.register<TaskPublishCurseForge>("publishCurseForge") {
 modrinth {
 	token.set(System.getenv("MODRINTH_TOKEN") ?: "0")
 	projectId.set(modrinthProjectId)
+	versionNumber.set("${project.version}")
+	versionName.set("${project.version} for Fabric $minecraftVersion")
 	versionType.set("alpha")
 	uploadFile.set(tasks.remapJar.get())
 	gameVersions.add(minecraftVersion)
