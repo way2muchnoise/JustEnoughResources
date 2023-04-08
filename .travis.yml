@@ -6,7 +6,8 @@ before_install:
 before_script: export CHANGELOG="$(git log $TRAVIS_COMMIT_RANGE --pretty=format:"\[[%h](https://github.com/$TRAVIS_REPO_SLUG/commit/%H)\] %s (%cn)  ")"
 script: ./gradlew build
 after_success:
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew :Forge:modrinth :Forge:publishCurseForge :Fabric:modrinth :Fabric:publishCurseForge; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew :Forge:publishCurseForge :Fabric:publishCurseForge; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then ./gradlew :Forge:modrinth :Fabric:modrinth fi'
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
