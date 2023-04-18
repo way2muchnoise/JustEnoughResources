@@ -1,6 +1,6 @@
 {
-   "pack":{
-      "pack_format":10,
-      "description":"JER Resources"
-   }
+    "pack": {
+        "pack_format": 13,
+        "description": "JER"
+    }
 }
