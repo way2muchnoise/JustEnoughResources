@@ -44,6 +44,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     @Override
     public void setIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
+        ingredients.setInput(VanillaTypes.ITEM, this.getSpawnEgg());
     }
 
     public LootDrop[] getDrops() {
@@ -87,7 +88,6 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
 
     @Override
     public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<Component> tooltip) {
-        tooltip.add(this.mob.getDrops()[slotIndex].toStringTextComponent());
         List<Component> list = getToolTip(ingredient);
         if (list != null)
             tooltip.addAll(list);
@@ -152,5 +152,13 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
         else if (livingEntity instanceof Creeper) offsetY = -15;
         else if (livingEntity instanceof AbstractPiglin) offsetY = -15;
         return offsetY;
+    }
+
+    public boolean hasSpawnEgg() {
+        return getSpawnEgg() != null;
+    }
+
+    public ItemStack getSpawnEgg() {
+        return this.mob.getEntity().getPickResult();
     }
 }

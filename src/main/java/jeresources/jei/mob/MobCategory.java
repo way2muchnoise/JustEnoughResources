@@ -56,9 +56,13 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
             }
             xOffset += 72 / Settings.ITEMS_PER_ROW;
         }
-
         recipeLayout.getItemStacks().addTooltipCallback(recipeWrapper);
-        for (int i = 0; i < Math.min(recipeWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN); i++)
+        int slotIndex = Math.min(recipeWrapper.getDrops().length, Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN);
+        for (int i = 0; i < slotIndex; i++)
             recipeLayout.getItemStacks().set(i, recipeWrapper.getDrops()[i].getDrops());
+        if (recipeWrapper.hasSpawnEgg()) {
+            recipeLayout.getItemStacks().init(slotIndex, true, 150, 21);
+            recipeLayout.getItemStacks().set(slotIndex, recipeWrapper.getSpawnEgg());
+        }
     }
 }
