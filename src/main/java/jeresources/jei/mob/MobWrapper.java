@@ -12,6 +12,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.ingredient.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -22,11 +23,19 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.GolemEntity;
 import net.minecraft.entity.passive.SquidEntity;
 import net.minecraft.entity.passive.TurtleEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.SpawnEggItem;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,6 +53,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     @Override
     public void setIngredients(@Nonnull IIngredients ingredients) {
         ingredients.setOutputs(VanillaTypes.ITEM, this.mob.getDropsItemStacks());
+        ingredients.setInput(VanillaTypes.ITEM, this.getSpawnEgg());
     }
 
     public LootDrop[] getDrops() {
@@ -87,8 +97,7 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
 
     @Override
     public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<ITextComponent> tooltip) {
-        tooltip.add(this.mob.getDrops()[slotIndex].toStringTextComponent());
-        List<ITextComponent> list = getToolTip(ingredient);
+      List<ITextComponent> list = getToolTip(ingredient);
         if (list != null)
             tooltip.addAll(list);
     }
@@ -149,5 +158,22 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
         else if (livingEntity instanceof BlazeEntity) offsetY = -10;
         else if (livingEntity instanceof CreeperEntity) offsetY = -15;
         return offsetY;
+    }
+
+    public boolean hasSpawnEgg() {
+        return getSpawnEgg() != null;
+    }
+
+    public ItemStack getSpawnEgg() {
+        return getSpawnEggItem(this.mob.getEntity().getType()).getDefaultInstance();
+    }
+
+    private SpawnEggItem getSpawnEggItem(EntityType type) {
+        for (SpawnEggItem spawnEggItem : SpawnEggItem.eggs()) {
+            if (spawnEggItem.getType(null) == type) {
+                return spawnEggItem;
+            }
+        }
+        return null;
     }
 }
