@@ -24,6 +24,6 @@ Adds Resources and Mob Drops to JEI
 [[dependencies.jeresources]]
     modId="jei"
     mandatory=true
-    versionRange="[9.5.0,)"
+    versionRange="[15.2.0,)"
     ordering="NONE"
     side="BOTH"

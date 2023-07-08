@@ -39,7 +39,7 @@ public class Profiler implements Runnable {
     public void run() {
         if (!allDimensions) {
             // Will never be null as the mod is client side only
-            ResourceKey<Level> worldKey = sender.level.dimension();
+            ResourceKey<Level> worldKey = sender.level().dimension();
             profileWorld(worldKey);
             
         } else {

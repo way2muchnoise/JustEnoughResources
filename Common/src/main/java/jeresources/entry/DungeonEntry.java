@@ -10,8 +10,8 @@ import jeresources.util.LootTableHelper;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -32,13 +32,13 @@ public class DungeonEntry {
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
-        final LootTables lootTables = LootTableHelper.getLootTables();
+        final LootDataManager lootTables = LootTableHelper.getLootDataManager();
         handleTable(lootTable, lootTables, tmpMinStacks, tmpMaxStacks);
         this.minStacks = Mth.floor(tmpMinStacks[0]);
         this.maxStacks = Mth.floor(tmpMaxStacks[0]);
     }
 
-    private void handleTable(LootTable lootTable, LootTables lootTables, float[] tmpMinStacks, float[] tmpMaxStacks) {
+    private void handleTable(LootTable lootTable, LootDataManager lootTables, float[] tmpMinStacks, float[] tmpMaxStacks) {
         ILootTableHelper lootTableHelper = Services.PLATFORM.getLootTableHelper();
         LootTableHelper.getPools(lootTable).forEach(
             pool -> {
@@ -53,14 +53,14 @@ public class DungeonEntry {
 
                 LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)
-                    .map(entry -> lootTables.get(entry.name))
+                    .map(entry -> lootTables.getLootTable(entry.name))
                     .forEach(table -> handleTable(table, lootTables, tmpMinStacks, tmpMaxStacks));
             }
         );
     }
 
     public boolean containsItem(ItemStack itemStack) {
-        return drops.stream().anyMatch(drop -> drop.item.sameItem(itemStack));
+        return drops.stream().anyMatch(drop -> drop.item.is(itemStack.getItem()));
     }
 
     public String getName() {
@@ -70,7 +70,7 @@ public class DungeonEntry {
 
     public List<ItemStack> getItemStacks(IFocus<ItemStack> focus) {
         return drops.stream().map(drop -> drop.item)
-            .filter(stack -> focus == null || ItemStack.isSame(ItemHelper.copyStackWithSize(stack, focus.getTypedValue().getIngredient().getCount()), focus.getTypedValue().getIngredient()))
+            .filter(stack -> focus == null || ItemStack.isSameItem(ItemHelper.copyStackWithSize(stack, focus.getTypedValue().getIngredient().getCount()), focus.getTypedValue().getIngredient()))
             .collect(Collectors.toList());
     }
 
@@ -87,7 +87,7 @@ public class DungeonEntry {
     }
 
     public LootDrop getChestDrop(ItemStack ingredient) {
-        return drops.stream().filter(drop -> ItemStack.isSame(drop.item, ingredient)).findFirst().orElse(null);
+        return drops.stream().filter(drop -> ItemStack.isSameItem(drop.item, ingredient)).findFirst().orElse(null);
     }
 
 }

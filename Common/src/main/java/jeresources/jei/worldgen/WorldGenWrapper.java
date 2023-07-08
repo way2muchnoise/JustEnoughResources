@@ -1,6 +1,5 @@
 package jeresources.jei.worldgen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
@@ -12,6 +11,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -52,7 +52,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         float[] array = this.worldGenEntry.getChances();
         double max = 0;
         for (double d : array)
@@ -66,7 +66,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
             if (i > 0) // Only draw a line after the first element (cannot draw line with only one point)
             {
                 double x = xPrev + space;
-                RenderHelper.drawLine(poseStack, (int)xPrev, (int)yPrev, (int)x, (int)y, getLineColor());
+                RenderHelper.drawLine(guiGraphics, (int)xPrev, (int)yPrev, (int)x, (int)y, getLineColor());
                 xPrev = x;
             }
             yPrev = y;
@@ -77,10 +77,10 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
 
         final String minPercent = "0%";
         final int minPercentWidth = Font.small.getStringWidth(minPercent);
-        Font.small.print(poseStack, minPercent, xPercents - minPercentWidth, yPercents);
+        Font.small.print(guiGraphics, minPercent, xPercents - minPercentWidth, yPercents);
         final String maxPercent = String.format("%.2f", max * 100) + "%";
         final int maxPercentWidth = Font.small.getStringWidth(maxPercent);
-        Font.small.print(poseStack, maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
+        Font.small.print(guiGraphics, maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
 
         final int yLabels = Y_OFFSET + 2;
         final int xLabels = X_OFFSET;
@@ -88,23 +88,23 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
         final int minLabel = this.worldGenEntry.getMinY();
         final int minLabelWidth = Font.small.getStringWidth(String.valueOf(minLabel));
         final int minLabelOffset = xLabels - (minLabelWidth / 2);
-        Font.small.print(poseStack, minLabel, minLabelOffset, yLabels);
+        Font.small.print(guiGraphics, minLabel, minLabelOffset, yLabels);
 
         final int maxLabel = this.worldGenEntry.getMaxY();
         final int maxLabelWidth = Font.small.getStringWidth(String.valueOf(maxLabel));
         final int maxLabelOffset = xLabels + X_AXIS_SIZE - (maxLabelWidth / 2);
-        Font.small.print(poseStack, maxLabel, maxLabelOffset, yLabels);
+        Font.small.print(guiGraphics, maxLabel, maxLabelOffset, yLabels);
 
         final int midLabel = (maxLabel + minLabel) / 2;
         final int midLabelWidth = Font.small.getStringWidth(String.valueOf(midLabel));
         final int midLabelOffset = xLabels + (X_AXIS_SIZE / 2) - (midLabelWidth / 2);
-        Font.small.print(poseStack, midLabel, midLabelOffset, yLabels);
+        Font.small.print(guiGraphics, midLabel, midLabelOffset, yLabels);
 
-        Font.small.print(poseStack, TranslationHelper.translateAndFormat("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
+        Font.small.print(guiGraphics, TranslationHelper.translateAndFormat("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
 
         String dimension = TranslationHelper.tryDimensionTranslate(worldGenEntry.getDimension());
         int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
-        Font.normal.print(poseStack, dimension, x, 0);
+        Font.normal.print(guiGraphics, dimension, x, 0);
     }
 
     @Override

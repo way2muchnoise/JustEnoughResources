@@ -15,6 +15,6 @@ accessible field net/minecraft/world/level/storage/loot/providers/number/Binomia
 accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFunction value Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible field net/minecraft/world/level/storage/loot/predicates/LootItemRandomChanceCondition probability F
 accessible field net/minecraft/world/level/storage/loot/predicates/LootItemRandomChanceWithLootingCondition percent F
-accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/util/RandomSource;FLnet/minecraft/server/level/ServerLevel;Ljava/util/function/Function;Ljava/util/function/Function;Ljava/util/Map;Ljava/util/Map;)V
+accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/util/RandomSource;Lnet/minecraft/world/level/storage/loot/LootDataResolver;)V
 accessible field net/minecraft/world/entity/Mob xpReward I
 accessible field net/minecraft/data/loot/EntityLootSubProvider SPECIAL_LOOT_TABLE_TYPES Ljava/util/Set;

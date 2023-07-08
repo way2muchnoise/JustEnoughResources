@@ -1,10 +1,10 @@
 package jeresources.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,8 +23,8 @@ public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension>
     }
 
     @Override
-    public void draw(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), poseStack, mouseX, mouseY);
+    public void draw(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
     }
 
     @Override

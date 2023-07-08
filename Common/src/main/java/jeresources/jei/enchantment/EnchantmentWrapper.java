@@ -1,11 +1,11 @@
 package jeresources.jei.enchantment;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.entry.EnchantmentEntry;
 import jeresources.registry.EnchantmentRegistry;
 import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -58,15 +58,15 @@ public class EnchantmentWrapper implements IRecipeCategoryExtension {
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments()) {
-            Font.normal.print(poseStack, enchantment.getTranslatedWithLevels(), ENCHANT_X, y);
+            Font.normal.print(guiGraphics, enchantment.getTranslatedWithLevels(), ENCHANT_X, y);
             y += SPACING_Y;
         }
         if (this.lastSet > 0) {
             String toPrint = TranslationHelper.getLocalPageInfo(this.set, this.lastSet);
-            Font.normal.print(poseStack, toPrint, PAGE_X, PAGE_Y);
+            Font.normal.print(guiGraphics, toPrint, PAGE_X, PAGE_Y);
         }
     }
 }

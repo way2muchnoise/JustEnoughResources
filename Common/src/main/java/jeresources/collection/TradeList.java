@@ -124,11 +124,11 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
 
         public boolean sellsItem(ItemStack itemStack) {
-            return this.result.sameItem(itemStack);
+            return this.result.is(itemStack.getItem());
         }
 
         public boolean buysItem(ItemStack itemStack) {
-            return this.costA.sameItem(itemStack) || (!this.costB.isEmpty() && this.costB.sameItem(itemStack));
+            return this.costA.is(itemStack.getItem()) || (!this.costB.isEmpty() && this.costB.is(itemStack.getItem()));
         }
 
         public ItemStack getMinCostA() {

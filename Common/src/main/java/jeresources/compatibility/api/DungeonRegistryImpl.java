@@ -7,8 +7,8 @@ import jeresources.util.LogHelper;
 import jeresources.util.LootTableHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTables;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -47,11 +47,11 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     protected static void commit() {
         categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getA(), t.getB()));
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
-        LootTables manager = LootTableHelper.getLootTables();
+        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
         rawRegisters.entrySet().stream()
             .map(entry -> {
                 try {
-                    return new DungeonEntry(entry.getKey(), manager.get(entry.getValue()));
+                    return new DungeonEntry(entry.getKey(), lootDataManager.getLootTable(entry.getValue()));
                 } catch (Exception e) {
                     LogHelper.debug("Bad dungeon chest registry for category %s", entry.getKey());
                     return null;

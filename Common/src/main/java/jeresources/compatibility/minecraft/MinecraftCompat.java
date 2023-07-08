@@ -24,7 +24,7 @@ import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.storage.loot.LootTables;
+import net.minecraft.world.level.storage.loot.LootDataManager;
 
 import java.util.Map;
 
@@ -39,10 +39,10 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerVanillaMobs() {
-        LootTables lootTables = LootTableHelper.getLootTables();
+        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
         LootTableHelper.getAllMobLootTables().entrySet().stream()
             .sorted(Map.Entry.comparingByKey())
-            .map(entry -> MobEntry.create(entry.getValue(), lootTables.get(entry.getKey())))
+            .map(entry -> MobEntry.create(entry.getValue(), lootDataManager.getLootTable(entry.getKey())))
             .forEach(this::registerMob);
 
         registerMobRenderHook(Bat.class, RenderHooks.BAT);
@@ -55,9 +55,9 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerDungeonLoot() {
-        LootTables lootTables = LootTableHelper.getLootTables();
+        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
         LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootTables.get(resourceLocation)))
+            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootDataManager.getLootTable(resourceLocation)))
             .forEach(this::registerDungeonEntry);
     }
 

@@ -67,7 +67,7 @@ public class LootTableHelper {
     public static List<LootDrop> toDrops(LootTable table) {
         List<LootDrop> drops = new ArrayList<>();
 
-        final LootTables lootTables = getLootTables();
+        final LootDataManager lootDataManager = getLootDataManager();
 
         getPools(table).forEach(
             pool -> {
@@ -83,7 +83,7 @@ public class LootTableHelper {
 
                 getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)
-                    .map(entry -> toDrops(lootTables.get(entry.name))).forEach(drops::addAll);
+                    .map(entry -> toDrops(lootDataManager.getLootTable(entry.name))).forEach(drops::addAll);
             }
         );
 
@@ -92,7 +92,7 @@ public class LootTableHelper {
     }
 
     public static List<LootDrop> toDrops(ResourceLocation lootTable) {
-        return toDrops(getLootTables().get(lootTable));
+        return toDrops(getLootDataManager().getLootTable(lootTable));
     }
 
     public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
@@ -159,16 +159,16 @@ public class LootTableHelper {
         return mobTableBuilder.getMobTables();
     }
 
-    private static LootTables lootTables;
+    private static LootDataManager lootDataManager;
 
-    public static LootTables getLootTables() {
+    public static LootDataManager getLootDataManager() {
         Level level = CompatBase.getServerLevel().orElseGet(CompatBase::getLevel);
         if (level.getServer() == null) {
-            if (lootTables == null) {
-                lootTables = new LootTables(new PredicateManager());
+            if (lootDataManager == null) {
+                lootDataManager = new LootDataManager();
 
                 if(Settings.disableLootManagerReloading) {
-                    return lootTables;
+                    return lootDataManager;
                 }
 
 
@@ -176,12 +176,12 @@ public class LootTableHelper {
                 List<PackResources> packs = new LinkedList<>();
                 packs.add(new ServerPacksSource().getVanillaPack());
                 Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
-                reloadableResourceManager.registerReloadListener(lootTables);
+                reloadableResourceManager.registerReloadListener(lootDataManager);
                 ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
                 Minecraft.getInstance().managedBlock(reloadInstance::isDone);
             }
-            return lootTables;
+            return lootDataManager;
         }
-        return level.getServer().getLootTables();
+        return level.getServer().getLootData();
     }
 }

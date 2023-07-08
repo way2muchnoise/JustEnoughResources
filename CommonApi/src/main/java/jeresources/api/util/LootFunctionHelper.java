@@ -1,13 +1,15 @@
 package jeresources.api.util;
 
-import com.google.common.collect.Maps;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootDataManager;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
@@ -76,8 +78,8 @@ public class LootFunctionHelper {
 
     public static class RandomLootContext extends LootContext {
         public RandomLootContext(){
-            //RandomSource, float, ServerLevel, Function<ResourceLocation, LootTable>, Function<ResourceLocation, LootItemCondition>, Map<LootContextParam<?>, Object>, Map<ResourceLocation, DynamicDrop>
-            super(RandomSource.create(), 0.0F, null, null, null, Maps.newIdentityHashMap(), Maps.newHashMap());
+            //LootParams, RandomSource , LootDataResolver
+            super(new LootParams.Builder(null).create(LootContextParamSets.EMPTY), RandomSource.create(), new LootDataManager());
         }
     }
 }

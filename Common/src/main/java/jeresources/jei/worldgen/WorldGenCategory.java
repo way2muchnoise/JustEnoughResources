@@ -1,6 +1,5 @@
 package jeresources.jei.worldgen;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.render.ColorHelper;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
@@ -12,6 +11,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,10 +42,10 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenWrapper> {
     }
 
     @Override
-    public void draw(@NotNull WorldGenWrapper recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-        RenderHelper.drawLine(poseStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColorHelper.GRAY);
-        RenderHelper.drawLine(poseStack, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
-        super.draw(recipe, recipeSlotsView, poseStack, mouseX, mouseY);
+    public void draw(@NotNull WorldGenWrapper recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        RenderHelper.drawLine(guiGraphics, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET + WorldGenWrapper.X_AXIS_SIZE, WorldGenWrapper.Y_OFFSET, ColorHelper.GRAY);
+        RenderHelper.drawLine(guiGraphics, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET, WorldGenWrapper.X_OFFSET, WorldGenWrapper.Y_OFFSET - WorldGenWrapper.Y_AXIS_SIZE, ColorHelper.GRAY);
+        super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package jeresources.jei.plant;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.drop.PlantDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
@@ -10,6 +9,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -29,9 +29,9 @@ public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-        RenderHelper.renderBlock(poseStack, getFarmland(), 30, 30, -10, 20F, 20F);
-        RenderHelper.renderBlock(poseStack, getBlockState(), 30, 12, 10, 20F, 20F);
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        RenderHelper.renderBlock(guiGraphics, getFarmland(), 30, 30, -10, 20F, 20F);
+        RenderHelper.renderBlock(guiGraphics, getBlockState(), 30, 12, 10, 20F, 20F);
     }
 
     @Override

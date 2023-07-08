@@ -205,7 +205,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     @Override
     public void registerDrops(@Nonnull ItemStack itemStack, PlantDrop... drops) {
         try {
-            if (drops.length > 0 || ItemStack.isSame(itemStack, grass))
+            if (drops.length > 0 || ItemStack.isSameItem(itemStack, grass))
                 addedDrops.add(new Tuple<>(itemStack, drops));
         } catch (Exception e) {
             LogHelper.debug("Error while registering drops for %s", itemStack.toString());

@@ -8,7 +8,7 @@ import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.api.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -24,17 +24,16 @@ import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 
 public class RenderHelper {
-    public static void drawLine(PoseStack poseStack, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
+    public static void drawLine(GuiGraphics guiGraphics, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
         xEnd += xBegin == xEnd ? 1 : 0;
         yEnd += yBegin == yEnd ? 1 : 0;
-        GuiComponent.fill(poseStack, xBegin, yBegin, xEnd, yEnd, color);
+        guiGraphics.fill(xBegin, yBegin, xEnd, yEnd, color);
     }
 
-    public static void renderEntity(PoseStack poseStack, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
-        if (livingEntity.level == null) livingEntity.level = Minecraft.getInstance().level;
+    public static void renderEntity(GuiGraphics guiGraphics, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
         PoseStack modelViewStack = RenderSystem.getModelViewStack();
         modelViewStack.pushPose();
-        modelViewStack.mulPoseMatrix(poseStack.last().pose());
+        modelViewStack.mulPoseMatrix(guiGraphics.pose().last().pose());
         modelViewStack.translate(x, y, 50.0F);
         modelViewStack.scale((float) -scale, (float) scale, (float) scale);
         PoseStack mobPoseStack = new PoseStack();
@@ -68,21 +67,21 @@ public class RenderHelper {
         RenderSystem.applyModelViewMatrix();
     }
 
-    public static void renderChest(PoseStack poseStack, float x, float y, float rotate, float scale, float lidAngle) {
+    public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, Resources.Vanilla.CHEST);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
 
-        poseStack.pushPose();
+        guiGraphics.pose().pushPose();
         // RenderSystem.enableRescaleNormal();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        poseStack.translate(x, y, 50.0F);
-        poseStack.mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
-        poseStack.scale(scale, -scale, -scale);
-        poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
-        poseStack.translate(-0.5F, -0.5F, -0.5F);
+        guiGraphics.pose().translate(x, y, 50.0F);
+        guiGraphics.pose().mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
+        guiGraphics.pose().scale(scale, -scale, -scale);
+        guiGraphics.pose().translate(0.5F, 0.5F, 0.5F);
+        guiGraphics.pose().mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
+        guiGraphics.pose().translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
         lidAngleF = 1.0F - lidAngleF;
@@ -95,37 +94,37 @@ public class RenderHelper {
         // modelchest.field_78232_b.offsetZ -= 0.9F; // chestBelow
         // modelchest.renderAll();
         // RenderSystem.disableRescaleNormal();
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
     }
 
-    public static void renderBlock(PoseStack poseStack, BlockState block, float x, float y, float z, float rotate, float scale) {
+    public static void renderBlock(GuiGraphics guiGraphics, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
-        poseStack.pushPose();
-        poseStack.translate(x, y, z);
-        poseStack.scale(-scale, -scale, -scale);
-        poseStack.translate(-0.5F, -0.5F, 0);
-        poseStack.mulPose(Axis.XP.rotationDegrees(-30F));
-        poseStack.translate(0.5F, 0, -0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotate));
-        poseStack.translate(-0.5F, 0, 0.5F);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, z);
+        guiGraphics.pose().scale(-scale, -scale, -scale);
+        guiGraphics.pose().translate(-0.5F, -0.5F, 0);
+        guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(-30F));
+        guiGraphics.pose().translate(0.5F, 0, -0.5F);
+        guiGraphics.pose().mulPose(Axis.YP.rotationDegrees(rotate));
+        guiGraphics.pose().translate(-0.5F, 0, 0.5F);
 
-        poseStack.pushPose();
+        guiGraphics.pose().pushPose();
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        poseStack.translate(0, 0, -1);
+        guiGraphics.pose().translate(0, 0, -1);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
+        mc.getBlockRenderer().renderSingleBlock(block, guiGraphics.pose(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
         bufferSource.endBatch();
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
 
-        poseStack.popPose();
+        guiGraphics.pose().popPose();
     }
 
-    public static void scissor(PoseStack poseStack, int x, int y, int w, int h) {
+    public static void scissor(GuiGraphics guiGraphics, int x, int y, int w, int h) {
         double scale = Minecraft.getInstance().getWindow().getGuiScale();
-        double[] xyzTranslation = getGLTranslation(poseStack, scale);
+        double[] xyzTranslation = getGLTranslation(guiGraphics, scale);
         x *= scale;
         y *= scale;
         w *= scale;
@@ -142,14 +141,14 @@ public class RenderHelper {
         RenderSystem.disableScissor();
     }
 
-    public static void drawTexture(PoseStack poseStack, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
+    public static void drawTexture(GuiGraphics guiGraphics, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, resource);
-        drawTexturedModalRect(poseStack, x, y, u, v, width, height, 0);
+        drawTexturedModalRect(guiGraphics, x, y, u, v, width, height, 0);
     }
 
-    public static double[] getGLTranslation(PoseStack poseStack, double scale) {
-        Matrix4f matrix = poseStack.last().pose();
+    public static double[] getGLTranslation(GuiGraphics guiGraphics, double scale) {
+        Matrix4f matrix = guiGraphics.pose().last().pose();
         FloatBuffer buf = BufferUtils.createFloatBuffer(16);
         matrix.set(buf);
         // { x, y, z }
@@ -164,7 +163,7 @@ public class RenderHelper {
         return Minecraft.getInstance().getWindow().getGuiScale();
     }
 
-    public static void drawTexturedModalRect(PoseStack poseStack, int x, int y, int u, int v, int width, int height, float zLevel)
+    public static void drawTexturedModalRect(GuiGraphics guiGraphics, int x, int y, int u, int v, int width, int height, float zLevel)
     {
         final float uScale = 1f / 0x100;
         final float vScale = 1f / 0x100;
@@ -172,7 +171,7 @@ public class RenderHelper {
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder wr = tesselator.getBuilder();
         wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        Matrix4f matrix = poseStack.last().pose();
+        Matrix4f matrix = guiGraphics.pose().last().pose();
         wr.vertex(matrix, x        , y + height, zLevel).uv( u          * uScale, ((v + height) * vScale)).endVertex();
         wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
         wr.vertex(matrix, x + width, y         , zLevel).uv((u + width) * uScale, ( v           * vScale)).endVertex();

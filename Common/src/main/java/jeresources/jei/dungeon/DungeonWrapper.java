@@ -1,6 +1,5 @@
 package jeresources.jei.dungeon;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.util.Font;
@@ -10,6 +9,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -37,10 +37,10 @@ public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTool
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
-        RenderHelper.renderChest(poseStack, 15, 20, -40, 20, getLidAngle());
-        Font.normal.print(poseStack, TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
-        Font.small.print(poseStack, DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        RenderHelper.renderChest(guiGraphics, 15, 20, -40, 20, getLidAngle());
+        Font.normal.print(guiGraphics, TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
+        Font.small.print(guiGraphics, DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);
     }
 
     @Override

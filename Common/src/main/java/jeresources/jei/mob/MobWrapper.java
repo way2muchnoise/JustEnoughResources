@@ -1,6 +1,5 @@
 package jeresources.jei.mob;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
@@ -11,6 +10,7 @@ import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractGolem;
@@ -41,14 +41,14 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
+    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = this.mob.getEntity();
         // TODO: Fix scissoring
         //RenderHelper.scissor(poseStack,7, 43, 59, 79);
         float scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
-            poseStack,
+            guiGraphics,
             37, 105 - offsetY, scale,
             38 - mouseX,
             70 - offsetY - mouseY,
@@ -63,7 +63,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
                 mobName += " (" + entityString + ")";
             }
         }
-        Font.normal.print(poseStack, mobName, 7, 2);
+        Font.normal.print(guiGraphics, mobName, 7, 2);
 
         final String biomesLine;
         if (this.mob.hasMultipleBiomes())
@@ -73,10 +73,10 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
                 .findFirst()
                 .map(firstBiome -> TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + firstBiome)
                 .orElse("");
-        Font.normal.print(poseStack, biomesLine, 7, 12);
+        Font.normal.print(guiGraphics, biomesLine, 7, 12);
 
-        Font.normal.print(poseStack, this.mob.getLightLevel().toString(), 7, 22);
-        Font.normal.print(poseStack, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
+        Font.normal.print(guiGraphics, this.mob.getLightLevel().toString(), 7, 22);
+        Font.normal.print(guiGraphics, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + this.mob.getExp(), 7, 32);
     }
 
     @Override
@@ -97,9 +97,9 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
 
     public List<Component> getToolTip(ItemStack stack) {
         for (LootDrop item : this.mob.getDrops()) {
-            if (stack.sameItem(item.item))
+            if (stack.is(item.item.getItem()))
                 return item.getTooltipText();
-            if (item.canBeCooked() && stack.sameItem(item.smeltedItem))
+            if (item.canBeCooked() && stack.is(item.smeltedItem.getItem()))
                 return item.getTooltipText(true);
         }
         return null;

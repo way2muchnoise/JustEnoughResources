@@ -234,7 +234,7 @@ public class LootDrop implements Comparable<LootDrop> {
 
     @Override
     public int compareTo(@Nonnull LootDrop o) {
-        if (ItemStack.isSame(item, o.item))
+        if (ItemStack.isSameItem(item, o.item))
             return Integer.compare(o.fortuneLevel, fortuneLevel);
         int cmp = Float.compare(o.getSortIndex(), getSortIndex());
         return cmp != 0 ? cmp : item.getDisplayName().toString().compareTo(o.item.getDisplayName().toString());
