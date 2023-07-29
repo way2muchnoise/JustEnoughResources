@@ -138,6 +138,8 @@ public class LootTableHelper {
         chestTables.add(BuiltInLootTables.BASTION_BRIDGE);
         chestTables.add(BuiltInLootTables.BASTION_HOGLIN_STABLE);
         chestTables.add(BuiltInLootTables.RUINED_PORTAL);
+        chestTables.add(BuiltInLootTables.ANCIENT_CITY);
+        chestTables.add(BuiltInLootTables.ANCIENT_CITY_ICE_BOX);
 
         return chestTables;
     }
