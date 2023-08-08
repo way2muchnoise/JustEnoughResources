@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     private final List<TradeList> tradeList;
-    @Nullable
     protected T entity;
 
     public AbstractVillagerEntry(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
+        this.entity = getVillagerEntity();
         this.tradeList = new LinkedList<>();
         addITradeLists(itemListings);
     }
@@ -36,7 +36,7 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
         if (tradeList.size() > level) {
             return tradeList.get(level);
         } else {
-            return new TradeList(null);
+            return new TradeList(entity);
         }
     }
 
