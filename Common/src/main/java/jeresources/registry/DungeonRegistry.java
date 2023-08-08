@@ -62,6 +62,8 @@ public class DungeonRegistry {
         addCategoryMapping("chests/bastion_bridge", "jer.dungeon.bastion_bridge");
         addCategoryMapping("chests/bastion_hoglin_stable", "jer.dungeon.bastion_hoglin_stable");
         addCategoryMapping("chests/ruined_portal", "jer.dungeon.ruined_portal");
+        addCategoryMapping("chests/ancient_city", "jer.dungeon.ancient_city");
+        addCategoryMapping("chests/ancient_city_ice_box", "jer.dungeon.ancient_city_ice_box");
     }
 
     public static boolean addCategoryMapping(String category, String name) {
