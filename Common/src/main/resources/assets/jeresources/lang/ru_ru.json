@@ -76,6 +76,8 @@
 	"jer.dungeon.bastion_bridge": "Мост бастиона",
 	"jer.dungeon.bastion_hoglin_stable": "Загон хоглинов в бастионе",
 	"jer.dungeon.ruined_portal": "Разрушенный портал Нижнего мира",
+	"jer.dungeon.ancient_city": "Древний город",
+	"jer.dungeon.ancient_city_ice_box": "Ледяной ящик древнего города",
 
     "_comment": "#Enchantments View",
     "jer.enchantments.title": "Зачарования",
