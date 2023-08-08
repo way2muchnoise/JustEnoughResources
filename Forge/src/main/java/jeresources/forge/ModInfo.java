@@ -3,7 +3,7 @@ package jeresources.forge;
 import jeresources.platform.IModInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraftforge.forgespi.language.IModFileInfo;
-import net.minecraftforge.resource.PathPackResources;
+import net.minecraftforge.resource.ResourcePackLoader;
 
 import java.util.List;
 
@@ -22,6 +22,6 @@ public class ModInfo implements IModInfo {
 
     @Override
     public List<? extends PackResources> getPackResources() {
-        return List.of(new PathPackResources(modFile.getFile().getFileName(), false, modFile.getFile().getFilePath()));
+        return List.of(ResourcePackLoader.createPackForMod(modFile));
     }
 }
