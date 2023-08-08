@@ -102,20 +102,20 @@ public class MinecraftCompat extends CompatBase {
         PlantDrop poisonous = new PlantDrop(new ItemStack(Items.POISONOUS_POTATO), 0.02F);
         registerPlant(new PlantEntry((PotatoBlock) Blocks.POTATOES, potato, poisonous));
 
-        // Carrot
+        //Carrot
         PlantDrop carrot = new PlantDrop(new ItemStack(Items.CARROT), 1, 4);
         registerPlant(new PlantEntry((CarrotBlock) Blocks.CARROTS, carrot));
 
-        // Wheat
+        //Wheat
         PlantDrop wheat = new PlantDrop(new ItemStack(Items.WHEAT), 1, 1);
         PlantDrop seeds = new PlantDrop(new ItemStack(Items.WHEAT_SEEDS), 0, 3);
         registerPlant(new PlantEntry((CropBlock) Blocks.WHEAT, wheat, seeds));
 
-        // Melon
+        //Melon
         PlantDrop melonSlice = new PlantDrop(new ItemStack(Items.MELON_SLICE), 3, 7);
         registerPlant(new PlantEntry((StemBlock) Blocks.MELON_STEM, melonSlice));
 
-        // Pumpkin
+        //Pumpkin
         PlantDrop pumpkin = new PlantDrop(new ItemStack(Blocks.PUMPKIN), 1, 1);
         registerPlant(new PlantEntry((StemBlock) Blocks.PUMPKIN_STEM, pumpkin));
 
@@ -124,7 +124,7 @@ public class MinecraftCompat extends CompatBase {
         PlantDrop beetrootSeeds = new PlantDrop(new ItemStack(Items.BEETROOT_SEEDS), 0, 3);
         registerPlant(new PlantEntry((BeetrootBlock) Blocks.BEETROOTS, beetroot, beetrootSeeds));
 
-        // Nether Wart
+        //Nether Wart
         PlantDrop netherWartDrop = new PlantDrop(new ItemStack(Items.NETHER_WART), 2, 4);
         PlantEntry netherWartEntry = new PlantEntry((NetherWartBlock) Blocks.NETHER_WART, netherWartDrop);
         netherWartEntry.setSoil(Blocks.SOUL_SAND.defaultBlockState());
