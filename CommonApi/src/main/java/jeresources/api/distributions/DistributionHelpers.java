@@ -235,7 +235,7 @@ public class DistributionHelpers {
         Set<OrePoint> set = new TreeSet<>();
         Collections.addAll(set, points);
         points = set.toArray(new OrePoint[set.size()]);
-        float[] array = new float[256 + 64];
+        float[] array = new float[320 + 64];
         addDistribution(array, getRampDistribution(0, points[0].level, points[0].chance));
         for (int i = 1; i < points.length; i++) {
             OrePoint min, max;
