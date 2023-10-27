@@ -1,18 +1,16 @@
 package jeresources.util;
 
+import io.netty.util.concurrent.ThreadPerTaskExecutor;
 import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.config.Settings;
 import jeresources.platform.Services;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.VanillaPackResources;
-import net.minecraft.server.packs.repository.ServerPacksSource;
-import net.minecraft.server.packs.resources.ReloadInstance;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
@@ -174,14 +172,15 @@ public class LootTableHelper {
                     return lootTables;
                 }
 
-
+                List<PackResources> packs = Minecraft.getInstance().getResourcePackRepository().getSelectedPacks().stream().map(Pack::open).toList();
                 ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
-                List<PackResources> packs = new LinkedList<>();
-                packs.add(new VanillaPackResources(ServerPacksSource.BUILT_IN_METADATA, "minecraft"));
-                Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
                 reloadableResourceManager.registerReloadListener(lootTables);
-                ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
-                Minecraft.getInstance().managedBlock(reloadInstance::isDone);
+
+                try {
+                    reloadableResourceManager.createReload(new ThreadPerTaskExecutor(Thread::new), new ThreadPerTaskExecutor(Thread::new), CompletableFuture.completedFuture(Unit.INSTANCE), packs).done().get();
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
+                }
             }
             return lootTables;
         }
