@@ -18,7 +18,6 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     protected T entity;
 
     public AbstractVillagerEntry(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
-        this.entity = getVillagerEntity();
         this.tradeList = new LinkedList<>();
         addITradeLists(itemListings);
     }
