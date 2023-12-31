@@ -34,23 +34,12 @@ public class LootTableHelper implements ILootTableHelper {
 
     public List<LootPoolEntryContainer> getLootEntries(LootPool pool) {
         // public net.minecraft.world.level.storage.loot.LootPool f_79023_ # entries
-        return getPrivateArrayValueAsList(pool, "f_79023_");
+        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79023_");
     }
 
     public List<LootItemCondition> getLootConditions(LootPool pool) {
         // public net.minecraft.world.level.storage.loot.LootPool f_79024_ # conditions
-        return getPrivateArrayValueAsList(pool, "f_79024_");
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T, E> List<T> getPrivateArrayValueAsList(E instance, String fieldName) {
-        T array = ObfuscationReflectionHelper.getPrivateValue((Class<? super E>) LootPool.class, instance, fieldName);
-        int length = Array.getLength(array);
-        List<T> arrayList = new ArrayList<>(length);
-        for (int i = 0; i < length; i++) {
-            arrayList.add((T) Array.get(array, i));
-        }
-        return arrayList;
+        return ObfuscationReflectionHelper.getPrivateValue(LootPool.class, pool, "f_79024_");
     }
 
     @Override

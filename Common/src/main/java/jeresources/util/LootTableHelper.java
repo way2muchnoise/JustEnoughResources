@@ -77,7 +77,7 @@ public class LootTableHelper {
                 final List<LootItemCondition> poolConditions = getLootConditions(pool);
                 getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootItem).map(entry -> (LootItem) entry)
-                    .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.conditions, entry.functions))
+                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.conditions, entry.functions))
                     .map(drop -> drop.addLootConditions(poolConditions))
                     .forEach(drops::add);
 
@@ -176,7 +176,7 @@ public class LootTableHelper {
 
                 ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
                 List<PackResources> packs = new LinkedList<>();
-                packs.add(new ServerPacksSource().getVanillaPack());
+                packs.add(new ServerPacksSource(null).getVanillaPack());
                 Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
                 reloadableResourceManager.registerReloadListener(lootDataManager);
                 ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);

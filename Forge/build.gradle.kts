@@ -76,6 +76,7 @@ minecraft {
 			taskName("runClientDev")
 			property("forge.logging.console.level", "debug")
 			workingDirectory(file("run/client/Dev"))
+			ideaModule("JustEnoughResources.Forge.main")
 			mods {
 				create(modId) {
 					source(sourceSets.main.get())
@@ -101,6 +102,7 @@ minecraft {
 			taskName("Server")
 			property("forge.logging.console.level", "debug")
 			workingDirectory(file("run/server"))
+			ideaModule("JustEnoughResources.Forge.main")
 			mods {
 				create(modId) {
 					source(sourceSets.main.get())

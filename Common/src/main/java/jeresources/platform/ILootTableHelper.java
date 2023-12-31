@@ -11,15 +11,15 @@ import java.util.List;
 
 public interface ILootTableHelper {
     default List<LootPool> getPools(LootTable table) {
-        return Arrays.asList(table.pools);
+        return table.pools;
     }
 
     default List<LootPoolEntryContainer> getLootEntries(LootPool pool) {
-        return Arrays.asList(pool.entries);
+        return pool.entries;
     }
 
     default List<LootItemCondition> getLootConditions(LootPool pool) {
-        return Arrays.asList(pool.conditions);
+        return pool.conditions;
     }
 
     default NumberProvider getRolls(LootPool pool) {

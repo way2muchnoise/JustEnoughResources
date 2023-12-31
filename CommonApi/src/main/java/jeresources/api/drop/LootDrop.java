@@ -132,7 +132,23 @@ public class LootDrop implements Comparable<LootDrop> {
         addLootFunctions(lootFunctions);
     }
 
+    public LootDrop(Item item, float chance, Collection<LootItemFunction> lootFunctions) {
+        this(new ItemStack(item), chance);
+        this.enchanted = false;
+        addLootFunctions(lootFunctions);
+    }
+
     public LootDrop(Item item, float chance, LootItemCondition[] lootConditions, LootItemFunction... lootFunctions) {
+        this(item, chance, lootFunctions);
+        addLootConditions(lootConditions);
+    }
+
+    public LootDrop(Item item, float chance, Collection<LootItemCondition> lootConditions, LootItemFunction... lootFunctions) {
+        this(item, chance, lootFunctions);
+        addLootConditions(lootConditions);
+    }
+
+    public LootDrop(Item item, float chance, Collection<LootItemCondition> lootConditions, Collection<LootItemFunction> lootFunctions) {
         this(item, chance, lootFunctions);
         addLootConditions(lootConditions);
     }

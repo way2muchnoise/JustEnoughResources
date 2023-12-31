@@ -49,7 +49,7 @@ public class DungeonEntry {
                     .mapToInt(entry -> entry.weight).sum();
                 LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootItem).map(entry -> (LootItem) entry)
-                    .map(entry -> new LootDrop(entry.item, entry.weight / totalWeight, entry.functions)).forEach(drops::add);
+                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.functions)).forEach(drops::add);
 
                 LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)

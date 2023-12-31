@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkConstants;
 
 @Mod(Reference.ID)
 public class JEResources {
@@ -23,7 +22,7 @@ public class JEResources {
 
     public JEResources() {
         //Make sure the mod being absent on the other network side does not cause the client to display the server as incompatible
-        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(()-> NetworkConstants.IGNORESERVERONLY, (remote, isServer)-> true));
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(()-> IExtensionPoint.DisplayTest.IGNORESERVERONLY, (remote, isServer)-> true));
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON);
