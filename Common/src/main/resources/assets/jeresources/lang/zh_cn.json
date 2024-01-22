@@ -9,13 +9,11 @@
 	"jer.config.diyData.description": "The build in compat code will not load and jsons will be loaded （需要重启Minecraft）",
 	"jer.config.dimensionsBlacklist.title": "维度黑名单",
 	"jer.config.dimensionsBlacklist.description": "来自于JEI分析扫描的黑名单维度",
-	"jer.config.perChunkCount.title": "显示每个区块方块统计数",
-	"jer.config.perChunkCount.description": "世界生成 view 中的方块的统计数。",
-	"jer.config.showDevData.title": "Show extra information",
-	"jer.config.showDevData.description": "Mainly for pack devs. Features include but not limited to avg. blocks per chuck, entity ids, ...",
-	"jer.config.hiddenTabs.title": "Hide tabs added by JER",
+	"jer.config.showDevData.title": "展示更多信息",
+	"jer.config.showDevData.description": "主要是针对资源包开发者。功能包括但不限于每个区块的平均方块数、实体ID等...",
+	"jer.config.hiddenTabs.title": "隐藏JER添加的标签",
 	"_comment": "# do not translate strings between quotes as they are used in code",
-	"jer.config.hiddenTabs.description": "Tabs added by JER are 'dungeon', 'enchantment', 'mob', 'villager', worldgen' and 'plant'",
+	"jer.config.hiddenTabs.description": "JER添加的标签为'dungeon', 'enchantment', 'mob', 'villager', worldgen'和'plant'",
 
 	"_comment": "#Default dimensions",
 	"jer.dim.all": "全部",
@@ -107,7 +105,7 @@
 
 	"_comment": "#Villager View",
 	"jer.villager.title": "村民交易",
-	"jer.villager.poi": "Point of Interest",
+	"jer.villager.poi": "工作站点方块",
 
 	"_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
 	"jer.magmaCream.text": "仅小型或大型岩浆怪掉落",
