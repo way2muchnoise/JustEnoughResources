@@ -165,7 +165,10 @@ public class MobWrapper implements IRecipeCategoryExtension, ITooltipCallback<It
     }
 
     public ItemStack getSpawnEgg() {
-        return getSpawnEggItem(this.mob.getEntity().getType()).getDefaultInstance();
+        SpawnEggItem spawnEggItem = getSpawnEggItem(this.mob.getEntity().getType());
+        if (spawnEggItem == null)
+            return null;
+        return spawnEggItem.getDefaultInstance();
     }
 
     private SpawnEggItem getSpawnEggItem(EntityType type) {
