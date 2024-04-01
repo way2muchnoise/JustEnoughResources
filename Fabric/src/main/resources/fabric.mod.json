@@ -16,7 +16,7 @@
     "environment": "*",
     "entrypoints": {
       "client" : [
-        "jeresources.JEResources"
+        "jeresources.fabric.JEResources"
       ],
       "modmenu": [
         "jeresources.fabric.config.JEResourcesModMenu"

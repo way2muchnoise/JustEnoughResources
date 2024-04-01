@@ -9,8 +9,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootTable;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,17 +26,17 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     }
 
     @Override
-    public void registerCategory(@Nonnull String category, @Nonnull String localization) {
+    public void registerCategory(@NotNull String category, @NotNull String localization) {
         categoryMapping.add(new Tuple<>(category, localization));
     }
 
     @Override
-    public void registerChest(@Nonnull String category, @Nonnull ResourceLocation tableLocation) {
+    public void registerChest(@NotNull String category, @NotNull ResourceLocation tableLocation) {
         rawRegisters.put(category, tableLocation);
     }
 
     @Override
-    public void registerChest(@Nonnull String category, @Nonnull LootTable lootTable) {
+    public void registerChest(@NotNull String category, @NotNull LootTable lootTable) {
         try {
             preppedRegisters.add(new DungeonEntry(category, lootTable));
         } catch (Exception e) {

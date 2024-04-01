@@ -33,6 +33,9 @@ out
 build
 .gradle
 
+# Architectury
+.architectury-transformer
+
 # other
 eclipse
 run

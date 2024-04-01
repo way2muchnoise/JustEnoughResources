@@ -20,8 +20,8 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.scores.Scoreboard;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.BooleanSupplier;
 
 public class FakeClientLevel extends ClientLevel {

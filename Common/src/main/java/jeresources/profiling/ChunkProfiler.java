@@ -17,8 +17,8 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +30,12 @@ public class ChunkProfiler implements Runnable {
     private final ProfilingTimer timer;
     private final ProfilingBlacklist blacklist;
     private final List<ChunkAccess> chunks;
-    @Nonnull
+    @NotNull
     private final ProfiledDimensionData dimensionData;
     public static final int CHUNK_SIZE = 16;
     public static final int CHUNK_HEIGHT = 256;
 
-    public ChunkProfiler(ServerLevel level, ResourceKey<Level> dimensionKey, List<ChunkAccess> chunks, @Nonnull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
+    public ChunkProfiler(ServerLevel level, ResourceKey<Level> dimensionKey, List<ChunkAccess> chunks, @NotNull ProfiledDimensionData dimensionData, ProfilingTimer timer, ProfilingBlacklist blacklist) {
         this.level = level;
         this.dimensionKey = dimensionKey;
         this.chunks = chunks;

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PlantHelper {
     public static List<PlantDrop> getSeeds() {
-        return LootTableHelper.toDrops(Blocks.GRASS.getLootTable()).stream()
+        return LootTableHelper.toDrops(Blocks.GRASS_BLOCK.getLootTable()).stream()
             .map(lootDrop -> new PlantDrop(lootDrop.item, lootDrop.minDrop, lootDrop.maxDrop)).toList();
     }
 

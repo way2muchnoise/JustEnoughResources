@@ -14,9 +14,9 @@ import jeresources.util.FakeClientLevel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public abstract class CompatBase {
@@ -38,7 +38,7 @@ public abstract class CompatBase {
                 .map(integratedServer -> integratedServer.getLevel(Level.OVERWORLD));
     }
 
-    @Nonnull
+    @NotNull
     public static Level getLevel() {
         Minecraft minecraft = Minecraft.getInstance();
         Level level = minecraft.level;

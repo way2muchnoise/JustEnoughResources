@@ -2,8 +2,7 @@ package jeresources.api;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootTable;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public interface IDungeonRegistry {
     /**
@@ -13,17 +12,17 @@ public interface IDungeonRegistry {
      * @param category     the category name
      * @param localization the translation key
      */
-    void registerCategory(@Nonnull String category, @Nonnull String localization);
+    void registerCategory(@NotNull String category, @NotNull String localization);
 
     /**
      * @param category      can be a localization string directly or a registered category
      * @param tableLocation the {@link ResourceLocation} of the loot table
      */
-    void registerChest(@Nonnull String category, @Nonnull ResourceLocation tableLocation);
+    void registerChest(@NotNull String category, @NotNull ResourceLocation tableLocation);
 
     /**
      * @param category  can be a localization string directly or a registered category
      * @param lootTable the actual {@link LootTable}
      */
-    void registerChest(@Nonnull String category, @Nonnull LootTable lootTable);
+    void registerChest(@NotNull String category, @NotNull LootTable lootTable);
 }

@@ -1,4 +1,4 @@
-package jeresources;
+package jeresources.fabric;
 
 import jeresources.fabric.config.ConfigFileHandler;
 import jeresources.proxy.CommonProxy;

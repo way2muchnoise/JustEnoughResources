@@ -1,4 +1,4 @@
-package jeresources.forge;
+package jeresources.neoforge;
 
 import jeresources.api.IJERAPI;
 import jeresources.api.IJERPlugin;
@@ -13,11 +13,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.forgespi.language.ModFileScanData;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforgespi.language.ModFileScanData;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,10 +25,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-public class ForgePlatformHelper implements IPlatformHelper {
+public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public String getPlatformName() {
-        return "Forge";
+        return "NeoForge";
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public IModList getModsList() {
-        return new jeresources.forge.ModList(ModList.get());
+        return new jeresources.neoforge.ModList(ModList.get());
     }
 
     @Override

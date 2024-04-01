@@ -1,6 +1,5 @@
 package jeresources.fabric;
 
-import jeresources.JEResources;
 import jeresources.api.IJERAPI;
 import jeresources.api.IJERPlugin;
 import jeresources.platform.ILootTableHelper;

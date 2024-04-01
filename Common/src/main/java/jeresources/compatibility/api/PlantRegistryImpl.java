@@ -11,8 +11,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -203,7 +203,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     }
 
     @Override
-    public void registerDrops(@Nonnull ItemStack itemStack, PlantDrop... drops) {
+    public void registerDrops(@NotNull ItemStack itemStack, PlantDrop... drops) {
         try {
             if (drops.length > 0 || ItemStack.isSameItem(itemStack, grass))
                 addedDrops.add(new Tuple<>(itemStack, drops));

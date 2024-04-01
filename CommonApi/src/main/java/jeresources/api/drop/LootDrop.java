@@ -10,8 +10,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -249,7 +249,7 @@ public class LootDrop implements Comparable<LootDrop> {
     }
 
     @Override
-    public int compareTo(@Nonnull LootDrop o) {
+    public int compareTo(@NotNull LootDrop o) {
         if (ItemStack.isSameItem(item, o.item))
             return Integer.compare(o.fortuneLevel, fortuneLevel);
         int cmp = Float.compare(o.getSortIndex(), getSortIndex());

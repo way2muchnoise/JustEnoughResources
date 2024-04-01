@@ -8,8 +8,8 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -50,7 +50,7 @@ public class MobTableBuilder {
         return mobTables;
     }
 
-    private static boolean isNonLiving(@Nonnull EntityType<?> entityType) {
+    private static boolean isNonLiving(@NotNull EntityType<?> entityType) {
         return !SPECIAL_LOOT_TABLE_TYPES.contains(entityType) && entityType.getCategory() == MobCategory.MISC;
     }
 }

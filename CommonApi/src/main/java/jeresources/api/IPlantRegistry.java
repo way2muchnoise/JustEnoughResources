@@ -5,8 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Used to register plants and {@link PlantDrop}s
@@ -34,5 +33,5 @@ public interface IPlantRegistry {
     <T extends BushBlock> void registerWithSoil (T plant, Property<?> ageProperty, BlockState soil, PlantDrop ... drops);
     <T extends BushBlock> void registerWithSoil (T plant, BlockState soil, PlantDrop ... drops);
 
-    void registerDrops(@Nonnull ItemStack itemStack, PlantDrop... drops);
+    void registerDrops(@NotNull ItemStack itemStack, PlantDrop... drops);
 }

@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "jeresources.mixin",
+  "package": "jeresources.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],

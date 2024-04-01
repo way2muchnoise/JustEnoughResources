@@ -13,7 +13,7 @@ public class ProfileCommand {
     private static final String CHUNK_PARAM = "chunk count";
     private static final String DIM_PARAM = "all dimensions";
 
-    public void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> profileCommand = Commands.literal(COMMAND_NAME)
             .requires(source -> source.hasPermission(4) && source.getServer().isSingleplayer());
 
