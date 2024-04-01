@@ -39,7 +39,7 @@ architectury {
 }
 
 //adds the build number to the end of the version string if on a build server
-var buildNumber = System.getenv("TRAVIS_BUILD_NUMBER")
+var buildNumber = System.getenv("GITHUB_RUN_NUMBER")
 if (buildNumber == null) {
     buildNumber = "local"
 }
