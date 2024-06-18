@@ -19,7 +19,7 @@
     "jer.dim.all": "すべて",
     "jer.dim.minecraft:overworld": "オーバーワールド",
     "jer.dim.minecraft:the_nether": "ネザー",
-    "jer.dim.minecraft:the_end": "ジ・エンド",
+    "jer.dim.minecraft:the_end": "エンド",
 
 	"_comment": "#Usage: jer.page pageNumber jer.of lastPage",
     "jer.page": "ページ",
