@@ -24,7 +24,7 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     public void addITradeLists(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
         for (int i = 1;i < itemListings.size() + 1;i++) {
             VillagerTrades.ItemListing[] levelList = itemListings.get(i);
-            TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(entity);
+            TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(getVillagerEntity());
             trades.addITradeList(levelList);
             this.tradeList.add(trades);
         }
@@ -34,7 +34,7 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
         if (tradeList.size() > level) {
             return tradeList.get(level);
         } else {
-            return new TradeList(entity);
+            return new TradeList(getVillagerEntity());
         }
     }
 
