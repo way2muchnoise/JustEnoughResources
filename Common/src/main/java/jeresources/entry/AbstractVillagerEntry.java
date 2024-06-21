@@ -21,6 +21,10 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
         addITradeLists(itemListings);
     }
 
+    public AbstractVillagerEntry() {
+        this.tradeList = new LinkedList<>();
+    }
+
     public void addITradeLists(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
         for (int i = 1;i < itemListings.size() + 1;i++) {
             VillagerTrades.ItemListing[] levelList = itemListings.get(i);

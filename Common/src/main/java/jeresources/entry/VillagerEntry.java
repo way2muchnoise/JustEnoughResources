@@ -16,8 +16,10 @@ public class VillagerEntry extends AbstractVillagerEntry<Villager>{
     private final VillagerProfession profession;
 
     public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
-        super(itemListings);
+        super();
         this.profession = profession;
+        // only make trades after setting profession
+        addITradeLists(itemListings);
     }
 
     @Override
@@ -45,6 +47,7 @@ public class VillagerEntry extends AbstractVillagerEntry<Villager>{
             this.entity = EntityType.VILLAGER.create(CompatBase.getLevel());
             assert this.entity != null;
             this.entity.setVillagerData(this.entity.getVillagerData().setProfession(this.profession));
+            this.entity.tick();
         }
         return this.entity;
     }
