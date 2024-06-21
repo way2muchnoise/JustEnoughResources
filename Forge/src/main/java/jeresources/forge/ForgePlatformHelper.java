@@ -2,6 +2,7 @@ package jeresources.forge;
 
 import jeresources.api.IJERAPI;
 import jeresources.api.IJERPlugin;
+import jeresources.api.JERPlugin;
 import jeresources.platform.ILootTableHelper;
 import jeresources.platform.IModList;
 import jeresources.platform.IPlatformHelper;
@@ -48,7 +49,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public void injectApi(IJERAPI instance) {
-        Type pluginAnnotation = Type.getType(IJERPlugin.class);
+        Type pluginAnnotation = Type.getType(JERPlugin.class);
         List<ModFileScanData> allScanData = ModList.get().getAllScanData();
         for (ModFileScanData scanData : allScanData) {
             Iterable<ModFileScanData.AnnotationData> annotations = scanData.getAnnotations();
