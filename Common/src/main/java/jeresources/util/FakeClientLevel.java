@@ -14,10 +14,11 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.scores.Scoreboard;
 import org.jetbrains.annotations.Nullable;
@@ -68,8 +69,8 @@ public class FakeClientLevel extends ClientLevel {
         return new ClientChunkCache(this, 0) {
             @Nullable
             @Override
-            public LevelChunk getChunk(int i, int i1, ChunkStatus chunkStatus, boolean b) {
-                return null;
+            public LevelChunk getChunk(int x, int z, ChunkStatus chunkStatus, boolean requireChunk) {
+                return super.getChunk(x, z, chunkStatus, requireChunk);
             }
 
             @Override
@@ -96,17 +97,18 @@ public class FakeClientLevel extends ClientLevel {
 
     @Nullable
     @Override
-    public MapItemSavedData getMapData(String mapName) {
-        return null;
+    public MapItemSavedData getMapData(MapId mapId) {
+        return super.getMapData(mapId);
     }
 
     @Override
-    public void setMapData(String p_171670_, MapItemSavedData p_171671_) {
+    public void setMapData(MapId mapId, MapItemSavedData mapData) {
+        super.setMapData(mapId, mapData);
     }
 
     @Override
-    public int getFreeMapId() {
-        return 0;
+    public MapId getFreeMapId() {
+        return new MapId(0);
     }
 
     @Override

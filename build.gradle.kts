@@ -5,8 +5,8 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     base
     id("architectury-plugin") version ("3.4-SNAPSHOT")
-    id("dev.architectury.loom") version ("1.5-SNAPSHOT") apply (false)
-    id("com.github.johnrengelman.shadow") version ("7.1.2") apply (false)
+    id("dev.architectury.loom") version ("1.6-SNAPSHOT") apply (false)
+    id("com.github.johnrengelman.shadow") version ("8.1.1") apply (false)
 }
 
 // gradle.properties
@@ -60,8 +60,8 @@ subprojects {
 
     // Set Java version.
     extensions.configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     architectury {

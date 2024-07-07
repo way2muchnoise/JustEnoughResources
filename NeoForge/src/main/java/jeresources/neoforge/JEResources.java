@@ -9,8 +9,7 @@ import jeresources.proxy.CommonProxy;
 import jeresources.reference.Reference;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
-import net.neoforged.fml.IExtensionPoint;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -21,18 +20,17 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 @Mod(Reference.ID)
 public class JEResources {
-    public static CommonProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+    public static CommonProxy PROXY;
 
-    public JEResources(IEventBus modEventBus, Dist dist) {
-        //Make sure the mod being absent on the other network side does not cause the client to display the server as incompatible
-        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(()-> IExtensionPoint.DisplayTest.IGNORESERVERONLY, (remote, isServer)-> true));
+    public JEResources(ModContainer container, Dist dist) {
+        PROXY = dist.isClient() ? new ClientProxy() : new CommonProxy();
 
-        modEventBus.addListener(this::commonSetup);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON);
+        container.getEventBus().addListener(this::commonSetup);
+        container.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
 
         // TODO create config folder
         Config.instance.loadConfig(Config.COMMON, Services.PLATFORM.getConfigDir().resolve(Reference.ID + ".toml"));
-        modEventBus.register(Config.instance);
+        container.getEventBus().register(Config.instance);
         NeoForge.EVENT_BUS.addListener(this::onCommandsRegister);
       }
 

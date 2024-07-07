@@ -6,7 +6,6 @@ import jeresources.api.drop.LootDrop;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -78,8 +77,8 @@ public class LootFunctionHelper {
 
     public static class RandomLootContext extends LootContext {
         public RandomLootContext(){
-            //LootParams, RandomSource , LootDataResolver
-            super(new LootParams.Builder(null).create(LootContextParamSets.EMPTY), RandomSource.create(), new LootDataManager());
+            //LootParams, RandomSource, HolderGetter.Provider
+            super(new LootParams.Builder(null).create(LootContextParamSets.EMPTY), RandomSource.create(), null);
         }
     }
 }

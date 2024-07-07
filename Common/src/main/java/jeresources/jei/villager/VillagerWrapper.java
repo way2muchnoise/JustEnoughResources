@@ -2,6 +2,7 @@ package jeresources.jei.villager;
 
 import jeresources.collection.TradeList;
 import jeresources.entry.AbstractVillagerEntry;
+import jeresources.entry.VillagerEntry;
 import jeresources.reference.Resources;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class VillagerWrapper implements IRecipeCategoryExtension {
+public class VillagerWrapper implements IRecipeCategoryExtension<VillagerWrapper> {
     private final AbstractVillagerEntry<?> entry;
     private IFocus<ItemStack> focus;
 
@@ -52,7 +53,7 @@ public class VillagerWrapper implements IRecipeCategoryExtension {
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(VillagerWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         // TODO: Fix scissoring
         // RenderHelper.scissor(poseStack,7, 43, 59, 79);
         AbstractVillager villager = entry.getVillagerEntity();

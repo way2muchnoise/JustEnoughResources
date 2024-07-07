@@ -4,10 +4,10 @@ import jeresources.api.IDungeonRegistry;
 import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
 import jeresources.util.LogHelper;
+import jeresources.util.LootTableFetcher;
 import jeresources.util.LootTableHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class DungeonRegistryImpl implements IDungeonRegistry {
     private static List<Tuple<String, String>> categoryMapping = new LinkedList<>();
-    private static Map<String, ResourceLocation> rawRegisters = new HashMap<>();
+    private static Map<String, ResourceKey<LootTable>> rawRegisters = new HashMap<>();
     private static List<DungeonEntry> preppedRegisters = new LinkedList<>();
 
     protected DungeonRegistryImpl() {
@@ -31,7 +31,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     }
 
     @Override
-    public void registerChest(@NotNull String category, @NotNull ResourceLocation tableLocation) {
+    public void registerChest(@NotNull String category, @NotNull ResourceKey<LootTable> tableLocation) {
         rawRegisters.put(category, tableLocation);
     }
 
@@ -47,11 +47,11 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     protected static void commit() {
         categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getA(), t.getB()));
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
-        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
+        LootTableFetcher lootTableFetcher = LootTableHelper.getLootTableFetcher();
         rawRegisters.entrySet().stream()
             .map(entry -> {
                 try {
-                    return new DungeonEntry(entry.getKey(), lootDataManager.getLootTable(entry.getValue()));
+                    return new DungeonEntry(entry.getKey(), lootTableFetcher.getLootTable(entry.getValue()));
                 } catch (Exception e) {
                     LogHelper.debug("Bad dungeon chest registry for category %s", entry.getKey());
                     return null;

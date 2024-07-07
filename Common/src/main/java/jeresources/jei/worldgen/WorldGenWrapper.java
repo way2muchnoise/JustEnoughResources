@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenWrapper>, IRecipeSlotTooltipCallback {
     protected static final int X_OFFSET = 49 - 20;
     protected static final int Y_OFFSET = 52;
     protected static final int X_AXIS_SIZE = 100 + 20 + 8;
@@ -52,7 +52,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(WorldGenWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         float[] array = this.worldGenEntry.getChances();
         double max = 0;
         for (double d : array)
@@ -108,7 +108,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
     }
 
     @Override
-    public List<Component> getTooltipStrings(double mouseX, double mouseY) {
+    public List<Component> getTooltipStrings(WorldGenWrapper recipe, double mouseX, double mouseY) {
         List<Component> tooltip = new LinkedList<>();
         if (onGraph(mouseX, mouseY))
             tooltip = getLineTooltip(mouseX, tooltip);
@@ -143,7 +143,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension, IRecipeSlotToo
                 String line = " - ";
 
                 if (dropItem.fortuneLevel > 0) {
-                    line += Enchantments.BLOCK_FORTUNE.getFullname(dropItem.fortuneLevel).getString(); // Avoid crash by using Minecraft ObjectHolder
+                    line += Enchantments.FORTUNE.getFullname(dropItem.fortuneLevel).getString(); // Avoid crash by using Minecraft ObjectHolder
                 } else {
                     line += TranslationHelper.translateAndFormat("jer.worldgen.base");
                 }

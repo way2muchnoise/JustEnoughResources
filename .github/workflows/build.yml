@@ -27,18 +27,18 @@ jobs:
             echo ""
             echo EOF
           } >> "$GITHUB_ENV"
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'microsoft'
-          java-version: '17'
+          java-version: '21'
           cache: 'gradle'
       - name: Make Gradle Wrapper Executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
       # Build
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean generateRemapClasspath build
       # Publish
       - name: Publish CurseForge
         run: ./gradlew :Forge:publishCurseForge :Fabric:publishCurseForge :NeoForge:publishCurseForge

@@ -24,11 +24,11 @@ public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension>
 
     @Override
     public void draw(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        recipe.drawInfo(getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
+        recipe.drawInfo(recipe, getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
     }
 
     @Override
     public @NotNull List<Component> getTooltipStrings(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        return recipe.getTooltipStrings(mouseX, mouseY);
+        return recipe.getTooltipStrings(recipe, mouseX, mouseY);
     }
 }

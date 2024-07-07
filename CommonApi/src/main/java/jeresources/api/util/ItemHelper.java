@@ -1,6 +1,6 @@
 package jeresources.api.util;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +17,9 @@ public class ItemHelper {
         return copy;
     }
 
-    public static ItemStack itemStackWithTag(Item item, int size, CompoundTag tag) {
+    public static ItemStack itemStackWithDataComponents(Item item, int size, DataComponentPatch dataComponentPatch) {
         ItemStack itemStack = new ItemStack(item, size);
-        itemStack.setTag(tag);
+        itemStack.applyComponentsAndValidate(dataComponentPatch);
         return itemStack;
     }
 }

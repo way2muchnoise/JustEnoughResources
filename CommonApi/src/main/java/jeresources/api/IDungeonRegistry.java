@@ -1,6 +1,6 @@
 package jeresources.api;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,9 +16,9 @@ public interface IDungeonRegistry {
 
     /**
      * @param category      can be a localization string directly or a registered category
-     * @param tableLocation the {@link ResourceLocation} of the loot table
+     * @param tableLocation the {@link ResourceKey} of the loot table
      */
-    void registerChest(@NotNull String category, @NotNull ResourceLocation tableLocation);
+    void registerChest(@NotNull String category, @NotNull ResourceKey<LootTable> tableLocation);
 
     /**
      * @param category  can be a localization string directly or a registered category

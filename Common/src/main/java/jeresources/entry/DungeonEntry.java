@@ -6,15 +6,17 @@ import jeresources.api.util.LootFunctionHelper;
 import jeresources.platform.ILootTableHelper;
 import jeresources.platform.Services;
 import jeresources.registry.DungeonRegistry;
+import jeresources.util.LootTableFetcher;
 import jeresources.util.LootTableHelper;
 import mezz.jei.api.recipe.IFocus;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 
 import java.util.List;
 import java.util.Set;
@@ -32,13 +34,13 @@ public class DungeonEntry {
         this.name = name;
         final float[] tmpMinStacks = {0};
         final float[] tmpMaxStacks = {0};
-        final LootDataManager lootTables = LootTableHelper.getLootDataManager();
+        final LootTableFetcher lootTables = LootTableHelper.getLootTableFetcher();
         handleTable(lootTable, lootTables, tmpMinStacks, tmpMaxStacks);
         this.minStacks = Mth.floor(tmpMinStacks[0]);
         this.maxStacks = Mth.floor(tmpMaxStacks[0]);
     }
 
-    private void handleTable(LootTable lootTable, LootDataManager lootTables, float[] tmpMinStacks, float[] tmpMaxStacks) {
+    private void handleTable(LootTable lootTable, LootTableFetcher lootTables, float[] tmpMinStacks, float[] tmpMaxStacks) {
         ILootTableHelper lootTableHelper = Services.PLATFORM.getLootTableHelper();
         LootTableHelper.getPools(lootTable).forEach(
             pool -> {
@@ -52,8 +54,8 @@ public class DungeonEntry {
                     .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.functions)).forEach(drops::add);
 
                 LootTableHelper.getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)
-                    .map(entry -> lootTables.getLootTable(entry.name))
+                    .filter(entry -> entry instanceof DynamicLoot).map(entry -> (DynamicLoot) entry)
+                    .map(entry -> lootTables.getLootTable(ResourceKey.create(Registries.LOOT_TABLE, entry.name)))
                     .forEach(table -> handleTable(table, lootTables, tmpMinStacks, tmpMaxStacks));
             }
         );

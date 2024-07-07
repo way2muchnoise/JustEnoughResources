@@ -4,37 +4,29 @@ import jeresources.api.drop.LootDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.config.Settings;
 import jeresources.platform.Services;
-import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.ServerPacksSource;
-import net.minecraft.server.packs.resources.ReloadInstance;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.util.Unit;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.*;
+import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class LootTableHelper {
-    private static final Map<DyeColor, ResourceLocation> sheepColors = new HashMap<>();
+    private static final Map<DyeColor, ResourceKey<LootTable>> sheepColors = new HashMap<>();
 
     static {
-        sheepColors.put(DyeColor.WHITE, BuiltInLootTables.SHEEP_WHITE);
+        sheepColors.put(DyeColor.WHITE,BuiltInLootTables.SHEEP_WHITE);
         sheepColors.put(DyeColor.ORANGE, BuiltInLootTables.SHEEP_ORANGE);
         sheepColors.put(DyeColor.MAGENTA, BuiltInLootTables.SHEEP_MAGENTA);
         sheepColors.put(DyeColor.LIGHT_BLUE, BuiltInLootTables.SHEEP_LIGHT_BLUE);
@@ -67,7 +59,7 @@ public class LootTableHelper {
     public static List<LootDrop> toDrops(LootTable table) {
         List<LootDrop> drops = new ArrayList<>();
 
-        final LootDataManager lootDataManager = getLootDataManager();
+        final LootTableFetcher lootTableFetcher = getLootTableFetcher();
 
         getPools(table).forEach(
             pool -> {
@@ -82,8 +74,8 @@ public class LootTableHelper {
                     .forEach(drops::add);
 
                 getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootTableReference).map(entry -> (LootTableReference) entry)
-                    .map(entry -> toDrops(lootDataManager.getLootTable(entry.name))).forEach(drops::addAll);
+                    .filter(entry -> entry instanceof DynamicLoot).map(entry -> (DynamicLoot) entry)
+                    .map(entry -> toDrops(lootTableFetcher.getLootTable(ResourceKey.create(Registries.LOOT_TABLE, entry.name)))).forEach(drops::addAll);
             }
         );
 
@@ -91,12 +83,12 @@ public class LootTableHelper {
         return drops;
     }
 
-    public static List<LootDrop> toDrops(ResourceLocation lootTable) {
-        return toDrops(getLootDataManager().getLootTable(lootTable));
+    public static List<LootDrop> toDrops(ResourceKey<LootTable> lootTableKey) {
+        return toDrops(getLootTableFetcher().getLootTable(lootTableKey));
     }
 
-    public static List<ResourceLocation> getAllChestLootTablesResourceLocations() {
-        ArrayList<ResourceLocation> chestTables = new ArrayList<>();
+    public static List<ResourceKey<LootTable>> getAllChestLootTablesResourceKeys() {
+        ArrayList<ResourceKey<LootTable>> chestTables = new ArrayList<>();
 
         chestTables.add(BuiltInLootTables.END_CITY_TREASURE);
         chestTables.add(BuiltInLootTables.SIMPLE_DUNGEON);
@@ -143,11 +135,11 @@ public class LootTableHelper {
         return chestTables;
     }
 
-    public static Map<ResourceLocation, Supplier<LivingEntity>> getAllMobLootTables() {
+    public static Map<ResourceKey<LootTable>, Supplier<LivingEntity>> getAllMobLootTables() {
         MobTableBuilder mobTableBuilder = new MobTableBuilder();
 
-        for (Map.Entry<DyeColor, ResourceLocation> entry : sheepColors.entrySet()) {
-            ResourceLocation lootTableList = entry.getValue();
+        for (Map.Entry<DyeColor, ResourceKey<LootTable>> entry : sheepColors.entrySet()) {
+            ResourceKey<LootTable> lootTableList = entry.getValue();
             DyeColor dyeColor = entry.getKey();
             mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
         }
@@ -161,29 +153,29 @@ public class LootTableHelper {
         return mobTableBuilder.getMobTables();
     }
 
-    private static LootDataManager lootDataManager;
+    private static LootTableFetcher lootTableFetcher;
 
-    public static LootDataManager getLootDataManager() {
+    public static LootTableFetcher getLootTableFetcher() {
         Level level = CompatBase.getServerLevel().orElseGet(CompatBase::getLevel);
         if (level.getServer() == null) {
-            if (lootDataManager == null) {
-                lootDataManager = new LootDataManager();
+            if (lootTableFetcher == null) {
+                lootTableFetcher = new LootTableFetcher();
 
                 if(Settings.disableLootManagerReloading) {
-                    return lootDataManager;
+                    return lootTableFetcher;
                 }
 
 
-                ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
-                List<PackResources> packs = new LinkedList<>();
-                packs.add(new ServerPacksSource(null).getVanillaPack());
-                Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
-                reloadableResourceManager.registerReloadListener(lootDataManager);
-                ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
-                Minecraft.getInstance().managedBlock(reloadInstance::isDone);
+//                ReloadableResourceManager reloadableResourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
+//                List<PackResources> packs = new LinkedList<>();
+//                packs.add(new ServerPacksSource(null).getVanillaPack());
+//                Services.PLATFORM.getModsList().getMods().forEach(mod -> packs.addAll(mod.getPackResources()));
+//                reloadableResourceManager.registerReloadListener(lootTableFetcher);
+//                ReloadInstance reloadInstance = reloadableResourceManager.createReload(Util.backgroundExecutor(), Minecraft.getInstance(), CompletableFuture.completedFuture(Unit.INSTANCE), packs);
+//                Minecraft.getInstance().managedBlock(reloadInstance::isDone);
             }
-            return lootDataManager;
+            return lootTableFetcher;
         }
-        return level.getServer().getLootData();
+        return new LootTableFetcher(level.getServer().reloadableRegistries());
     }
 }

@@ -3,6 +3,7 @@ package jeresources.jei.plant;
 import jeresources.api.drop.PlantDrop;
 import jeresources.compatibility.CompatBase;
 import jeresources.entry.PlantEntry;
+import jeresources.entry.VillagerEntry;
 import jeresources.util.PlantHelper;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class PlantWrapper implements IRecipeCategoryExtension<PlantWrapper>, IRecipeSlotTooltipCallback {
     protected final PlantEntry plantEntry;
 
     public PlantWrapper(PlantEntry entry) {
@@ -29,7 +30,7 @@ public class PlantWrapper implements IRecipeCategoryExtension, IRecipeSlotToolti
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(PlantWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         RenderHelper.renderBlock(guiGraphics, getFarmland(), 30, 30, -10, 20F, 20F);
         RenderHelper.renderBlock(guiGraphics, getBlockState(), 30, 12, 10, 20F, 20F);
     }

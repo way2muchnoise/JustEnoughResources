@@ -6,6 +6,7 @@ import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +27,7 @@ public class MapKeys {
     @Nullable
     public static String getKey(BlockState state, ServerLevel serverLevel, BlockPos pos) {
         Block block = state.getBlock();
-        if (!block.isRandomlyTicking(state)) {
+        if (!state.isRandomlyTicking()) {
             try {
                 return keyCache.get(state, () -> getKeyUncached(block, state, serverLevel, pos));
             } catch (ExecutionException e) {
@@ -61,8 +62,8 @@ public class MapKeys {
             return null;
         String registryName = item.getDescriptionId();
         StringBuilder key = new StringBuilder(registryName);
-        if (drop.getTag() != null)
-            key.append(":").append(drop.getTag());
+//        if (drop.getTag() != null) // TODO fix
+//            key.append(":").append(drop.getTag());
         return key.toString();
     }
 

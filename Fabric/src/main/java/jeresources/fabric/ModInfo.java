@@ -28,6 +28,7 @@ public class ModInfo implements IModInfo {
     }
 
     private static List<? extends PackResources> getPackResources(ModContainer modContainer) {
-        return modContainer.getRootPaths().stream().map(path -> new PathPackResources(modContainer.getMetadata().getId(), path, false)).toList();
+        //return modContainer.getRootPaths().stream().map(path -> new PathPackResources(modContainer.getMetadata().getId(), path, false)).toList();
+        return modContainer.getRootPaths().stream().map(path -> new PathPackResources(null, path)).toList(); // TODO fix if needed
     }
 }

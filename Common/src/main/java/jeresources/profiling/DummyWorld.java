@@ -12,8 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkSource;
-import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.level.saveddata.maps.MapId;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,18 +51,18 @@ public class DummyWorld extends ServerLevel {
 
     @Nullable
     @Override
-    public MapItemSavedData getMapData(String mapName) {
-        return null;
+    public MapItemSavedData getMapData(MapId mapId) {
+        return super.getMapData(mapId);
     }
 
     @Override
-    public void setMapData(String p_143305_, MapItemSavedData p_143306_) {
-        this.getServer().overworld().getDataStorage().set(p_143305_, p_143306_);
+    public void setMapData(MapId mapId, MapItemSavedData mapData) {
+        this.getServer().overworld().getDataStorage().set(mapId.key(), mapData);
     }
 
     @Override
-    public int getFreeMapId() {
-        return 0;
+    public MapId getFreeMapId() {
+        return new MapId(0);
     }
 
     @Override

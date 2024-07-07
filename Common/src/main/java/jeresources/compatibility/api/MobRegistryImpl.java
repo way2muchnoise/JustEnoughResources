@@ -10,8 +10,9 @@ import jeresources.registry.MobRegistry;
 import jeresources.util.LogHelper;
 import jeresources.util.LootTableHelper;
 import jeresources.util.ReflectionHelper;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MobRegistryImpl implements IMobRegistry {
-    private static Map<MobEntry, ResourceLocation> rawRegisters = new HashMap<>();
+    private static Map<MobEntry, ResourceKey<LootTable>> rawRegisters = new HashMap<>();
     private static List<MobEntry> preppedRegisters = new ArrayList<>();
     private static Map<Class<? extends LivingEntity>, List<IMobRenderHook>> renderHooks = new HashMap<>();
     private static Map<String, List<IScissorHook>> scissorHooks = new HashMap<>();
@@ -30,7 +31,7 @@ public class MobRegistryImpl implements IMobRegistry {
 
     //region lootTables
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel, minExp, maxExp, biomes), lootTable);
         } catch (Exception e) {
@@ -39,7 +40,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel, minExp, maxExp), lootTable);
         } catch (Exception e) {
@@ -48,7 +49,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel, exp, biomes), lootTable);
         } catch (Exception e) {
@@ -57,7 +58,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel, exp), lootTable);
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel, biomes), lootTable);
         } catch (Exception e) {
@@ -75,7 +76,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, LightLevel lightLevel, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, LightLevel lightLevel, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity, lightLevel), lootTable);
         } catch (Exception e) {
@@ -84,7 +85,7 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @Override
-    public void register(LivingEntity entity, ResourceLocation lootTable) {
+    public void register(LivingEntity entity, ResourceKey<LootTable> lootTable) {
         try {
             rawRegisters.put(MobEntry.create(() -> entity), lootTable);
         } catch (Exception e) {

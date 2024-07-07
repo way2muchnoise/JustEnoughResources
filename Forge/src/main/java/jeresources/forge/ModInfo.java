@@ -22,6 +22,6 @@ public class ModInfo implements IModInfo {
 
     @Override
     public List<? extends PackResources> getPackResources() {
-        return List.of(ResourcePackLoader.createPackForMod(modFile));
+        return List.of(); // List.of(ResourcePackLoader.createPackForMod(modFile)); TODO fix if needed
     }
 }

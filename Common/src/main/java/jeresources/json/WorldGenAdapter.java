@@ -14,8 +14,10 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.platform.Services;
 import jeresources.registry.WorldGenRegistry;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -102,11 +104,12 @@ public class WorldGenAdapter {
                         }
 
                         if (stackStrings.length == 4) {
-                            try {
-                                itemStack.setTag(TagParser.parseTag(stackStrings[3]));
-                            } catch (CommandSyntaxException e) {
-                                e.printStackTrace();
-                            }
+                            // TODO fix loading NBT Tag
+//                            try {
+//                                itemStack.(TagParser.parseTag(stackStrings[3]));
+//                            } catch (CommandSyntaxException e) {
+//                                e.printStackTrace();
+//                            }
                         }
 
                         JsonElement fortuneElement = drop.get("fortunes");

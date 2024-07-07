@@ -27,7 +27,6 @@ out
 *.iws
 *.iml
 .idea/*
-!.idea/scopes
 
 # gradle
 build

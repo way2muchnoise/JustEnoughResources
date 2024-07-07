@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
-public class EnchantmentWrapper implements IRecipeCategoryExtension {
+public class EnchantmentWrapper implements IRecipeCategoryExtension<EnchantmentWrapper> {
     private static final int ENTRIES_PER_PAGE = 11;
     private static final int ENCHANT_X = 35;
     private static final int FIRST_ENCHANT_Y = 7;
@@ -58,7 +58,7 @@ public class EnchantmentWrapper implements IRecipeCategoryExtension {
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(EnchantmentWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments()) {
             Font.normal.print(guiGraphics, enchantment.getTranslatedWithLevels(), ENCHANT_X, y);

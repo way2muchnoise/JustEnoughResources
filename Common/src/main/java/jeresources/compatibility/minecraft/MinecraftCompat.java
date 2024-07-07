@@ -13,6 +13,7 @@ import jeresources.entry.DungeonEntry;
 import jeresources.entry.MobEntry;
 import jeresources.entry.PlantEntry;
 import jeresources.entry.WorldGenEntry;
+import jeresources.util.LootTableFetcher;
 import jeresources.util.LootTableHelper;
 import net.minecraft.world.entity.ambient.Bat;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
@@ -24,7 +25,6 @@ import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.storage.loot.LootDataManager;
 
 import java.util.Map;
 
@@ -39,10 +39,10 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerVanillaMobs() {
-        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
+        LootTableFetcher lootTableFetcher = LootTableHelper.getLootTableFetcher();
         LootTableHelper.getAllMobLootTables().entrySet().stream()
-            .sorted(Map.Entry.comparingByKey())
-            .map(entry -> MobEntry.create(entry.getValue(), lootDataManager.getLootTable(entry.getKey())))
+            //.sorted(Map.Entry.comparingByKey())
+            .map(entry -> MobEntry.create(entry.getValue(), lootTableFetcher.getLootTable(entry.getKey())))
             .forEach(this::registerMob);
 
         registerMobRenderHook(Bat.class, RenderHooks.BAT);
@@ -55,9 +55,9 @@ public class MinecraftCompat extends CompatBase {
     }
 
     private void registerDungeonLoot() {
-        LootDataManager lootDataManager = LootTableHelper.getLootDataManager();
-        LootTableHelper.getAllChestLootTablesResourceLocations().stream()
-            .map(resourceLocation -> new DungeonEntry(resourceLocation.getPath(), lootDataManager.getLootTable(resourceLocation)))
+        LootTableFetcher lootTableFetcher = LootTableHelper.getLootTableFetcher();
+        LootTableHelper.getAllChestLootTablesResourceKeys().stream()
+            .map(resourceKey -> new DungeonEntry(resourceKey.location().getPath(), lootTableFetcher.getLootTable(resourceKey)))
             .forEach(this::registerDungeonEntry);
     }
 

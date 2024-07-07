@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class MobWrapper implements IRecipeCategoryExtension<MobWrapper>, IRecipeSlotTooltipCallback {
     private final MobEntry mob;
 
     public MobWrapper(MobEntry mob) {
@@ -41,7 +41,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(MobWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = this.mob.getEntity();
         // TODO: Fix scissoring
         //RenderHelper.scissor(poseStack,7, 43, 59, 79);
@@ -80,7 +80,7 @@ public class MobWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipC
     }
 
     @Override
-    public @NotNull List<Component> getTooltipStrings(double mouseX, double mouseY) {
+    public @NotNull List<Component> getTooltipStrings(MobWrapper recipe, double mouseX, double mouseY) {
         if (this.mob.hasMultipleBiomes() && isOnBiome(mouseX, mouseY))
             return CollectionHelper.create(Component::literal, this.mob.getTranslatedBiomes());
         return Collections.emptyList();

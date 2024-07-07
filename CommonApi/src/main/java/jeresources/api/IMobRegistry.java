@@ -4,8 +4,9 @@ import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.api.render.IScissorHook;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
  * Use to register new {@link LivingEntity}s, {@link IMobRenderHook}s and {@link IScissorHook}s
@@ -22,15 +23,15 @@ public interface IMobRegistry {
      * @param minExp     minimum exp gained by killing the {@link LivingEntity}
      * @param maxExp     maximum exp gained by killing the {@link LivingEntity}
      * @param biomes     {@link java.util.List} of {@link String} names of the biomes
-     * @param lootTable  the {@link ResourceLocation} of the loot table
+     * @param lootTable  the {@link ResourceKey} of the loot table
      */
-    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceLocation lootTable);
-    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceLocation lootTable);
-    void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceLocation lootTable);
-    void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceLocation lootTable);
-    void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceLocation lootTable);
-    void register(LivingEntity entity, LightLevel lightLevel, ResourceLocation lootTable);
-    void register(LivingEntity entity, ResourceLocation lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, String[] biomes, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int minExp, int maxExp, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, String[] biomes, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, int exp, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, String[] biomes, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, LightLevel lightLevel, ResourceKey<LootTable> lootTable);
+    void register(LivingEntity entity, ResourceKey<LootTable> lootTable);
 
     /**
      * Register a custom {@link LivingEntity} with given parameters

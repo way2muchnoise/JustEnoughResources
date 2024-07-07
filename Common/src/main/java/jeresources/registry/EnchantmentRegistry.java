@@ -33,7 +33,7 @@ public class EnchantmentRegistry {
             Enchantment enchantment = enchantmentEntry.getEnchantment();
             if (itemStack.getItem() == Items.BOOK && Services.PLATFORM.isAllowedOnBooks(enchantment))
                 set.add(enchantmentEntry);
-            else if (enchantment.canEnchant(itemStack) && EnchantmentHelper.isEnchantmentCompatible(EnchantmentHelper.getEnchantments(itemStack).keySet(), enchantment))
+            else if (enchantment.canEnchant(itemStack) && EnchantmentHelper.isEnchantmentCompatible(EnchantmentHelper.getEnchantmentsForCrafting(itemStack).keySet(), enchantment))
                 set.add(enchantmentEntry);
         }
         return set;

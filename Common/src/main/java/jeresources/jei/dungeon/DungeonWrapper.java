@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
-public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTooltipCallback {
+public class DungeonWrapper implements IRecipeCategoryExtension<DungeonWrapper>, IRecipeSlotTooltipCallback {
     public final DungeonEntry chest;
 
     public DungeonWrapper(DungeonEntry chest) {
@@ -37,7 +37,7 @@ public class DungeonWrapper implements IRecipeCategoryExtension, IRecipeSlotTool
     }
 
     @Override
-    public void drawInfo(int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(DungeonWrapper entry, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         RenderHelper.renderChest(guiGraphics, 15, 20, -40, 20, getLidAngle());
         Font.normal.print(guiGraphics, TranslationHelper.translateAndFormat(this.chest.getName()), 60, 7);
         Font.small.print(guiGraphics, DungeonRegistry.getInstance().getNumStacks(this.chest), 60, 20);

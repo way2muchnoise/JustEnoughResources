@@ -4,7 +4,7 @@ import jeresources.api.conditionals.Conditional;
 import jeresources.api.util.ItemHelper;
 import jeresources.api.util.LootConditionHelper;
 import jeresources.api.util.LootFunctionHelper;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -83,13 +83,13 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link Item} (chance for drop will be 100%)
-     * @param tag          {@link CompoundTag} of the Item
+     * @param dataComponentPatch          {@link DataComponentPatch} for the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, CompoundTag tag, int minDrop, int maxDrop, Conditional... conditionals) {
-        this(ItemHelper.itemStackWithTag(item, 1, tag), minDrop, maxDrop, 1F, 0, conditionals);
+    public LootDrop(Item item, DataComponentPatch dataComponentPatch, int minDrop, int maxDrop, Conditional... conditionals) {
+        this(ItemHelper.itemStackWithDataComponents(item, 1, dataComponentPatch), minDrop, maxDrop, 1F, 0, conditionals);
     }
 
     /**
@@ -105,14 +105,14 @@ public class LootDrop implements Comparable<LootDrop> {
 
     /**
      * @param item         The dropped {@link Item}
-     * @param tag          {@link CompoundTag} of the Item
+     * @param dataComponentPatch          {@link DataComponentPatch} for the Item
      * @param minDrop      the maximum amount dropped
      * @param maxDrop      the minimum amount dropped
      * @param chance       the chance the item gets dropped
      * @param conditionals a list of conditionals for this drop
      */
-    public LootDrop(Item item, CompoundTag tag, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
-        this(ItemHelper.itemStackWithTag(item, 1, tag), minDrop, maxDrop, chance, 0, conditionals);
+    public LootDrop(Item item, DataComponentPatch dataComponentPatch, int minDrop, int maxDrop, float chance, Conditional... conditionals) {
+        this(ItemHelper.itemStackWithDataComponents(item, 1, dataComponentPatch), minDrop, maxDrop, chance, 0, conditionals);
     }
 
     /**
