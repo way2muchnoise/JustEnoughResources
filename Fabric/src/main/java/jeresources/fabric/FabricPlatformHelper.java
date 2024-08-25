@@ -56,12 +56,6 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public boolean isAllowedOnBooks(Enchantment enchantment) {
-        // TODO: Does Fabric have a similar check for enchantments that can't be books?
-        return true;
-    }
-
-    @Override
     public ILootTableHelper getLootTableHelper() {
         if (lootTableHelper == null) {
             lootTableHelper = new ILootTableHelper() {};

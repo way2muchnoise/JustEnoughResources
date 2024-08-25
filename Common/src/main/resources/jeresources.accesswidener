@@ -13,8 +13,6 @@ accessible field net/minecraft/world/level/storage/loot/providers/number/Uniform
 accessible field net/minecraft/world/level/storage/loot/providers/number/UniformGenerator max Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible field net/minecraft/world/level/storage/loot/providers/number/BinomialDistributionGenerator n Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFunction value Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
-accessible field net/minecraft/world/level/storage/loot/predicates/LootItemRandomChanceCondition probability F
-accessible field net/minecraft/world/level/storage/loot/predicates/LootItemRandomChanceWithLootingCondition percent F
 accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/HolderGetter$Provider;)V
 accessible field net/minecraft/world/entity/Mob xpReward I
 accessible field net/minecraft/data/loot/EntityLootSubProvider SPECIAL_LOOT_TABLE_TYPES Ljava/util/Set;

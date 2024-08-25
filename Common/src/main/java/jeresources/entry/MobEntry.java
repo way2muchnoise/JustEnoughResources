@@ -136,4 +136,12 @@ public class MobEntry {
         }
         return this.experience.getExpString();
     }
+
+    public boolean hasSpawnEgg() {
+        return getSpawnEgg() != null;
+    }
+
+    public ItemStack getSpawnEgg() {
+        return getEntity().getPickResult();
+    }
 }

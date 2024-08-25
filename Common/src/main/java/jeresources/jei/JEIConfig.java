@@ -1,19 +1,15 @@
 package jeresources.jei;
 
 import jeresources.config.Settings;
+import jeresources.entry.*;
 import jeresources.jei.dungeon.DungeonCategory;
-import jeresources.jei.dungeon.DungeonWrapper;
 import jeresources.jei.enchantment.EnchantmentCategory;
 import jeresources.jei.enchantment.EnchantmentMaker;
 import jeresources.jei.enchantment.EnchantmentWrapper;
 import jeresources.jei.mob.MobCategory;
-import jeresources.jei.mob.MobWrapper;
 import jeresources.jei.plant.PlantCategory;
-import jeresources.jei.plant.PlantWrapper;
 import jeresources.jei.villager.VillagerCategory;
-import jeresources.jei.villager.VillagerWrapper;
 import jeresources.jei.worldgen.WorldGenCategory;
-import jeresources.jei.worldgen.WorldGenWrapper;
 import jeresources.platform.Services;
 import jeresources.reference.Reference;
 import jeresources.registry.*;
@@ -28,28 +24,24 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @JeiPlugin
 public class JEIConfig implements IModPlugin {
-    public static final ResourceLocation MOB = new ResourceLocation(Reference.ID, "mob");
-    public static final RecipeType<MobWrapper> MOB_TYPE = new RecipeType<>(MOB, MobWrapper.class);
-    public static final ResourceLocation DUNGEON = new ResourceLocation(Reference.ID , "dungeon");
-    public static final RecipeType<DungeonWrapper> DUNGEON_TYPE = new RecipeType<>(DUNGEON, DungeonWrapper.class);
-    public static final ResourceLocation WORLD_GEN = new ResourceLocation(Reference.ID , "worldgen");
-    public static final RecipeType<WorldGenWrapper> WORLD_GEN_TYPE = new RecipeType<>(WORLD_GEN, WorldGenWrapper.class);
-    public static final ResourceLocation PLANT = new ResourceLocation(Reference.ID , "plant");
-    public static final RecipeType<PlantWrapper> PLANT_TYPE = new RecipeType<>(PLANT, PlantWrapper.class);
-    public static final ResourceLocation ENCHANTMENT = new ResourceLocation(Reference.ID , "enchantment");
+    public static final ResourceLocation MOB = ResourceLocation.fromNamespaceAndPath(Reference.ID, "mob");
+    public static final RecipeType<MobEntry> MOB_TYPE = new RecipeType<>(MOB, MobEntry.class);
+    public static final ResourceLocation DUNGEON = ResourceLocation.fromNamespaceAndPath(Reference.ID , "dungeon");
+    public static final RecipeType<DungeonEntry> DUNGEON_TYPE = new RecipeType<>(DUNGEON, DungeonEntry.class);
+    public static final ResourceLocation WORLD_GEN = ResourceLocation.fromNamespaceAndPath(Reference.ID , "worldgen");
+    public static final RecipeType<WorldGenEntry> WORLD_GEN_TYPE = new RecipeType<>(WORLD_GEN, WorldGenEntry.class);
+    public static final ResourceLocation PLANT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "plant");
+    public static final RecipeType<PlantEntry> PLANT_TYPE = new RecipeType<>(PLANT, PlantEntry.class);
+    public static final ResourceLocation ENCHANTMENT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "enchantment");
     public static final RecipeType<EnchantmentWrapper> ENCHANTMENT_TYPE = new RecipeType<>(ENCHANTMENT, EnchantmentWrapper.class);
-    public static final ResourceLocation VILLAGER = new ResourceLocation(Reference.ID , "villager");
-    public static final RecipeType<VillagerWrapper> VILLAGER_TYPE = new RecipeType<>(VILLAGER, VillagerWrapper.class);
+    public static final ResourceLocation VILLAGER = ResourceLocation.fromNamespaceAndPath(Reference.ID , "villager");
+    public static final RecipeType<AbstractVillagerEntry> VILLAGER_TYPE = new RecipeType<>(VILLAGER, AbstractVillagerEntry.class);
     public static final Map<ResourceLocation, RecipeType<?>> TYPES = new HashMap<>();
     static {
         TYPES.put(MOB, MOB_TYPE);
@@ -65,17 +57,17 @@ public class JEIConfig implements IModPlugin {
 
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return new ResourceLocation(Reference.ID);
+        return ResourceLocation.fromNamespaceAndPath(Reference.ID, "minecraft");
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(DUNGEON_TYPE, asRecipes(DungeonRegistry.getInstance().getDungeons(), DungeonWrapper::new));
+        registration.addRecipes(DUNGEON_TYPE, DungeonRegistry.getInstance().getDungeons());
         registration.addRecipes(ENCHANTMENT_TYPE, EnchantmentMaker.createRecipes(registration.getIngredientManager().getAllIngredients(VanillaTypes.ITEM_STACK)));
-        registration.addRecipes(MOB_TYPE, asRecipes(MobRegistry.getInstance().getMobs(), MobWrapper::new));
-        registration.addRecipes(PLANT_TYPE, asRecipes(PlantRegistry.getInstance().getAllPlants(), PlantWrapper::new));
-        registration.addRecipes(VILLAGER_TYPE, asRecipes(VillagerRegistry.getInstance().getVillagers(), VillagerWrapper::new));
-        registration.addRecipes(WORLD_GEN_TYPE, asRecipes(WorldGenRegistry.getInstance().getWorldGen(), WorldGenWrapper::new));
+        registration.addRecipes(MOB_TYPE, MobRegistry.getInstance().getMobs());
+        registration.addRecipes(PLANT_TYPE, PlantRegistry.getInstance().getAllPlants());
+        registration.addRecipes(VILLAGER_TYPE, VillagerRegistry.getInstance().getVillagers());
+        registration.addRecipes(WORLD_GEN_TYPE, WorldGenRegistry.getInstance().getWorldGen());
     }
 
     @Override
@@ -109,16 +101,12 @@ public class JEIConfig implements IModPlugin {
     public static void hideCategories(String[] categories) {
         if (jeiRuntime != null) {
             for (String category : categories) {
-                jeiRuntime.getRecipeManager().hideRecipeCategory(TYPES.get(new ResourceLocation(Reference.ID, category)));
+                jeiRuntime.getRecipeManager().hideRecipeCategory(TYPES.get(ResourceLocation.fromNamespaceAndPath(Reference.ID, category)));
             }
         }
     }
 
     public static IJeiHelpers getJeiHelpers() {
         return JEIConfig.jeiHelpers;
-    }
-
-    private static <T, R> List<R> asRecipes(Collection<T> collection, Function<T, R> transformer) {
-        return collection.stream().map(transformer).collect(Collectors.toList());
     }
 }

@@ -6,7 +6,6 @@ import jeresources.api.drop.LootDrop;
 import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

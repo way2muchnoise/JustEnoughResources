@@ -10,7 +10,6 @@ import jeresources.proxy.CommonProxy;
 import jeresources.util.LogHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,11 +75,6 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Path getConfigDir() {
         return FMLPaths.CONFIGDIR.get();
-    }
-
-    @Override
-    public boolean isAllowedOnBooks(Enchantment enchantment) {
-        return enchantment.isAllowedOnBooks();
     }
 
     @Override

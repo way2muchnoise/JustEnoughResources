@@ -36,7 +36,7 @@ public class LootFunctionHelper {
             //if (ItemStack.isSame(lootDrop.item, lootDrop.smeltedItem)) {
             //    lootDrop.smeltedItem = null;
             //}
-        } else if (lootFunction instanceof LootingEnchantFunction) {
+        } else if (lootFunction instanceof EnchantedCountIncreaseFunction) {
             lootDrop.addConditional(Conditional.affectedByLooting);
         } else if (lootFunction instanceof ICustomLootFunction) {
             ((ICustomLootFunction) lootFunction).apply(lootDrop);

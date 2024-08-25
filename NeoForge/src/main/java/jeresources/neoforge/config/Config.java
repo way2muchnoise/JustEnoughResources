@@ -31,7 +31,7 @@ public class Config {
         LogHelper.debug("Built TOML config for {}", path.toString());
         configData.load();
         LogHelper.debug("Loaded TOML config file {}", path.toString());
-        spec.setConfig(configData);
+        spec.correct(configData);
         ConfigValues.pushChanges();
     }
 

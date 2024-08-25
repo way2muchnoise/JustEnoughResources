@@ -26,8 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.*;
 
-import java.util.Map;
-
 public class MinecraftCompat extends CompatBase {
     @Override
     public void init(boolean worldGen) {

@@ -170,13 +170,12 @@ public class RenderHelper {
         final float vScale = 1f / 0x100;
 
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder wr = tesselator.getBuilder();
-        wr.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         Matrix4f matrix = guiGraphics.pose().last().pose();
-        wr.vertex(matrix, x        , y + height, zLevel).uv( u          * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix, x + width, y + height, zLevel).uv((u + width) * uScale, ((v + height) * vScale)).endVertex();
-        wr.vertex(matrix, x + width, y         , zLevel).uv((u + width) * uScale, ( v           * vScale)).endVertex();
-        wr.vertex(matrix, x        , y         , zLevel).uv( u          * uScale, ( v           * vScale)).endVertex();
-        tesselator.end();
+        buffer.addVertex(matrix, x        , y + height, zLevel).setUv( u          * uScale, ((v + height) * vScale));
+        buffer.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale));
+        buffer.addVertex(matrix, x + width, y         , zLevel).setUv((u + width) * uScale, ( v           * vScale));
+        buffer.addVertex(matrix, x        , y         , zLevel).setUv( u          * uScale, ( v           * vScale));
+        BufferUploader.drawWithShader(buffer.buildOrThrow());
     }
 }

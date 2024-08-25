@@ -1,5 +1,6 @@
 package jeresources.jei.plant;
 
+import jeresources.entry.PlantEntry;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
@@ -12,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 
-public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
+public class PlantCategory extends BlankJEIRecipeCategory<PlantEntry> {
     private static final int GRASS_X = 80;
     private static final int GRASS_Y = 11;
     private static final int OUTPUT_X = 7;
@@ -20,7 +21,7 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     private static final int OUTPUT_Y = 61;
 
     public PlantCategory() {
-        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 0, 16, 16, 16));
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 0, 16, 16, 16), new PlantWrapper());
     }
 
     @Override
@@ -34,22 +35,23 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantWrapper> {
     }
 
     @Override
-    public @NotNull RecipeType<PlantWrapper> getRecipeType() {
+    public @NotNull RecipeType<PlantEntry> getRecipeType() {
         return JEIConfig.PLANT_TYPE;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull PlantWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull PlantEntry recipe, @NotNull IFocusGroup focuses) {
+        PlantTooltip plantTooltip = new PlantTooltip(recipe);
         builder.addSlot(RecipeIngredientRole.INPUT, GRASS_X, GRASS_Y)
-            .addItemStack(recipeWrapper.plantEntry.getPlantItemStack())
-            .addTooltipCallback(recipeWrapper);
+            .addItemStack(recipe.getPlantItemStack())
+            .addTooltipCallback(plantTooltip);
 
         int xOffset = 0;
         int yOffset = 0;
-        for (int i = 0; i < recipeWrapper.plantEntry.getLootDropStacks().size(); i++) {
+        for (int i = 0; i < recipe.getLootDropStacks().size(); i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xOffset, OUTPUT_Y + yOffset)
-                .addItemStack(recipeWrapper.plantEntry.getLootDropStacks().get(i))
-                .addTooltipCallback(recipeWrapper);
+                .addItemStack(recipe.getLootDropStacks().get(i))
+                .addTooltipCallback(plantTooltip);
             xOffset += OUTPUT_SCALE;
             if (xOffset > 147) {
                 xOffset = 0;

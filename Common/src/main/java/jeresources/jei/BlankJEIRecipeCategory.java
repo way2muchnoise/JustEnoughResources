@@ -10,11 +10,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension> implements IRecipeCategory<T> {
+public abstract class BlankJEIRecipeCategory<T> implements IRecipeCategory<T> {
     private final IDrawable icon;
+    protected final IRecipeCategoryExtension<T> recipeCategoryExtension;
 
-    protected BlankJEIRecipeCategory(IDrawable icon) {
+    protected BlankJEIRecipeCategory(IDrawable icon, IRecipeCategoryExtension<T> recipeCategoryExtension) {
         this.icon = icon;
+        this.recipeCategoryExtension = recipeCategoryExtension;
     }
 
     @Override
@@ -24,11 +26,11 @@ public abstract class BlankJEIRecipeCategory<T extends IRecipeCategoryExtension>
 
     @Override
     public void draw(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        recipe.drawInfo(recipe, getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
+        recipeCategoryExtension.drawInfo(recipe, getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
     }
 
     @Override
     public @NotNull List<Component> getTooltipStrings(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        return recipe.getTooltipStrings(recipe, mouseX, mouseY);
+        return recipeCategoryExtension.getTooltipStrings(recipe, mouseX, mouseY);
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public class VillagerRegistry {
     private static VillagerRegistry instance;
 
-    private List<AbstractVillagerEntry<?>> villagers;
+    private List<AbstractVillagerEntry> villagers;
 
     public static VillagerRegistry getInstance() {
         if (instance == null) {
@@ -27,7 +27,7 @@ public class VillagerRegistry {
         }
     }
 
-    public List<AbstractVillagerEntry<?>> getVillagers() {
+    public List<AbstractVillagerEntry> getVillagers() {
         return this.villagers;
     }
 

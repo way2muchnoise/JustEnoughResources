@@ -23,7 +23,6 @@ public final class Settings {
         if (Services.PLATFORM.isClient()) {
             DungeonCategory.reloadSettings();
         }
-        EnchantmentRegistry.getInstance().removeAll(excludedEnchants);
         JEIConfig.resetCategories();
         JEIConfig.hideCategories(hiddenCategories);
     }

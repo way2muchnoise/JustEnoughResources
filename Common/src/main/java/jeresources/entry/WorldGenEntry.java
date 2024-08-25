@@ -204,4 +204,13 @@ public class WorldGenEntry {
     public boolean hasDeepSlateVariant() {
         return this.deepSlateBlock != null && !this.deepSlateBlock.isEmpty();
     }
+
+    public List<ItemStack> getBlocks() {
+        List<ItemStack> blocks = new LinkedList<>();
+        blocks.add(getBlock());
+        if (hasDeepSlateVariant()) {
+            blocks.add(getDeepSlateBlock());
+        }
+        return blocks;
+    }
 }

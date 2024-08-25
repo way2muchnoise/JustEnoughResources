@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import jeresources.api.distributions.DistributionBase;
 import jeresources.api.distributions.DistributionCustom;
 import jeresources.api.distributions.DistributionHelpers;
@@ -14,11 +13,8 @@ import jeresources.api.restrictions.Restriction;
 import jeresources.entry.WorldGenEntry;
 import jeresources.platform.Services;
 import jeresources.registry.WorldGenRegistry;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -69,10 +65,10 @@ public class WorldGenAdapter {
 
                 String[] blockParts = block.split(":");
 
-                Item itemBlock = BuiltInRegistries.ITEM.get(new ResourceLocation(blockParts[0], blockParts[1]));
+                Item itemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1]));
 
                 if (itemBlock == Items.AIR)
-                    itemBlock = BuiltInRegistries.BLOCK.get(new ResourceLocation(blockParts[0], blockParts[1])).asItem();
+                    itemBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).asItem();
 
                 if (itemBlock == Items.AIR) continue;
                 ItemStack blockStack = itemBlock.getDefaultInstance();
@@ -94,7 +90,7 @@ public class WorldGenAdapter {
                         if (itemStackElement.isJsonNull()) continue;
                         String itemStackString = itemStackElement.getAsString();
                         String[] stackStrings = itemStackString.split(":", 4);
-                        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(stackStrings[0], stackStrings[1]));
+                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(stackStrings[0], stackStrings[1]));
                         if (item == Items.AIR)
                             continue;
 
@@ -142,7 +138,7 @@ public class WorldGenAdapter {
     private static Map<ResourceKey<Level>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(dim));
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.withDefaultNamespace(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }

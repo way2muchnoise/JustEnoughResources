@@ -15,7 +15,7 @@ public class BackgroundDrawable implements IDrawable {
     private static final int PADDING = 5;
 
     public BackgroundDrawable(String resource, int width, int height) {
-        this.resource = new ResourceLocation(Reference.ID, resource);
+        this.resource = ResourceLocation.fromNamespaceAndPath(Reference.ID, resource);
         this.width = width;
         this.height = height;
     }

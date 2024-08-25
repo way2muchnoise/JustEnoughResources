@@ -2,15 +2,12 @@ package jeresources.neoforge;
 
 import jeresources.compatibility.api.JERAPI;
 import jeresources.neoforge.config.Config;
-import jeresources.platform.Services;
 import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.ClientProxy;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.Reference;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -27,10 +24,8 @@ public class JEResources {
 
         container.getEventBus().addListener(this::commonSetup);
         container.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
-
-        // TODO create config folder
-        Config.instance.loadConfig(Config.COMMON, Services.PLATFORM.getConfigDir().resolve(Reference.ID + ".toml"));
         container.getEventBus().register(Config.instance);
+
         NeoForge.EVENT_BUS.addListener(this::onCommandsRegister);
       }
 

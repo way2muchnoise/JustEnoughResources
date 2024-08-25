@@ -5,7 +5,7 @@ loaderVersion="${neoforgeLoaderVersionRange}" #mandatory
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 license="'Don't Be a Jerk' non-commercial care-free license" #mandatory
 # A URL to refer people to when problems occur with this mod
-issueTrackerURL="${githubUrl}/issues" #optional
+issueTrackerURL="https://${githubUrl}/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
@@ -24,6 +24,6 @@ Adds Resources and Mob Drops to JEI
 [[dependencies.jeresources]]
     modId="jei"
     type="required"
-    versionRange="[15.2.0,)"
+    versionRange="[16.0.0,)"
     ordering="NONE"
     side="BOTH"

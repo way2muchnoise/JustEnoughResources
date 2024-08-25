@@ -1,6 +1,7 @@
 package jeresources.jei.dungeon;
 
 import jeresources.config.Settings;
+import jeresources.entry.DungeonEntry;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
@@ -14,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 
-public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
+public class DungeonCategory extends BlankJEIRecipeCategory<DungeonEntry> {
     protected static final int Y_FIRST_ITEM = 44;
     protected static final int X_FIRST_ITEM = 6;
     protected static int SPACING_Y;
@@ -28,7 +29,7 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     }
 
     public DungeonCategory() {
-        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16));
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 0, 16, 16), new DungeonWrapper());
         reloadSettings();
     }
 
@@ -44,19 +45,19 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
     }
 
     @Override
-    public @NotNull RecipeType<DungeonWrapper> getRecipeType() {
+    public @NotNull RecipeType<DungeonEntry> getRecipeType() {
         return JEIConfig.DUNGEON_TYPE;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull DungeonWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull DungeonEntry recipe, @NotNull IFocusGroup focuses) {
         int x = X_FIRST_ITEM;
         int y = Y_FIRST_ITEM;
-        int slots = Math.min(recipeWrapper.amountOfItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null)), ITEMS_PER_PAGE);
+        int slots = Math.min(recipe.amountOfItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null)), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
-                .addTooltipCallback(recipeWrapper)
-                .addItemStacks(recipeWrapper.getItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null), i, slots));
+                .addTooltipCallback(new DungeonTooltip(recipe))
+                .addItemStacks(recipe.getItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null), i, slots));
             x += SPACING_X;
 
             if (x >= X_FIRST_ITEM + SPACING_X * Settings.ITEMS_PER_ROW * 2) {
@@ -64,6 +65,6 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonWrapper> {
                 y += SPACING_Y;
             }
         }
-        recipeWrapper.resetLid();
+        ((DungeonWrapper)recipeCategoryExtension).resetLid();
     }
 }

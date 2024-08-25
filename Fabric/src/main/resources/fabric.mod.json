@@ -10,7 +10,7 @@
     ],
     "contact": {
       "homepage": "${curseHomepageLink}",
-      "sources": "${githubUrl}"
+      "sources": "https://${githubUrl}"
     },
     "license": "\"Don't Be a Jerk\" non-commercial care-free license",
     "environment": "*",
@@ -31,7 +31,7 @@
     "depends": {
       "fabricloader": ">=0.14",
       "fabric": "*",
-      "minecraft": "1.20.x",
+      "minecraft": "1.21.x",
       "java": ">=17"
     },
     "suggests": {

@@ -9,9 +9,9 @@ public class LootConditionHelper {
         if (condition instanceof LootItemKilledByPlayerCondition) {
             lootDrop.addConditional(Conditional.playerKill);
         } else if (condition instanceof LootItemRandomChanceCondition) {
-            lootDrop.chance = ((LootItemRandomChanceCondition) condition).probability;
-        } else if (condition instanceof LootItemRandomChanceWithLootingCondition) {
-            lootDrop.chance = ((LootItemRandomChanceWithLootingCondition) condition).percent;
+            lootDrop.chance = ((LootItemRandomChanceCondition) condition).chance().getFloat(null); // TODO check if null is OK to use
+        } else if (condition instanceof LootItemRandomChanceWithEnchantedBonusCondition) {
+            lootDrop.chance = ((LootItemRandomChanceWithEnchantedBonusCondition) condition).enchantedChance().calculate(1);
             lootDrop.addConditional(Conditional.affectedByLooting);
         } else if (condition instanceof LootItemBlockStatePropertyCondition) {
             /*

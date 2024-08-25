@@ -78,11 +78,6 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public boolean isAllowedOnBooks(Enchantment enchantment) {
-        return enchantment.isAllowedOnBooks();
-    }
-
-    @Override
     public ILootTableHelper getLootTableHelper() {
         return LootTableHelper.instance();
     }

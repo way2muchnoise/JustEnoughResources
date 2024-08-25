@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     private final List<TradeList> tradeList;
@@ -58,7 +57,7 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     public List<ItemStack> getOutputs() {
         List<ItemStack> list = new LinkedList<>();
         for (List<TradeList.Trade> trades : this.tradeList) {
-            list.addAll(trades.stream().map(TradeList.Trade::getMinResult).collect(Collectors.toList()));
+            list.addAll(trades.stream().map(TradeList.Trade::getMinResult).toList());
         }
         return list;
     }

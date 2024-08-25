@@ -5,7 +5,7 @@ import net.fabricmc.loom.task.RemapJarTask
 plugins {
     base
     id("architectury-plugin") version ("3.4-SNAPSHOT")
-    id("dev.architectury.loom") version ("1.6-SNAPSHOT") apply (false)
+    id("dev.architectury.loom") version ("1.7-SNAPSHOT") apply (false)
     id("com.github.johnrengelman.shadow") version ("8.1.1") apply (false)
 }
 
@@ -121,7 +121,7 @@ subprojects {
             // this will ensure that this task is redone when the versions change.
             inputs.property("version", version)
 
-            filesMatching(listOf("META-INF/mods.toml", "pack.mcmeta", "fabric.mod.json")) {
+            filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml", "pack.mcmeta", "fabric.mod.json")) {
                 expand(mapOf(
                         "modId" to modId,
                         "modName" to modName,

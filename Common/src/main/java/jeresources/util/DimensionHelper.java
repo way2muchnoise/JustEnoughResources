@@ -2,6 +2,7 @@ package jeresources.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -18,5 +19,6 @@ public class DimensionHelper {
             .registryOrThrow(Registries.DIMENSION_TYPE)
             .getHolder(dimensionTypeRegistryKey)
             .orElseThrow();
+
     }
 }

@@ -2,6 +2,7 @@ package jeresources.jei.mob;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.config.Settings;
+import jeresources.entry.MobEntry;
 import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
@@ -16,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
+public class MobCategory extends BlankJEIRecipeCategory<MobEntry> {
     protected static final int X_FIRST_ITEM = 97;
     protected static final int Y_FIRST_ITEM = 43;
 
     public MobCategory() {
-        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16));
+        super(JEIConfig.getJeiHelpers().getGuiHelper().createDrawable(Resources.Gui.Jei.TABS, 16, 16, 16, 16), new MobWrapper());
     }
 
     @Override
@@ -35,15 +36,14 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
     }
 
     @Override
-    public @NotNull RecipeType<MobWrapper> getRecipeType() {
+    public @NotNull RecipeType<MobEntry> getRecipeType() {
         return JEIConfig.MOB_TYPE;
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull MobWrapper recipeWrapper, @NotNull IFocusGroup focuses) {
-        int xOffset = 0;
-        int slot = 0;
-        List<LootDrop> drops = recipeWrapper.getDrops();
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull MobEntry recipe, @NotNull IFocusGroup focuses) {
+        int xOffset = 0;;
+        List<LootDrop> drops = recipe.getDrops();
         int dropCount = Math.min(drops.size(), Settings.ITEMS_PER_ROW * Settings.ITEMS_PER_COLUMN);
         for (int i = 0; i < Settings.ITEMS_PER_ROW; i++) {
             int yOffset = 0;
@@ -52,7 +52,7 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
                 IRecipeSlotBuilder slotBuilder = builder
                     .addSlot(RecipeIngredientRole.OUTPUT, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset)
                     .setSlotName(String.valueOf(slotNumber))
-                    .addTooltipCallback(recipeWrapper);
+                    .addTooltipCallback(new MobTooltip(recipe));
                 if (slotNumber < dropCount) {
                     slotBuilder.addItemStacks(drops.get(slotNumber).getDrops());
                 }
@@ -60,8 +60,8 @@ public class MobCategory extends BlankJEIRecipeCategory<MobWrapper> {
             }
             xOffset += 72 / Settings.ITEMS_PER_ROW;
         }
-        if (recipeWrapper.hasSpawnEgg()) {
-            builder.addSlot(RecipeIngredientRole.CATALYST, 151, 22).addItemStack(recipeWrapper.getSpawnEgg());
+        if (recipe.hasSpawnEgg()) {
+            builder.addSlot(RecipeIngredientRole.CATALYST, 151, 22).addItemStack(recipe.getSpawnEgg());
         }
     }
 }
