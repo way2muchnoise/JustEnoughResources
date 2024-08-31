@@ -144,11 +144,11 @@
 
 	"_comment": "#Moon Phases",
 	"jer.full.moon": "Cheia",
-	"jer.waning_gibbous.moon": "Minguante Giboso",
-	"jer.third_quarter.moon": "Terceiro Quarto",
-	"jer.waning_crescent.moon": "Crescente Minguante",
+	"jer.waning_gibbous.moon": "Minguante Gibosa",
+	"jer.third_quarter.moon": "Quarto Minguante",
+	"jer.waning_crescent.moon": "Minguante",
 	"jer.new.moon": "Nova",
-	"jer.waxing_crescent.moon": "Crescente Crescente",
-	"jer.first_quarter.moon": "Primeiro Quarto",
-	"jer.waxing_gibbous.moon": "Crescente Giboso"
+	"jer.waxing_crescent.moon": "Crescente",
+	"jer.first_quarter.moon": "Quarto Crescente",
+	"jer.waxing_gibbous.moon": "Crescente Gibosa"
 }
