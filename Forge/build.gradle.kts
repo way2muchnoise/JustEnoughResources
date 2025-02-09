@@ -53,18 +53,12 @@ dependencies {
 	implementation(project(":Common", configuration = "namedElements")) { isTransitive = false }
 	shadowImplementation(project(":Common", configuration = "transformProductionForge")) { isTransitive = false }
 
-	implementation(project(":ForgeApi", configuration = "namedElements"))
-	shadowImplementation(project(":CommonApi")) { isTransitive = false }
-	shadowImplementation(project(":ForgeApi")) { isTransitive = false }
-
-	// Need to make sure the API packages are loaded while during run in IDE
-	forgeRuntimeLibrary(project(":CommonApi", configuration = "namedElements"))
-	forgeRuntimeLibrary(project(":ForgeApi", configuration = "namedElements"))
+	implementation(project(":CommonApi", configuration = "namedElements")) { isTransitive = false }
+	shadowImplementation(project(":CommonApi", configuration = "transformProductionNeoForge")) { isTransitive = false }
 }
 
 val apiJar = tasks.register<Jar>("apiJar") {
 	from(project(":CommonApi").sourceSets.main.get().output)
-	from(project(":ForgeApi").sourceSets.main.get().output)
 
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	archiveClassifier.set("api")

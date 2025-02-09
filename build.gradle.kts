@@ -173,6 +173,7 @@ subprojects {
                 fun Project.sourceSets() = extensions.getByName<SourceSetContainer>("sourceSets")
                 sourceSet(sourceSets().getByName("main"))
                 sourceSet(project(":Common").sourceSets().getByName("main"))
+                sourceSet(project(":CommonApi").sourceSets().getByName("main"))
             }
         }
 

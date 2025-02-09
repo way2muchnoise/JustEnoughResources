@@ -51,16 +51,11 @@ dependencies {
 	implementation(project(":Common", configuration = "namedElements")) { isTransitive = false }
 	shadowImplementation(project(":Common", configuration = "transformProductionFabric")) { isTransitive = false }
 
-	implementation(project(":FabricApi", configuration = "namedElements"))
-	shadowImplementation(project(":CommonApi")) { isTransitive = false }
-	shadowImplementation(project(":FabricApi")) { isTransitive = false }
-
-
+	api(project(":CommonApi", configuration = "namedElements"))
 }
 
 val apiJar = tasks.register<Jar>("apiJar") {
 	from(project(":CommonApi").sourceSets.main.get().output)
-	from(project(":FabricApi").sourceSets.main.get().output)
 
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	archiveClassifier.set("api")
