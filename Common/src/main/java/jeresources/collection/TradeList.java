@@ -1,5 +1,7 @@
 package jeresources.collection;
 
+import jeresources.entry.AbstractVillagerEntry;
+import jeresources.entry.VillagerEntry;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.npc.AbstractVillager;
@@ -16,10 +18,10 @@ import java.util.stream.Collectors;
 public class TradeList extends LinkedList<TradeList.Trade> {
     private static final Random r = new Random();
 
-    private AbstractVillager entity;
+    private final AbstractVillagerEntry<?> entry;
 
-    public TradeList(AbstractVillager entity) {
-        this.entity = entity;
+    public TradeList(AbstractVillagerEntry<?> entry) {
+        this.entry = entry;
     }
 
     public List<ItemStack> getCostAs() {
@@ -35,11 +37,11 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     public TradeList getSubListSell(ItemStack itemStack) {
-        return this.stream().filter(trade -> trade.sellsItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entity)));
+        return this.stream().filter(trade -> trade.sellsItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entry)));
     }
 
     public TradeList getSubListBuy(ItemStack itemStack) {
-        return this.stream().filter(trade -> trade.buysItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entity)));
+        return this.stream().filter(trade -> trade.buysItem(itemStack)).collect(Collectors.toCollection(() -> new TradeList(entry)));
     }
 
     public TradeList getFocusedList(IFocus<ItemStack> focus) {
@@ -55,7 +57,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, RandomSource rand) {
-        MerchantOffer offer = itemListing.getOffer(entity, rand);
+        MerchantOffer offer = itemListing.getOffer(entry.getVillagerEntity(), rand);
         if (offer != null) {
             merchantOffers.add(offer);
         }

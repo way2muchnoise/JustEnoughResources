@@ -29,6 +29,10 @@ public class MobRegistry {
         return new ArrayList<>(registry);
     }
 
+    public void clearEntities() {
+        registry.forEach(MobEntry::clearEntity);
+    }
+
     public void clear() {
         registry.clear();
     }

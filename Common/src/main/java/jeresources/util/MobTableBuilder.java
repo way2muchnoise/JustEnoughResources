@@ -20,27 +20,17 @@ import static net.minecraft.data.loot.EntityLootSubProvider.SPECIAL_LOOT_TABLE_T
 
 public class MobTableBuilder {
     private final Map<ResourceKey<LootTable>, Supplier<LivingEntity>> mobTables = new HashMap<>();
-    /**
-     * level should be a client level.
-     * Passing in a ServerLevel can allow modded mobs to load all kinds of things,
-     * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
-     */
-    private final Level level;
-
-    public MobTableBuilder() {
-        this.level = CompatBase.getLevel();
-    }
 
     public void add(ResourceKey<LootTable> resourceLocation, EntityType<?> entityType) {
-        if (isNonLiving(entityType) || !entityType.isEnabled(level.enabledFeatures())) {
+        if (isNonLiving(entityType) || !entityType.isEnabled(CompatBase.getLevel().enabledFeatures())) {
             return;
         }
-        mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(level));
+        mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(CompatBase.getLevel()));
     }
 
     public void addSheep(ResourceKey<LootTable> resourceLocation, EntityType<Sheep> entityType, DyeColor dye) {
         mobTables.put(resourceLocation, () -> {
-            Sheep sheep = entityType.create(level);
+            Sheep sheep = entityType.create(CompatBase.getLevel());
             assert sheep != null;
             sheep.setColor(dye);
             return sheep;

@@ -96,6 +96,10 @@ public class MobEntry {
         return entity;
     }
 
+    public void clearEntity() {
+        this.entity = null;
+    }
+
     public String getMobName() {
         LivingEntity entity = getEntity();
         return MobHelper.getExpandedName(entity);
