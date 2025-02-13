@@ -31,6 +31,10 @@ public class VillagerRegistry {
         return this.villagers;
     }
 
+    public void clearEntities(){
+        villagers.forEach(AbstractVillagerEntry::clearEntity);
+    }
+
     public void clear() {
         villagers.clear();
     }
