@@ -7,7 +7,10 @@ import jeresources.profiling.ProfileCommand;
 import jeresources.proxy.ClientProxy;
 import jeresources.proxy.CommonProxy;
 import jeresources.reference.Reference;
+import jeresources.registry.MobRegistry;
+import jeresources.registry.VillagerRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -31,9 +34,17 @@ public class JEResources {
         Config.instance.loadConfig(Config.COMMON, Services.PLATFORM.getConfigDir().resolve(Reference.ID + ".toml"));
         MinecraftForge.EVENT_BUS.register(Config.COMMON);
         MinecraftForge.EVENT_BUS.register(new ProfileCommand());
+        MinecraftForge.EVENT_BUS.addListener(this::onLevelUnload);
       }
 
     private void commonSetup(FMLCommonSetupEvent event) {
         JERAPI.init();
+    }
+
+    private void onLevelUnload(LevelEvent.Unload event) {
+        if (event.getLevel().isClientSide()){
+            MobRegistry.getInstance().clearEntities();
+            VillagerRegistry.getInstance().clearEntities();
+        }
     }
 }
