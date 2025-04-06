@@ -138,7 +138,7 @@ public class WorldGenAdapter {
     private static Map<ResourceKey<Level>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.withDefaultNamespace(dim));
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }
