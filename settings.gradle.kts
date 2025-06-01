@@ -11,5 +11,7 @@ pluginManagement {
 rootProject.name = "JustEnoughResources"
 include(
 		"CommonApi", "Common",
-        "Fabric", "Forge", "NeoForge",
+        //"Fabric",
+        //"Forge",
+        "NeoForge",
 )
