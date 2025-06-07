@@ -5,6 +5,7 @@ import jeresources.json.ProfilingAdapter;
 import jeresources.util.DimensionHelper;
 import jeresources.util.LogHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -20,13 +21,13 @@ import java.util.concurrent.ConcurrentMap;
 public class Profiler implements Runnable {
     private final ConcurrentMap<ResourceKey<Level>, ProfiledDimensionData> allDimensionData;
     private final ProfilingTimer timer;
-    private final Entity sender;
+    private final CommandSourceStack sender;
     private final ProfilingBlacklist blacklist;
     private final int chunkCount;
     private final boolean allDimensions;
     private ProfilingExecutor currentExecutor;
 
-    private Profiler(Entity sender, int chunkCount, boolean allDimensions) {
+    private Profiler(CommandSourceStack sender, int chunkCount, boolean allDimensions) {
         this.sender = sender;
         this.allDimensionData = new ConcurrentHashMap<>();
         this.chunkCount = chunkCount;
@@ -39,7 +40,7 @@ public class Profiler implements Runnable {
     public void run() {
         if (!allDimensions) {
             // Will never be null as the mod is client side only
-            ResourceKey<Level> worldKey = sender.level().dimension();
+            ResourceKey<Level> worldKey = sender.getLevel().dimension();
             profileWorld(worldKey);
             
         } else {
@@ -129,18 +130,18 @@ public class Profiler implements Runnable {
 
     private static Profiler currentProfiler;
 
-    public static boolean init(Entity sender, int chunks, boolean allWorlds) {
+    public static boolean init(CommandSourceStack commandSource, int chunks, boolean allWorlds) {
         if (true) {
-            sender.sendSystemMessage(Component.literal("Command not yet re-implemented, profiling will be re-added in the future"));
+            commandSource.sendSystemMessage(Component.literal("Command not yet re-implemented, profiling will be re-added in the future"));
             return true;
         }
         if (currentProfiler != null && !currentProfiler.timer.isCompleted()) return false;
-        currentProfiler = new Profiler(sender, chunks, allWorlds);
+        currentProfiler = new Profiler(commandSource, chunks, allWorlds);
         new Thread(currentProfiler).start();
         return true;
     }
 
-    public static boolean stop(Entity sender) {
+    public static boolean stop(CommandSourceStack sender) {
         if (true) {
             sender.sendSystemMessage(Component.literal("Command not yet re-implemented, profiling will be re-added in the future"));
             return true;

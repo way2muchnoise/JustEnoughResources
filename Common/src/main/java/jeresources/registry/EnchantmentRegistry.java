@@ -56,6 +56,6 @@ public class EnchantmentRegistry {
     }
 
     private static Set<Holder.Reference<Enchantment>> getEnchants() {
-        return RegistryHelper.getRegistry(Registries.ENCHANTMENT).holders().collect(Collectors.toSet());
+        return RegistryHelper.getRegistry(Registries.ENCHANTMENT).listElements().collect(Collectors.toSet());
     }
 }

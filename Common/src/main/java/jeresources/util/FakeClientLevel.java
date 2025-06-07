@@ -6,7 +6,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.profiling.InactiveProfiler;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -31,8 +30,8 @@ public class FakeClientLevel extends ClientLevel {
     // private CapabilityDispatcher capabilities;
 
     public FakeClientLevel() {
-        //(ClientPacketListener, ClientLevel.ClientLevelData, ResourceKey<Level>, Holder<DimensionType>, int, int, Supplier<ProfilerFiller>, LevelRenderer, boolean, long
-        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(BuiltinDimensionTypes.OVERWORLD), 0, 0, () -> InactiveProfiler.INSTANCE, Minecraft.getInstance().levelRenderer, false, 1234567);
+        //ClientPacketListener, ClientLevelData, ResourceKey<Level>, Holder<DimensionType>, int, int, LevelRenderer levelRenderer, boolean, long, int
+        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(BuiltinDimensionTypes.OVERWORLD), 0, 0, Minecraft.getInstance().levelRenderer, false, 1234567, 0);
         // this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientLevel.class, this);
     }
 
@@ -122,7 +121,7 @@ public class FakeClientLevel extends ClientLevel {
     }
 
     @Override
-    public RecipeManager getRecipeManager() {
+    public RecipeManager recipeAccess() {
         return null;
     }
 

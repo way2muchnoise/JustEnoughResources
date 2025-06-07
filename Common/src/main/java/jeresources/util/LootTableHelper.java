@@ -28,22 +28,9 @@ public class LootTableHelper {
     private static final Map<DyeColor, ResourceKey<LootTable>> sheepColors = new HashMap<>();
 
     static {
-        sheepColors.put(DyeColor.WHITE,BuiltInLootTables.SHEEP_WHITE);
-        sheepColors.put(DyeColor.ORANGE, BuiltInLootTables.SHEEP_ORANGE);
-        sheepColors.put(DyeColor.MAGENTA, BuiltInLootTables.SHEEP_MAGENTA);
-        sheepColors.put(DyeColor.LIGHT_BLUE, BuiltInLootTables.SHEEP_LIGHT_BLUE);
-        sheepColors.put(DyeColor.YELLOW, BuiltInLootTables.SHEEP_YELLOW);
-        sheepColors.put(DyeColor.LIME, BuiltInLootTables.SHEEP_LIME);
-        sheepColors.put(DyeColor.PINK, BuiltInLootTables.SHEEP_PINK);
-        sheepColors.put(DyeColor.GRAY, BuiltInLootTables.SHEEP_GRAY);
-        sheepColors.put(DyeColor.LIGHT_GRAY, BuiltInLootTables.SHEEP_LIGHT_GRAY);
-        sheepColors.put(DyeColor.CYAN, BuiltInLootTables.SHEEP_CYAN);
-        sheepColors.put(DyeColor.PURPLE, BuiltInLootTables.SHEEP_PURPLE);
-        sheepColors.put(DyeColor.BLUE, BuiltInLootTables.SHEEP_BLUE);
-        sheepColors.put(DyeColor.BROWN, BuiltInLootTables.SHEEP_BROWN);
-        sheepColors.put(DyeColor.GREEN, BuiltInLootTables.SHEEP_GREEN);
-        sheepColors.put(DyeColor.RED, BuiltInLootTables.SHEEP_RED);
-        sheepColors.put(DyeColor.BLACK, BuiltInLootTables.SHEEP_BLACK);
+        for (DyeColor color : DyeColor.values()) {
+            sheepColors.put(color, BuiltInLootTables.SHEEP_BY_DYE.get(color));
+        }
     }
 
     public static List<LootPool> getPools(LootTable table) {
@@ -148,7 +135,7 @@ public class LootTableHelper {
 
         for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
             if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
-                mobTableBuilder.add(entityType.getDefaultLootTable(), entityType);
+                mobTableBuilder.add(entityType.getDefaultLootTable().get(), entityType);
             }
         }
 

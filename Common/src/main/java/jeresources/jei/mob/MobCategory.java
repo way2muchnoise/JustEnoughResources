@@ -61,7 +61,7 @@ public class MobCategory extends BlankJEIRecipeCategory<MobEntry> {
             xOffset += 72 / Settings.ITEMS_PER_ROW;
         }
         if (recipe.hasSpawnEgg()) {
-            builder.addSlot(RecipeIngredientRole.CATALYST, 151, 22).addItemStack(recipe.getSpawnEgg());
+            builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 151, 22).addItemStack(recipe.getSpawnEgg());
         }
     }
 }

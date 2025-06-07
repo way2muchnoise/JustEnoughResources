@@ -2,7 +2,7 @@ package jeresources.profiling;
 
 import jeresources.json.WorldGenAdapter;
 import jeresources.util.DimensionHelper;
-import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ProfilingTimer {
-    private final CommandSource sender;
+    private final CommandSourceStack sender;
     private int totalChunks;
     private final Map<ResourceKey<Level>, DimensionCounters> dimensionsMap = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class ProfilingTimer {
         public boolean completed;
     }
 
-    public ProfilingTimer(CommandSource sender, int chunkCount) {
+    public ProfilingTimer(CommandSourceStack sender, int chunkCount) {
         this.sender = sender;
         this.totalChunks = chunkCount;
     }

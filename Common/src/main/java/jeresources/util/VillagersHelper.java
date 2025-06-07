@@ -53,6 +53,6 @@ public class VillagersHelper {
     }
 
     public static Set<BlockState> getPoiBlocks(Predicate<Holder<PoiType>> heldJobSite) {
-        return getPoiBlocks(BuiltInRegistries.POINT_OF_INTEREST_TYPE.holders().filter(heldJobSite).findFirst().get().value());
+        return getPoiBlocks(BuiltInRegistries.POINT_OF_INTEREST_TYPE.listElements().filter(heldJobSite).findFirst().get().value());
     }
 }

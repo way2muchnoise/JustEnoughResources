@@ -71,7 +71,7 @@ public class DummyWorld extends ServerLevel {
     }
 
     @Override
-    public RecipeManager getRecipeManager() {
+    public RecipeManager recipeAccess() {
         return null;
     }
 

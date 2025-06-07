@@ -2,6 +2,7 @@ package jeresources.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -15,10 +16,8 @@ public class DimensionHelper {
     }
 
     public static Holder<DimensionType> getType(ResourceKey<DimensionType> dimensionTypeRegistryKey) {
-        return Minecraft.getInstance().level.registryAccess()
-            .registryOrThrow(Registries.DIMENSION_TYPE)
-            .getHolder(dimensionTypeRegistryKey)
-            .orElseThrow();
-
+        Registry<DimensionType> dimensionTypes = Minecraft.getInstance().level.registryAccess()
+                .lookupOrThrow(Registries.DIMENSION_TYPE);
+        return dimensionTypes.wrapAsHolder(dimensionTypes.getValue(dimensionTypeRegistryKey));
     }
 }

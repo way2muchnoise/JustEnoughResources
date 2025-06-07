@@ -8,17 +8,17 @@ import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.api.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.model.ChestModel;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
 import org.joml.Quaternionf;
 import org.lwjgl.BufferUtils;
 
@@ -32,14 +32,14 @@ public class RenderHelper {
     }
 
     public static void renderEntity(GuiGraphics guiGraphics, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
-        Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
-        modelViewStack.pushMatrix();
-        modelViewStack.mul(guiGraphics.pose().last().pose());
-        modelViewStack.translate(x, y, 50.0F);
-        modelViewStack.scale((float) -scale, (float) scale, (float) scale);
-        PoseStack mobPoseStack = new PoseStack();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 50.0F);
+        guiGraphics.pose().scale((float) -scale, (float) scale, (float) scale);
+        guiGraphics.flush();
+        PoseStack mobPoseStack = guiGraphics.pose();
+        mobPoseStack.pushPose();
         mobPoseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
+        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
         x = renderInfo.x;
         y = renderInfo.y;
         scale = renderInfo.scale;
@@ -55,21 +55,19 @@ public class RenderHelper {
         livingEntity.yHeadRot = yRot;
         livingEntity.yHeadRotO = yRot;
         mobPoseStack.translate(0.0F, livingEntity.getY(), 0.0F);
-        RenderSystem.applyModelViewMatrix();
         EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
         entityRenderDispatcher.setRenderShadow(false);
-        MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-        RenderSystem.runAsFancy(() -> {
-            entityRenderDispatcher.render(livingEntity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, mobPoseStack, bufferSource, 15728880);
+        guiGraphics.drawSpecial((multiBufferSource) -> {
+            entityRenderDispatcher.render(livingEntity, 0.0D, 0.0D, 0.0D, 1.0F, mobPoseStack, multiBufferSource, 15728880);
         });
-        bufferSource.endBatch();
+        mobPoseStack.popPose();
+        guiGraphics.flush();
         entityRenderDispatcher.setRenderShadow(true);
-        modelViewStack.popMatrix();
-        RenderSystem.applyModelViewMatrix();
+        guiGraphics.pose().popPose();
     }
 
     public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
         RenderSystem.setShaderTexture(0, Resources.Vanilla.CHEST);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
@@ -113,8 +111,7 @@ public class RenderHelper {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         guiGraphics.pose().translate(0, 0, -1);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
         mc.getBlockRenderer().renderSingleBlock(block, guiGraphics.pose(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
         bufferSource.endBatch();
@@ -123,27 +120,8 @@ public class RenderHelper {
         guiGraphics.pose().popPose();
     }
 
-    public static void scissor(GuiGraphics guiGraphics, int x, int y, int w, int h) {
-        double scale = Minecraft.getInstance().getWindow().getGuiScale();
-        double[] xyzTranslation = getGLTranslation(guiGraphics, scale);
-        x *= scale;
-        y *= scale;
-        w *= scale;
-        h *= scale;
-        int scissorX = Math.round(Math.round(xyzTranslation[0] + x));
-        int scissorY = Math.round(Math.round(Minecraft.getInstance().getWindow().getHeight() - y - xyzTranslation[1]));
-        int scissorW = Math.round(w - x);
-        int scissorH = Math.round(h - y);
-        IScissorHook.ScissorInfo scissorInfo = MobRegistryImpl.applyScissorHooks(new IScissorHook.ScissorInfo(scissorX, scissorY, scissorW, scissorH));
-        RenderSystem.enableScissor(scissorInfo.x, scissorInfo.y, Math.max(0, scissorInfo.width), Math.max(0, scissorInfo.height));
-    }
-
-    public static void stopScissor() {
-        RenderSystem.disableScissor();
-    }
-
     public static void drawTexture(GuiGraphics guiGraphics, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
         RenderSystem.setShaderTexture(0, resource);
         drawTexturedModalRect(guiGraphics, x, y, u, v, width, height, 0);
     }

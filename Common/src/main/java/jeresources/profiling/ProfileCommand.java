@@ -21,14 +21,14 @@ public class ProfileCommand {
             Commands.argument(CHUNK_PARAM, IntegerArgumentType.integer(1))
             .then(Commands.argument(DIM_PARAM, BoolArgumentType.bool())
             .executes((context -> Profiler.init(
-                context.getSource().getEntity(),
+                context.getSource(),
                 IntegerArgumentType.getInteger(context, CHUNK_PARAM),
                 BoolArgumentType.getBool(context, DIM_PARAM)
             ) ? Command.SINGLE_SUCCESS : 0))));
 
         profileCommand.then(
             Commands.literal("stop")
-            .executes(context -> Profiler.stop(context.getSource().getEntity()) ? Command.SINGLE_SUCCESS : 0));
+            .executes(context -> Profiler.stop(context.getSource()) ? Command.SINGLE_SUCCESS : 0));
 
         dispatcher.register(profileCommand);
     }

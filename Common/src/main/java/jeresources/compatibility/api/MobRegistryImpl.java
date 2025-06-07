@@ -1,5 +1,6 @@
 package jeresources.compatibility.api;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import jeresources.api.IMobRegistry;
 import jeresources.api.conditionals.LightLevel;
 import jeresources.api.drop.LootDrop;
@@ -176,11 +177,11 @@ public class MobRegistryImpl implements IMobRegistry {
     }
 
     @SuppressWarnings("unchecked")
-    public static IMobRenderHook.RenderInfo applyRenderHooks(LivingEntity entity, IMobRenderHook.RenderInfo renderInfo) {
+    public static IMobRenderHook.RenderInfo applyRenderHooks(PoseStack mobPoseStack, LivingEntity entity, IMobRenderHook.RenderInfo renderInfo) {
         for (Map.Entry<Class<? extends LivingEntity>, List<IMobRenderHook>> entry : renderHooks.entrySet())
             if (ReflectionHelper.isInstanceOf(entity.getClass(), entry.getKey()))
                 for (IMobRenderHook renderHook : entry.getValue())
-                    renderInfo = renderHook.transform(renderInfo, entity);
+                    renderInfo = renderHook.transform(mobPoseStack, renderInfo, entity);
         return renderInfo;
     }
 

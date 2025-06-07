@@ -65,10 +65,10 @@ public class WorldGenAdapter {
 
                 String[] blockParts = block.split(":");
 
-                Item itemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1]));
+                Item itemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value();
 
                 if (itemBlock == Items.AIR)
-                    itemBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).asItem();
+                    itemBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value().asItem();
 
                 if (itemBlock == Items.AIR) continue;
                 ItemStack blockStack = itemBlock.getDefaultInstance();
@@ -90,7 +90,7 @@ public class WorldGenAdapter {
                         if (itemStackElement.isJsonNull()) continue;
                         String itemStackString = itemStackElement.getAsString();
                         String[] stackStrings = itemStackString.split(":", 4);
-                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(stackStrings[0], stackStrings[1]));
+                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(stackStrings[0], stackStrings[1])).get().value();
                         if (item == Items.AIR)
                             continue;
 

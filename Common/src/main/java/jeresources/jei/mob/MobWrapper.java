@@ -29,8 +29,7 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
     public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = recipe.getEntity();
-        // TODO: Fix scissoring
-        //RenderHelper.scissor(poseStack,7, 43, 59, 79);
+        guiGraphics.enableScissor(7, 43, 66, 122);
         float scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
@@ -40,7 +39,7 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
             70 - offsetY - mouseY,
             livingEntity
         );
-        //RenderHelper.stopScissor();
+        guiGraphics.disableScissor();
 
         String mobName = recipe.getMobName();
         if (Settings.showDevData) {

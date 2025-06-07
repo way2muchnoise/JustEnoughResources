@@ -15,14 +15,14 @@ public class RegistryHelper {
             throw new IllegalStateException("Could not get registry, registry access is unavailable because the level is currently null");
         }
         RegistryAccess registryAccess = level.registryAccess();
-        return registryAccess.registryOrThrow(key);
+        return registryAccess.lookupOrThrow(key);
     }
 
     public static <T> Holder<T> getHolder(ResourceKey<? extends Registry<T>> registry, ResourceKey<T> key) {
-        return getRegistry(registry).getHolderOrThrow(key);
+        return getRegistry(registry).getOrThrow(key);
     }
 
-    public static <T> T getObject(ResourceKey<? extends Registry<T>> registry, ResourceKey<T> key) {
-        return getRegistry(registry).get(key);
+    public static <T> T getValue(ResourceKey<? extends Registry<T>> registry, ResourceKey<T> key) {
+        return getRegistry(registry).getValue(key);
     }
 }
