@@ -3,6 +3,7 @@ package jeresources.entry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import mezz.jei.api.recipe.IFocus;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
@@ -66,9 +67,7 @@ public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
         return tradeList.size();
     }
 
-    public abstract String getName();
-
-    public abstract String getDisplayName();
+    public abstract Component getDisplayName();
 
     public List<Integer> getPossibleLevels(IFocus<ItemStack> focus) {
         List<Integer> levels = new ArrayList<>();

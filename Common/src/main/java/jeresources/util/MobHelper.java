@@ -1,8 +1,8 @@
 package jeresources.util;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
-import org.apache.commons.lang3.text.WordUtils;
+import net.minecraft.world.entity.animal.sheep.Sheep;
+import org.apache.commons.lang3.StringUtils;
 
 public class MobHelper {
     public static String getExpandedName(LivingEntity entity) {
@@ -14,6 +14,6 @@ public class MobHelper {
             expandedName = String.format("%s (%s)", expandedName, localizedColorName);
         }
 
-        return WordUtils.capitalize(expandedName);
+        return StringUtils.capitalize(expandedName);
     }
 }

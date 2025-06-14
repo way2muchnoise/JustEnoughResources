@@ -47,16 +47,6 @@ public class FakeClientLevel extends ClientLevel {
 
     }
 
-    @Override
-    public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource source, float volume, float pitch) {
-
-    }
-
-    @Override
-    public void playSound(@Nullable Player p_184133_1_, BlockPos p_184133_2_, SoundEvent p_184133_3_, SoundSource source, float p_184133_5_, float p_184133_6_) {
-
-    }
-
     @Nullable
     @Override
     public Entity getEntity(int p_73045_1_) {
@@ -101,16 +91,6 @@ public class FakeClientLevel extends ClientLevel {
     }
 
     @Override
-    public void setMapData(MapId mapId, MapItemSavedData mapData) {
-        super.setMapData(mapId, mapData);
-    }
-
-    @Override
-    public MapId getFreeMapId() {
-        return new MapId(0);
-    }
-
-    @Override
     public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
 
     }
@@ -128,10 +108,5 @@ public class FakeClientLevel extends ClientLevel {
     @Override
     public boolean hasChunk(int p_217354_1_, int p_217354_2_) {
         return false;
-    }
-
-    @Override
-    public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
-
     }
 }

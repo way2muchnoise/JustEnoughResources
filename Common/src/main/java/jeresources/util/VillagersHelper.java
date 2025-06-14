@@ -35,15 +35,15 @@ public class VillagersHelper {
     }
 
     private static Int2ObjectMap<VillagerTrades.ItemListing[]> getTrades(VillagerProfession profession) {
-        return VillagerTrades.TRADES.getOrDefault(profession, Int2ObjectMaps.emptyMap());
+        return VillagerTrades.TRADES.getOrDefault(BuiltInRegistries.VILLAGER_PROFESSION.getResourceKey(profession).get(), Int2ObjectMaps.emptyMap());
     }
 
     private static Int2ObjectMap<VillagerTrades.ItemListing[]> getWanderingTrades() {
         // Wandering trader doesn't have levels, but has a separate array for special items
         // This combines all wandering trader lists, so it can be treated as a villager with 1 level
-        VillagerTrades.ItemListing[] allWanderingTrades = VillagerTrades.WANDERING_TRADER_TRADES.values()
+        VillagerTrades.ItemListing[] allWanderingTrades = VillagerTrades.WANDERING_TRADER_TRADES
             .stream()
-            .flatMap(x -> Arrays.stream(x))
+            .flatMap(x -> Arrays.stream(x.getKey()))
             .toArray(VillagerTrades.ItemListing[]::new);
         return new Int2ObjectOpenHashMap<>(new int[]{1}, new VillagerTrades.ItemListing[][]{allWanderingTrades});
     }

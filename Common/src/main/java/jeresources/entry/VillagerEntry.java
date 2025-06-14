@@ -3,6 +3,8 @@ package jeresources.entry;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.compatibility.CompatBase;
 import jeresources.util.VillagersHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.Villager;
@@ -24,13 +26,8 @@ public class VillagerEntry extends AbstractVillagerEntry<Villager>{
     }
 
     @Override
-    public String getName() {
-        return this.profession.toString();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return "entity.minecraft.villager." + this.profession.toString();
+    public Component getDisplayName() {
+        return this.profession.name();
     }
 
     public VillagerProfession getProfession() {
@@ -47,7 +44,7 @@ public class VillagerEntry extends AbstractVillagerEntry<Villager>{
              */
             this.entity = EntityType.VILLAGER.create(CompatBase.getLevel(), EntitySpawnReason.LOAD);
             assert this.entity != null;
-            this.entity.setVillagerData(this.entity.getVillagerData().setProfession(this.profession));
+            this.entity.setVillagerData(this.entity.getVillagerData().withProfession(BuiltInRegistries.VILLAGER_PROFESSION.wrapAsHolder(this.profession)));
             this.entity.tick();
         }
         return this.entity;

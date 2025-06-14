@@ -4,15 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import jeresources.api.render.IMobRenderHook;
-import jeresources.api.render.IScissorHook;
 import jeresources.compatibility.api.MobRegistryImpl;
 import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.model.ChestModel;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -67,8 +64,8 @@ public class RenderHelper {
     }
 
     public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
-        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
-        RenderSystem.setShaderTexture(0, Resources.Vanilla.CHEST);
+        RenderType rendertype = RenderType.guiTextured(Resources.Vanilla.CHEST);
+        VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
 
@@ -111,7 +108,6 @@ public class RenderHelper {
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         guiGraphics.pose().translate(0, 0, -1);
 
-        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
         mc.getBlockRenderer().renderSingleBlock(block, guiGraphics.pose(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
         bufferSource.endBatch();
@@ -120,10 +116,8 @@ public class RenderHelper {
         guiGraphics.pose().popPose();
     }
 
-    public static void drawTexture(GuiGraphics guiGraphics, int x, int y, int u, int v, int width, int height, ResourceLocation resource) {
-        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
-        RenderSystem.setShaderTexture(0, resource);
-        drawTexturedModalRect(guiGraphics, x, y, u, v, width, height, 0);
+    public static void drawTexture(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height) {
+        drawTexturedModalRect(guiGraphics, resource, x, y, u, v, width, height, 0);
     }
 
     public static double[] getGLTranslation(GuiGraphics guiGraphics, double scale) {
@@ -142,18 +136,16 @@ public class RenderHelper {
         return Minecraft.getInstance().getWindow().getGuiScale();
     }
 
-    public static void drawTexturedModalRect(GuiGraphics guiGraphics, int x, int y, int u, int v, int width, int height, float zLevel)
-    {
+    public static void drawTexturedModalRect(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height, float zLevel) {
         final float uScale = 1f / 0x100;
         final float vScale = 1f / 0x100;
 
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        RenderType rendertype = RenderType.guiTextured(resource);
+        VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
         Matrix4f matrix = guiGraphics.pose().last().pose();
-        buffer.addVertex(matrix, x        , y + height, zLevel).setUv( u          * uScale, ((v + height) * vScale));
-        buffer.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale));
-        buffer.addVertex(matrix, x + width, y         , zLevel).setUv((u + width) * uScale, ( v           * vScale));
-        buffer.addVertex(matrix, x        , y         , zLevel).setUv( u          * uScale, ( v           * vScale));
-        BufferUploader.drawWithShader(buffer.buildOrThrow());
+        buffer.addVertex(matrix, x        , y + height, zLevel).setUv( u          * uScale, ((v + height) * vScale)).setColor(255, 255, 255, 255);
+        buffer.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale)).setColor(255, 255, 255, 255);
+        buffer.addVertex(matrix, x + width, y         , zLevel).setUv((u + width) * uScale, ( v           * vScale)).setColor(255, 255, 255, 255);
+        buffer.addVertex(matrix, x        , y         , zLevel).setUv( u          * uScale, ( v           * vScale)).setColor(255, 255, 255, 255);
     }
 }

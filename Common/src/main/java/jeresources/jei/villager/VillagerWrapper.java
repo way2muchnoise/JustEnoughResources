@@ -37,10 +37,10 @@ public class VillagerWrapper implements IRecipeCategoryExtension<AbstractVillage
         int y = VillagerCategory.Y_ITEM_DISTANCE * (6 - recipe.getPossibleLevels(focus).size()) / 2;
         int i;
         for (i = 0; i < recipe.getPossibleLevels(focus).size(); i++) {
-            RenderHelper.drawTexture(guiGraphics, 130, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20, Resources.Gui.Jei.VILLAGER.getResource());
-            RenderHelper.drawTexture(guiGraphics, VillagerCategory.X_FIRST_ITEM, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
-            RenderHelper.drawTexture(guiGraphics, VillagerCategory.X_FIRST_ITEM + VillagerCategory.X_ITEM_DISTANCE, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
-            RenderHelper.drawTexture(guiGraphics, VillagerCategory.X_ITEM_RESULT, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
+            RenderHelper.drawTexture(guiGraphics, Resources.Gui.Jei.VILLAGER.getResource(), 130, y + i * VillagerCategory.Y_ITEM_DISTANCE, 0, 120, 20, 20);
+            RenderHelper.drawTexture(guiGraphics, Resources.Gui.Jei.VILLAGER.getResource(), VillagerCategory.X_FIRST_ITEM, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18);
+            RenderHelper.drawTexture(guiGraphics, Resources.Gui.Jei.VILLAGER.getResource(), VillagerCategory.X_FIRST_ITEM + VillagerCategory.X_ITEM_DISTANCE, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18);
+            RenderHelper.drawTexture(guiGraphics, Resources.Gui.Jei.VILLAGER.getResource(), VillagerCategory.X_ITEM_RESULT, y + i * VillagerCategory.Y_ITEM_DISTANCE, 22, 120, 18, 18);
         }
         if (recipe.hasLevels()) {
             i = 0;
@@ -50,10 +50,10 @@ public class VillagerWrapper implements IRecipeCategoryExtension<AbstractVillage
             }
         }
 
-        Font.normal.print(guiGraphics, TranslationHelper.translateAndFormat(recipe.getDisplayName()), 5, 5);
+        Font.normal.print(guiGraphics, recipe.getDisplayName(), 5, 5);
         if (recipe.hasPois()) {
             Font.normal.splitPrint(guiGraphics, TranslationHelper.translateAndFormat("jer.villager.poi"), 5, 18, 45);
-            RenderHelper.drawTexture(guiGraphics, 49, 18, 22, 120, 18, 18, Resources.Gui.Jei.VILLAGER.getResource());
+            RenderHelper.drawTexture(guiGraphics, Resources.Gui.Jei.VILLAGER.getResource(), 49, 18, 22, 120, 18, 18);
         }
     }
 }

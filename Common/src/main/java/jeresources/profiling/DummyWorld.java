@@ -57,7 +57,7 @@ public class DummyWorld extends ServerLevel {
 
     @Override
     public void setMapData(MapId mapId, MapItemSavedData mapData) {
-        this.getServer().overworld().getDataStorage().set(mapId.key(), mapData);
+        this.getServer().overworld().getDataStorage().set(MapItemSavedData.type(mapId), mapData);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class DummyWorld extends ServerLevel {
         }
 
         ChunkAccess chunk = getChunk(pos);
-        BlockState blockState = chunk.setBlockState(pos, newState, false);
+        BlockState blockState = chunk.setBlockState(pos, newState, 0);
         return blockState != null;
     }
 
@@ -97,31 +97,9 @@ public class DummyWorld extends ServerLevel {
     }
 
     @Override
-    public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource source, float volume, float pitch) {
-
-    }
-
-    @Override
-    public void playSound(@Nullable Player p_217384_1_, Entity p_217384_2_, SoundEvent p_217384_3_, SoundSource p_217384_4_, float p_217384_5_, float p_217384_6_) {
-
-    }
-
-    @Override
     public boolean addFreshEntity(Entity entity) {
         this.spawnedEntities.add(entity);
         return true;
-    }
-
-// FORGE STUFF
-//    @Nullable
-//    @Override
-//    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction direction) {
-//        return capabilities == null ? null : capabilities.getCapability(capability, direction);
-//    }
-
-    @Override
-    public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
-
     }
 
     private static class DummyChunkSource extends ChunkSource {

@@ -5,7 +5,7 @@ import jeresources.util.MapKeys;
 import jeresources.util.PlantHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlantEntry {
-    private BushBlock plant;
+    private VegetationBlock plant;
     private ItemStack plantStack;
     private Map<String, PlantDrop> drops = new LinkedHashMap<>();
     private int totalWeight = 0;
@@ -55,7 +55,7 @@ public class PlantEntry {
         this.ageProperty = ageProperty;
     }
 
-    public PlantEntry(ItemStack itemStack, BushBlock plant, PlantDrop... drops) {
+    public PlantEntry(ItemStack itemStack, VegetationBlock plant, PlantDrop... drops) {
         this.plantStack = itemStack;
         this.plant = plant;
         for (PlantDrop entry : drops) {
@@ -69,7 +69,7 @@ public class PlantEntry {
         this(itemStack, null, drops);
     }
 
-    public <T extends BushBlock> PlantEntry(T plant, PlantDrop... drops) {
+    public <T extends VegetationBlock> PlantEntry(T plant, PlantDrop... drops) {
         this(new ItemStack(plant), plant, drops);
     }
 
@@ -79,7 +79,7 @@ public class PlantEntry {
         this.drops.put(key, new PlantDrop(entry.getDrop(), (this.totalWeight + entry.getWeight())));
     }
 
-    public BushBlock getPlant() {
+    public VegetationBlock getPlant() {
         return this.plant;
     }
 

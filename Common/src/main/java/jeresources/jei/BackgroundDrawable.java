@@ -1,13 +1,9 @@
 package jeresources.jei;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import jeresources.reference.Reference;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.drawable.IDrawable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,10 +30,7 @@ public class BackgroundDrawable implements IDrawable {
 
     @Override
     public void draw(@NotNull GuiGraphics guiGraphics, int xOffset, int yOffset) {
-        RenderSystem.clearColor(1.0F, 1.0F,1.0F,1.0F);
-        RenderSystem.setShader(Minecraft.getInstance().getShaderManager().getProgram(CoreShaders.POSITION_TEX));
-        RenderSystem.setShaderTexture(0, this.resource);
-        RenderHelper.drawTexturedModalRect(guiGraphics, xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
+        RenderHelper.drawTexturedModalRect(guiGraphics, this.resource, xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
     }
 
     public ResourceLocation getResource() {

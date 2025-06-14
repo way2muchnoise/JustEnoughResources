@@ -24,6 +24,10 @@ public class Font {
         guiGraphics.pose().popPose();
     }
 
+    public void print(GuiGraphics guiGraphics, Component line, int x, int y) {
+        print(guiGraphics, line.getVisualOrderText(), x, y);
+    }
+
     public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y) {
         doTransform(guiGraphics, x, y);
         guiGraphics.drawString(getMCFont(), line, 0, 0, 8, false);

@@ -13,9 +13,8 @@ public class EmptyChunkJER extends EmptyLevelChunk {
         super(level, new ChunkPos(x, z), null);
     }
 
-    @Nullable
     @Override
-    public BlockState setBlockState(BlockPos pos, BlockState state, boolean isMoving) {
+    public @Nullable BlockState setBlockState(BlockPos pos, BlockState state, int flags) {
         return null;
     }
 }

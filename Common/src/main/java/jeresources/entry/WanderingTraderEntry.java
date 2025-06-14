@@ -2,6 +2,7 @@ package jeresources.entry;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.compatibility.CompatBase;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -18,13 +19,8 @@ public class WanderingTraderEntry extends AbstractVillagerEntry<WanderingTrader>
     }
 
     @Override
-    public String getName() {
-        return "wandering_trader";
-    }
-
-    @Override
-    public String getDisplayName() {
-        return "entity.minecraft.wandering_trader";
+    public Component getDisplayName() {
+        return Component.translatable("entity.minecraft.wandering_trader");
     }
 
     public WanderingTrader getVillagerEntity() {
