@@ -15,5 +15,4 @@ accessible field net/minecraft/world/level/storage/loot/providers/number/Binomia
 accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFunction value Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/HolderGetter$Provider;)V
 accessible field net/minecraft/world/entity/Mob xpReward I
-accessible field net/minecraft/data/loot/EntityLootSubProvider SPECIAL_LOOT_TABLE_TYPES Ljava/util/Set;
 accessible method net/minecraft/world/level/block/state/BlockBehaviour getCloneItemStack (Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/item/ItemStack;
