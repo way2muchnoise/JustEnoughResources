@@ -2,16 +2,14 @@ package jeresources.jei.plant;
 
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class PlantTooltip implements IRecipeSlotTooltipCallback {
+public class PlantTooltip implements IRecipeSlotRichTooltipCallback {
     private final PlantEntry entry;
 
     public PlantTooltip(PlantEntry entry) {
@@ -19,7 +17,7 @@ public class PlantTooltip implements IRecipeSlotTooltipCallback {
     }
 
     @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, @NotNull List<Component> tooltip) {
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
         if (recipeSlotView.getRole() != RecipeIngredientRole.INPUT) {
             tooltip.add(getChanceString((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
         }

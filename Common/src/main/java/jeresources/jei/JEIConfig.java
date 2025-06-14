@@ -17,7 +17,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
@@ -31,18 +31,18 @@ import java.util.Map;
 @JeiPlugin
 public class JEIConfig implements IModPlugin {
     public static final ResourceLocation MOB = ResourceLocation.fromNamespaceAndPath(Reference.ID, "mob");
-    public static final RecipeType<MobEntry> MOB_TYPE = new RecipeType<>(MOB, MobEntry.class);
+    public static final IRecipeType<MobEntry> MOB_TYPE = IRecipeType.create(MOB, MobEntry.class);
     public static final ResourceLocation DUNGEON = ResourceLocation.fromNamespaceAndPath(Reference.ID , "dungeon");
-    public static final RecipeType<DungeonEntry> DUNGEON_TYPE = new RecipeType<>(DUNGEON, DungeonEntry.class);
+    public static final IRecipeType<DungeonEntry> DUNGEON_TYPE = IRecipeType.create(DUNGEON, DungeonEntry.class);
     public static final ResourceLocation WORLD_GEN = ResourceLocation.fromNamespaceAndPath(Reference.ID , "worldgen");
-    public static final RecipeType<WorldGenEntry> WORLD_GEN_TYPE = new RecipeType<>(WORLD_GEN, WorldGenEntry.class);
+    public static final IRecipeType<WorldGenEntry> WORLD_GEN_TYPE = IRecipeType.create(WORLD_GEN, WorldGenEntry.class);
     public static final ResourceLocation PLANT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "plant");
-    public static final RecipeType<PlantEntry> PLANT_TYPE = new RecipeType<>(PLANT, PlantEntry.class);
+    public static final IRecipeType<PlantEntry> PLANT_TYPE = IRecipeType.create(PLANT, PlantEntry.class);
     public static final ResourceLocation ENCHANTMENT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "enchantment");
-    public static final RecipeType<EnchantmentWrapper> ENCHANTMENT_TYPE = new RecipeType<>(ENCHANTMENT, EnchantmentWrapper.class);
+    public static final IRecipeType<EnchantmentWrapper> ENCHANTMENT_TYPE = IRecipeType.create(ENCHANTMENT, EnchantmentWrapper.class);
     public static final ResourceLocation VILLAGER = ResourceLocation.fromNamespaceAndPath(Reference.ID , "villager");
-    public static final RecipeType<AbstractVillagerEntry> VILLAGER_TYPE = new RecipeType<>(VILLAGER, AbstractVillagerEntry.class);
-    public static final Map<ResourceLocation, RecipeType<?>> TYPES = new HashMap<>();
+    public static final IRecipeType<AbstractVillagerEntry> VILLAGER_TYPE = IRecipeType.create(VILLAGER, AbstractVillagerEntry.class);
+    public static final Map<ResourceLocation, IRecipeType<?>> TYPES = new HashMap<>();
     static {
         TYPES.put(MOB, MOB_TYPE);
         TYPES.put(DUNGEON, DUNGEON_TYPE);
@@ -92,7 +92,7 @@ public class JEIConfig implements IModPlugin {
 
     public static void resetCategories() {
         if (jeiRuntime != null) {
-            for (RecipeType<?> recipeType : TYPES.values()) {
+            for (IRecipeType<?> recipeType : TYPES.values()) {
                 jeiRuntime.getRecipeManager().unhideRecipeCategory(recipeType);
             }
         }

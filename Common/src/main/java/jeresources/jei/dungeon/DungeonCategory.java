@@ -10,7 +10,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,19 +33,18 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonEntry> {
         reloadSettings();
     }
 
-
     @Override
     public @NotNull Component getTitle() {
         return Component.translatable("jer.dungeon.title");
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.DUNGEON;
     }
 
     @Override
-    public @NotNull RecipeType<DungeonEntry> getRecipeType() {
+    public @NotNull IRecipeType<DungeonEntry> getRecipeType() {
         return JEIConfig.DUNGEON_TYPE;
     }
 
@@ -56,7 +55,7 @@ public class DungeonCategory extends BlankJEIRecipeCategory<DungeonEntry> {
         int slots = Math.min(recipe.amountOfItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null)), ITEMS_PER_PAGE);
         for (int i = 0; i < slots; i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, x, y)
-                .addTooltipCallback(new DungeonTooltip(recipe))
+                .addRichTooltipCallback(new DungeonTooltip(recipe))
                 .addItemStacks(recipe.getItems(focuses.getFocuses(VanillaTypes.ITEM_STACK).findFirst().orElse(null), i, slots));
             x += SPACING_X;
 

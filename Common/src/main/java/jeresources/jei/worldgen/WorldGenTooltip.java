@@ -6,6 +6,8 @@ import jeresources.config.Settings;
 import jeresources.entry.WorldGenEntry;
 import jeresources.util.RegistryHelper;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class WorldGenTooltip implements IRecipeSlotTooltipCallback {
+public class WorldGenTooltip implements IRecipeSlotRichTooltipCallback {
     private final WorldGenEntry entry;
 
     public WorldGenTooltip(WorldGenEntry entry) {
@@ -26,7 +28,7 @@ public class WorldGenTooltip implements IRecipeSlotTooltipCallback {
     }
 
     @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
         tooltip.addAll(getItemStackTooltip(recipeSlotView.getSlotName().orElse(null), (ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
     }
 

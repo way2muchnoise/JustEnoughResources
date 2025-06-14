@@ -2,15 +2,15 @@ package jeresources.jei.mob;
 
 import jeresources.api.drop.LootDrop;
 import jeresources.entry.MobEntry;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class MobTooltip implements IRecipeSlotTooltipCallback {
+public class MobTooltip implements IRecipeSlotRichTooltipCallback {
     private final MobEntry entry;
 
     public MobTooltip(MobEntry entry) {
@@ -18,7 +18,7 @@ public class MobTooltip implements IRecipeSlotTooltipCallback {
     }
 
     @Override
-    public void onTooltip(@NotNull IRecipeSlotView recipeSlotView, @NotNull List<Component> tooltip) {
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
         LootDrop lootDrop = this.entry.getDrops().get(Integer.parseInt(recipeSlotView.getSlotName().orElse("0")));
         tooltip.add(lootDrop.toStringTextComponent());
         List<Component> list = getToolTip((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient());

@@ -4,16 +4,15 @@ import jeresources.jei.BlankJEIRecipeCategory;
 import jeresources.jei.JEIConfig;
 import jeresources.reference.Resources;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapper> {
     private static final int ITEM_X = 13;
@@ -29,27 +28,28 @@ public class EnchantmentCategory extends BlankJEIRecipeCategory<EnchantmentWrapp
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.ENCHANTMENT;
     }
 
     @Override
-    public @NotNull RecipeType<EnchantmentWrapper> getRecipeType() {
+    public @NotNull IRecipeType<EnchantmentWrapper> getRecipeType() {
         return JEIConfig.ENCHANTMENT_TYPE;
     }
 
     @Override
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull EnchantmentWrapper recipe, @NotNull IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, ITEM_X, ITEM_Y).addItemStack(recipe.itemStack);
+        builder.addSlot(RecipeIngredientRole.INPUT, ITEM_X, ITEM_Y).add(recipe.itemStack);
     }
 
     @Override
     public void draw(EnchantmentWrapper recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        recipe.drawInfo(recipe, getBackground().getWidth(), getBackground().getHeight(), guiGraphics, mouseX, mouseY);
+        getJERBackground().draw(guiGraphics);
+        recipe.drawInfo(recipe, getWidth(), getHeight(), guiGraphics, mouseX, mouseY);
     }
 
     @Override
-    public @NotNull List<Component> getTooltipStrings(EnchantmentWrapper recipe, @NotNull IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        return recipe.getTooltipStrings(recipe, mouseX, mouseY);
+    public void getTooltip(ITooltipBuilder tooltip, EnchantmentWrapper recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        recipe.getTooltip(tooltip, recipe, mouseX, mouseY);
     }
 }

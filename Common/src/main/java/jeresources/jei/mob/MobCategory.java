@@ -11,7 +11,7 @@ import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,12 +31,12 @@ public class MobCategory extends BlankJEIRecipeCategory<MobEntry> {
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.MOB;
     }
 
     @Override
-    public @NotNull RecipeType<MobEntry> getRecipeType() {
+    public @NotNull IRecipeType<MobEntry> getRecipeType() {
         return JEIConfig.MOB_TYPE;
     }
 
@@ -52,7 +52,7 @@ public class MobCategory extends BlankJEIRecipeCategory<MobEntry> {
                 IRecipeSlotBuilder slotBuilder = builder
                     .addSlot(RecipeIngredientRole.OUTPUT, X_FIRST_ITEM + xOffset, Y_FIRST_ITEM + yOffset)
                     .setSlotName(String.valueOf(slotNumber))
-                    .addTooltipCallback(new MobTooltip(recipe));
+                    .addRichTooltipCallback(new MobTooltip(recipe));
                 if (slotNumber < dropCount) {
                     slotBuilder.addItemStacks(drops.get(slotNumber).getDrops());
                 }
@@ -61,7 +61,7 @@ public class MobCategory extends BlankJEIRecipeCategory<MobEntry> {
             xOffset += 72 / Settings.ITEMS_PER_ROW;
         }
         if (recipe.hasSpawnEgg()) {
-            builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 151, 22).addItemStack(recipe.getSpawnEgg());
+            builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 151, 22).add(recipe.getSpawnEgg());
         }
     }
 }

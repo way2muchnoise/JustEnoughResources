@@ -11,7 +11,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -34,12 +34,12 @@ public class VillagerCategory extends BlankJEIRecipeCategory<AbstractVillagerEnt
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.VILLAGER;
     }
 
     @Override
-    public @NotNull RecipeType<AbstractVillagerEntry> getRecipeType() {
+    public @NotNull IRecipeType<AbstractVillagerEntry> getRecipeType() {
         return JEIConfig.VILLAGER_TYPE;
     }
 

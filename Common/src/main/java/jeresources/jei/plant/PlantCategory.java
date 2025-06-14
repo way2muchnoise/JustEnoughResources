@@ -8,7 +8,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,12 +30,12 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantEntry> {
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.PLANT;
     }
 
     @Override
-    public @NotNull RecipeType<PlantEntry> getRecipeType() {
+    public @NotNull IRecipeType<PlantEntry> getRecipeType() {
         return JEIConfig.PLANT_TYPE;
     }
 
@@ -43,15 +43,15 @@ public class PlantCategory extends BlankJEIRecipeCategory<PlantEntry> {
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull PlantEntry recipe, @NotNull IFocusGroup focuses) {
         PlantTooltip plantTooltip = new PlantTooltip(recipe);
         builder.addSlot(RecipeIngredientRole.INPUT, GRASS_X, GRASS_Y)
-            .addItemStack(recipe.getPlantItemStack())
-            .addTooltipCallback(plantTooltip);
+            .add(recipe.getPlantItemStack())
+            .addRichTooltipCallback(plantTooltip);
 
         int xOffset = 0;
         int yOffset = 0;
         for (int i = 0; i < recipe.getLootDropStacks().size(); i++) {
             builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X + xOffset, OUTPUT_Y + yOffset)
-                .addItemStack(recipe.getLootDropStacks().get(i))
-                .addTooltipCallback(plantTooltip);
+                .add(recipe.getLootDropStacks().get(i))
+                .addRichTooltipCallback(plantTooltip);
             xOffset += OUTPUT_SCALE;
             if (xOffset > 147) {
                 xOffset = 0;

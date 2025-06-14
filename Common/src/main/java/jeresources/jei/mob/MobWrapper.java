@@ -6,6 +6,7 @@ import jeresources.util.CollectionHelper;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -65,10 +66,9 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     }
 
     @Override
-    public @NotNull List<Component> getTooltipStrings(MobEntry recipe, double mouseX, double mouseY) {
+    public void getTooltip(ITooltipBuilder tooltip, MobEntry recipe, double mouseX, double mouseY) {
         if (recipe.hasMultipleBiomes() && isOnBiome(mouseX, mouseY))
-            return CollectionHelper.create(Component::literal, recipe.getTranslatedBiomes());
-        return Collections.emptyList();
+            tooltip.addAll(CollectionHelper.create(Component::literal, recipe.getTranslatedBiomes()));
     }
 
     private boolean isOnBiome(double mouseX, double mouseY) {

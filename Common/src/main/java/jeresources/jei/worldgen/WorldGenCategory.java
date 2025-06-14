@@ -11,7 +11,7 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -33,12 +33,12 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenEntry> {
     }
 
     @Override
-    public @NotNull IDrawable getBackground() {
+    public @NotNull IDrawable getJERBackground() {
         return Resources.Gui.Jei.WORLD_GEN;
     }
 
     @Override
-    public @NotNull RecipeType<WorldGenEntry> getRecipeType() {
+    public @NotNull IRecipeType<WorldGenEntry> getRecipeType() {
         return JEIConfig.WORLD_GEN_TYPE;
     }
 
@@ -55,11 +55,11 @@ public class WorldGenCategory extends BlankJEIRecipeCategory<WorldGenEntry> {
         builder.addSlot(RecipeIngredientRole.OUTPUT, X_ITEM, Y_ITEM)
             .addItemStacks(recipe.getBlocks())
             .setSlotName(WorldGenWrapper.ORE_SLOT_NAME)
-            .addTooltipCallback(worldGenTooltip);
+            .addRichTooltipCallback(worldGenTooltip);
 
         for (int i = 0; i < Math.min(DROP_ITEM_COUNT, recipe.getDrops().size()); i++)
             builder.addSlot(RecipeIngredientRole.OUTPUT, X_DROP_ITEM + i * 18, Y_DROP_ITEM)
-                .addItemStack(recipe.getDrops().get(i))
-                .addTooltipCallback(worldGenTooltip);
+                .add(recipe.getDrops().get(i))
+                .addRichTooltipCallback(worldGenTooltip);
     }
 }

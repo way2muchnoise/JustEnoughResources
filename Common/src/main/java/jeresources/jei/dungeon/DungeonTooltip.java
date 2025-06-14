@@ -1,14 +1,13 @@
 package jeresources.jei.dungeon;
 
 import jeresources.entry.DungeonEntry;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
 
-public class DungeonTooltip implements IRecipeSlotTooltipCallback {
+public class DungeonTooltip implements IRecipeSlotRichTooltipCallback {
     private final DungeonEntry entry;
 
     public DungeonTooltip(DungeonEntry entry) {
@@ -16,7 +15,7 @@ public class DungeonTooltip implements IRecipeSlotTooltipCallback {
     }
 
     @Override
-    public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+    public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
         tooltip.add(entry.getChestDrop((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()).toStringTextComponent());
     }
 }

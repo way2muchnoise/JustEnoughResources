@@ -4,6 +4,7 @@ import jeresources.entry.WorldGenEntry;
 import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -77,14 +78,12 @@ public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> 
     }
 
     @Override
-    public List<Component> getTooltipStrings(WorldGenEntry recipe, double mouseX, double mouseY) {
-        List<Component> tooltip = new LinkedList<>();
+    public void getTooltip(ITooltipBuilder tooltip, WorldGenEntry recipe, double mouseX, double mouseY) {
         if (onGraph(mouseX, mouseY))
-            tooltip = getLineTooltip(recipe ,mouseX, tooltip);
-        return tooltip;
+            setLineTooltip(tooltip, recipe ,mouseX);
     }
 
-    private List<Component> getLineTooltip(WorldGenEntry recipe, double mouseX, List<Component> tooltip) {
+    private void setLineTooltip(ITooltipBuilder tooltip, WorldGenEntry recipe, double mouseX) {
         final double exactMouseX = getExactMouseX(mouseX);
         final float[] chances = recipe.getChances();
         final double space = X_AXIS_SIZE / (chances.length * 1D);
@@ -96,8 +95,6 @@ public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> 
             String percent = chance > 0.01f || chance == 0 ? String.format(" (%.2f%%)", chance) : " <0.01%";
             tooltip.add(Component.literal("Y: " + yValue + percent));
         }
-
-        return tooltip;
     }
 
     private static double getExactMouseX(final double mouseX) {
