@@ -31,12 +31,4 @@ public class ColorHelper {
     public static float getAlpha(int color) {
         return ((color >> 24) & 255) / 255.0F;
     }
-
-    public static void setColor3f(int color) {
-        RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), 1.0F);
-    }
-
-    public static void setColor4f(int color) {
-        RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
-    }
 }

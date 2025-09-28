@@ -1,25 +1,22 @@
 package jeresources.util;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.compatibility.api.MobRegistryImpl;
-import jeresources.reference.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.lwjgl.BufferUtils;
+import org.joml.*;
 
-import java.nio.FloatBuffer;
+import java.lang.Math;
 
 public class RenderHelper {
     public static void drawLine(GuiGraphics guiGraphics, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
@@ -28,17 +25,13 @@ public class RenderHelper {
         guiGraphics.fill(xBegin, yBegin, xEnd, yEnd, color);
     }
 
-    public static void renderEntity(GuiGraphics guiGraphics, int x, int y, double scale, double yaw, double pitch, LivingEntity livingEntity) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 50.0F);
-        guiGraphics.pose().scale((float) -scale, (float) scale, (float) scale);
-        guiGraphics.flush();
-        PoseStack mobPoseStack = guiGraphics.pose();
-        mobPoseStack.pushPose();
-        mobPoseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
-        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(x, y, scale, yaw, pitch));
-        x = renderInfo.x;
-        y = renderInfo.y;
+    public static void renderEntity(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, double scale, double yaw, double pitch, LivingEntity livingEntity) {
+        PoseStack mobPoseStack = new PoseStack();
+        ScreenRectangle screenRectangle = new ScreenRectangle(x1, y1, x2 - x1, y2 - y1).transformAxisAligned(guiGraphics.pose());
+        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(0, 0, scale, yaw, pitch));
+        int x = renderInfo.x;
+        int y = renderInfo.y;
+        mobPoseStack.translate(x, y, 0);
         scale = renderInfo.scale;
         yaw = renderInfo.yaw;
         pitch = renderInfo.pitch;
@@ -51,33 +44,32 @@ public class RenderHelper {
         livingEntity.setXRot(xRot);
         livingEntity.yHeadRot = yRot;
         livingEntity.yHeadRotO = yRot;
-        mobPoseStack.translate(0.0F, livingEntity.getY(), 0.0F);
-        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
-        entityRenderDispatcher.setRenderShadow(false);
-        guiGraphics.drawSpecial((multiBufferSource) -> {
-            entityRenderDispatcher.render(livingEntity, 0.0D, 0.0D, 0.0D, 1.0F, mobPoseStack, multiBufferSource, 15728880);
-        });
-        mobPoseStack.popPose();
-        guiGraphics.flush();
-        entityRenderDispatcher.setRenderShadow(true);
-        guiGraphics.pose().popPose();
+        mobPoseStack.translate(0.0F, livingEntity.getBbHeight() / 2, 0.0F);
+        Vector3f translationVec = new Vector3f();
+        mobPoseStack.last().pose().getTranslation(translationVec);
+        Quaternionf rotationQuat = new Quaternionf();
+        mobPoseStack.last().pose().getUnnormalizedRotation(rotationQuat);
+        Quaternionf cameraQuat = (new Quaternionf()).rotateZ((float)Math.PI);
+        cameraQuat.mul(new Quaternionf().rotateY((float)Math.PI));
+        rotationQuat.mul(cameraQuat);
+        InventoryScreen.renderEntityInInventory(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (float) scale, translationVec, rotationQuat, cameraQuat, livingEntity);
     }
 
     public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
-        RenderType rendertype = RenderType.guiTextured(Resources.Vanilla.CHEST);
-        VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
+        // RenderType rendertype = RenderType.guiTextured(Resources.Vanilla.CHEST);
+        // VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
         // TODO: Reimplement
         // ChestModel modelchest = new ChestModel();
 
-        guiGraphics.pose().pushPose();
+        PoseStack poseStack = new PoseStack();
         // RenderSystem.enableRescaleNormal();
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        guiGraphics.pose().translate(x, y, 50.0F);
-        guiGraphics.pose().mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
-        guiGraphics.pose().scale(scale, -scale, -scale);
-        guiGraphics.pose().translate(0.5F, 0.5F, 0.5F);
-        guiGraphics.pose().mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
-        guiGraphics.pose().translate(-0.5F, -0.5F, -0.5F);
+        // RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        poseStack.translate(x, y, 50.0F);
+        poseStack.mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
+        poseStack.scale(scale, -scale, -scale);
+        poseStack.translate(0.5F, 0.5F, 0.5F);
+        poseStack.mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
+        poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
         lidAngleF = 1.0F - lidAngleF;
@@ -90,62 +82,43 @@ public class RenderHelper {
         // modelchest.field_78232_b.offsetZ -= 0.9F; // chestBelow
         // modelchest.renderAll();
         // RenderSystem.disableRescaleNormal();
-        guiGraphics.pose().popPose();
     }
 
     public static void renderBlock(GuiGraphics guiGraphics, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, z);
-        guiGraphics.pose().scale(-scale, -scale, -scale);
-        guiGraphics.pose().translate(-0.5F, -0.5F, 0);
-        guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(-30F));
-        guiGraphics.pose().translate(0.5F, 0, -0.5F);
-        guiGraphics.pose().mulPose(Axis.YP.rotationDegrees(rotate));
-        guiGraphics.pose().translate(-0.5F, 0, 0.5F);
+        PoseStack poseStack = new PoseStack();
+        poseStack.translate(x, y, z);
+        poseStack.scale(-scale, -scale, -scale);
+        poseStack.translate(-0.5F, -0.5F, 0);
+        poseStack.mulPose(Axis.XP.rotationDegrees(-30F));
+        poseStack.translate(0.5F, 0, -0.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotate));
+        poseStack.translate(-0.5F, 0, 0.5F);
 
-        guiGraphics.pose().pushPose();
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-        guiGraphics.pose().translate(0, 0, -1);
+        poseStack.pushPose();
+        poseStack.translate(0, 0, -1);
 
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        mc.getBlockRenderer().renderSingleBlock(block, guiGraphics.pose(), bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
+        mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
         bufferSource.endBatch();
-        guiGraphics.pose().popPose();
-
-        guiGraphics.pose().popPose();
     }
 
     public static void drawTexture(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height) {
-        drawTexturedModalRect(guiGraphics, resource, x, y, u, v, width, height, 0);
+        drawTexturedModalRect(guiGraphics, resource, x, y, u, v, width, height);
     }
 
-    public static double[] getGLTranslation(GuiGraphics guiGraphics, double scale) {
-        Matrix4f matrix = guiGraphics.pose().last().pose();
-        FloatBuffer buf = BufferUtils.createFloatBuffer(16);
-        matrix.set(buf);
-        // { x, y, z }
-        return new double[] { buf.get(getIndexFloatBuffer(0,3)) * scale, buf.get(getIndexFloatBuffer(1, 3)) * scale, buf.get(getIndexFloatBuffer(2, 3)) * scale };
-    }
-
-    private static int getIndexFloatBuffer(int x, int y) {
-        return y * 4 + x;
-    }
-
-    public static double getGuiScaleFactor() {
-        return Minecraft.getInstance().getWindow().getGuiScale();
-    }
-
-    public static void drawTexturedModalRect(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height, float zLevel) {
-        final float uScale = 1f / 0x100;
-        final float vScale = 1f / 0x100;
-
-        RenderType rendertype = RenderType.guiTextured(resource);
-        VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
-        Matrix4f matrix = guiGraphics.pose().last().pose();
-        buffer.addVertex(matrix, x        , y + height, zLevel).setUv( u          * uScale, ((v + height) * vScale)).setColor(255, 255, 255, 255);
-        buffer.addVertex(matrix, x + width, y + height, zLevel).setUv((u + width) * uScale, ((v + height) * vScale)).setColor(255, 255, 255, 255);
-        buffer.addVertex(matrix, x + width, y         , zLevel).setUv((u + width) * uScale, ( v           * vScale)).setColor(255, 255, 255, 255);
-        buffer.addVertex(matrix, x        , y         , zLevel).setUv( u          * uScale, ( v           * vScale)).setColor(255, 255, 255, 255);
+    public static void drawTexturedModalRect(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height) {
+        guiGraphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                resource,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                256,
+                256
+        );
     }
 }

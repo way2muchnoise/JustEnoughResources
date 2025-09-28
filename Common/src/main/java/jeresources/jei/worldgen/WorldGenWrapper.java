@@ -5,10 +5,15 @@ import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -41,16 +46,24 @@ public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> 
             }
             yPrev = y;
         }
+    }
 
+    @Override
+    public void createRecipeExtras(WorldGenEntry recipe, IRecipeExtrasBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
+        float[] array = recipe.getChances();
+        double max = 0;
+        for (double d : array)
+            if (d > max) max = d;
         final int xPercents = X_OFFSET - 2;
         final int yPercents = Y_OFFSET - 4;
 
         final String minPercent = "0%";
         final int minPercentWidth = Font.small.getStringWidth(minPercent);
-        Font.small.print(guiGraphics, minPercent, xPercents - minPercentWidth, yPercents);
+        builder.addText(FormattedText.of(minPercent), 100, 100).setPosition(xPercents - minPercentWidth, yPercents);
         final String maxPercent = String.format("%.2f", max * 100) + "%";
         final int maxPercentWidth = Font.small.getStringWidth(maxPercent);
-        Font.small.print(guiGraphics, maxPercent, xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
+        builder.addText(FormattedText.of(maxPercent), 100, 100).setPosition(xPercents - maxPercentWidth, yPercents - Y_AXIS_SIZE);
+
 
         final int yLabels = Y_OFFSET + 2;
         final int xLabels = X_OFFSET;
@@ -58,23 +71,25 @@ public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> 
         final int minLabel = recipe.getMinY();
         final int minLabelWidth = Font.small.getStringWidth(String.valueOf(minLabel));
         final int minLabelOffset = xLabels - (minLabelWidth / 2);
-        Font.small.print(guiGraphics, minLabel, minLabelOffset, yLabels);
+        builder.addText(FormattedText.of(String.valueOf(minLabel)), 100, 100).setPosition(minLabelOffset, yLabels);
+
 
         final int maxLabel = recipe.getMaxY();
         final int maxLabelWidth = Font.small.getStringWidth(String.valueOf(maxLabel));
         final int maxLabelOffset = xLabels + X_AXIS_SIZE - (maxLabelWidth / 2);
-        Font.small.print(guiGraphics, maxLabel, maxLabelOffset, yLabels);
+        builder.addText(FormattedText.of(String.valueOf(maxLabel)), 100, 100).setPosition(maxLabelOffset, yLabels);
+
 
         final int midLabel = (maxLabel + minLabel) / 2;
         final int midLabelWidth = Font.small.getStringWidth(String.valueOf(midLabel));
         final int midLabelOffset = xLabels + (X_AXIS_SIZE / 2) - (midLabelWidth / 2);
-        Font.small.print(guiGraphics, midLabel, midLabelOffset, yLabels);
+        builder.addText(FormattedText.of(String.valueOf(midLabel)), 100, 100).setPosition(midLabelOffset, yLabels);
 
-        Font.small.print(guiGraphics, TranslationHelper.translateAndFormat("jer.worldgen.drops"), WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
+
+        builder.addText(FormattedText.of(TranslationHelper.translateAndFormat("jer.worldgen.drops")), 100, 100).setPosition(WorldGenCategory.X_DROP_ITEM, WorldGenCategory.Y_DROP_ITEM - 8);
 
         String dimension = TranslationHelper.tryDimensionTranslate(recipe.getDimension());
-        int x = (recipeWidth - Font.normal.getStringWidth(dimension)) / 2;
-        Font.normal.print(guiGraphics, dimension, x, 0);
+        builder.addText(FormattedText.of(dimension), 100, 100).setPosition(0, 0);
     }
 
     @Override

@@ -12,6 +12,8 @@ public final class Resources {
             public static final BackgroundDrawable PLANT = new BackgroundDrawable(Textures.Gui.Jei.PLANT, 165, 120);
             public static final BackgroundDrawable ENCHANTMENT = new BackgroundDrawable(Textures.Gui.Jei.ENCHANTMENT, 163, 120);
             public static final BackgroundDrawable VILLAGER = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 163, 120);
+            public static final BackgroundDrawable VILLAGER_ARROW = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 0, 120, 20, 20);
+            public static final BackgroundDrawable VILLAGER_SLOT = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 22, 120, 18, 18);
             public static final ResourceLocation TABS = ResourceLocation.fromNamespaceAndPath(Reference.ID, Textures.Gui.Jei.TABS);
         }
     }

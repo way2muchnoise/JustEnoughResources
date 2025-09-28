@@ -18,10 +18,18 @@ public class Font {
         this.isSmall = small;
     }
 
+    /**
+     * Renders a string onto the specified graphics context at the given position.
+     *
+     * @param guiGraphics the graphics context used for rendering the string
+     * @param line the text to render
+     * @param x the x-coordinate where the string will be drawn
+     * @param y the y-coordinate where the string will be drawn
+     */
     public void print(GuiGraphics guiGraphics, String line, int x, int y) {
         doTransform(guiGraphics, x, y);
-        guiGraphics.drawString(getMCFont(), line, 0, 0, 8, false);
-        guiGraphics.pose().popPose();
+        guiGraphics.drawString(getMCFont(), line, x, y, 8, false);
+        guiGraphics.pose().popMatrix();
     }
 
     public void print(GuiGraphics guiGraphics, Component line, int x, int y) {
@@ -31,7 +39,7 @@ public class Font {
     public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y) {
         doTransform(guiGraphics, x, y);
         guiGraphics.drawString(getMCFont(), line, 0, 0, 8, false);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     public void print(GuiGraphics guiGraphics, int number, int x, int y) {
@@ -47,7 +55,7 @@ public class Font {
             guiGraphics.drawString(getMCFont(), lines.get(i), 0, i * scaledLineHeight, 8, false);
 
         }
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     public void splitPrint(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y, int maxWidth) {
@@ -61,7 +69,7 @@ public class Font {
     public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y, int color, boolean shadow) {
         doTransform(guiGraphics, x, y);
         guiGraphics.drawString(getMCFont(), line, 0, 0, color, shadow);
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     public int getStringWidth(FormattedCharSequence line) {
@@ -75,10 +83,10 @@ public class Font {
     }
 
     private void doTransform(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 0);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(x, y);
         if (isSmall) {
-            guiGraphics.pose().scale(SCALING, SCALING, 1);
+            guiGraphics.pose().scale(SCALING, SCALING);
         }
     }
 

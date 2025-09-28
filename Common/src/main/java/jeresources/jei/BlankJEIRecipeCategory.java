@@ -3,6 +3,8 @@ package jeresources.jei;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,11 +40,22 @@ public abstract class BlankJEIRecipeCategory<T> implements IRecipeCategory<T> {
     @Override
     public void draw(T recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         getJERBackground().draw(guiGraphics);
-        recipeCategoryExtension.drawInfo(recipe, getWidth(), getHeight(), guiGraphics, mouseX, mouseY);
+        if (recipeCategoryExtension != null) {
+            recipeCategoryExtension.drawInfo(recipe, getWidth(), getHeight(), guiGraphics, mouseX, mouseY);
+        }
     }
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, T recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        recipeCategoryExtension.getTooltip(tooltip, recipe, mouseX, mouseY);
+        if (recipeCategoryExtension != null) {
+            recipeCategoryExtension.getTooltip(tooltip, recipe, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, T recipe, IFocusGroup focuses) {
+        if (recipeCategoryExtension != null) {
+            recipeCategoryExtension.createRecipeExtras(recipe, builder, JEIConfig.getJeiHelpers().getGuiHelper().createCraftingGridHelper(), focuses);
+        }
     }
 }

@@ -8,14 +8,20 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class BackgroundDrawable implements IDrawable {
-    private final int width, height;
+    private final int width, height, u, v;
     private final ResourceLocation resource;
     private static final int PADDING = 5;
 
     public BackgroundDrawable(String resource, int width, int height) {
+        this(resource, 0, 0, width, height);
+    }
+
+    public BackgroundDrawable(String resource, int u, int v, int width, int height) {
         this.resource = ResourceLocation.fromNamespaceAndPath(Reference.ID, resource);
         this.width = width;
         this.height = height;
+        this.u = u;
+        this.v = v;
     }
 
     @Override
@@ -30,7 +36,7 @@ public class BackgroundDrawable implements IDrawable {
 
     @Override
     public void draw(@NotNull GuiGraphics guiGraphics, int xOffset, int yOffset) {
-        RenderHelper.drawTexturedModalRect(guiGraphics, this.resource, xOffset + PADDING, yOffset + PADDING, 0, 0, this.width, this.height, 0);
+        RenderHelper.drawTexturedModalRect(guiGraphics, this.resource, xOffset + PADDING, yOffset + PADDING, u, v, this.width, this.height);
     }
 
     public ResourceLocation getResource() {

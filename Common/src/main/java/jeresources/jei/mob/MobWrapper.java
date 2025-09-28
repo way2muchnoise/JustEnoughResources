@@ -7,9 +7,13 @@ import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;
@@ -30,18 +34,21 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
     public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = recipe.getEntity();
-        guiGraphics.enableScissor(7, 43, 66, 122);
         float scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
             guiGraphics,
-            37, 105 - offsetY, scale,
+            7, 43, 66, 122,
+            scale,
             38 - mouseX,
             70 - offsetY - mouseY,
             livingEntity
         );
-        guiGraphics.disableScissor();
+    }
 
+    @Override
+    public void createRecipeExtras(MobEntry recipe, IRecipeExtrasBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
+        LivingEntity livingEntity = recipe.getEntity();
         String mobName = recipe.getMobName();
         if (Settings.showDevData) {
             String entityString = livingEntity.getStringUUID();
@@ -49,20 +56,26 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
                 mobName += " (" + entityString + ")";
             }
         }
-        Font.normal.print(guiGraphics, mobName, 7, 2);
+        builder.addText(FormattedText.of(mobName), 100, 100).setPosition(7, 2);
 
         final String biomesLine;
         if (recipe.hasMultipleBiomes())
             biomesLine = TranslationHelper.translateAndFormat("jer.mob.biome");
         else
             biomesLine = recipe.getTranslatedBiomes()
-                .findFirst()
-                .map(firstBiome -> TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + firstBiome)
-                .orElse("");
-        Font.normal.print(guiGraphics, biomesLine, 7, 12);
+                    .findFirst()
+                    .map(firstBiome -> TranslationHelper.translateAndFormat("jer.mob.spawn") + " " + firstBiome)
+                    .orElse("");
+        builder.addText(FormattedText.of(biomesLine), 100, 100).setPosition(7, 12);
 
-        Font.normal.print(guiGraphics, recipe.getLightLevel().toString(), 7, 22);
-        Font.normal.print(guiGraphics, TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + recipe.getExp(), 7, 32);
+        builder
+                .addText(FormattedText.of(recipe.getLightLevel().toString()), 100, 100)
+                .setPosition(7, 22);
+
+        builder
+                .addText(FormattedText.of(TranslationHelper.translateAndFormat("jer.mob.exp") + ": " + recipe.getExp()), 100, 100)
+                .setPosition(7, 32);
+
     }
 
     @Override
