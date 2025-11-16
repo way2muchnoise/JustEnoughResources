@@ -17,7 +17,7 @@ public class ModInfo implements IModInfo {
 
     @Override
     public String getName() {
-        return modFile.moduleName();
+        return modFile.getFile().getId();
     }
 
     @Override
