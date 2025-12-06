@@ -51,7 +51,8 @@ dependencies {
 	implementation(project(":Common", configuration = "namedElements")) { isTransitive = false }
 	shadowImplementation(project(":Common", configuration = "transformProductionFabric")) { isTransitive = false }
 
-	api(project(":CommonApi", configuration = "namedElements"))
+    implementation(project(":CommonApi", configuration = "namedElements")) { isTransitive = false }
+    shadowImplementation(project(":CommonApi", configuration = "transformProductionNeoForge")) { isTransitive = false }
 }
 
 val apiJar = tasks.register<Jar>("apiJar") {
