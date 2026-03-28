@@ -4,8 +4,8 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     base
-    id("architectury-plugin") version ("3.4-SNAPSHOT")
-    id("dev.architectury.loom") version ("1.13-SNAPSHOT") apply (false)
+    id("architectury-plugin") version ("3.5-SNAPSHOT")
+    id("dev.architectury.loom") version ("1.14-SNAPSHOT") apply (false)
     id("com.github.johnrengelman.shadow") version ("8.1.1") apply (false)
 }
 
