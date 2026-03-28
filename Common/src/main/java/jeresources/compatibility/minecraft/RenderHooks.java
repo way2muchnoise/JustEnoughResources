@@ -15,8 +15,8 @@ public class RenderHooks {
     {
         mobPoseStack.rotateAround(Axis.XP.rotationDegrees(20.0F), 0, 0, 0);
         mobPoseStack.rotateAround(Axis.YP.rotationDegrees(180.0F), 0, 0, 0);
-        renderInfo.pitch = -renderInfo.pitch - 80;
-        mobPoseStack.rotateAround(Axis.YN.rotationDegrees(((float)(renderInfo.yaw < 90 ? (renderInfo.yaw < -90 ? 90 : -renderInfo.yaw) : -90) / 2.0F)), 0, 0, 0);
+        renderInfo.mouseX = -renderInfo.mouseX - 80;
+        mobPoseStack.rotateAround(Axis.YN.rotationDegrees(((renderInfo.mouseY < 90 ? (renderInfo.mouseY < -90 ? 90 : -renderInfo.mouseY) : -90) / 2.0F)), 0, 0, 0);
         return renderInfo;
     };
 
@@ -24,7 +24,7 @@ public class RenderHooks {
     {
         mobPoseStack.rotateAround(Axis.XP.rotationDegrees(20.0F), 0, 0, 0);
         mobPoseStack.rotateAround(Axis.YP.rotationDegrees(180.0F), 0, 0, 0);
-        renderInfo.pitch = -renderInfo.pitch;
+        renderInfo.mouseX = -renderInfo.mouseX;
         return renderInfo;
     };
 
@@ -58,9 +58,9 @@ public class RenderHooks {
     {
         mobPoseStack.translate(-0.1F, -0.5F, 0.0F);
         mobPoseStack.rotateAround(Axis.ZP.rotationDegrees(90.0F), 0, 0, 0);
-        double pitch = renderInfo.pitch;
-        renderInfo.pitch = renderInfo.yaw;
-        renderInfo.yaw = - pitch;
+        float pitch = renderInfo.mouseX;
+        renderInfo.mouseX = renderInfo.mouseY;
+        renderInfo.mouseY = - pitch;
         return renderInfo;
     };
 }

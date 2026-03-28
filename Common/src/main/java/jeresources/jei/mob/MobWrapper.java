@@ -32,14 +32,15 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
     public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = recipe.getEntity();
-        float scale = getScale(livingEntity);
+        int scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
             guiGraphics,
             7, 43, 66, 122,
             scale,
-            38 - mouseX,
-            70 - offsetY - mouseY,
+            offsetY,
+            (float) mouseX,
+            (float) mouseY,
             livingEntity
         );
     }
@@ -89,22 +90,22 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
             && mouseY < 12 + 10;
     }
 
-    private float getScale(LivingEntity livingEntity) {
+    private int getScale(LivingEntity livingEntity) {
         float width = livingEntity.getBbWidth();
         float height = livingEntity.getBbHeight();
         if (width <= height) {
-            if (height < 0.9) return 50.0F;
-            else if (height < 1) return 35.0F;
-            else if (height < 1.8) return 33.0F;
-            else if (height < 2) return 32.0F;
-            else if (height < 3) return 24.0F;
-            else if (height < 4) return 20.0F;
-            else return 10.0F;
+            if (height < 0.9) return 50;
+            else if (height < 1) return 35;
+            else if (height < 1.8) return 33;
+            else if (height < 2) return 32;
+            else if (height < 3) return 24;
+            else if (height < 4) return 20;
+            else return 10;
         } else {
-            if (width < 1) return 38.0F;
-            else if (width < 2) return 27.0F;
-            else if (width < 3) return 13.0F;
-            else return 9.0F;
+            if (width < 1) return 38;
+            else if (width < 2) return 27;
+            else if (width < 3) return 13;
+            else return 9;
         }
     }
 

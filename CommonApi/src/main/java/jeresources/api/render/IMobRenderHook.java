@@ -5,15 +5,15 @@ import net.minecraft.world.entity.LivingEntity;
 
 public interface IMobRenderHook<T extends LivingEntity> {
     class RenderInfo {
-        public int x, y;
-        public double scale, yaw, pitch;
+        public int x, y, scale;
+        public float mouseX, mouseY;
 
-        public RenderInfo(int x, int y, double scale, double yaw, double pitch) {
+        public RenderInfo(int x, int y, int scale, float mouseX, float mouseY) {
             this.x = x;
             this.y = y;
             this.scale = scale;
-            this.yaw = yaw;
-            this.pitch = pitch;
+            this.mouseX = mouseX;
+            this.mouseY = mouseY;
         }
     }
 

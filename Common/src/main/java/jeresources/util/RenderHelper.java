@@ -25,35 +25,17 @@ public class RenderHelper {
         guiGraphics.fill(xBegin, yBegin, xEnd, yEnd, color);
     }
 
-    public static void renderEntity(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, double scale, double yaw, double pitch, LivingEntity livingEntity) {
+    public static void renderEntity(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int scale, float yOffset, float mouseX, float mouseY, LivingEntity livingEntity) {
         PoseStack mobPoseStack = new PoseStack();
         ScreenRectangle screenRectangle = new ScreenRectangle(x1, y1, x2 - x1, y2 - y1).transformAxisAligned(guiGraphics.pose());
-        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(0, 0, scale, yaw, pitch));
+        IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(0, 0, scale, mouseX, mouseY));
         int x = renderInfo.x;
         int y = renderInfo.y;
         mobPoseStack.translate(x, y, 0);
         scale = renderInfo.scale;
-        yaw = renderInfo.yaw;
-        pitch = renderInfo.pitch;
-        mobPoseStack.mulPose(Axis.XN.rotationDegrees(((float) Math.atan((pitch / 40.0F))) * 20.0F));
-        livingEntity.yo = (float) Math.atan(yaw / 40.0F) * 20.0F;
-        float yRot = (float) Math.atan(yaw / 40.0F) * 40.0F;
-        float xRot = -((float) Math.atan(pitch / 40.0F)) * 20.0F;
-        livingEntity.setYRot(yRot);
-        livingEntity.setYRot(yRot);
-        livingEntity.setXRot(xRot);
-        livingEntity.yHeadRot = yRot;
-        livingEntity.yHeadRotO = yRot;
-        mobPoseStack.translate(0.0F, livingEntity.getBbHeight() / 2, 0.0F);
-        Vector3f translationVec = new Vector3f();
-        mobPoseStack.last().pose().getTranslation(translationVec);
-        Quaternionf rotationQuat = new Quaternionf();
-        mobPoseStack.last().pose().getUnnormalizedRotation(rotationQuat);
-        Quaternionf cameraQuat = (new Quaternionf()).rotateZ((float)Math.PI);
-        cameraQuat.mul(new Quaternionf().rotateY((float)Math.PI));
-        rotationQuat.mul(cameraQuat);
-        // InventoryScreen.renderEntityInInventory(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (float) scale, translationVec, rotationQuat, cameraQuat, livingEntity);
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (int) scale, 0, (float) yaw, (float) pitch, livingEntity);
+        mouseX = renderInfo.mouseX;
+        mouseY = renderInfo.mouseY;
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), scale, yOffset, mouseX, mouseY, livingEntity);
     }
 
     public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {

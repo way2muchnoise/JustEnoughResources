@@ -29,9 +29,10 @@ public class VillagerWrapper implements IRecipeCategoryExtension<AbstractVillage
         RenderHelper.renderEntity(
             guiGraphics,
             7, 43, 66, 122,
-            36.0F,
-            38 - mouseX,
-            80 - mouseY,
+            36,
+            0,
+            (float) (mouseX),
+            (float) (mouseY),
             villager
         );
 
