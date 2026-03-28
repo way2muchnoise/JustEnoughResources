@@ -21,7 +21,7 @@ import mezz.jei.api.recipe.types.IRecipeType;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -30,19 +30,19 @@ import java.util.Map;
 
 @JeiPlugin
 public class JEIConfig implements IModPlugin {
-    public static final ResourceLocation MOB = ResourceLocation.fromNamespaceAndPath(Reference.ID, "mob");
+    public static final Identifier MOB = Identifier.fromNamespaceAndPath(Reference.ID, "mob");
     public static final IRecipeType<MobEntry> MOB_TYPE = IRecipeType.create(MOB, MobEntry.class);
-    public static final ResourceLocation DUNGEON = ResourceLocation.fromNamespaceAndPath(Reference.ID , "dungeon");
+    public static final Identifier DUNGEON = Identifier.fromNamespaceAndPath(Reference.ID , "dungeon");
     public static final IRecipeType<DungeonEntry> DUNGEON_TYPE = IRecipeType.create(DUNGEON, DungeonEntry.class);
-    public static final ResourceLocation WORLD_GEN = ResourceLocation.fromNamespaceAndPath(Reference.ID , "worldgen");
+    public static final Identifier WORLD_GEN = Identifier.fromNamespaceAndPath(Reference.ID , "worldgen");
     public static final IRecipeType<WorldGenEntry> WORLD_GEN_TYPE = IRecipeType.create(WORLD_GEN, WorldGenEntry.class);
-    public static final ResourceLocation PLANT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "plant");
+    public static final Identifier PLANT = Identifier.fromNamespaceAndPath(Reference.ID , "plant");
     public static final IRecipeType<PlantEntry> PLANT_TYPE = IRecipeType.create(PLANT, PlantEntry.class);
-    public static final ResourceLocation ENCHANTMENT = ResourceLocation.fromNamespaceAndPath(Reference.ID , "enchantment");
+    public static final Identifier ENCHANTMENT = Identifier.fromNamespaceAndPath(Reference.ID , "enchantment");
     public static final IRecipeType<EnchantmentWrapper> ENCHANTMENT_TYPE = IRecipeType.create(ENCHANTMENT, EnchantmentWrapper.class);
-    public static final ResourceLocation VILLAGER = ResourceLocation.fromNamespaceAndPath(Reference.ID , "villager");
+    public static final Identifier VILLAGER = Identifier.fromNamespaceAndPath(Reference.ID , "villager");
     public static final IRecipeType<AbstractVillagerEntry> VILLAGER_TYPE = IRecipeType.create(VILLAGER, AbstractVillagerEntry.class);
-    public static final Map<ResourceLocation, IRecipeType<?>> TYPES = new HashMap<>();
+    public static final Map<Identifier, IRecipeType<?>> TYPES = new HashMap<>();
     static {
         TYPES.put(MOB, MOB_TYPE);
         TYPES.put(DUNGEON, DUNGEON_TYPE);
@@ -56,8 +56,8 @@ public class JEIConfig implements IModPlugin {
     private static IJeiRuntime jeiRuntime;
 
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(Reference.ID, "minecraft");
+    public @NotNull Identifier getPluginUid() {
+        return Identifier.fromNamespaceAndPath(Reference.ID, "minecraft");
     }
 
     @Override
@@ -101,7 +101,7 @@ public class JEIConfig implements IModPlugin {
     public static void hideCategories(String[] categories) {
         if (jeiRuntime != null) {
             for (String category : categories) {
-                jeiRuntime.getRecipeManager().hideRecipeCategory(TYPES.get(ResourceLocation.fromNamespaceAndPath(Reference.ID, category)));
+                jeiRuntime.getRecipeManager().hideRecipeCategory(TYPES.get(Identifier.fromNamespaceAndPath(Reference.ID, category)));
             }
         }
     }

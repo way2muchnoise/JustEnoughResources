@@ -4,12 +4,12 @@ import jeresources.reference.Reference;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.drawable.IDrawable;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class BackgroundDrawable implements IDrawable {
     private final int width, height, u, v;
-    private final ResourceLocation resource;
+    private final Identifier resource;
     private static final int PADDING = 5;
 
     public BackgroundDrawable(String resource, int width, int height) {
@@ -17,7 +17,7 @@ public class BackgroundDrawable implements IDrawable {
     }
 
     public BackgroundDrawable(String resource, int u, int v, int width, int height) {
-        this.resource = ResourceLocation.fromNamespaceAndPath(Reference.ID, resource);
+        this.resource = Identifier.fromNamespaceAndPath(Reference.ID, resource);
         this.width = width;
         this.height = height;
         this.u = u;
@@ -39,7 +39,7 @@ public class BackgroundDrawable implements IDrawable {
         RenderHelper.drawTexturedModalRect(guiGraphics, this.resource, xOffset + PADDING, yOffset + PADDING, u, v, this.width, this.height);
     }
 
-    public ResourceLocation getResource() {
+    public Identifier getResource() {
         return resource;
     }
 }

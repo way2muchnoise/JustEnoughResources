@@ -2,7 +2,6 @@ package jeresources.jei.villager;
 
 import jeresources.entry.AbstractVillagerEntry;
 import jeresources.reference.Resources;
-import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
@@ -12,7 +11,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 

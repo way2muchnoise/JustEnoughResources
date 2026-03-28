@@ -16,8 +16,8 @@ import jeresources.entry.WorldGenEntry;
 import jeresources.util.LootTableFetcher;
 import jeresources.util.LootTableHelper;
 import net.minecraft.world.entity.ambient.Bat;
-import net.minecraft.world.entity.animal.AbstractSchoolingFish;
-import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.fish.AbstractSchoolingFish;
+import net.minecraft.world.entity.animal.squid.Squid;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.monster.Giant;
@@ -55,7 +55,7 @@ public class MinecraftCompat extends CompatBase {
     private void registerDungeonLoot() {
         LootTableFetcher lootTableFetcher = LootTableHelper.getLootTableFetcher();
         LootTableHelper.getAllChestLootTablesResourceKeys().stream()
-            .map(resourceKey -> new DungeonEntry(resourceKey.location().getPath(), lootTableFetcher.getLootTable(resourceKey)))
+            .map(resourceKey -> new DungeonEntry(resourceKey.identifier().getPath(), lootTableFetcher.getLootTable(resourceKey)))
             .forEach(this::registerDungeonEntry);
     }
 

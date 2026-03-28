@@ -1,11 +1,10 @@
 package jeresources.collection;
 
+import jeresources.compatibility.CompatBase;
 import jeresources.entry.AbstractVillagerEntry;
-import jeresources.entry.VillagerEntry;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
@@ -57,7 +56,7 @@ public class TradeList extends LinkedList<TradeList.Trade> {
     }
 
     private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, RandomSource rand) {
-        MerchantOffer offer = itemListing.getOffer(entry.getVillagerEntity(), rand);
+        MerchantOffer offer = itemListing.getOffer(null, entry.getVillagerEntity(), rand);
         if (offer != null) {
             merchantOffers.add(offer);
         }

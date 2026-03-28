@@ -7,6 +7,8 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.server.permissions.PermissionSet;
+import net.minecraft.server.permissions.Permissions;
 
 public class ProfileCommand {
     private static final String COMMAND_NAME = "jer_profile";
@@ -15,7 +17,7 @@ public class ProfileCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> profileCommand = Commands.literal(COMMAND_NAME)
-            .requires(source -> source.hasPermission(4) && source.getServer().isSingleplayer());
+            .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_ADMIN) && source.getServer().isSingleplayer());
 
         profileCommand.then(
             Commands.argument(CHUNK_PARAM, IntegerArgumentType.integer(1))

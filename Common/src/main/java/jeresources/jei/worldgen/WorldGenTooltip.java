@@ -8,7 +8,6 @@ import jeresources.util.RegistryHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;

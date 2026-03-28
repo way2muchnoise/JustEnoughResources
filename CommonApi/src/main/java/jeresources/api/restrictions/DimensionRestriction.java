@@ -45,6 +45,6 @@ public class DimensionRestriction {
     }
 
     public String getDimensionName() {
-        return type == Restriction.Type.NONE ? "all" : dimension.location().toString();
+        return type == Restriction.Type.NONE ? "all" : dimension.identifier().toString();
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.*;
@@ -52,7 +52,8 @@ public class RenderHelper {
         Quaternionf cameraQuat = (new Quaternionf()).rotateZ((float)Math.PI);
         cameraQuat.mul(new Quaternionf().rotateY((float)Math.PI));
         rotationQuat.mul(cameraQuat);
-        InventoryScreen.renderEntityInInventory(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (float) scale, translationVec, rotationQuat, cameraQuat, livingEntity);
+        // InventoryScreen.renderEntityInInventory(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (float) scale, translationVec, rotationQuat, cameraQuat, livingEntity);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), (int) scale, 0, (float) yaw, (float) pitch, livingEntity);
     }
 
     public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
@@ -103,11 +104,11 @@ public class RenderHelper {
         bufferSource.endBatch();
     }
 
-    public static void drawTexture(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height) {
+    public static void drawTexture(GuiGraphics guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
         drawTexturedModalRect(guiGraphics, resource, x, y, u, v, width, height);
     }
 
-    public static void drawTexturedModalRect(GuiGraphics guiGraphics, ResourceLocation resource, int x, int y, int u, int v, int width, int height) {
+    public static void drawTexturedModalRect(GuiGraphics guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
         guiGraphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 resource,

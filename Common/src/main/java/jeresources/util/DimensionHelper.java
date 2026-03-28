@@ -12,7 +12,7 @@ import net.minecraft.world.level.dimension.DimensionType;
 public class DimensionHelper {
 
     public static String getDimensionName(ResourceKey<Level> worldRegistryKey) {
-        return worldRegistryKey.location().getPath();
+        return worldRegistryKey.identifier().getPath();
     }
 
     public static Holder<DimensionType> getType(ResourceKey<DimensionType> dimensionTypeRegistryKey) {

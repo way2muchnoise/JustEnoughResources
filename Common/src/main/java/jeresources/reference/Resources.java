@@ -1,7 +1,7 @@
 package jeresources.reference;
 
 import jeresources.jei.BackgroundDrawable;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public final class Resources {
     public static final class Gui {
@@ -14,12 +14,12 @@ public final class Resources {
             public static final BackgroundDrawable VILLAGER = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 163, 120);
             public static final BackgroundDrawable VILLAGER_ARROW = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 0, 120, 20, 20);
             public static final BackgroundDrawable VILLAGER_SLOT = new BackgroundDrawable(Textures.Gui.Jei.VILLAGER, 22, 120, 18, 18);
-            public static final ResourceLocation TABS = ResourceLocation.fromNamespaceAndPath(Reference.ID, Textures.Gui.Jei.TABS);
+            public static final Identifier TABS = Identifier.fromNamespaceAndPath(Reference.ID, Textures.Gui.Jei.TABS);
         }
     }
 
     public static final class Vanilla {
-        public static final ResourceLocation FONT = ResourceLocation.withDefaultNamespace("textures/font/ascii.png");
-        public static final ResourceLocation CHEST = ResourceLocation.withDefaultNamespace("textures/entity/chest/normal.png");
+        public static final Identifier FONT = Identifier.withDefaultNamespace("textures/font/ascii.png");
+        public static final Identifier CHEST = Identifier.withDefaultNamespace("textures/entity/chest/normal.png");
     }
 }

@@ -16,7 +16,7 @@ import jeresources.registry.WorldGenRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -65,10 +65,10 @@ public class WorldGenAdapter {
 
                 String[] blockParts = block.split(":");
 
-                Item itemBlock = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value();
+                Item itemBlock = BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value();
 
                 if (itemBlock == Items.AIR)
-                    itemBlock = BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value().asItem();
+                    itemBlock = BuiltInRegistries.BLOCK.get(Identifier.fromNamespaceAndPath(blockParts[0], blockParts[1])).get().value().asItem();
 
                 if (itemBlock == Items.AIR) continue;
                 ItemStack blockStack = itemBlock.getDefaultInstance();
@@ -90,7 +90,7 @@ public class WorldGenAdapter {
                         if (itemStackElement.isJsonNull()) continue;
                         String itemStackString = itemStackElement.getAsString();
                         String[] stackStrings = itemStackString.split(":", 4);
-                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(stackStrings[0], stackStrings[1])).get().value();
+                        Item item = BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath(stackStrings[0], stackStrings[1])).get().value();
                         if (item == Items.AIR)
                             continue;
 
@@ -138,7 +138,7 @@ public class WorldGenAdapter {
     private static Map<ResourceKey<Level>, Restriction> map = new HashMap<>();
 
     private static Restriction getRestriction(String dim) {
-        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(dim));
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, Identifier.parse(dim));
         return map.computeIfAbsent(worldRegistryKey, k -> new Restriction(new DimensionRestriction(worldRegistryKey)));
     }
 }

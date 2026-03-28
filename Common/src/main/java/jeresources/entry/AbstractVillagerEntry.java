@@ -4,8 +4,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;

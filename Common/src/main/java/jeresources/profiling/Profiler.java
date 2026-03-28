@@ -75,7 +75,7 @@ public class Profiler implements Runnable {
         LogHelper.info(msg);
 
         
-        if (Settings.excludedDimensions.contains(dimensionKey.location().toString())) {
+        if (Settings.excludedDimensions.contains(dimensionKey.identifier().toString())) {
             msg = "Skipped dimension " + DimensionHelper.getDimensionName(dimensionKey) + " during profiling";
             LogHelper.info(msg);
             sender.sendSystemMessage(Component.literal(msg));

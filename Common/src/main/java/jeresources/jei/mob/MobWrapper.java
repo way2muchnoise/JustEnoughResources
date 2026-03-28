@@ -3,7 +3,6 @@ package jeresources.jei.mob;
 import jeresources.config.Settings;
 import jeresources.entry.MobEntry;
 import jeresources.util.CollectionHelper;
-import jeresources.util.Font;
 import jeresources.util.RenderHelper;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
@@ -15,20 +14,19 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.Squid;
-import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.golem.AbstractGolem;
+import net.minecraft.world.entity.animal.squid.Squid;
+import net.minecraft.world.entity.animal.turtle.Turtle;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.illager.AbstractIllager;
 import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.entity.monster.zombie.Husk;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.List;
 
 public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
