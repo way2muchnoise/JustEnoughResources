@@ -1,4 +1,4 @@
-accessWidener v1 named
+accessWidener v1 official
 accessible field net/minecraft/world/level/storage/loot/entries/LootPoolSingletonContainer weight I
 accessible field net/minecraft/world/level/storage/loot/entries/LootPoolSingletonContainer functions Ljava/util/List;
 accessible field net/minecraft/world/level/storage/loot/entries/LootItem item Lnet/minecraft/core/Holder;
@@ -12,7 +12,8 @@ accessible field net/minecraft/world/level/storage/loot/entries/DynamicLoot name
 accessible field net/minecraft/world/level/storage/loot/providers/number/UniformGenerator min Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible field net/minecraft/world/level/storage/loot/providers/number/UniformGenerator max Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible field net/minecraft/world/level/storage/loot/providers/number/BinomialDistributionGenerator n Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
-accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFunction value Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
+accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFunction count Lnet/minecraft/world/level/storage/loot/providers/number/NumberProvider;
 accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/HolderGetter$Provider;)V
 accessible field net/minecraft/world/entity/Mob xpReward I
 accessible method net/minecraft/world/level/block/state/BlockBehaviour getCloneItemStack (Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/item/ItemStack;
+accessible field net/minecraft/world/level/Level random Lnet/minecraft/util/RandomSource;

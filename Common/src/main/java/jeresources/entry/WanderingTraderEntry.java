@@ -1,21 +1,20 @@
 package jeresources.entry;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.compatibility.CompatBase;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.VillagerTrade;
 
 import java.util.Collections;
 import java.util.List;
 
 public class WanderingTraderEntry extends AbstractVillagerEntry<WanderingTrader> {
 
-    public WanderingTraderEntry(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
-        super(itemListings);
+    public WanderingTraderEntry(List<VillagerTrade> itemListings) {
+        super(Collections.singletonMap(1, itemListings));
     }
 
     @Override

@@ -42,25 +42,17 @@ repositories {
 dependencies {
     neoForge("net.neoforged:neoforge:${neoforgeVersion}")
 
-    modCompileOnlyApi("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
-    modCompileOnlyApi("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
+    compileOnlyApi("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
+    compileOnlyApi("mezz.jei:jei-${minecraftVersion}-neoforge-api:${jeiVersion}")
 	// at runtime, use the full JEI jar for NeoForge
-    modRuntimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
+    runtimeOnly("mezz.jei:jei-${minecraftVersion}-neoforge:${jeiVersion}")
 
-    implementation(project(":Common", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(":Common")) { isTransitive = false }
     shadowImplementation(project(":Common", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
-    implementation(project(":CommonApi", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(":CommonApi")) { isTransitive = false }
     shadowImplementation(project(":CommonApi", configuration = "transformProductionNeoForge")) { isTransitive = false }
 }
-
-tasks {
-    remapJar {
-        // Convert the access widener to a NeoForge access transformer.
-        atAccessWideners.add("jeresources.accesswidener")
-    }
-}
-
 
 val apiJar = tasks.register<Jar>("apiJar") {
     from(project(":CommonApi").sourceSets.main.get().output)
@@ -71,15 +63,10 @@ val apiJar = tasks.register<Jar>("apiJar") {
 
 artifacts {
     archives(apiJar.get())
-    archives(tasks.remapJar.get())
-    archives(tasks.remapSourcesJar.get())
+    archives(tasks.shadowJar.get())
 }
 
 tasks.withType<Jar> {
-    destinationDirectory.set(file(rootProject.rootDir.path + "/output"))
-}
-
-tasks.withType<net.fabricmc.loom.task.RemapJarTask> {
     destinationDirectory.set(file(rootProject.rootDir.path + "/output"))
 }
 
@@ -87,7 +74,7 @@ tasks.register<TaskPublishCurseForge>("publishCurseForge") {
 
     apiToken = System.getenv("CURSE_KEY") ?: "0"
 
-    val mainFile = upload(curseProjectId, tasks.remapJar.get())
+    val mainFile = upload(curseProjectId, tasks.shadowJar.get())
     mainFile.changelogType = CFG_Constants.CHANGELOG_MARKDOWN
     mainFile.changelog = System.getenv("CHANGELOG") ?: ""
     mainFile.releaseType = CFG_Constants.RELEASE_TYPE_ALPHA
@@ -106,8 +93,8 @@ modrinth {
     versionName.set("${project.version} for NeoForge $minecraftVersion")
     versionType.set("alpha")
     changelog.set(System.getenv("CHANGELOG") ?: "")
-    uploadFile.set(tasks.remapJar.get())
+    uploadFile.set(tasks.shadowJar.get())
     gameVersions.add(minecraftVersion)
     // additionalFiles.addAll(arrayOf(apiJar.get(), sourcesJar.get())) // TODO: Figure out how to upload these
 }
-tasks.modrinth.get().dependsOn(tasks.jar)
+tasks.modrinth.get().dependsOn(tasks.shadowJar)

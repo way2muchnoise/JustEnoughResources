@@ -1,6 +1,5 @@
 package jeresources.entry;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.compatibility.CompatBase;
 import jeresources.util.VillagersHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,16 +8,17 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.VillagerTrade;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class VillagerEntry extends AbstractVillagerEntry<Villager>{
     private final VillagerProfession profession;
 
-    public VillagerEntry(VillagerProfession profession, Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
+    public VillagerEntry(VillagerProfession profession, Map<Integer, List<VillagerTrade>> itemListings) {
         super();
         this.profession = profession;
         // only make trades after setting profession

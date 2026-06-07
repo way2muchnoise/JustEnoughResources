@@ -62,7 +62,7 @@ public class ChunkProfiler implements Runnable {
         for (int y = 0; y < maxY; y++)
             for (int x = 0; x < CHUNK_SIZE; x++)
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    blockPos.set(x + chunk.getPos().x * CHUNK_SIZE, y, z + chunk.getPos().z * CHUNK_SIZE);
+                    blockPos.set(x + chunk.getPos().x() * CHUNK_SIZE, y, z + chunk.getPos().z() * CHUNK_SIZE);
                     BlockState blockState = chunk.getBlockState(new BlockPos(x, y, z));
                     if (blacklist.contains(blockState)) continue;
                     final String key = MapKeys.getKey(blockState, level, blockPos);

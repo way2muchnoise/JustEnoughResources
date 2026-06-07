@@ -37,21 +37,21 @@ loom {
 }
 
 dependencies {
-	modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
-	modApi("me.shedaniel.cloth:cloth-config-fabric:${clothVersion}") {
+	implementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
+	implementation("net.fabricmc.fabric-api:fabric-api:${fabricVersion}")
+	api("me.shedaniel.cloth:cloth-config-fabric:${clothVersion}") {
 		exclude("net.fabricmc.fabric-api")
 	}
-	modImplementation("com.terraformersmc:modmenu:${modMenuVersion}")
+	implementation("com.terraformersmc:modmenu:${modMenuVersion}")
 
-	modCompileOnlyApi("mezz.jei:jei-${minecraftVersion}-fabric-api:${jeiVersion}")
+	compileOnlyApi("mezz.jei:jei-${minecraftVersion}-fabric-api:${jeiVersion}")
 	// at runtime, use the full JEI jar for Fabric
-	modRuntimeOnly("mezz.jei:jei-${minecraftVersion}-fabric:${jeiVersion}")
+	runtimeOnly("mezz.jei:jei-${minecraftVersion}-fabric:${jeiVersion}")
 
-	implementation(project(":Common", configuration = "namedElements")) { isTransitive = false }
+	implementation(project(":Common")) { isTransitive = false }
 	shadowImplementation(project(":Common", configuration = "transformProductionFabric")) { isTransitive = false }
 
-    implementation(project(":CommonApi", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(":CommonApi")) { isTransitive = false }
     shadowImplementation(project(":CommonApi", configuration = "transformProductionNeoForge")) { isTransitive = false }
 }
 
@@ -64,15 +64,10 @@ val apiJar = tasks.register<Jar>("apiJar") {
 
 artifacts {
 	archives(apiJar.get())
-	archives(tasks.remapJar.get())
-	archives(tasks.remapSourcesJar.get())
+	archives(tasks.shadowJar.get())
 }
 
 tasks.withType<Jar> {
-	destinationDirectory.set(file(rootProject.rootDir.path + "/output"))
-}
-
-tasks.withType<net.fabricmc.loom.task.RemapJarTask> {
 	destinationDirectory.set(file(rootProject.rootDir.path + "/output"))
 }
 
@@ -84,7 +79,7 @@ tasks.register<TaskPublishCurseForge>("publishCurseForge") {
 
 	apiToken = System.getenv("CURSE_KEY") ?: "0"
 
-	val mainFile = upload(curseProjectId, tasks.remapJar.get())
+	val mainFile = upload(curseProjectId, tasks.shadowJar.get())
 	mainFile.changelogType = CFG_Constants.CHANGELOG_MARKDOWN
 	mainFile.changelog = System.getenv("CHANGELOG") ?: ""
 	mainFile.releaseType = CFG_Constants.RELEASE_TYPE_ALPHA
@@ -103,8 +98,8 @@ modrinth {
 	versionName.set("${project.version} for Fabric $minecraftVersion")
 	versionType.set("alpha")
 	changelog.set(System.getenv("CHANGELOG") ?: "")
-	uploadFile.set(tasks.remapJar.get())
+	uploadFile.set(tasks.shadowJar.get())
 	gameVersions.add(minecraftVersion)
 	// additionalFiles.addAll(arrayOf(apiJar.get(), tasks.remapSourcesJar.get())) // TODO: Figure out how to upload these
 }
-tasks.modrinth.get().dependsOn(tasks.remapJar)
+tasks.modrinth.get().dependsOn(tasks.shadowJar)

@@ -3,7 +3,7 @@ package jeresources.jei;
 import jeresources.reference.Reference;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.gui.drawable.IDrawable;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +35,7 @@ public class BackgroundDrawable implements IDrawable {
     }
 
     @Override
-    public void draw(@NotNull GuiGraphics guiGraphics, int xOffset, int yOffset) {
+    public void draw(@NotNull GuiGraphicsExtractor guiGraphics, int xOffset, int yOffset) {
         RenderHelper.drawTexturedModalRect(guiGraphics, this.resource, xOffset + PADDING, yOffset + PADDING, u, v, this.width, this.height);
     }
 

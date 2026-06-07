@@ -6,7 +6,7 @@ import jeresources.util.Font;
 import jeresources.util.TranslationHelper;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +58,7 @@ public class EnchantmentWrapper implements IRecipeCategoryExtension<EnchantmentW
     }
 
     @Override
-    public void drawInfo(EnchantmentWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(EnchantmentWrapper recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         // TODO: fix this text rendering
         int y = FIRST_ENCHANT_Y;
         for (EnchantmentEntry enchantment : getEnchantments()) {

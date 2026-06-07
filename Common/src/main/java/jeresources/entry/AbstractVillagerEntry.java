@@ -1,36 +1,38 @@
 package jeresources.entry;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import jeresources.collection.TradeList;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.trading.VillagerTrade;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractVillagerEntry<T extends AbstractVillager> {
     private final List<TradeList> tradeList;
     protected T entity;
 
-    public AbstractVillagerEntry(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
+    public AbstractVillagerEntry(Map<Integer, List<VillagerTrade>> tradesByLevel) {
         this.tradeList = new LinkedList<>();
-        addITradeLists(itemListings);
+        addITradeLists(tradesByLevel);
     }
 
     public AbstractVillagerEntry() {
         this.tradeList = new LinkedList<>();
     }
 
-    public void addITradeLists(Int2ObjectMap<VillagerTrades.ItemListing[]> itemListings) {
-        for (int i = 1;i < itemListings.size() + 1;i++) {
-            VillagerTrades.ItemListing[] levelList = itemListings.get(i);
-            TradeList trades = this.tradeList.size() > i ? this.tradeList.get(i) : new TradeList(this);
-            trades.addITradeList(levelList);
-            this.tradeList.add(trades);
+    public void addITradeLists(Map<Integer, List<VillagerTrade>> tradesByLevel) {
+        for (int i = 1;i < tradesByLevel.size() + 1;i++) {
+            List<VillagerTrade> levelTrades = tradesByLevel.get(i);
+            if (levelTrades != null) {
+                TradeList trades = new TradeList(this);
+                trades.addTrades(levelTrades);
+                this.tradeList.add(trades);
+            }
         }
     }
 

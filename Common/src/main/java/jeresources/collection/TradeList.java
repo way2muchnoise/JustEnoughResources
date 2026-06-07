@@ -1,13 +1,15 @@
 package jeresources.collection;
 
-import jeresources.compatibility.CompatBase;
 import jeresources.entry.AbstractVillagerEntry;
 import mezz.jei.api.recipe.IFocus;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.npc.villager.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
+import net.minecraft.world.item.trading.VillagerTrade;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,28 +57,27 @@ public class TradeList extends LinkedList<TradeList.Trade> {
         }
     }
 
-    private void addMerchantRecipe(MerchantOffers merchantOffers, VillagerTrades.ItemListing itemListing, RandomSource rand) {
-        MerchantOffer offer = itemListing.getOffer(null, entry.getVillagerEntity(), rand);
-        if (offer != null) {
-            merchantOffers.add(offer);
-        }
-    }
+    public void addTrades(List<VillagerTrade> villagerTrades) {
+        LootParams params = new LootParams.Builder(null).create(LootContextParamSets.EMPTY);
+        LootContext ctx = new LootContext(params, RandomSource.create(), null);
 
-    public void addITradeList(VillagerTrades.ItemListing[] itemListings) {
-        for (VillagerTrades.ItemListing itemListing : itemListings) {
+        for (VillagerTrade villagerTrade : villagerTrades) {
             MerchantOffers tempList = new MerchantOffers();
-            RandomSource rand = RandomSource.create();
-            for (int itr = 0; itr < 100; itr++)
-                addMerchantRecipe(tempList, itemListing, rand);
-            if (tempList.size() == 0) return; // Bad lists be bad
-            ItemStack costA = tempList.get(0).getCostA();
-            ItemStack costB = tempList.get(0).getCostB();
-            ItemStack result = tempList.get(0).getResult();
+            for (int itr = 0; itr < 100; itr++) {
+                MerchantOffer offer = villagerTrade.getOffer(ctx);
+                if (offer != null) {
+                    tempList.add(offer);
+                }
+            }
+            if (tempList.isEmpty()) return;
+            ItemStack costA = tempList.getFirst().getCostA();
+            ItemStack costB = tempList.getFirst().getCostB();
+            ItemStack result = tempList.getFirst().getResult();
             int minCostA, minCostB, minResult;
             int maxCostA, maxCostB, maxResult;
             minCostA = maxCostA = costA.getCount();
             if(!costB.isEmpty()) minCostB = maxCostB = costB.getCount();
-            else minCostB = maxCostB = 1; // Needs to be one with the new ItemStack.EMPTY implementation
+            else minCostB = maxCostB = 1;
             minResult = maxResult = result.getCount();
             for (MerchantOffer merchantRecipe : tempList) {
                 if(minCostA > merchantRecipe.getBaseCostA().getCount())

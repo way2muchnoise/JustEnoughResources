@@ -19,7 +19,6 @@ import java.util.List;
 public class PlantRegistryImpl implements IPlantRegistry {
     private static List<PlantEntry> registers = new ArrayList<>();
     private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
-    private static final ItemStack grass = new ItemStack(Blocks.TALL_GRASS, 1);
 
     protected PlantRegistryImpl() {
 
@@ -205,7 +204,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     @Override
     public void registerDrops(@NotNull ItemStack itemStack, PlantDrop... drops) {
         try {
-            if (drops.length > 0 || ItemStack.isSameItem(itemStack, grass))
+            if (drops.length > 0 || ItemStack.isSameItem(itemStack, new ItemStack(Blocks.TALL_GRASS, 1)))
                 addedDrops.add(new Tuple<>(itemStack, drops));
         } catch (Exception e) {
             LogHelper.debug("Error while registering drops for %s", itemStack.toString());

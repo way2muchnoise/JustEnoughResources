@@ -10,14 +10,10 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> {
     protected static final int X_OFFSET = 49 - 20;
@@ -27,7 +23,7 @@ public class WorldGenWrapper implements IRecipeCategoryExtension<WorldGenEntry> 
     protected static final String ORE_SLOT_NAME = "oreSlot";
 
     @Override
-    public void drawInfo(WorldGenEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(WorldGenEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         float[] array = recipe.getChances();
         double max = 0;
         for (double d : array)

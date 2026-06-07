@@ -12,6 +12,6 @@ loom {
 }
 
 dependencies {
-    api(project(":CommonApi", configuration = "namedElements"))
+    api(project(":CommonApi"))
     compileOnly("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
 }

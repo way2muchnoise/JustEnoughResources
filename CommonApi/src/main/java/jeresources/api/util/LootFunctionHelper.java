@@ -22,10 +22,10 @@ public class LootFunctionHelper {
 
     public static void applyFunction(LootItemFunction lootFunction, LootDrop lootDrop) {
         if (lootFunction instanceof SetItemCountFunction) {
-            lootDrop.minDrop = getMin(((SetItemCountFunction) lootFunction).value);
+            lootDrop.minDrop = getMin(((SetItemCountFunction) lootFunction).count);
             if (lootDrop.minDrop < 0) lootDrop.minDrop = 0;
             lootDrop.item.setCount(Math.max(lootDrop.minDrop, 1));
-            lootDrop.maxDrop = getMax(((SetItemCountFunction) lootFunction).value);
+            lootDrop.maxDrop = getMax(((SetItemCountFunction) lootFunction).count);
         } else if (lootFunction instanceof SetItemDamageFunction) {
             ((SetItemDamageFunction) lootFunction).run(lootDrop.item, randContext);
         } else if (lootFunction instanceof EnchantRandomlyFunction || lootFunction instanceof EnchantWithLevelsFunction) {

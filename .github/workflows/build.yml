@@ -16,7 +16,7 @@ jobs:
 
     steps:
     # Setup
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Create changelog
@@ -27,8 +27,8 @@ jobs:
             echo ""
             echo EOF
           } >> "$GITHUB_ENV"
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
           java-version: '21'
@@ -38,15 +38,13 @@ jobs:
         run: chmod +x ./gradlew
       # Build
       - name: Build with Gradle
-        run: ./gradlew clean generateRemapClasspath build
+        run: ./gradlew clean build
       # Publish
       - name: Publish CurseForge
         run: ./gradlew :NeoForge:publishCurseForge :Fabric:publishCurseForge
-        # run: ./gradlew :Forge:publishCurseForge :Fabric:publishCurseForge :NeoForge:publishCurseForge
       - name: Publish Modrinth
         run: ./gradlew :NeoForge:modrinth :Fabric:modrinth
-        # run: ./gradlew :Forge:modrinth :Fabric:modrinth :NeoForge:modrinth
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           if-no-files-found: error
           path: output/*[^shadow].jar

@@ -1,7 +1,7 @@
 package jeresources.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -26,49 +26,49 @@ public class Font {
      * @param x the x-coordinate where the string will be drawn
      * @param y the y-coordinate where the string will be drawn
      */
-    public void print(GuiGraphics guiGraphics, String line, int x, int y) {
+    public void print(GuiGraphicsExtractor guiGraphics, String line, int x, int y) {
         doTransform(guiGraphics, x, y);
-        guiGraphics.drawString(getMCFont(), line, x, y, 8, false);
+        guiGraphics.text(getMCFont(), line, x, y, 8, false);
         guiGraphics.pose().popMatrix();
     }
 
-    public void print(GuiGraphics guiGraphics, Component line, int x, int y) {
+    public void print(GuiGraphicsExtractor guiGraphics, Component line, int x, int y) {
         print(guiGraphics, line.getVisualOrderText(), x, y);
     }
 
-    public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y) {
+    public void print(GuiGraphicsExtractor guiGraphics, FormattedCharSequence line, int x, int y) {
         doTransform(guiGraphics, x, y);
-        guiGraphics.drawString(getMCFont(), line, 0, 0, 8, false);
+        guiGraphics.text(getMCFont(), line, 0, 0, 8, false);
         guiGraphics.pose().popMatrix();
     }
 
-    public void print(GuiGraphics guiGraphics, int number, int x, int y) {
+    public void print(GuiGraphicsExtractor guiGraphics, int number, int x, int y) {
         print(guiGraphics, String.valueOf(number), x, y);
     }
 
-    public void splitPrint(GuiGraphics guiGraphics, String line, int x, int y, int maxWidth) {
+    public void splitPrint(GuiGraphicsExtractor guiGraphics, String line, int x, int y, int maxWidth) {
         doTransform(guiGraphics, x, y);
         int scaledWidth = (int) (maxWidth * (isSmall ? SCALING : 1));
         List<FormattedCharSequence> lines = Minecraft.getInstance().font.split(Component.literal(line), scaledWidth);
         int scaledLineHeight = (int) (Minecraft.getInstance().font.lineHeight * (isSmall ? SCALING : 1));
         for (int i = 0; i < lines.size(); i++) {
-            guiGraphics.drawString(getMCFont(), lines.get(i), 0, i * scaledLineHeight, 8, false);
+            guiGraphics.text(getMCFont(), lines.get(i), 0, i * scaledLineHeight, 8, false);
 
         }
         guiGraphics.pose().popMatrix();
     }
 
-    public void splitPrint(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y, int maxWidth) {
+    public void splitPrint(GuiGraphicsExtractor guiGraphics, FormattedCharSequence line, int x, int y, int maxWidth) {
         splitPrint(guiGraphics, line.toString(), x, y, maxWidth);
     }
 
-    public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y, int color) {
+    public void print(GuiGraphicsExtractor guiGraphics, FormattedCharSequence line, int x, int y, int color) {
         print(guiGraphics, line, x, y, color, false);
     }
 
-    public void print(GuiGraphics guiGraphics, FormattedCharSequence line, int x, int y, int color, boolean shadow) {
+    public void print(GuiGraphicsExtractor guiGraphics, FormattedCharSequence line, int x, int y, int color, boolean shadow) {
         doTransform(guiGraphics, x, y);
-        guiGraphics.drawString(getMCFont(), line, 0, 0, color, shadow);
+        guiGraphics.text(getMCFont(), line, 0, 0, color, shadow);
         guiGraphics.pose().popMatrix();
     }
 
@@ -82,7 +82,7 @@ public class Font {
         return (int)(isSmall ? width * SCALING : width);
     }
 
-    private void doTransform(GuiGraphics guiGraphics, int x, int y) {
+    private void doTransform(GuiGraphicsExtractor guiGraphics, int x, int y) {
         guiGraphics.pose().pushMatrix();
         guiGraphics.pose().translate(x, y);
         if (isSmall) {

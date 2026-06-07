@@ -10,7 +10,7 @@ import mezz.jei.api.gui.ingredient.ICraftingGridHelper;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
-    public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = recipe.getEntity();
         int scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);

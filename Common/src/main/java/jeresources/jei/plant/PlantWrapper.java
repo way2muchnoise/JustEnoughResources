@@ -5,7 +5,7 @@ import jeresources.entry.PlantEntry;
 import jeresources.util.PlantHelper;
 import jeresources.util.RenderHelper;
 import mezz.jei.api.recipe.category.extensions.IRecipeCategoryExtension;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlantWrapper implements IRecipeCategoryExtension<PlantEntry> {
     @Override
-    public void drawInfo(PlantEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void drawInfo(PlantEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         RenderHelper.renderBlock(guiGraphics, getFarmland(recipe), 30, 30, -10, 20F, 20F);
         RenderHelper.renderBlock(guiGraphics, getBlockState(recipe), 30, 12, 10, 20F, 20F);
     }

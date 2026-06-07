@@ -5,12 +5,11 @@ import com.mojang.math.Axis;
 import jeresources.api.render.IMobRenderHook;
 import jeresources.compatibility.api.MobRegistryImpl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,13 +18,13 @@ import org.joml.*;
 import java.lang.Math;
 
 public class RenderHelper {
-    public static void drawLine(GuiGraphics guiGraphics, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
+    public static void drawLine(GuiGraphicsExtractor guiGraphics, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
         xEnd += xBegin == xEnd ? 1 : 0;
         yEnd += yBegin == yEnd ? 1 : 0;
         guiGraphics.fill(xBegin, yBegin, xEnd, yEnd, color);
     }
 
-    public static void renderEntity(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int scale, float yOffset, float mouseX, float mouseY, LivingEntity livingEntity) {
+    public static void renderEntity(GuiGraphicsExtractor guiGraphics, int x1, int y1, int x2, int y2, int scale, float yOffset, float mouseX, float mouseY, LivingEntity livingEntity) {
         PoseStack mobPoseStack = new PoseStack();
         ScreenRectangle screenRectangle = new ScreenRectangle(x1, y1, x2 - x1, y2 - y1).transformAxisAligned(guiGraphics.pose());
         IMobRenderHook.RenderInfo renderInfo = MobRegistryImpl.applyRenderHooks(mobPoseStack, livingEntity, new IMobRenderHook.RenderInfo(0, 0, scale, mouseX, mouseY));
@@ -35,10 +34,10 @@ public class RenderHelper {
         scale = renderInfo.scale;
         mouseX = renderInfo.mouseX;
         mouseY = renderInfo.mouseY;
-        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), scale, yOffset, mouseX, mouseY, livingEntity);
+        InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), scale, yOffset, mouseX, mouseY, livingEntity);
     }
 
-    public static void renderChest(GuiGraphics guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
+    public static void renderChest(GuiGraphicsExtractor guiGraphics, float x, float y, float rotate, float scale, float lidAngle) {
         // RenderType rendertype = RenderType.guiTextured(Resources.Vanilla.CHEST);
         // VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(rendertype);
         // TODO: Reimplement
@@ -67,7 +66,7 @@ public class RenderHelper {
         // RenderSystem.disableRescaleNormal();
     }
 
-    public static void renderBlock(GuiGraphics guiGraphics, BlockState block, float x, float y, float z, float rotate, float scale) {
+    public static void renderBlock(GuiGraphicsExtractor guiGraphics, BlockState block, float x, float y, float z, float rotate, float scale) {
         Minecraft mc = Minecraft.getInstance();
         PoseStack poseStack = new PoseStack();
         poseStack.translate(x, y, z);
@@ -82,15 +81,16 @@ public class RenderHelper {
         poseStack.translate(0, 0, -1);
 
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
+        // TODO find replacement to render the block
+        // mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
         bufferSource.endBatch();
     }
 
-    public static void drawTexture(GuiGraphics guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
+    public static void drawTexture(GuiGraphicsExtractor guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
         drawTexturedModalRect(guiGraphics, resource, x, y, u, v, width, height);
     }
 
-    public static void drawTexturedModalRect(GuiGraphics guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
+    public static void drawTexturedModalRect(GuiGraphicsExtractor guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {
         guiGraphics.blit(
                 RenderPipelines.GUI_TEXTURED,
                 resource,
