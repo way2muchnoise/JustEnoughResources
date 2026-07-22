@@ -2,7 +2,7 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import net.darkhax.curseforgegradle.Constants as CFG_Constants
 
 plugins {
-    id("net.darkhax.curseforgegradle") version("1.1.18")
+    id("net.darkhax.curseforgegradle") version("1.1.27")
     id("com.modrinth.minotaur") version("2.+")
 }
 
@@ -81,6 +81,7 @@ tasks.register<TaskPublishCurseForge>("publishCurseForge") {
     mainFile.addModLoader("NeoForge")
     mainFile.addJavaVersion("Java $modJavaVersion")
     mainFile.addGameVersion(minecraftVersion)
+    mainFile.addEnvironment("Client")
     //TODO: Figure out how to upload correct files
 //    mainFile.withAdditionalFile(apiJar.get())
 //    mainFile.withAdditionalFile(tasks.remapSourcesJar.get())
