@@ -31,7 +31,7 @@ public class FakeClientLevel extends ClientLevel {
 
     public FakeClientLevel() {
         //ClientPacketListener, ClientLevelData, ResourceKey<Level>, Holder<DimensionType>, int, int, LevelRenderer levelRenderer, boolean, long, int
-        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(BuiltinDimensionTypes.OVERWORLD), 0, 0, Minecraft.getInstance().levelRenderer, false, 1234567, 0);
+        super(null, clientLevelData, Level.OVERWORLD, DimensionHelper.getType(BuiltinDimensionTypes.OVERWORLD), 0, 0, Minecraft.getInstance().levelExtractor, false, 1234567, 0);
         // this.capabilities = ForgeEventFactory.gatherCapabilities(FakeClientLevel.class, this);
     }
 

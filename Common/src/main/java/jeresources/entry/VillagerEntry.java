@@ -5,7 +5,7 @@ import jeresources.util.VillagersHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.npc.villager.Villager;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +42,7 @@ public class VillagerEntry extends AbstractVillagerEntry<Villager>{
              * Passing in a ServerLevel can allow villagers to load all kinds of things,
              * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
              */
-            this.entity = EntityType.VILLAGER.create(CompatBase.getLevel(), EntitySpawnReason.LOAD);
+            this.entity = EntityTypes.VILLAGER.create(CompatBase.getLevel(), EntitySpawnReason.LOAD);
             assert this.entity != null;
             this.entity.setVillagerData(this.entity.getVillagerData().withProfession(BuiltInRegistries.VILLAGER_PROFESSION.wrapAsHolder(this.profession)));
             this.entity.tick();

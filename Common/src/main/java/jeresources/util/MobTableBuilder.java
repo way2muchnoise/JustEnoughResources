@@ -2,10 +2,7 @@ package jeresources.util;
 
 import jeresources.compatibility.CompatBase;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -22,7 +19,7 @@ public class MobTableBuilder {
         if (isNonLiving(entityType) || !entityType.isEnabled(CompatBase.getLevel().enabledFeatures())) {
             return;
         }
-        mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(CompatBase.getLevel(), EntitySpawnReason.LOAD));
+        mobTables.put(resourceLocation, () -> (LivingEntity) entityType.create(CompatBase.getLevel(), new EntitySpawnRequest(EntitySpawnReason.LOAD, true)));
     }
 
     public void addSheep(ResourceKey<LootTable> resourceLocation, EntityType<Sheep> entityType, DyeColor dye) {

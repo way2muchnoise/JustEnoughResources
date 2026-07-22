@@ -9,6 +9,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.monster.cubemob.*;
 
 public class MobCompat {
     private MobCompat() {}

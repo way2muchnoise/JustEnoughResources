@@ -42,7 +42,8 @@ dependencies {
 	api("me.shedaniel.cloth:cloth-config-fabric:${clothVersion}") {
 		exclude("net.fabricmc.fabric-api")
 	}
-	implementation("com.terraformersmc:modmenu:${modMenuVersion}")
+	// implementation("com.terraformersmc:modmenu:${modMenuVersion}")
+	implementation("maven.modrinth:mOgUt4GM:njXb639R") // Temp fetch modmenu from Modrinth
 
 	compileOnlyApi("mezz.jei:jei-${minecraftVersion}-fabric-api:${jeiVersion}")
 	// at runtime, use the full JEI jar for Fabric

@@ -1,5 +1,6 @@
 package jeresources.compatibility.api;
 
+import com.mojang.datafixers.util.Pair;
 import jeresources.api.IDungeonRegistry;
 import jeresources.entry.DungeonEntry;
 import jeresources.registry.DungeonRegistry;
@@ -7,7 +8,6 @@ import jeresources.util.LogHelper;
 import jeresources.util.LootTableFetcher;
 import jeresources.util.LootTableHelper;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DungeonRegistryImpl implements IDungeonRegistry {
-    private static List<Tuple<String, String>> categoryMapping = new LinkedList<>();
+    private static List<Pair<String, String>> categoryMapping = new LinkedList<>();
     private static Map<String, ResourceKey<LootTable>> rawRegisters = new HashMap<>();
     private static List<DungeonEntry> preppedRegisters = new LinkedList<>();
 
@@ -27,7 +27,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
 
     @Override
     public void registerCategory(@NotNull String category, @NotNull String localization) {
-        categoryMapping.add(new Tuple<>(category, localization));
+        categoryMapping.add(new Pair<>(category, localization));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class DungeonRegistryImpl implements IDungeonRegistry {
     }
 
     protected static void commit() {
-        categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getA(), t.getB()));
+        categoryMapping.forEach(t -> DungeonRegistry.addCategoryMapping(t.getFirst(), t.getSecond()));
         preppedRegisters.forEach(entry -> DungeonRegistry.getInstance().registerDungeonEntry(entry));
         LootTableFetcher lootTableFetcher = LootTableHelper.getLootTableFetcher();
         rawRegisters.entrySet().stream()

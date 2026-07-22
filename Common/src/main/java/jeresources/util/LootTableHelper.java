@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.DyeColor;
@@ -29,7 +30,7 @@ public class LootTableHelper {
 
     static {
         for (DyeColor color : DyeColor.values()) {
-            sheepColors.put(color, BuiltInLootTables.SHEEP_BY_DYE.get(color));
+            sheepColors.put(color, BuiltInLootTables.SHEAR_DYED_SHEEP.pick(color));
         }
     }
 
@@ -130,11 +131,11 @@ public class LootTableHelper {
         for (Map.Entry<DyeColor, ResourceKey<LootTable>> entry : sheepColors.entrySet()) {
             ResourceKey<LootTable> lootTableList = entry.getValue();
             DyeColor dyeColor = entry.getKey();
-            mobTableBuilder.addSheep(lootTableList, EntityType.SHEEP, dyeColor);
+            mobTableBuilder.addSheep(lootTableList, EntityTypes.SHEEP, dyeColor);
         }
 
         for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
-            if (entityType.getCategory() != MobCategory.MISC && entityType != EntityType.SHEEP) {
+            if (entityType.getCategory() != MobCategory.MISC && entityType != EntityTypes.SHEEP) {
                 mobTableBuilder.add(entityType.getDefaultLootTable().get(), entityType);
             }
         }

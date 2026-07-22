@@ -4,7 +4,7 @@ import net.fabricmc.loom.api.LoomGradleExtensionAPI
 plugins {
     base
     id("architectury-plugin") version ("3.5-SNAPSHOT")
-    id("dev.architectury.loom-no-remap") version ("1.14-SNAPSHOT") apply (false)
+    id("dev.architectury.loom-no-remap") version ("1.17-SNAPSHOT") apply (false)
     id("com.gradleup.shadow") version ("9.4.1") apply (false)
 }
 
@@ -78,7 +78,8 @@ subprojects {
 
     repositories {
         maven("https://maven.parchmentmc.org/")
-        maven("https://maven.terraformersmc.com/releases/")
+        // maven("https://maven.terraformersmc.com/releases/")
+        maven("https://api.modrinth.com/maven") // Temp replacement maven for modmenu
         maven("https://maven.shedaniel.me/")
         maven("https://maven.blamejared.com/")
     }

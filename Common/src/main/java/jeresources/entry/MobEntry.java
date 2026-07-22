@@ -102,7 +102,7 @@ public class MobEntry {
 
     public String getMobName() {
         LivingEntity entity = getEntity();
-        return MobHelper.getExpandedName(entity);
+        return entity == null ? "Unknown" : MobHelper.getExpandedName(entity);
     }
 
     public List<LootDrop> getDrops() {
@@ -146,6 +146,6 @@ public class MobEntry {
     }
 
     public ItemStack getSpawnEgg() {
-        return getEntity().getPickResult();
+        return getEntity() == null ? ItemStack.EMPTY : getEntity().getPickResult();
     }
 }

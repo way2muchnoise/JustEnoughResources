@@ -3,7 +3,7 @@ package jeresources.entry;
 import jeresources.compatibility.CompatBase;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.VillagerTrade;
@@ -29,7 +29,7 @@ public class WanderingTraderEntry extends AbstractVillagerEntry<WanderingTrader>
              * Passing in a ServerLevel can allow villagers to load all kinds of things,
              * like in the `VillagerTrades.TreasureMapForEmeralds` which loads chunks!
              */
-            this.entity = EntityType.WANDERING_TRADER.create(CompatBase.getLevel(), EntitySpawnReason.LOAD);
+            this.entity = EntityTypes.WANDERING_TRADER.create(CompatBase.getLevel(), EntitySpawnReason.LOAD);
             assert this.entity != null;
         }
         return this.entity;

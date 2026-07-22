@@ -8,14 +8,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.joml.*;
-
-import java.lang.Math;
+import org.joml.Quaternionf;
 
 public class RenderHelper {
     public static void drawLine(GuiGraphicsExtractor guiGraphics, int xBegin, int yBegin, int xEnd, int yEnd, int color) {
@@ -34,6 +31,7 @@ public class RenderHelper {
         scale = renderInfo.scale;
         mouseX = renderInfo.mouseX;
         mouseY = renderInfo.mouseY;
+        livingEntity.setId(-9999); // TODO can I just do this? or should I have smarter way of setting the ID
         InventoryScreen.extractEntityInInventoryFollowsMouse(guiGraphics, screenRectangle.left(), screenRectangle.top(), screenRectangle.right(), screenRectangle.bottom(), scale, yOffset, mouseX, mouseY, livingEntity);
     }
 
@@ -80,10 +78,10 @@ public class RenderHelper {
         poseStack.pushPose();
         poseStack.translate(0, 0, -1);
 
-        MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
+        // MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
         // TODO find replacement to render the block
         // mc.getBlockRenderer().renderSingleBlock(block, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
-        bufferSource.endBatch();
+        // bufferSource.endBatch();
     }
 
     public static void drawTexture(GuiGraphicsExtractor guiGraphics, Identifier resource, int x, int y, int u, int v, int width, int height) {

@@ -32,6 +32,7 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     @Override
     public void drawInfo(MobEntry recipe, int recipeWidth, int recipeHeight, @NotNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         LivingEntity livingEntity = recipe.getEntity();
+        if (livingEntity == null) return; // added null check to prevent crashes when entity is not created correctly
         int scale = getScale(livingEntity);
         int offsetY = getOffsetY(livingEntity);
         RenderHelper.renderEntity(
@@ -49,7 +50,7 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
     public void createRecipeExtras(MobEntry recipe, IRecipeExtrasBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
         LivingEntity livingEntity = recipe.getEntity();
         String mobName = recipe.getMobName();
-        if (Settings.showDevData) {
+        if (Settings.showDevData && livingEntity != null) {
             String entityString = livingEntity.getStringUUID();
             if (entityString != null) {
                 mobName += " (" + entityString + ")";

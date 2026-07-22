@@ -1,5 +1,6 @@
 package jeresources.util;
 
+import net.minecraft.client.resources.language.ClientLanguage;
 import net.minecraft.client.resources.language.I18n;
 
 public class TranslationHelper {
@@ -12,7 +13,7 @@ public class TranslationHelper {
     }
 
     public static boolean canTranslate(String key) {
-        return I18n.exists(key);
+        return ClientLanguage.getInstance().has(key);
     }
 
     public static String tryDimensionTranslate(String dimension) {

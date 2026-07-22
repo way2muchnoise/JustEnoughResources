@@ -1,11 +1,11 @@
 package jeresources.compatibility.api;
 
+import com.mojang.datafixers.util.Pair;
 import jeresources.api.IPlantRegistry;
 import jeresources.api.drop.PlantDrop;
 import jeresources.entry.PlantEntry;
 import jeresources.registry.PlantRegistry;
 import jeresources.util.LogHelper;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class PlantRegistryImpl implements IPlantRegistry {
     private static List<PlantEntry> registers = new ArrayList<>();
-    private static List<Tuple<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
+    private static List<Pair<ItemStack, PlantDrop[]>> addedDrops = new ArrayList<>();
 
     protected PlantRegistryImpl() {
 
@@ -205,7 +205,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     public void registerDrops(@NotNull ItemStack itemStack, PlantDrop... drops) {
         try {
             if (drops.length > 0 || ItemStack.isSameItem(itemStack, new ItemStack(Blocks.TALL_GRASS, 1)))
-                addedDrops.add(new Tuple<>(itemStack, drops));
+                addedDrops.add(new Pair<>(itemStack, drops));
         } catch (Exception e) {
             LogHelper.debug("Error while registering drops for %s", itemStack.toString());
         }
@@ -214,7 +214,7 @@ public class PlantRegistryImpl implements IPlantRegistry {
     protected static void commit() {
         for (PlantEntry entry : registers)
             PlantRegistry.getInstance().registerPlant(entry);
-        for (Tuple<ItemStack, PlantDrop[]> tuple : addedDrops)
-            PlantRegistry.getInstance().addDrops(tuple.getA(), tuple.getB());
+        for (Pair<ItemStack, PlantDrop[]> tuple : addedDrops)
+            PlantRegistry.getInstance().addDrops(tuple.getFirst(), tuple.getSecond());
     }
 }
