@@ -11,9 +11,6 @@ plugins {
 // gradle.properties
 val curseHomepageLink: String by extra
 val curseProjectId: String by extra
-val forgeVersion: String by extra
-val forgeVersionRange: String by extra
-val loaderVersionRange: String by extra
 val neoforgeVersion: String by extra
 val neoforgeVersionRange: String by extra
 val neoforgeLoaderVersionRange: String by extra
@@ -106,8 +103,6 @@ subprojects {
                         "modName" to modName,
                         "version" to version,
                         "minecraftVersionRange" to minecraftVersionRange,
-                        "forgeVersionRange" to forgeVersionRange,
-                        "loaderVersionRange" to loaderVersionRange,
                         "neoforgeVersionRange" to neoforgeVersionRange,
                         "neoforgeLoaderVersionRange" to neoforgeLoaderVersionRange,
                         "githubUrl" to githubUrl,

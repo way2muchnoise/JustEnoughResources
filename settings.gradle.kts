@@ -12,6 +12,5 @@ rootProject.name = "JustEnoughResources"
 include(
 		"CommonApi", "Common",
         "Fabric",
-        //"Forge",
         "NeoForge",
 )
