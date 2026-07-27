@@ -140,7 +140,7 @@ subprojects {
         // so it won't override client logs/config (or vice versa).
         extensions.configure<LoomGradleExtensionAPI> {
             runConfigs.getByName("server") {
-                runDir = "run/server"
+                runDirectory.dir("run/server")
             }
 
             // "main" matches the default Forge & NeoForge mod's name
