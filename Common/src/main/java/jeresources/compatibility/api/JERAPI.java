@@ -11,6 +11,7 @@ public class JERAPI implements IJERAPI {
     private IPlantRegistry plantRegistry;
     private IDungeonRegistry dungeonRegistry;
     private static IJERAPI instance;
+    private static boolean pluginsInjected = false;
 
     public static IJERAPI getInstance() {
         if (instance == null)
@@ -25,7 +26,23 @@ public class JERAPI implements IJERAPI {
         dungeonRegistry = new DungeonRegistryImpl();
     }
 
+    /**
+     * Hands the API to every plugin, once per session.
+     *
+     * This is called from {@link jeresources.compatibility.Compatibility#init()}
+     * rather than from mod setup on purpose. Plugins register {@link net.minecraft.world.item.ItemStack}s,
+     * and since Minecraft 26.1 a stack cannot be built before its item's data components
+     * have been bound, which only happens once the server resources have loaded.
+     * Compatibility runs after that point - it is the same moment JER registers its
+     * own vanilla data - so plugins called from here can use the API as documented.
+     *
+     * Plugin registrations are buffered and re-applied by {@link #commit(boolean)}
+     * on every reload, so plugins only ever have to be asked once.
+     */
     public static void init() {
+        if (pluginsInjected)
+            return;
+        pluginsInjected = true;
         Services.PLATFORM.injectApi(JERAPI.getInstance());
     }
 
