@@ -10,6 +10,12 @@ import jeresources.util.VillagersHelper;
 
 public class Compatibility {
     public static void init() {
+        try {
+            JERAPI.init();
+        } catch (Exception e) {
+            LogHelper.warn("Error during loading of API plugins", e);
+        }
+
         boolean initWorldGen = true;
 
         try {
@@ -29,8 +35,11 @@ public class Compatibility {
             LogHelper.warn("Error during loading of default minecraft compat", e);
         }
 
-        // Protection is implemented at VillagerEntry creation
-        VillagersHelper.initRegistry(VillagerRegistry.getInstance());
+        try {
+            VillagersHelper.initRegistry(VillagerRegistry.getInstance());
+        } catch (Exception e) {
+            LogHelper.warn("Error during loading of villager trades", e);
+        }
 
         JERAPI.commit(initWorldGen);
     }

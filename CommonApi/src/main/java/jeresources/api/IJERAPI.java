@@ -4,9 +4,14 @@ package jeresources.api;
 import net.minecraft.world.level.Level;
 
 /**
- * Will be delivered during startup to any public static field that is:
- * Forge: annotated with {@link JERPlugin}
- * Fabric: mentioned as entrypoint {@link IJERPlugin#entry_point} in fabric.mod.json
+ * Delivered to every {@link IJERPlugin} once per session, at the same point JER
+ * gathers its own data: after the world's resources have loaded, and before the
+ * registries are handed to JEI.
+ *
+ * That timing is part of the contract. {@link net.minecraft.world.item.ItemStack}s
+ * cannot be built during mod setup on Minecraft 26.1 and later, because an item's
+ * data components are not bound until its resources load, so registering from
+ * {@link IJERPlugin#receive(IJERAPI)} is both safe and the only supported moment.
  */
 public interface IJERAPI {
     IMobRegistry getMobRegistry();
