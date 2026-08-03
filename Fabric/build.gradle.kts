@@ -2,7 +2,7 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import net.darkhax.curseforgegradle.Constants as CFG_Constants
 
 plugins {
-	id("net.darkhax.curseforgegradle") version("1.1.27")
+	id("net.darkhax.curseforgegradle") version("1.3.33")
 	id("com.modrinth.minotaur") version("2.+")
 }
 
@@ -16,7 +16,6 @@ val clothVersion: String by extra
 val modMenuVersion: String by extra
 val jeiVersion: String by extra
 val minecraftVersion: String by extra
-val modId: String by extra
 val modFileName: String by extra
 val modJavaVersion: String by extra
 

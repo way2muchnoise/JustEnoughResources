@@ -15,10 +15,6 @@ val neoforgeVersion: String by extra
 val neoforgeVersionRange: String by extra
 val neoforgeLoaderVersionRange: String by extra
 val githubUrl: String by extra
-val mappingsChannel: String by extra
-val mappingsVersion: String by extra
-val mappingsParchmentMinecraftVersion: String by extra
-val mappingsParchmentVersion: String by extra
 val minecraftVersion: String by extra
 val minecraftVersionRange: String by extra
 val modAuthor: String by extra
