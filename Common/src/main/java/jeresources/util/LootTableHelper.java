@@ -19,7 +19,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.SingleEntryContainerBase;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.*;
@@ -54,12 +54,12 @@ public class LootTableHelper {
         getPools(table).forEach(
             pool -> {
                 final float totalWeight = getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootPoolSingletonContainer).map(entry -> (LootPoolSingletonContainer) entry)
+                    .filter(entry -> entry instanceof SingleEntryContainerBase).map(entry -> (SingleEntryContainerBase) entry)
                     .mapToInt(entry -> entry.weight).sum();
                 final List<LootItemCondition> poolConditions = getLootConditions(pool);
                 getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootItem).map(entry -> (LootItem) entry)
-                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.conditions, entry.functions))
+                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.condition, entry.modifier))
                     .map(drop -> drop.addLootConditions(poolConditions))
                     .forEach(drops::add);
 

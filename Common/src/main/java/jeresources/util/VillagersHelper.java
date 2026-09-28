@@ -49,7 +49,7 @@ public class VillagersHelper {
             ResourceKey<TradeSet> tradeSetKey = entry.getValue();
             TradeSet tradeSet = tradeSetRegistry.getValue(tradeSetKey);
             if (tradeSet != null) {
-                List<VillagerTrade> trades = tradeSet.getTrades().stream()
+                List<VillagerTrade> trades = tradeSet.trades().stream()
                         .map(Holder::value)
                         .collect(Collectors.toList());
                 result.put(level, trades);

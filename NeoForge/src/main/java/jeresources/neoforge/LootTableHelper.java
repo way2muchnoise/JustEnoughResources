@@ -1,8 +1,10 @@
 package jeresources.neoforge;
 
 import jeresources.platform.ILootTableHelper;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
 
 
 public class LootTableHelper implements ILootTableHelper {
@@ -21,12 +23,12 @@ public class LootTableHelper implements ILootTableHelper {
     }
 
     @Override
-    public NumberProvider getRolls(LootPool pool) {
+    public Holder<ContextIntProvider> getRolls(LootPool pool) {
         return pool.getRolls();
     }
 
     @Override
-    public NumberProvider getBonusRolls(LootPool pool) {
+    public Holder<ContextFloatProvider> getBonusRolls(LootPool pool) {
         return pool.getBonusRolls();
     }
 }

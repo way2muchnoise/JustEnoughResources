@@ -3,17 +3,20 @@ package jeresources.api.util;
 import jeresources.api.conditionals.Conditional;
 import jeresources.api.conditionals.ICustomLootFunction;
 import jeresources.api.drop.LootDrop;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.BinomialDistributionGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.UniformGenerator;
 
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public class LootFunctionHelper {
@@ -49,11 +52,12 @@ public class LootFunctionHelper {
         }
     }
 
-    public static int getMin(NumberProvider randomRange) {
+    public static int getMin(Holder<ContextIntProvider> randomRangeHolder) {
+        ContextIntProvider randomRange = randomRangeHolder.value();
         if (randomRange instanceof ConstantValue) {
             return randomRange.getInt(randContext);
         } else if (randomRange instanceof UniformGenerator) {
-            return Mth.floor(((UniformGenerator) randomRange).min.getInt(randContext));
+            return Mth.floor(((UniformGenerator) randomRange).min().value().getInt(randContext));
         } else if (randomRange instanceof BinomialDistributionGenerator) {
             return 0;
         } else {
@@ -62,16 +66,29 @@ public class LootFunctionHelper {
         }
     }
 
-    public static int getMax(NumberProvider randomRange) {
+    public static int getMax(Holder<ContextIntProvider> randomRangeHolder) {
+        ContextIntProvider randomRange = randomRangeHolder.value();
         if (randomRange instanceof ConstantValue) {
             return randomRange.getInt(randContext);
         } else if (randomRange instanceof UniformGenerator) {
-            return Mth.floor(((UniformGenerator) randomRange).max.getInt(randContext));
+            return Mth.floor(((UniformGenerator) randomRange).max().value().getInt(randContext));
         } else if (randomRange instanceof BinomialDistributionGenerator) {
-            return ((BinomialDistributionGenerator) randomRange).n.getInt(randContext);
+            return ((BinomialDistributionGenerator) randomRange).n().value().getInt(randContext);
         } else {
             // Test a 100 values
             return IntStream.iterate(0, i -> randomRange.getInt(randContext)).limit(STATISTICAL_TEST).max().orElse(0);
+        }
+    }
+
+    public static float getMaxFloat(Holder<ContextFloatProvider> randomRangeHolder) {
+        ContextFloatProvider randomRange = randomRangeHolder.value();
+        if (randomRange instanceof net.minecraft.world.level.storage.loot.providers.number.floats.ConstantValue) {
+            return randomRange.getFloat(randContext);
+        } else if (randomRange instanceof net.minecraft.world.level.storage.loot.providers.number.floats.UniformGenerator) {
+            return Mth.floor(((net.minecraft.world.level.storage.loot.providers.number.floats.UniformGenerator) randomRange).max().value().getFloat(randContext));
+        } else {
+            // Test a 100 values
+            return (float) DoubleStream.iterate(0, i -> randomRange.getFloat(randContext)).limit(STATISTICAL_TEST).max().orElse(0);
         }
     }
 

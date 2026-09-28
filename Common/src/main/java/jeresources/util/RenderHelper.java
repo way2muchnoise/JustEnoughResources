@@ -45,10 +45,10 @@ public class RenderHelper {
         // RenderSystem.enableRescaleNormal();
         // RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.translate(x, y, 50.0F);
-        poseStack.mulPose(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
+        poseStack.rotate(new Quaternionf(-160.0F, 1.0F, 0.0F, 0.0F));
         poseStack.scale(scale, -scale, -scale);
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
+        poseStack.rotate(new Quaternionf(rotate, 0.0F, 1.0F, 0.0F));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         float lidAngleF = lidAngle / 180;
@@ -70,9 +70,9 @@ public class RenderHelper {
         poseStack.translate(x, y, z);
         poseStack.scale(-scale, -scale, -scale);
         poseStack.translate(-0.5F, -0.5F, 0);
-        poseStack.mulPose(Axis.XP.rotationDegrees(-30F));
+        poseStack.rotate(Axis.XP.rotationDegrees(-30F));
         poseStack.translate(0.5F, 0, -0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotate));
+        poseStack.rotate(Axis.YP.rotationDegrees(rotate));
         poseStack.translate(-0.5F, 0, 0.5F);
 
         poseStack.pushPose();

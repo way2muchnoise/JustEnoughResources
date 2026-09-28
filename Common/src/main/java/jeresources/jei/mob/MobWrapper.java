@@ -118,7 +118,7 @@ public class MobWrapper implements IRecipeCategoryExtension<MobEntry> {
         else if (livingEntity instanceof Ghast) offsetY = 15;
         else if (livingEntity instanceof WitherBoss) offsetY = -15;
         else if (livingEntity instanceof EnderDragon) offsetY = 15;
-        else if (livingEntity instanceof EnderMan) offsetY = -10;
+        else if (livingEntity instanceof Enderman) offsetY = -10;
         else if (livingEntity instanceof AbstractGolem) offsetY = -10;
         else if (livingEntity instanceof Animal) offsetY = -20;
         else if (livingEntity instanceof Villager) offsetY = -15;

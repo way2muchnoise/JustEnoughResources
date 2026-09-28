@@ -17,7 +17,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.SingleEntryContainerBase;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,13 +46,13 @@ public class DungeonEntry {
         ILootTableHelper lootTableHelper = Services.PLATFORM.getLootTableHelper();
         for (LootPool pool : LootTableHelper.getPools(lootTable)) {
             tmpMinStacks[0] += LootFunctionHelper.getMin(lootTableHelper.getRolls(pool));
-            tmpMaxStacks[0] += LootFunctionHelper.getMax(lootTableHelper.getRolls(pool)) + LootFunctionHelper.getMax(lootTableHelper.getBonusRolls(pool));
+            tmpMaxStacks[0] += LootFunctionHelper.getMax(lootTableHelper.getRolls(pool)) + LootFunctionHelper.getMaxFloat(lootTableHelper.getBonusRolls(pool));
             final float totalWeight = LootTableHelper.getLootEntries(pool).stream()
-                    .filter(entry -> entry instanceof LootPoolSingletonContainer).map(entry -> (LootPoolSingletonContainer) entry)
+                    .filter(entry -> entry instanceof SingleEntryContainerBase).map(entry -> (SingleEntryContainerBase) entry)
                     .mapToInt(entry -> entry.weight).sum();
             LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof LootItem).map(entry -> (LootItem) entry)
-                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.functions)).forEach(drops::add);
+                    .map(entry -> new LootDrop(entry.item.value(), entry.weight / totalWeight, entry.modifier)).forEach(drops::add);
 
             LootTableHelper.getLootEntries(pool).stream()
                     .filter(entry -> entry instanceof DynamicLoot).map(entry -> (DynamicLoot) entry)

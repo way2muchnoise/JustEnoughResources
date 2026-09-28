@@ -4,6 +4,7 @@ import jeresources.api.conditionals.Conditional;
 import jeresources.api.util.ItemHelper;
 import jeresources.api.util.LootConditionHelper;
 import jeresources.api.util.LootFunctionHelper;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -132,6 +133,12 @@ public class LootDrop implements Comparable<LootDrop> {
         addLootFunctions(lootFunctions);
     }
 
+    public LootDrop(Item item, float chance, Optional<Holder<LootItemFunction>> lootFunctions) {
+        this(new ItemStack(item), chance);
+        this.enchanted = false;
+        lootFunctions.ifPresent(lootItemFunctionHolder -> addLootFunctions(lootItemFunctionHolder.value()));
+    }
+
     public LootDrop(Item item, float chance, Collection<LootItemFunction> lootFunctions) {
         this(new ItemStack(item), chance);
         this.enchanted = false;
@@ -153,6 +160,15 @@ public class LootDrop implements Comparable<LootDrop> {
         addLootConditions(lootConditions);
     }
 
+    public LootDrop(Item item, float chance, Optional<Holder<LootItemCondition>> lootConditions, Optional<Holder<LootItemFunction>> lootFunctions) {
+        this(item, chance, lootFunctions);
+        lootConditions.ifPresent(lootConditionHolder -> addLootConditions(lootConditionHolder.value()));
+    }
+
+    public LootDrop addLootConditions(LootItemCondition lootConditions) {
+        return addLootCondition(lootConditions);
+    }
+
     public LootDrop addLootConditions(LootItemCondition[] lootConditions) {
         return addLootConditions(Arrays.asList(lootConditions));
     }
@@ -165,6 +181,10 @@ public class LootDrop implements Comparable<LootDrop> {
     public LootDrop addLootCondition(LootItemCondition condition) {
         LootConditionHelper.applyCondition(condition, this);
         return this;
+    }
+
+    public LootDrop addLootFunctions(LootItemFunction lootFunctions) {
+        return addLootFunction(lootFunctions);
     }
 
     public LootDrop addLootFunctions(LootItemFunction[] lootFunctions) {
