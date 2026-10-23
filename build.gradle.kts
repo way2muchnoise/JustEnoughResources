@@ -4,9 +4,9 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     base
-    id("architectury-plugin") version ("3.4-SNAPSHOT")
-    id("dev.architectury.loom") version ("1.7-SNAPSHOT") apply (false)
-    id("com.github.johnrengelman.shadow") version ("8.1.1") apply (false)
+    id("architectury-plugin") version ("3.5-SNAPSHOT")
+    id("dev.architectury.loom") version ("1.17-SNAPSHOT") apply (false)
+    id("com.gradleup.shadow") version ("9.4.1") apply (false)
 }
 
 // gradle.properties
@@ -159,7 +159,7 @@ subprojects {
     if (path != ":Common" && path != ":CommonApi") {
         // Apply the shadow plugin which lets us include contents of any libraries in our mod jars.
         // Architectury uses it for bundling the common mod code in the platform jars.
-        apply(plugin = "com.github.johnrengelman.shadow")
+        apply(plugin = "com.gradleup.shadow")
 
         // Set a different run directory for the server run config,
         // so it won't override client logs/config (or vice versa).
