@@ -43,7 +43,7 @@ public class ConfigValues {
             .setSaveConsumer(newValue -> Settings.showDevData = newValue)
             .build();
         category.addEntry(showDevData);
-        excludedEnchants = builder.startStrList(Component.literal("enchantsBlacklist"), List.of("flimflam", "soulBound"))
+        excludedEnchants = builder.startStrList(Component.literal("enchantsBlacklist"), List.of("flimflam", "soulBound", "reactive"))
             .setSaveConsumer(newValue -> Settings.excludedEnchants = newValue.toArray(new String[0]))
             .build();
         category.addEntry(excludedEnchants);
