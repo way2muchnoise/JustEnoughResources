@@ -2,7 +2,7 @@ import net.darkhax.curseforgegradle.TaskPublishCurseForge
 import net.darkhax.curseforgegradle.Constants as CFG_Constants
 
 plugins {
-	id("net.darkhax.curseforgegradle") version("1.1.18")
+	id("net.darkhax.curseforgegradle") version("1.1.27")
 	id("com.modrinth.minotaur") version("2.+")
 }
 
