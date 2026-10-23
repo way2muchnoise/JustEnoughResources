@@ -21,7 +21,7 @@ public class JEResources {
     public JEResources(ModContainer container, Dist dist) {
         PROXY = dist.isClient() ? new ClientProxy() : new CommonProxy();
 
-        container.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
+        container.registerConfig(ModConfig.Type.LOCAL, Config.COMMON);
         container.getEventBus().register(Config.instance);
 
         NeoForge.EVENT_BUS.addListener(this::onLevelUnload);
