@@ -25,7 +25,7 @@ public class ConfigValues {
         itemsPerRow = builder.defineInRange("itemsPerRow", 4, 1, 4);
         diyData = builder.worldRestart().define("diyData", true);
         showDevData = builder.worldRestart().define("showDevData", false);
-        enchantsBlacklist = builder.worldRestart().defineListAllowEmpty("enchantsBlacklist", List.of("flimflam", "soulBound"), () -> "", new TypePredicate(String.class));
+        enchantsBlacklist = builder.worldRestart().defineListAllowEmpty("enchantsBlacklist", List.of("flimflam", "soulBound", "reactive"), () -> "", new TypePredicate(String.class));
         hiddenTabs = builder.worldRestart().defineListAllowEmpty("hiddenTabs", new ArrayList<>(), () -> "", new TypePredicate(String.class));
         dimensionsBlacklist = builder.worldRestart().defineListAllowEmpty("dimensionsBlacklist", List.of(-11), () -> 100, new TypePredicate(Integer.class));
         disableLootManagerReloading = builder.worldRestart().define("disableLootManagerReloading", false);
