@@ -89,6 +89,7 @@ tasks.register<TaskPublishCurseForge>("publishCurseForge") {
 	mainFile.addModLoader("Forge")
 	mainFile.addJavaVersion("Java $modJavaVersion")
 	mainFile.addGameVersion(minecraftVersion)
+	mainFile.addEnvironment("Client")
 	//TODO: Figure out how to upload correct files
 //	mainFile.withAdditionalFile(apiJar.get())
 //	mainFile.withAdditionalFile(tasks.remapSourcesJar.get())
