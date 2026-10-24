@@ -19,6 +19,7 @@ public class MobTooltip implements IRecipeSlotTooltipCallback {
 
     @Override
     public void onTooltip(@NotNull IRecipeSlotView recipeSlotView, @NotNull List<Component> tooltip) {
+        if (recipeSlotView.isEmpty()) return; // Do nothing for an empty slot
         LootDrop lootDrop = this.entry.getDrops().get(Integer.parseInt(recipeSlotView.getSlotName().orElse("0")));
         tooltip.add(lootDrop.toStringTextComponent());
         List<Component> list = getToolTip((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient());
