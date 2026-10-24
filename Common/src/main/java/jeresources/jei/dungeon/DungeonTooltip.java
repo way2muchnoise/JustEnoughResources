@@ -16,6 +16,7 @@ public class DungeonTooltip implements IRecipeSlotRichTooltipCallback {
 
     @Override
     public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+        if (recipeSlotView.isEmpty()) return; // Do nothing for an empty slot
         tooltip.add(entry.getChestDrop((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()).toStringTextComponent());
     }
 }

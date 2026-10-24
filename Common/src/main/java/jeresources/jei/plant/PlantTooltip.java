@@ -18,6 +18,7 @@ public class PlantTooltip implements IRecipeSlotRichTooltipCallback {
 
     @Override
     public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+        if (recipeSlotView.isEmpty()) return; // Do nothing for an empty slot
         if (recipeSlotView.getRole() != RecipeIngredientRole.INPUT) {
             tooltip.add(getChanceString((ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
         }
