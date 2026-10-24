@@ -28,6 +28,7 @@ public class WorldGenTooltip implements IRecipeSlotRichTooltipCallback {
 
     @Override
     public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
+        if (recipeSlotView.isEmpty()) return; // Do nothing for an empty slot
         tooltip.addAll(getItemStackTooltip(recipeSlotView.getSlotName().orElse(null), (ItemStack) recipeSlotView.getDisplayedIngredient().get().getIngredient()));
     }
 
