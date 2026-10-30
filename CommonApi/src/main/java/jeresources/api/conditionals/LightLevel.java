@@ -31,7 +31,7 @@ public class LightLevel {
     public String toString() {
         String base = I18n.get("jer.lightLevel");
         if (lightLevel < 0) return base + ": " + I18n.get("jer.any");
-        return base + ": " + relative.toString() + " " + lightLevel;
+        return base + ": " + I18n.get("jer.lightLevel." + relative.name(), lightLevel);
     }
 
     /**
