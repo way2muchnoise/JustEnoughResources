@@ -29,6 +29,8 @@
 	"jer.stacks": "%s Stacks",
 
 	"jer.lightLevel": "Livello di Luminosità",
+	"jer.lightLevel.below": "Inferiore a %s",
+	"jer.lightLevel.above": "Superiore a %s",
 	"jer.any": "Qualsiasi",
 	"jer.dim.no": "Nessuna possibilità di apparizione nelle dimensioni",
 	"jer.not": "Non",
