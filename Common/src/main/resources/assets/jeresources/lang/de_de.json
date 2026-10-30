@@ -29,6 +29,8 @@
 	"jer.stacks": "%s Stacks",
 
 	"jer.lightLevel": "Lichtlevel",
+	"jer.lightLevel.below": "Unter %s",
+	"jer.lightLevel.above": "Über %s",
 	"jer.any": "Jedes",
 	"jer.dim.no": "Keine gültigen Spawndimensionen",
 	"jer.not": "Nicht",
