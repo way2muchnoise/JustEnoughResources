@@ -29,6 +29,8 @@
     "jer.stacks": "Стаков: %s",
 
     "jer.lightLevel": "Уровень освещения",
+    "jer.lightLevel.below": "Ниже %s",
+    "jer.lightLevel.above": "Выше %s",
     "jer.any": "Любой",
     "jer.dim.no": "Нет доступных измерений для появления",
     "jer.not": "Нет",

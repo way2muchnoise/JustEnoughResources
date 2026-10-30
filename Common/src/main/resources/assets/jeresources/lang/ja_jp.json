@@ -29,6 +29,8 @@
     "jer.stacks": "%s スタック",
 
     "jer.lightLevel": "明るさレベル",
+    "jer.lightLevel.below": "%s未満",
+    "jer.lightLevel.above": "%s超",
     "jer.any": "任意",
     "jer.dim.no": "有効なスポーンディメンションがありません",
     "jer.not": "Not",

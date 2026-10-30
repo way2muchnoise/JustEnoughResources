@@ -13,6 +13,8 @@
 	"jer.stacks": "%s Pilhas",
 
 	"jer.lightLevel": "Nível de Luz",
+	"jer.lightLevel.below": "Inferior a %s",
+	"jer.lightLevel.above": "Superior a %s",
 	"jer.any": "Qualquer",
 	"jer.dim.no": "Nenhuma Dimensão de Geração válida",
 	"jer.not": "Não",
