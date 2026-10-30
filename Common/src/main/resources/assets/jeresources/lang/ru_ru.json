@@ -93,6 +93,8 @@
     "jer.worldgen.drops": "Выпадает",
     "jer.worldgen.average": "Сред. выпадение",
     "jer.worldgen.base": "Обычное",
+    "jer.worldgen.chance": "с вероятностью %s",
+    "jer.worldgen.affectedByFortune": "(Зависит от Удачи)",
 	"jer.worldgen.averageChunk": "Средн. блоков на чанк",
 
     "_comment": "#Mob View",
@@ -105,6 +107,8 @@
     "jer.villager.title": "Торговля с жителем",
 
     "_comment": "#Conditionals - when translating retain '%s' as this lets the modifier be properly inserted into the string",
+    "jer.villager.poi": "Рабочее место",
+    "jer.magmaCream.text": "Малые и большие лавовые кубы",
     "jer.slimeBall.text": "Только из маленьких слизней",
     "jer.rareDrop.text": "Редкий предмет",
 
