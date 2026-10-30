@@ -10,6 +10,11 @@
 	"_comment": "#Usage X jer.stacks",
 	"jer.stacks": "Stacks",
 
+	"jer.lightLevel": "Lichtniveau",
+	"jer.lightLevel.below": "Lager dan %s",
+	"jer.lightLevel.above": "Hoger dan %s",
+	"jer.any": "Elk",
+
 	"_comment": "#Dungeon View",
 	"jer.dungeon.title": "Kisten",
 	"jer.dungeon.abandonedMineshaftChest": "Mineshaft",
