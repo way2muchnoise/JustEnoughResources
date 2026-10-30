@@ -6,21 +6,20 @@ import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-final class PreviewGeometryBounds implements MultiBufferSource, VertexConsumer {
+public final class PreviewGeometryBounds implements MultiBufferSource, VertexConsumer {
+    private static final int FIT_PADDING = 4;
+
     private float minX = Float.POSITIVE_INFINITY;
     private float maxX = Float.NEGATIVE_INFINITY;
     private float minY = Float.POSITIVE_INFINITY;
     private float maxY = Float.NEGATIVE_INFINITY;
 
-    PreviewGeometryBounds() {
-    }
-
-    void include(PreviewGeometryBounds other) {
+    public void include(PreviewGeometryBounds other) {
         addVertex(other.minX, other.minY, 0);
         addVertex(other.maxX, other.maxY, 0);
     }
 
-    void includeFallback(Matrix4f transform, float width, float height) {
+    public void includeFallback(Matrix4f transform, float width, float height) {
         if (Float.isFinite(minX)) {
             return;
         }
@@ -31,15 +30,18 @@ final class PreviewGeometryBounds implements MultiBufferSource, VertexConsumer {
         }
     }
 
-    float scale() {
-        return Float.isFinite(minX) ? Math.min(49.0F / Math.max(0.01F, maxX - minX), 65.0F / Math.max(0.01F, maxY - minY)) : 1.0F;
+    public float scale() {
+        // Leave padding on all sides, including at the sampled animation and rotation extremes.
+        float availableWidth = EntityPreviewRendering.PREVIEW_WIDTH - 2 * FIT_PADDING;
+        float availableHeight = EntityPreviewRendering.PREVIEW_HEIGHT - 2 * FIT_PADDING;
+        return Float.isFinite(minX) ? Math.min(availableWidth / Math.max(0.01F, maxX - minX), availableHeight / Math.max(0.01F, maxY - minY)) : 1.0F;
     }
 
-    float centerX() {
+    public float centerX() {
         return Float.isFinite(minX) ? (minX + maxX) * 0.5F : 0.0F;
     }
 
-    float centerY() {
+    public float centerY() {
         return Float.isFinite(minY) ? (minY + maxY) * 0.5F : 0.0F;
     }
 
