@@ -16,3 +16,12 @@ accessible field net/minecraft/world/level/storage/loot/functions/SetItemCountFu
 accessible method net/minecraft/world/level/storage/loot/LootContext <init> (Lnet/minecraft/world/level/storage/loot/LootParams;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/HolderGetter$Provider;)V
 accessible field net/minecraft/world/entity/Mob xpReward I
 accessible field net/minecraft/data/loot/EntityLootSubProvider SPECIAL_LOOT_TABLE_TYPES Ljava/util/Set;
+
+# Visual state of isolated recipe previews; no world ticks are run.
+accessible field net/minecraft/world/entity/Entity wasTouchingWater Z
+accessible field net/minecraft/world/entity/monster/Guardian clientSideSpikesAnimation F
+accessible field net/minecraft/world/entity/monster/Guardian clientSideSpikesAnimationO F
+accessible field net/minecraft/world/entity/monster/Guardian clientSideTailAnimation F
+accessible field net/minecraft/world/entity/monster/Guardian clientSideTailAnimationO F
+accessible field net/minecraft/world/entity/boss/wither/WitherBoss yRotHeads [F
+accessible field net/minecraft/world/entity/boss/wither/WitherBoss xRotHeads [F
