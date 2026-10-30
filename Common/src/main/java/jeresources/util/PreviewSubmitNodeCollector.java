@@ -15,10 +15,10 @@ import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3f;
 
-final class PreviewSubmitNodeCollector extends SubmitNodeCollection implements SubmitNodeCollector {
+public final class PreviewSubmitNodeCollector extends SubmitNodeCollection implements SubmitNodeCollector {
     private final PreviewGeometryBounds bounds;
 
-    PreviewSubmitNodeCollector(PreviewGeometryBounds bounds) {
+    public PreviewSubmitNodeCollector(PreviewGeometryBounds bounds) {
         super(null);
         this.bounds = bounds;
     }
