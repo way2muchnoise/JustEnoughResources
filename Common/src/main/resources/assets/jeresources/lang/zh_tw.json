@@ -29,6 +29,8 @@
 	"jer.stacks": "%s 個堆疊",
 
 	"jer.lightLevel": "生成亮度",
+	"jer.lightLevel.below": "低於 %s",
+	"jer.lightLevel.above": "高於 %s",
 	"jer.any": "任何",
 	"jer.dim.no": "無有效生成維度",
 	"jer.not": "否",
@@ -41,7 +43,7 @@
 	"jer.dungeon.strongholdCorridorChest": "要塞通道",
 	"jer.dungeon.strongholdLibraryChest": "要塞圖書館",
 	"jer.dungeon.strongholdCrossingChest": "要塞走廊",
-	"jer.dungeon.villageBlacksmithChest": "	鐵匠鋪",
+	"jer.dungeon.villageBlacksmithChest": "鐵匠鋪",
 	"jer.dungeon.spawnBonusChest": "獎勵箱",
 	"jer.dungeon.simpleDungeonChest": "地牢",
 	"jer.dungeon.netherBridgeChest": "地獄要塞",

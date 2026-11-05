@@ -29,6 +29,8 @@
 	"jer.stacks": "%s组",
 
 	"jer.lightLevel": "光照等级",
+	"jer.lightLevel.below": "低于 %s",
+	"jer.lightLevel.above": "高于 %s",
 	"jer.any": "任意",
 	"jer.dim.no": "无有效生成维度",
 	"jer.not": "否",

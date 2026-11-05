@@ -29,6 +29,8 @@
 	"jer.stacks": "%s стосів",
 
 	"jer.lightLevel": "Рівень світла",
+	"jer.lightLevel.below": "Нижче %s",
+	"jer.lightLevel.above": "Вище %s",
 	"jer.any": "Будь-який",
 	"jer.dim.no": "Немає дійсних вимірів породження",
 	"jer.not": "Немає",

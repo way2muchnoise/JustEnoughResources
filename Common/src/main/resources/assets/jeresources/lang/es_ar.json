@@ -29,6 +29,8 @@
 	"jer.stacks": "%s pilas",
 
 	"jer.lightLevel": "Nivel de luz",
+	"jer.lightLevel.below": "Menor que %s",
+	"jer.lightLevel.above": "Mayor que %s",
 	"jer.any": "Cualquiera",
 	"jer.dim.no": "Sin dimensiones válidas de aparición",
 	"jer.not": "No",
