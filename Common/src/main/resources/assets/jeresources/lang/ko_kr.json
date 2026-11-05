@@ -29,6 +29,8 @@
 	"jer.stacks": "%s 묶음",
 
 	"jer.lightLevel": "밝기",
+	"jer.lightLevel.below": "%s 미만",
+	"jer.lightLevel.above": "%s 초과",
 	"jer.any": "상관없음",
 	"jer.dim.no": "생성이 허용된 차원 없음",
 	"jer.not": "Not",
